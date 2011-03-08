@@ -91,6 +91,9 @@ public class ApplicationTestCase
       String title = "title";
       window.setTitle(title);
       assert title.equals(window.getTitle());
+
+      window.setProperty(Window.SHOW_INFO_BAR, false);
+      assert !window.getProperty(Window.SHOW_INFO_BAR);
    }
 
    @Test(enabled = false)

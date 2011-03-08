@@ -23,19 +23,23 @@
 
 package org.gatein.api.navigation;
 
+import org.gatein.api.GateInObject;
+import org.gatein.api.PropertyInfo;
 import org.gatein.api.application.Application;
+import org.gatein.api.traits.HasProperties;
+import org.gatein.api.traits.Titled;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Window
+public interface Window extends GateInObject, HasProperties, Titled
 {
+   static final PropertyInfo<Boolean> SHOW_INFO_BAR = new PropertyInfo<Boolean>("show-info-bar")
+   {
+   };
+
    void setApplication(Application application);
 
    Application getApplication();
-
-   void setTitle(String title);
-
-   String getTitle();
 }

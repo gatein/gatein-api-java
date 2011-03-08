@@ -21,20 +21,33 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.application;
+package org.gatein.api;
 
-import org.gatein.api.GateInObject;
-import org.gatein.api.traits.Describable;
+import java.lang.reflect.ParameterizedType;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Category extends GateInObject, Describable
+public abstract class PropertyInfo<T>
 {
-   Application getApplication(String applicationName);
+   private final String name;
+   private final Class<T> valueType;
 
-   boolean contains(String applicationName);
+   @SuppressWarnings("unchecked")
+   protected PropertyInfo(String name)
+   {
+      this.name = name;
+      valueType = (Class<T>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+   }
 
-   Application add(Application application);
+   public String getName()
+   {
+      return name;
+   }
+
+   public Class<T> getValueType()
+   {
+      return valueType;
+   }
 }

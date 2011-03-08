@@ -21,20 +21,27 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.application;
+package org.gatein.api;
 
-import org.gatein.api.GateInObject;
-import org.gatein.api.traits.Describable;
+import java.util.Comparator;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Category extends GateInObject, Describable
+public interface GateInObject
 {
-   Application getApplication(String applicationName);
+   static final Comparator<? extends GateInObject> SORT_BY_NAME = new Comparator<GateInObject>()
+   {
+      public int compare(GateInObject o1, GateInObject o2)
+      {
+         return o1.getName().compareTo(o2.getName());
+      }
+   };
 
-   boolean contains(String applicationName);
+   String getName();
 
-   Application add(Application application);
+   String getDisplayName();
+
+   void setDisplayName(String displayName);
 }

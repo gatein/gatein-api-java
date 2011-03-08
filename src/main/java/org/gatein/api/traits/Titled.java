@@ -21,20 +21,15 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.application;
-
-import org.gatein.api.GateInObject;
-import org.gatein.api.traits.Describable;
+package org.gatein.api.traits;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Category extends GateInObject, Describable
+public interface Titled
 {
-   Application getApplication(String applicationName);
+   String getTitle();
 
-   boolean contains(String applicationName);
-
-   Application add(Application application);
+   void setTitle(String title);
 }

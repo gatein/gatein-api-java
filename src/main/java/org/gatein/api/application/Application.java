@@ -23,13 +23,16 @@
 
 package org.gatein.api.application;
 
+import org.gatein.api.GateInObject;
+import org.gatein.api.traits.Describable;
+
 import java.util.Comparator;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Application
+public interface Application extends GateInObject, Describable
 {
    Comparator<Application> SORT_BY_NAME = new Comparator<Application>()
    {
@@ -38,12 +41,6 @@ public interface Application
          return o1.getName().compareTo(o2.getName());
       }
    };
-
-   String getName();
-
-   String getDisplayName();
-
-   void setDisplayName(String displayName);
 
    Application getDeployedParent();
 

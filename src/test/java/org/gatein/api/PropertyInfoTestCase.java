@@ -21,20 +21,24 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.application;
+package org.gatein.api;
 
-import org.gatein.api.GateInObject;
-import org.gatein.api.traits.Describable;
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Category extends GateInObject, Describable
+public class PropertyInfoTestCase
 {
-   Application getApplication(String applicationName);
+   @Test
+   public void test()
+   {
+      PropertyInfo<String> info = new PropertyInfo<String>("property-name")
+      {
+      };
 
-   boolean contains(String applicationName);
-
-   Application add(Application application);
+      assert "property-name".equals(info.getName());
+      assert String.class.equals(info.getValueType());
+   }
 }

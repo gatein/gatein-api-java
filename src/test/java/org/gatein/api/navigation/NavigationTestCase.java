@@ -41,7 +41,7 @@ public class NavigationTestCase
       String name = "name", title = "title";
       Page page = portal.getPage(name, true);
       assert name.equals(page.getName());
-      assert name.endsWith(page.getTitle());
+      assert name.equals(page.getTitle()) : "By default, a Page's title should be the same as its name";
       assert portal.equals(page.getParent());
 
       page.setTitle(title);

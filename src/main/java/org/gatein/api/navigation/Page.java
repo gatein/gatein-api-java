@@ -23,20 +23,16 @@
 
 package org.gatein.api.navigation;
 
+import org.gatein.api.GateInObject;
 import org.gatein.api.Portal;
+import org.gatein.api.traits.Titled;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Page
+public interface Page extends GateInObject, Titled
 {
-   String getName();
-
-   String getTitle();
-
-   void setTitle(String title);
-
    Portal getParent();
 
    Window getWindow(String windowName, boolean createIfInexistent);

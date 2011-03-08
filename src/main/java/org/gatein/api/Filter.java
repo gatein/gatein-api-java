@@ -29,7 +29,7 @@ package org.gatein.api;
  */
 public interface Filter<T>
 {
-   Filter ALL = new Filter()
+   static final Filter ALL = new Filter()
    {
       public boolean accept(Object item)
       {
