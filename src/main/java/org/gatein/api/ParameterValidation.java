@@ -21,28 +21,39 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.application;
-
-import org.gatein.api.GateInObject;
-import org.gatein.api.traits.Described;
-
-import java.util.Comparator;
+package org.gatein.api;
 
 /**
+ * Ideally, we'd use the version from common...
+ *
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Application extends GateInObject, Described
+public class ParameterValidation
 {
-   Comparator<Application> SORT_BY_NAME = new Comparator<Application>()
+   public static void throwIllegalArgExceptionIfNullOrEmpty(String valueToCheck, String valueName, String contextName)
    {
-      public int compare(Application o1, Application o2)
+      if (isNullOrEmpty(valueToCheck))
       {
-         return o1.getId().compareTo(o2.getId());
+         throw new IllegalArgumentException((contextName != null ? contextName + " r" : "R") + "equires a non-null, non-empty " + valueName);
       }
-   };
+   }
 
-   Application getDeployedParent();
+   public static boolean isNullOrEmpty(String valueToCheck)
+   {
+      return valueToCheck == null || valueToCheck.trim().length() == 0;
+   }
 
-   boolean isManaged();
+   public static void throwIllegalArgExceptionIfNull(Object objectToTest, String name)
+   {
+      if (objectToTest == null)
+      {
+         throw new IllegalArgumentException("Must pass a non null " + name);
+      }
+   }
+
+   public static <T> boolean existsAndIsNotEmpty(T[] array)
+   {
+      return array != null && array.length > 0;
+   }
 }

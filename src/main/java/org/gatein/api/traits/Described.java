@@ -27,7 +27,7 @@ package org.gatein.api.traits;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Describable
+public interface Described
 {
    String getDescription();
 

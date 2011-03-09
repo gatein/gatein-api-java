@@ -30,10 +30,8 @@ import org.gatein.api.navigation.Page;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Portal
+public interface Portal extends GateInObject
 {
-   String getName();
-
    ApplicationRegistry getApplicationRegistry();
 
    Page getPage(String pageName, boolean createIfInexistent);

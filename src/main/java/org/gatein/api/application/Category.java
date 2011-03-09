@@ -24,13 +24,13 @@
 package org.gatein.api.application;
 
 import org.gatein.api.GateInObject;
-import org.gatein.api.traits.Describable;
+import org.gatein.api.traits.Described;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Category extends GateInObject, Describable
+public interface Category extends GateInObject, Described
 {
    Application getApplication(String applicationName);
 

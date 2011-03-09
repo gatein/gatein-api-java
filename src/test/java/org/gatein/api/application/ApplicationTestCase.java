@@ -25,6 +25,7 @@ package org.gatein.api.application;
 
 import org.gatein.api.Filter;
 import org.gatein.api.GateIn;
+import org.gatein.api.Id;
 import org.gatein.api.NotFoundException;
 import org.gatein.api.Portal;
 import org.gatein.api.navigation.Page;
@@ -47,6 +48,12 @@ public class ApplicationTestCase
    public void setUp()
    {
       portal = GateIn.getPortal("container", "portal", true);
+   }
+
+   @Test(enabled = false)
+   public void checkPortalId()
+   {
+      assert new Id("container", "portal").equals(portal.getId());
    }
 
    @Test(enabled = false, expectedExceptions = NotFoundException.class)
