@@ -34,9 +34,7 @@ public class PropertyInfoTestCase
    @Test
    public void test()
    {
-      PropertyInfo<String> info = new PropertyInfo<String>("property-name")
-      {
-      };
+      PropertyInfo<String> info = PropertyInfo.createPropertyInfo("property-name", String.class);
 
       assert "property-name".equals(info.getName());
       assert String.class.equals(info.getValueType());

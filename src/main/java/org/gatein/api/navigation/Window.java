@@ -35,9 +35,7 @@ import org.gatein.api.traits.Titled;
  */
 public interface Window extends GateInObject, HasProperties, Titled
 {
-   static final PropertyInfo<Boolean> SHOW_INFO_BAR = new PropertyInfo<Boolean>("show-info-bar")
-   {
-   };
+   static final PropertyInfo<Boolean> SHOW_INFO_BAR = PropertyInfo.createPropertyInfo("show-info-bar", Boolean.class);
 
    void setApplication(Application application);
 
