@@ -29,5 +29,5 @@ package org.gatein.api;
  */
 public interface PortalContainer
 {
-   Portal createPortal(String portalName);
+   Portal getPortal(String portalName, boolean createIfInexistent);
 }

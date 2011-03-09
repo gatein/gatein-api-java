@@ -24,6 +24,8 @@
 package org.gatein.api;
 
 /**
+ * Entry point to the API in abscence of CDI injection.
+ *
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
