@@ -1,3 +1,31 @@
 This is an experimental work used to put down some ideas about a public API for GateIn.
-
 See in particular the different tests.
+
+GateIn API design principles:
+=============================
+
+- Keep it as simple as possible (KISS)
+- Don't repeat yourself (DRY)
+- Use Object-Oriented principles (OO)
+- Use familiar patterns (P)
+- Leave things as open-ended as possible when extensions/future changes are probable (FP)
+
+GateIn API choices:
+===================
+
+- Use Java RuntimeExceptions whenever possible (KISS) and create a minimal number of RuntimeException descendants when needed. Leave it up to the message to provide details. Possibly create a root exception to factorize code (OO).
+
+- Use the get*(String name, String createIfInexistent) pattern (P) instead of get + create methods. Implementation should throw an exception when trying to create an already existing object. This simplifies the API (KISS).
+
+- Avoid as much as possible *Registry objects (OO) that take over responsibilities that should be left up to other objects.
+
+- Avoid hardcoding particulars of current implementation. In particular, the API should be generic enough to handle all kinds of applications (portlet, gadget, wsrp, etc) without having to make special cases for them at the interface level. (KISS, DRY, OO).
+
+- Avoid enumerating things that currently corresponds to specific cases but rather use generic mechanisms and constants to represent the currently known values (KISS, OO).
+
+- Encapsulate all identifiers (in particular, hierarchical ones) in objects so that we can change the undelying representation and not rely on hardcoding formats into client applications (OO, FP). This will also allow us to put validation code into a single spot.
+
+Notes:
+======
+
+- We will probably need to split common into finer-grained modules to be able to reuse some of the classes (validation in particular, i18n maybe) without pulling too much of it.
