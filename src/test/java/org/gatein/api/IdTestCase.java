@@ -113,7 +113,7 @@ public class IdTestCase
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
-   public void testAIdShouldAlwaysHaveAPortalKey()
+   public void testAnIdShouldAlwaysHaveAPortalKey()
    {
       new Id(null, null);
    }
