@@ -21,13 +21,27 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api;
+package org.gatein.api.traits;
+
+import java.util.Comparator;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface PortalContainer extends GateInObject
+public interface Named
 {
-   Portal getPortal(String portalName, boolean createIfInexistent);
+   Comparator<? extends Named> SORT_BY_NAME = new Comparator<Named>()
+   {
+      public int compare(Named o1, Named o2)
+      {
+         return o1.getName().compareTo(o2.getName());
+      }
+   };
+
+   String getName();
+
+   String getDisplayName();
+
+   void setDisplayName(String displayName);
 }
