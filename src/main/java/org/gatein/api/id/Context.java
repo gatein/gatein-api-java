@@ -26,6 +26,7 @@ package org.gatein.api.id;
 
 import org.gatein.api.ParameterValidation;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -35,46 +36,75 @@ import java.util.List;
  */
 public class Context
 {
+   private static final String LIST_SEPARATOR = ", ";
    private final LinkedHashMap<String, ComponentIndex> namesToComponents;
-   private final Component[] components;
-   private final String format;
+   private final int requiredCardinality;
    private final String knownComponents;
+   private final String requiredComponents;
    private final String defaultSeparator;
 
-   public Context(String defaultSeparator, List<Component> componentList)
+   public boolean isIgnoringRemainingAfterFirstMissingOptional()
+   {
+      return ignoreRemainingAfterFirstMissingOptional;
+   }
+
+   private final boolean ignoreRemainingAfterFirstMissingOptional;
+
+   public Context(String defaultSeparator, List<Component> componentList, boolean ignoreRemainingAfterFirstMissingOptional)
    {
       ParameterValidation.throwIllegalArgExceptionIfNull(componentList, "Component list");
 
       int size = componentList.size();
-      components = new Component[size];
       namesToComponents = new LinkedHashMap<String, ComponentIndex>(size);
+      this.ignoreRemainingAfterFirstMissingOptional = ignoreRemainingAfterFirstMissingOptional;
 
-      StringBuilder formatSB = new StringBuilder();
       StringBuilder knownComponentsSB = new StringBuilder();
 
-      int i = 1;
+      int current = 1;
+      int required = 0;
       for (Component component : componentList)
       {
-         addComponent(component, i - 1);
+         addComponent(component, current - 1);
 
-         formatSB.append("%").append(i++).append("$s");
-         knownComponentsSB.append(component.getName());
-         if (i <= size)
+         if (component.isRequired())
          {
-            formatSB.append(defaultSeparator);
-            knownComponentsSB.append(", ");
+            required++;
+         }
+
+         String name = component.getName();
+         buildString(knownComponentsSB, name, current <= size, LIST_SEPARATOR);
+      }
+
+      this.requiredCardinality = required;
+
+      // need to re-iterate over components now that we know which ones are required to build list of required components' name
+      StringBuilder requiredComponentsSB = new StringBuilder();
+      int requiredIndex = 0;
+      for (Component component : componentList)
+      {
+         if (component.isRequired())
+         {
+            buildString(requiredComponentsSB, component.getName(), ++requiredIndex < requiredCardinality, LIST_SEPARATOR);
          }
       }
 
-      format = formatSB.toString();
       knownComponents = knownComponentsSB.toString();
+      requiredComponents = requiredComponentsSB.toString();
       this.defaultSeparator = defaultSeparator;
+   }
+
+   private void buildString(StringBuilder sb, String toAppend, boolean appendSeparator, String separator)
+   {
+      sb.append(toAppend);
+      if (appendSeparator)
+      {
+         sb.append(separator);
+      }
    }
 
    private void addComponent(Component component, int i)
    {
       ParameterValidation.throwIllegalArgExceptionIfNull(component, "Component");
-      components[i] = component;
       namesToComponents.put(component.getName(), new ComponentIndex(namesToComponents.size(), component));
    }
 
@@ -84,6 +114,11 @@ public class Context
 
    protected int getIndexFor(String component)
    {
+      return getComponentOrFail(component).index;
+   }
+
+   private ComponentIndex getComponentOrFail(String component)
+   {
       ComponentIndex index = namesToComponents.get(component);
       if (index == null)
       {
@@ -91,35 +126,75 @@ public class Context
       }
       else
       {
-         return index.index;
+         return index;
       }
    }
 
    public String toString(Id id)
    {
-      return String.format(format, id.getComponents());
+      ParameterValidation.throwIllegalArgExceptionIfNull(id, "Id to output as String");
+
+      StringBuilder sb = new StringBuilder(111);
+      int componentNumber = id.getComponentNumber();
+      for (ComponentIndex componentIndex : namesToComponents.values())
+      {
+         String name = componentIndex.component.getName();
+         int index = componentIndex.index;
+
+         String value = id.getComponent(index, name, this);
+         if (value != null)
+         {
+            sb.append(value);
+         }
+         else
+         {
+            if (componentIndex.component.isRequired())
+            {
+               throw new IllegalArgumentException("Missing value for required component '" + name + "'");
+            }
+            else if (ignoreRemainingAfterFirstMissingOptional)
+            {
+               break;
+            }
+         }
+
+         if (index < componentNumber - 1 && index < namesToComponents.size())
+         {
+            sb.append(defaultSeparator);
+         }
+      }
+      return sb.toString();
    }
 
    void validate(String[] componentValues)
    {
-      if (componentValues.length != this.components.length)
+      int componentNumber = namesToComponents.size();
+      if (componentValues.length < requiredCardinality)
       {
-         throw new IllegalArgumentException("Wrong number of components: " + componentValues.length + ". Was expecting: "
-            + this.components.length + ". Known components are: " + knownComponents);
+         throw new IllegalArgumentException("Wrong number of components: " + componentValues.length
+            + ". Was expecting at most " + componentNumber + " values for components: "
+            + knownComponents + "; among which " + requiredComponents + " are required.");
       }
 
       boolean error = false;
-      StringBuilder sb = new StringBuilder(111);
+      StringBuilder sb = null;
 
-      for (int i = 0; i < components.length; i++)
+      String[] nullPaddedValues = Arrays.copyOf(componentValues, componentNumber);
+
+      int currentValue = 0;
+      for (ComponentIndex index : namesToComponents.values())
       {
          try
          {
-            components[i].validate(componentValues[i]);
+            index.component.validate(nullPaddedValues[currentValue++]);
          }
-         catch (IllegalArgumentException e)
+         catch (Exception e)
          {
             error = true;
+            if (sb == null)
+            {
+               sb = new StringBuilder(111);
+            }
             sb.append(e.getLocalizedMessage()).append("\n");
          }
       }
@@ -133,6 +208,11 @@ public class Context
    public String[] extractComponents(String idAsString)
    {
       return idAsString.split(defaultSeparator);
+   }
+
+   public boolean isComponentRequired(String component)
+   {
+      return getComponentOrFail(component).component.isRequired();
    }
 
    private static class ComponentIndex

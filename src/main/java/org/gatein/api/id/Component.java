@@ -41,6 +41,8 @@ public class Component
 
    public Component(String name, Pattern validationPattern, boolean required)
    {
+      ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(name, "Component name", null);
+      ParameterValidation.throwIllegalArgExceptionIfNull(validationPattern, "Validation pattern");
       this.name = name;
       matcher = validationPattern.matcher("");
       this.validationPattern = validationPattern.toString();
@@ -54,12 +56,25 @@ public class Component
 
    public void validate(String componentValue)
    {
-      ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(componentValue, "component value", "'" + name + "' component");
-
-      matcher.reset(componentValue);
-      if (!matcher.matches())
+      if (!ParameterValidation.isNullOrEmpty(componentValue))
       {
-         throw new IllegalArgumentException("Invalid value '" + componentValue + "'. Valid values should match: '" + validationPattern + "'");
+         matcher.reset(componentValue);
+         if (!matcher.matches())
+         {
+            throw new IllegalArgumentException("Invalid value '" + componentValue + "'. Valid values should match: '" + validationPattern + "'");
+         }
       }
+      else
+      {
+         if (required)
+         {
+            throw new IllegalArgumentException("Component '" + name + "' is required.");
+         }
+      }
+   }
+
+   public boolean isRequired()
+   {
+      return required;
    }
 }

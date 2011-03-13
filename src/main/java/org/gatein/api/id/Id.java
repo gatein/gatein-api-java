@@ -129,12 +129,42 @@ public abstract class Id
    public String getComponent(String component)
    {
       int index = originalContext.getIndexFor(component);
-      return getComponent(index, component);
+      return getComponent(index, component, originalContext);
    }
 
-   protected abstract String getComponent(int index, String component);
+   protected abstract String getComponent(int index, String component, Context context);
 
    protected abstract String[] getComponents();
+
+   public Context getOriginalContext()
+   {
+      return originalContext;
+   }
+
+   @Override
+   public boolean equals(Object o)
+   {
+      if (this == o)
+      {
+         return true;
+      }
+      if (!(o instanceof Id))
+      {
+         return false;
+      }
+
+      Id id = (Id)o;
+
+      return Arrays.equals(getComponents(), id.getComponents());
+   }
+
+   @Override
+   public int hashCode()
+   {
+      return Arrays.hashCode(getComponents());
+   }
+
+   public abstract int getComponentNumber();
 
    private static class SimpleId extends Id
    {
@@ -147,11 +177,18 @@ public abstract class Id
       }
 
       @Override
-      protected String getComponent(int index, String component)
+      protected String getComponent(int index, String component, Context context)
       {
          if (index != 0)
          {
-            throw new IllegalArgumentException("Unknown component: " + component);
+            if (context.isComponentRequired(component))
+            {
+               throw new IllegalArgumentException("Unknown component: " + component);
+            }
+            else
+            {
+               return null;
+            }
          }
          else
          {
@@ -163,6 +200,12 @@ public abstract class Id
       public String[] getComponents()
       {
          return new String[]{root};
+      }
+
+      @Override
+      public int getComponentNumber()
+      {
+         return 1;
       }
    }
 
@@ -177,11 +220,18 @@ public abstract class Id
       }
 
       @Override
-      protected String getComponent(int index, String component)
+      protected String getComponent(int index, String component, Context context)
       {
          if (index < 0 || index >= components.length)
          {
-            throw new IllegalArgumentException("Unknown component: " + component);
+            if (context.isComponentRequired(component))
+            {
+               throw new IllegalArgumentException("Unknown component: " + component);
+            }
+            else
+            {
+               return null;
+            }
          }
          else
          {
@@ -193,6 +243,12 @@ public abstract class Id
       public String[] getComponents()
       {
          return components;
+      }
+
+      @Override
+      public int getComponentNumber()
+      {
+         return components.length;
       }
    }
 }

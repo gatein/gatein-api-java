@@ -24,6 +24,7 @@
 package org.gatein.api.id;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -37,94 +38,111 @@ import java.util.regex.Pattern;
  */
 public class IdTestCase
 {
-   private Context portletContext;
+   private static final String CONTAINER_COMPONENT = "containerComponent";
+   private static final String PORTAL_COMPONENT = "portalComponent";
+   private static final String INVOKER_COMPONENT = "invokerComponent";
+   private static final String PORTLET_COMPONENT = "portletComponent";
+   private static final String INSTANCE_COMPONENT = "instanceComponent";
+   private Context context;
 
    private static final String CONTAINER = "container";
    private static final String PORTAL = "portal";
    private static final String INVOKER = "invoker";
    private static final String PORTLET = "portlet";
-   private static final String INSTANCE = "instance";
+   private static final String INSTANCE = "fooInstance";
 
-   /*@Test
+   @BeforeTest
+   public void setUp()
+   {
+      List<Component> components = new ArrayList<Component>(2);
+      components.add(new Component(CONTAINER_COMPONENT, Pattern.compile("container"), true));
+      components.add(new Component(PORTAL_COMPONENT, Pattern.compile("portal"), true));
+      components.add(new Component(INVOKER_COMPONENT, Pattern.compile(".*"), false));
+      components.add(new Component(PORTLET_COMPONENT, Pattern.compile(".*"), false));
+      components.add(new Component(INSTANCE_COMPONENT, Pattern.compile(".*Instance$"), false));
+      context = new Context("=", components, true);
+   }
+
+   @Test
    public void testRoundtripParsing()
    {
-      Id key = new Id(CONTAINER, PORTAL, INVOKER, PORTLET, INSTANCE);
-      Id parsed = Id.parse(Id.toString(key));
+      Id key = Id.create(context, CONTAINER, PORTAL, INVOKER, PORTLET, INSTANCE);
+      Id parsed = Id.parse(key.getOriginalContext(), key.toString());
       assert key.equals(parsed);
-      assert CONTAINER.equals(key.getContainerId());
-      assert PORTAL.equals(key.getPortalId());
-      assert INVOKER.equals(key.getInvokerId());
-      assert PORTLET.equals(key.getPortletId());
-      assert INSTANCE.equals(key.getInstanceId());
+      assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT));
+      assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT));
+      assert INVOKER.equals(key.getComponent(INVOKER_COMPONENT));
+      assert PORTLET.equals(key.getComponent(PORTLET_COMPONENT));
+      assert INSTANCE.equals(key.getComponent(INSTANCE_COMPONENT));
 
-      key = new Id(CONTAINER, PORTAL, INVOKER);
-      parsed = Id.parse(Id.asString(key));
+      key = Id.create(context, CONTAINER, PORTAL, INVOKER);
+      parsed = Id.parse(key.getOriginalContext(), key.toString());
       assert key.equals(parsed);
-      assert CONTAINER.equals(key.getContainerId());
-      assert PORTAL.equals(key.getPortalId());
-      assert INVOKER.equals(parsed.getInvokerId());
-      assert parsed.getPortletId() == null;
-      assert parsed.getInstanceId() == null;
+      assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT));
+      assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT));
+      assert INVOKER.equals(parsed.getComponent(INVOKER_COMPONENT));
+      assert parsed.getComponent(PORTLET_COMPONENT) == null;
+      assert parsed.getComponent(INSTANCE_COMPONENT) == null;
 
-      key = new Id(CONTAINER, PORTAL);
-      parsed = Id.parse(Id.asString(key));
+      key = Id.create(context, CONTAINER, PORTAL);
+      parsed = Id.parse(key.getOriginalContext(), key.toString());
       assert key.equals(parsed);
-      assert CONTAINER.equals(key.getContainerId());
-      assert PORTAL.equals(key.getPortalId());
-      assert parsed.getInvokerId() == null;
-      assert parsed.getPortletId() == null;
-      assert parsed.getInstanceId() == null;
+      assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT));
+      assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT));
+      assert parsed.getComponent(INVOKER_COMPONENT) == null;
+      assert parsed.getComponent(PORTLET_COMPONENT) == null;
+      assert parsed.getComponent(INSTANCE_COMPONENT) == null;
 
-      key = new Id(CONTAINER, PORTAL, null, PORTLET);
-      parsed = Id.parse(Id.asString(key));
-      assert key.equals(parsed);
-      assert CONTAINER.equals(key.getContainerId());
-      assert PORTAL.equals(key.getPortalId());
-      assert parsed.getInvokerId() == null;
-      assert parsed.getPortletId() == null;
-      assert parsed.getInstanceId() == null;
+      key = Id.create(context, CONTAINER, PORTAL, null, PORTLET);
+      parsed = Id.parse(key.getOriginalContext(), key.toString());
+      assert !key.equals(parsed);
+      assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT));
+      assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT));
+      assert parsed.getComponent(INVOKER_COMPONENT) == null;
+      assert parsed.getComponent(PORTLET_COMPONENT) == null;
+      assert parsed.getComponent(INSTANCE_COMPONENT) == null;
 
-      key = new Id(CONTAINER, PORTAL, INVOKER, null, INSTANCE);
-      parsed = Id.parse(Id.asString(key));
-      assert key.equals(parsed);
-      assert CONTAINER.equals(key.getContainerId());
-      assert PORTAL.equals(key.getPortalId());
-      assert INVOKER.equals(parsed.getInvokerId());
-      assert parsed.getPortletId() == null;
-      assert parsed.getInstanceId() == null;
+      key = Id.create(context, CONTAINER, PORTAL, INVOKER, null, INSTANCE);
+      parsed = Id.parse(key.getOriginalContext(), key.toString());
+      assert !key.equals(parsed);
+      assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT));
+      assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT));
+      assert INVOKER.equals(parsed.getComponent(INVOKER_COMPONENT));
+      assert parsed.getComponent(PORTLET_COMPONENT) == null;
+      assert parsed.getComponent(INSTANCE_COMPONENT) == null;
    }
 
    @Test
    public void testPortletNameWithSlash()
    {
-      Id key = new Id(CONTAINER, PORTAL, INVOKER, "category/portlet");
-      Id parsed = Id.parse(Id.asString(key));
+      Id key = Id.create(context, CONTAINER, PORTAL, INVOKER, "category/portlet");
+      Id parsed = Id.parse(key.getOriginalContext(), key.toString());
       assert key.equals(parsed);
-      assert CONTAINER.equals(key.getContainerId());
-      assert PORTAL.equals(key.getPortalId());
-      assert INVOKER.equals(parsed.getInvokerId());
-      assert "category/portlet".equals(parsed.getPortletId());
+      assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT));
+      assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT));
+      assert INVOKER.equals(parsed.getComponent(INVOKER_COMPONENT));
+      assert "category/portlet".equals(parsed.getComponent(PORTLET_COMPONENT));
    }
 
-   @Test
+   @Test(enabled = false)
    public void testGetChildFor()
    {
-      Id key = new Id(CONTAINER, PORTAL);
+      Id key = Id.create(context, CONTAINER, PORTAL);
       Id child = Id.getIdForChild(key, INVOKER);
-      assert new Id(CONTAINER, PORTAL, INVOKER, null).equals(child);
+      assert Id.create(context, CONTAINER, PORTAL, INVOKER, null).equals(child);
 
       child = Id.getIdForChild(child, PORTLET);
-      assert new Id(CONTAINER, PORTAL, INVOKER, PORTLET).equals(child);
+      assert Id.create(context, CONTAINER, PORTAL, INVOKER, PORTLET).equals(child);
 
       child = Id.getIdForChild(child, INSTANCE);
-      assert new Id(CONTAINER, PORTAL, INVOKER, PORTLET, INSTANCE).equals(child);
+      assert Id.create(context, CONTAINER, PORTAL, INVOKER, PORTLET, INSTANCE).equals(child);
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void testAnIdShouldAlwaysHaveAPortalKey()
    {
-      new Id(null, null);
-   }*/
+      Id.create(context, null, null);
+   }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void testGetChildForShouldFailOnNullParent()
@@ -135,13 +153,13 @@ public class IdTestCase
    /*@Test(expectedExceptions = IllegalArgumentException.class)
    public void testGetChildForShouldFailOnNullChildId()
    {
-      Id.getIdForChild(new Id(CONTAINER, PORTAL), null);
+      Id.getIdForChild(Id.create(context, CONTAINER, PORTAL), null);
    }*/
 
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void anIdShouldAlwaysHaveARoot()
    {
-      Id.create(new Context("-", Collections.<Component>emptyList()), null);
+      Id.create(new Context("-", Collections.<Component>emptyList(), false), null);
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
@@ -154,22 +172,15 @@ public class IdTestCase
    @Test
    public void testPortletIdsScenarios()
    {
-      List<Component> components = new ArrayList<Component>(2);
-      Component container = new Component("containerComponent", Pattern.compile("container"), true);
-      components.add(container);
-      Component portal = new Component("portalComponent", Pattern.compile("portal"), true);
-      components.add(portal);
-      Context context = new Context("=", components);
-
       Id id = Id.create(context, "container", "portal");
-      assert "container".equals(id.getComponent("containerComponent"));
-      assert "portal".equals(id.getComponent("portalComponent"));
-      Assert.assertEquals("container=portal", id.toString(context));
+      assert "container".equals(id.getComponent(CONTAINER_COMPONENT));
+      assert "portal".equals(id.getComponent(PORTAL_COMPONENT));
+      Assert.assertEquals(id.toString(context), "container=portal");
 
       try
       {
          Id.create(context, null);
-         Assert.fail("Should have failed as containerComponent is required");
+         Assert.fail("Should have failed as " + CONTAINER_COMPONENT + " is required");
       }
       catch (IllegalArgumentException e)
       {
@@ -179,7 +190,7 @@ public class IdTestCase
       try
       {
          Id.create(context, "foo");
-         Assert.fail("Should have failed as only 'container' is allowed as value for containerComponent");
+         Assert.fail("Should have failed as only 'container' is allowed as value for " + CONTAINER_COMPONENT);
       }
       catch (IllegalArgumentException e)
       {
