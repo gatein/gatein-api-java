@@ -35,15 +35,21 @@ public abstract class PropertyInfo<T>
    private final Class<T> valueType;
 
    @SuppressWarnings("unchecked")
-   private PropertyInfo(String name)
+   public PropertyInfo(String name)
    {
       this.name = name;
       valueType = (Class<T>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
    }
 
+   private PropertyInfo(String name, Class<T> valueType)
+   {
+      this.name = name;
+      this.valueType = valueType;
+   }
+
    public static <T> PropertyInfo<T> createPropertyInfo(String name, Class<T> valueType)
    {
-      return new PropertyInfo<T>(name)
+      return new PropertyInfo<T>(name, valueType)
       {
       };
    }

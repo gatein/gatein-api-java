@@ -32,11 +32,23 @@ import org.testng.annotations.Test;
 public class PropertyInfoTestCase
 {
    @Test
-   public void test()
+   public void testFactory()
    {
       PropertyInfo<String> info = PropertyInfo.createPropertyInfo("property-name", String.class);
 
       assert "property-name".equals(info.getName());
       assert String.class.equals(info.getValueType());
+   }
+
+   @Test
+   public void testConstructor()
+   {
+      PropertyInfo<String> info = new PropertyInfo<String>("property-name")
+      {
+      };
+
+      assert "property-name".equals(info.getName());
+      assert String.class.equals(info.getValueType());
+
    }
 }
