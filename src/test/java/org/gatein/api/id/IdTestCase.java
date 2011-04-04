@@ -54,7 +54,7 @@ public class IdTestCase
    @BeforeTest
    public void setUp()
    {
-      List<Component> components = new ArrayList<Component>(2);
+      List<Component> components = new ArrayList<Component>(5);
       components.add(new Component(CONTAINER_COMPONENT, Pattern.compile("container"), true));
       components.add(new Component(PORTAL_COMPONENT, Pattern.compile("portal"), true));
       components.add(new Component(INVOKER_COMPONENT, Pattern.compile(".*"), false));
@@ -95,7 +95,7 @@ public class IdTestCase
 
       key = Id.create(context, CONTAINER, PORTAL, null, PORTLET);
       parsed = Id.parse(key.getOriginalContext(), key.toString());
-      assert !key.equals(parsed);
+      assert key.equals(parsed);
       assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT));
       assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT));
       assert parsed.getComponent(INVOKER_COMPONENT) == null;
@@ -104,12 +104,25 @@ public class IdTestCase
 
       key = Id.create(context, CONTAINER, PORTAL, INVOKER, null, INSTANCE);
       parsed = Id.parse(key.getOriginalContext(), key.toString());
-      assert !key.equals(parsed);
+      assert key.equals(parsed);
       assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT));
       assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT));
       assert INVOKER.equals(parsed.getComponent(INVOKER_COMPONENT));
       assert parsed.getComponent(PORTLET_COMPONENT) == null;
       assert parsed.getComponent(INSTANCE_COMPONENT) == null;
+   }
+
+   @Test
+   public void testRootComponent()
+   {
+      List<Component> components = new ArrayList<Component>(1);
+      components.add(new Component(CONTAINER_COMPONENT, Pattern.compile("container"), true));
+
+      Id key = Id.create(new Context("-", components, true), CONTAINER);
+      assert CONTAINER.equals(key.getRootComponent());
+
+      key = Id.create(context, CONTAINER, PORTAL, INVOKER, PORTLET, INSTANCE);
+      assert CONTAINER.equals(key.getRootComponent());
    }
 
    @Test
@@ -124,7 +137,13 @@ public class IdTestCase
       assert "category/portlet".equals(parsed.getComponent(PORTLET_COMPONENT));
    }
 
-   @Test(enabled = false)
+   @Test
+   public void shouldNotSetOptionalComponents()
+   {
+      assert Id.create(context, CONTAINER, PORTAL, INVOKER, null).equals(Id.create(context, CONTAINER, PORTAL, INVOKER));
+   }
+
+   @Test
    public void testGetChildFor()
    {
       Id key = Id.create(context, CONTAINER, PORTAL);
@@ -150,11 +169,11 @@ public class IdTestCase
       Id.getIdForChild(null, null);
    }
 
-   /*@Test(expectedExceptions = IllegalArgumentException.class)
+   @Test(expectedExceptions = IllegalArgumentException.class)
    public void testGetChildForShouldFailOnNullChildId()
    {
       Id.getIdForChild(Id.create(context, CONTAINER, PORTAL), null);
-   }*/
+   }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void anIdShouldAlwaysHaveARoot()

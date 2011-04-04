@@ -63,16 +63,25 @@ public abstract class Id
    {
       if (ParameterValidation.existsAndIsNotEmpty(additionalComponents))
       {
-         String[] components = new String[additionalComponents.length + 1];
-         System.arraycopy(additionalComponents, 0, components, 1, additionalComponents.length);
-         components[0] = rootComponent;
-
-         if (revalidate)
+         int length = additionalComponents.length;
+         int indexOfFirstNull = -1;
+         int current = 0;
+         for (String additionalComponent : additionalComponents)
          {
-            context.validate(components);
+            if (ParameterValidation.isNullOrEmpty(additionalComponent))
+            {
+               indexOfFirstNull = current;
+               break;
+            }
+            current++;
          }
 
-         return new ComplexId(context, components);
+         length = (indexOfFirstNull != -1 ? indexOfFirstNull : length);
+         String[] components = new String[length + 1];
+         System.arraycopy(additionalComponents, 0, components, 1, length);
+         components[0] = rootComponent;
+
+         return internalCreate(context, revalidate, components);
       }
       else
       {
@@ -85,20 +94,37 @@ public abstract class Id
       }
    }
 
+   private static Id internalCreate(Context context, final boolean revalidate, String... components)
+   {
+      if (ParameterValidation.existsAndIsNotEmpty(components))
+      {
+         if (revalidate)
+         {
+            context.validate(components);
+         }
+
+         if (components.length == 1)
+         {
+            return new SimpleId(context, components[0]);
+         }
+         else
+         {
+            return new ComplexId(context, components);
+         }
+      }
+      else
+      {
+         throw new IllegalArgumentException("A valid root component is required to create an Id.");
+      }
+   }
+
    public static Id parse(Context context, String idAsString)
    {
       ParameterValidation.throwIllegalArgExceptionIfNull(context, "Context to interpret String as an Id");
       ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(idAsString, "String to interpret as Id", null);
 
       String[] components = context.extractComponents(idAsString);
-      if (components.length <= 1)
-      {
-         return internalCreate(context, false, components[0]);
-      }
-      else
-      {
-         return internalCreate(context, false, components[0], Arrays.copyOfRange(components, 1, components.length));
-      }
+      return internalCreate(context, false, components);
    }
 
    public static Id getIdForChild(Id parent, String childId)
@@ -106,24 +132,17 @@ public abstract class Id
       ParameterValidation.throwIllegalArgExceptionIfNull(parent, "Parent resource");
       ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(childId, "child identifier", null);
 
-      /*String invokerId = parent.getInvokerId();
-      if (invokerId == null)
-      {
-         return new Id(parent.getContainerId(), parent.getPortalId(), childId);
-      }
-      else
-      {
-         String portletId = parent.getPortletId();
-         if (portletId == null)
-         {
-            return new Id(parent.getContainerId(), parent.getPortalId(), invokerId, childId);
-         }
-         else
-         {
-            return new Id(parent.getContainerId(), parent.getPortalId(), invokerId, portletId, childId);
-         }
-      }*/
-      return null;
+      String[] components = parent.getComponents();
+      int childIndex = components.length;
+
+      Context context = parent.getOriginalContext();
+      context.validate(childId, childIndex);
+
+      String[] newComponents = new String[childIndex + 1];
+      System.arraycopy(components, 0, newComponents, 0, childIndex);
+      newComponents[childIndex] = childId;
+
+      return internalCreate(context, false, newComponents);
    }
 
    public String getComponent(String component)
@@ -166,6 +185,8 @@ public abstract class Id
 
    public abstract int getComponentNumber();
 
+   public abstract String getRootComponent();
+
    private static class SimpleId extends Id
    {
       private final String root;
@@ -206,6 +227,12 @@ public abstract class Id
       public int getComponentNumber()
       {
          return 1;
+      }
+
+      @Override
+      public String getRootComponent()
+      {
+         return root;
       }
    }
 
@@ -249,6 +276,12 @@ public abstract class Id
       public int getComponentNumber()
       {
          return components.length;
+      }
+
+      @Override
+      public String getRootComponent()
+      {
+         return components[0];
       }
    }
 }

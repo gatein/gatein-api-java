@@ -117,6 +117,20 @@ public class Context
       return getComponentOrFail(component).index;
    }
 
+   protected void validate(String value, int index)
+   {
+      for (ComponentIndex componentIndex : namesToComponents.values())
+      {
+         if (index == componentIndex.index)
+         {
+            componentIndex.component.validate(value);
+            return;
+         }
+      }
+
+      throw new IllegalArgumentException("No component with index: " + index + ". Known components are: " + knownComponents);
+   }
+
    private ComponentIndex getComponentOrFail(String component)
    {
       ComponentIndex index = namesToComponents.get(component);
