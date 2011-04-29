@@ -31,7 +31,7 @@ import java.util.Arrays;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public abstract class Id
+public abstract class Id implements Comparable<Id>
 {
    private final Context originalContext;
 
@@ -181,6 +181,18 @@ public abstract class Id
    public int hashCode()
    {
       return Arrays.hashCode(getComponents());
+   }
+
+   public int compareTo(Id o)
+   {
+      if (this.equals(o))
+      {
+         return 0;
+      }
+      else
+      {
+         return toString().compareTo(o.toString());
+      }
    }
 
    public abstract int getComponentNumber();
