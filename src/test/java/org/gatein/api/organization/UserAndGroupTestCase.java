@@ -21,33 +21,45 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api;
+package org.gatein.api.organization;
 
-import java.util.Collection;
-import java.util.SortedMap;
+import org.gatein.api.id.Id;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+import java.util.List;
 
 /**
- * Entry point to the API in absence of CDI injection.
- *
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public class GateIn
+public class UserAndGroupTestCase
 {
-   private static SortedMap<String, PortalContainer> portalContainers;
+   private User root;
+   private Id id;
 
-   public static PortalContainer getPortalContainer(String containerName)
+   @BeforeTest
+   public void setUp()
    {
-      return portalContainers.get(containerName);
+      id = UserId.get("root");
+      root = Users.get(id);
    }
 
-   public static Portal getPortal(String containerName, String portalName, boolean createIfInexistent)
+   @Test(enabled = false)
+   public void userGroupsFromGroupsOrUserShouldMatch()
    {
-      return null;
+      List<Group> rootGroups = root.getGroups();
+      assert rootGroups.equals(Groups.getForUser(id));
    }
 
-   public static Collection<PortalContainer> getPortalContainers()
+   @Test(enabled = false)
+   public void membershipsShouldMatch()
    {
-      return portalContainers.values();
+      Id groupId = GroupId.get("platform", "administrators");
+      final Group adminGroup = root.getGroup(groupId);
+      assert adminGroup.equals(Groups.get(groupId));
+      assert root.getGroups().contains(adminGroup);
+      assert adminGroup.hasMember(root);
+      assert root.isMemberOf(adminGroup);
    }
 }

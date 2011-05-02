@@ -24,7 +24,6 @@
 package org.gatein.api.id;
 
 import org.testng.Assert;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -32,18 +31,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static org.gatein.api.id.Common.*;
+
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
 public class IdTestCase
 {
-   private static final String CONTAINER_COMPONENT = "containerComponent";
-   private static final String PORTAL_COMPONENT = "portalComponent";
-   private static final String INVOKER_COMPONENT = "invokerComponent";
-   private static final String PORTLET_COMPONENT = "portletComponent";
-   private static final String INSTANCE_COMPONENT = "instanceComponent";
-   private Context context;
+   private Context context = Common.PORTLET;
 
    private static final String CONTAINER = "container";
    private static final String PORTAL = "portal";
@@ -51,72 +47,60 @@ public class IdTestCase
    private static final String PORTLET = "portlet";
    private static final String INSTANCE = "fooInstance";
 
-   @BeforeTest
-   public void setUp()
-   {
-      List<Component> components = new ArrayList<Component>(5);
-      components.add(new Component(CONTAINER_COMPONENT, Pattern.compile("container"), true));
-      components.add(new Component(PORTAL_COMPONENT, Pattern.compile("portal"), true));
-      components.add(new Component(INVOKER_COMPONENT, Pattern.compile(".*"), false));
-      components.add(new Component(PORTLET_COMPONENT, Pattern.compile(".*"), false));
-      components.add(new Component(INSTANCE_COMPONENT, Pattern.compile(".*Instance$"), false));
-      context = new Context("=", components, true);
-   }
-
    @Test
    public void testRoundtripParsing()
    {
       Id key = Id.create(context, CONTAINER, PORTAL, INVOKER, PORTLET, INSTANCE);
       Id parsed = Id.parse(key.getOriginalContext(), key.toString());
       assert key.equals(parsed);
-      assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT));
-      assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT));
-      assert INVOKER.equals(key.getComponent(INVOKER_COMPONENT));
-      assert PORTLET.equals(key.getComponent(PORTLET_COMPONENT));
-      assert INSTANCE.equals(key.getComponent(INSTANCE_COMPONENT));
+      assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT_NAME));
+      assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT_NAME));
+      assert INVOKER.equals(key.getComponent(INVOKER_COMPONENT_NAME));
+      assert PORTLET.equals(key.getComponent(PORTLET_COMPONENT_NAME));
+      assert INSTANCE.equals(key.getComponent(INSTANCE_COMPONENT_NAME));
 
       key = Id.create(context, CONTAINER, PORTAL, INVOKER);
       parsed = Id.parse(key.getOriginalContext(), key.toString());
       assert key.equals(parsed);
-      assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT));
-      assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT));
-      assert INVOKER.equals(parsed.getComponent(INVOKER_COMPONENT));
-      assert parsed.getComponent(PORTLET_COMPONENT) == null;
-      assert parsed.getComponent(INSTANCE_COMPONENT) == null;
+      assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT_NAME));
+      assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT_NAME));
+      assert INVOKER.equals(parsed.getComponent(INVOKER_COMPONENT_NAME));
+      assert parsed.getComponent(PORTLET_COMPONENT_NAME) == null;
+      assert parsed.getComponent(INSTANCE_COMPONENT_NAME) == null;
 
       key = Id.create(context, CONTAINER, PORTAL);
       parsed = Id.parse(key.getOriginalContext(), key.toString());
       assert key.equals(parsed);
-      assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT));
-      assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT));
-      assert parsed.getComponent(INVOKER_COMPONENT) == null;
-      assert parsed.getComponent(PORTLET_COMPONENT) == null;
-      assert parsed.getComponent(INSTANCE_COMPONENT) == null;
+      assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT_NAME));
+      assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT_NAME));
+      assert parsed.getComponent(INVOKER_COMPONENT_NAME) == null;
+      assert parsed.getComponent(PORTLET_COMPONENT_NAME) == null;
+      assert parsed.getComponent(INSTANCE_COMPONENT_NAME) == null;
 
       key = Id.create(context, CONTAINER, PORTAL, null, PORTLET);
       parsed = Id.parse(key.getOriginalContext(), key.toString());
       assert key.equals(parsed);
-      assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT));
-      assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT));
-      assert parsed.getComponent(INVOKER_COMPONENT) == null;
-      assert parsed.getComponent(PORTLET_COMPONENT) == null;
-      assert parsed.getComponent(INSTANCE_COMPONENT) == null;
+      assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT_NAME));
+      assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT_NAME));
+      assert parsed.getComponent(INVOKER_COMPONENT_NAME) == null;
+      assert parsed.getComponent(PORTLET_COMPONENT_NAME) == null;
+      assert parsed.getComponent(INSTANCE_COMPONENT_NAME) == null;
 
       key = Id.create(context, CONTAINER, PORTAL, INVOKER, null, INSTANCE);
       parsed = Id.parse(key.getOriginalContext(), key.toString());
       assert key.equals(parsed);
-      assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT));
-      assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT));
-      assert INVOKER.equals(parsed.getComponent(INVOKER_COMPONENT));
-      assert parsed.getComponent(PORTLET_COMPONENT) == null;
-      assert parsed.getComponent(INSTANCE_COMPONENT) == null;
+      assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT_NAME));
+      assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT_NAME));
+      assert INVOKER.equals(parsed.getComponent(INVOKER_COMPONENT_NAME));
+      assert parsed.getComponent(PORTLET_COMPONENT_NAME) == null;
+      assert parsed.getComponent(INSTANCE_COMPONENT_NAME) == null;
    }
 
    @Test
    public void testRootComponent()
    {
       List<Component> components = new ArrayList<Component>(1);
-      components.add(new Component(CONTAINER_COMPONENT, Pattern.compile("container"), true));
+      components.add(new Component(CONTAINER_COMPONENT_NAME, Pattern.compile("container"), true));
 
       Id key = Id.create(new Context("-", components, true), CONTAINER);
       assert CONTAINER.equals(key.getRootComponent());
@@ -131,10 +115,10 @@ public class IdTestCase
       Id key = Id.create(context, CONTAINER, PORTAL, INVOKER, "category/portlet");
       Id parsed = Id.parse(key.getOriginalContext(), key.toString());
       assert key.equals(parsed);
-      assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT));
-      assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT));
-      assert INVOKER.equals(parsed.getComponent(INVOKER_COMPONENT));
-      assert "category/portlet".equals(parsed.getComponent(PORTLET_COMPONENT));
+      assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT_NAME));
+      assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT_NAME));
+      assert INVOKER.equals(parsed.getComponent(INVOKER_COMPONENT_NAME));
+      assert "category/portlet".equals(parsed.getComponent(PORTLET_COMPONENT_NAME));
    }
 
    @Test
@@ -192,14 +176,14 @@ public class IdTestCase
    public void testPortletIdsScenarios()
    {
       Id id = Id.create(context, "container", "portal");
-      assert "container".equals(id.getComponent(CONTAINER_COMPONENT));
-      assert "portal".equals(id.getComponent(PORTAL_COMPONENT));
+      assert "container".equals(id.getComponent(CONTAINER_COMPONENT_NAME));
+      assert "portal".equals(id.getComponent(PORTAL_COMPONENT_NAME));
       Assert.assertEquals(id.toString(context), "container=portal");
 
       try
       {
          Id.create(context, null);
-         Assert.fail("Should have failed as " + CONTAINER_COMPONENT + " is required");
+         Assert.fail("Should have failed as " + CONTAINER_COMPONENT_NAME + " is required");
       }
       catch (IllegalArgumentException e)
       {
@@ -209,7 +193,7 @@ public class IdTestCase
       try
       {
          Id.create(context, "foo");
-         Assert.fail("Should have failed as only 'container' is allowed as value for " + CONTAINER_COMPONENT);
+         Assert.fail("Should have failed as only 'container' is allowed as value for " + CONTAINER_COMPONENT_NAME);
       }
       catch (IllegalArgumentException e)
       {

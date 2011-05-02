@@ -31,9 +31,7 @@ import org.gatein.api.traits.Titled;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Page extends GateInObject, Titled
+public interface Page extends Node, Titled
 {
-   Portal getParent();
-
    Window getWindow(String windowName, boolean createIfInexistent);
 }

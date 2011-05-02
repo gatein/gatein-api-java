@@ -23,6 +23,7 @@
 
 package org.gatein.api;
 
+import org.gatein.api.id.Id;
 import org.gatein.api.traits.Named;
 
 import java.util.Comparator;

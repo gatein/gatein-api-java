@@ -24,13 +24,14 @@
 package org.gatein.api;
 
 import org.gatein.api.application.ApplicationRegistry;
+import org.gatein.api.navigation.Node;
 import org.gatein.api.navigation.Page;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Portal extends GateInObject
+public interface Portal extends Node
 {
    ApplicationRegistry getApplicationRegistry();
 

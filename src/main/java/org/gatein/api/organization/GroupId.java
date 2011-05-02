@@ -21,33 +21,18 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api;
+package org.gatein.api.organization;
 
-import java.util.Collection;
-import java.util.SortedMap;
+import org.gatein.api.id.Id;
 
 /**
- * Entry point to the API in absence of CDI injection.
- *
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public class GateIn
+public class GroupId
 {
-   private static SortedMap<String, PortalContainer> portalContainers;
-
-   public static PortalContainer getPortalContainer(String containerName)
-   {
-      return portalContainers.get(containerName);
-   }
-
-   public static Portal getPortal(String containerName, String portalName, boolean createIfInexistent)
+   public static Id get(String root, String... children)
    {
       return null;
-   }
-
-   public static Collection<PortalContainer> getPortalContainers()
-   {
-      return portalContainers.values();
    }
 }

@@ -23,6 +23,8 @@
 
 package org.gatein.api;
 
+import java.util.Collection;
+
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
@@ -30,4 +32,6 @@ package org.gatein.api;
 public interface PortalContainer extends GateInObject
 {
    Portal getPortal(String portalName, boolean createIfInexistent);
+
+   Collection<Portal> getPortals();
 }
