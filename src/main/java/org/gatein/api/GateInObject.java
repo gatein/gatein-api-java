@@ -42,5 +42,5 @@ public interface GateInObject extends Named
       }
    };
 
-   Id getId();
+   Id<? extends GateInObject> getId();
 }

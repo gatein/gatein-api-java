@@ -39,7 +39,7 @@ public interface User extends GateInObject
 
    boolean isMemberOf(Group group);
 
-   Group getGroup(Id groupId);
+   Group getGroup(Id<Group> groupId);
 
    List<Portal> getPortals();
 }

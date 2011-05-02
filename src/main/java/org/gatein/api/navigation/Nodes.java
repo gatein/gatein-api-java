@@ -25,6 +25,7 @@ package org.gatein.api.navigation;
 
 import org.gatein.api.Filter;
 import org.gatein.api.id.Id;
+import org.gatein.api.organization.Group;
 
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class Nodes
       return null;
    }
 
-   public static List<Node> forGroup(Id groupId)
+   public static List<Node> forGroup(Id<Group> groupId)
    {
       return get(new GroupNodeFilter(groupId));
    }
@@ -51,9 +52,9 @@ public class Nodes
 
    public static class GroupNodeFilter implements Filter<Node>
    {
-      private final Id group;
+      private final Id<Group> group;
 
-      public GroupNodeFilter(Id groupId)
+      public GroupNodeFilter(Id<Group> groupId)
       {
          this.group = groupId;
       }

@@ -23,10 +23,9 @@
 
 package org.gatein.api.navigation;
 
-import org.gatein.api.Filter;
+import org.gatein.api.id.Common;
 import org.gatein.api.id.Id;
-import org.gatein.api.organization.GroupId;
-import org.gatein.api.organization.UserId;
+import org.gatein.api.organization.Group;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -39,12 +38,12 @@ import java.util.List;
 public class NodesTestCase
 {
 
-   private Id groupId;
+   private Id<Group> groupId;
 
    @BeforeMethod
    protected void setUp() throws Exception
    {
-      groupId = GroupId.get("platform", "administrators");
+      groupId = Common.getGroupId("platform", "administrators");
    }
 
    @Test(enabled = false)

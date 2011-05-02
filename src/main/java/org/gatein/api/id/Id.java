@@ -23,6 +23,7 @@
 
 package org.gatein.api.id;
 
+import org.gatein.api.GateInObject;
 import org.gatein.api.ParameterValidation;
 
 import java.util.Arrays;
@@ -31,7 +32,7 @@ import java.util.Arrays;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public abstract class Id implements Comparable<Id>
+public abstract class Id<T extends GateInObject> implements Comparable<Id>
 {
    private final Context originalContext;
 
@@ -51,7 +52,7 @@ public abstract class Id implements Comparable<Id>
       return originalContext.toString(this);
    }
 
-   public static Id create(Context context, String rootComponent, String... additionalComponents)
+   public static <T extends GateInObject> Id<T> create(Context context, String rootComponent, String... additionalComponents)
    {
       ParameterValidation.throwIllegalArgExceptionIfNull(context, "Context");
       ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(rootComponent, "root component", null);
@@ -59,7 +60,7 @@ public abstract class Id implements Comparable<Id>
       return internalCreate(context, true, rootComponent, additionalComponents);
    }
 
-   private static Id internalCreate(Context context, final boolean revalidate, String rootComponent, String... additionalComponents)
+   private static <T extends GateInObject> Id<T> internalCreate(Context context, final boolean revalidate, String rootComponent, String... additionalComponents)
    {
       if (ParameterValidation.existsAndIsNotEmpty(additionalComponents))
       {
@@ -90,11 +91,11 @@ public abstract class Id implements Comparable<Id>
             context.validate(new String[]{rootComponent});
          }
 
-         return new SimpleId(context, rootComponent);
+         return new SimpleId<T>(context, rootComponent);
       }
    }
 
-   private static Id internalCreate(Context context, final boolean revalidate, String... components)
+   private static <T extends GateInObject> Id<T> internalCreate(Context context, final boolean revalidate, String... components)
    {
       if (ParameterValidation.existsAndIsNotEmpty(components))
       {
@@ -105,11 +106,11 @@ public abstract class Id implements Comparable<Id>
 
          if (components.length == 1)
          {
-            return new SimpleId(context, components[0]);
+            return new SimpleId<T>(context, components[0]);
          }
          else
          {
-            return new ComplexId(context, components);
+            return new ComplexId<T>(context, components);
          }
       }
       else
@@ -199,7 +200,7 @@ public abstract class Id implements Comparable<Id>
 
    public abstract String getRootComponent();
 
-   private static class SimpleId extends Id
+   private static class SimpleId<T extends GateInObject> extends Id<T>
    {
       private final String root;
 
@@ -248,7 +249,7 @@ public abstract class Id implements Comparable<Id>
       }
    }
 
-   private static class ComplexId extends Id
+   private static class ComplexId<T extends GateInObject> extends Id<T>
    {
       private final String[] components;
 

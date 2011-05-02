@@ -23,6 +23,7 @@
 
 package org.gatein.api;
 
+import org.gatein.api.id.Common;
 import org.gatein.api.id.Id;
 import org.gatein.api.navigation.Node;
 import org.gatein.api.navigation.Nodes;
@@ -30,10 +31,8 @@ import org.gatein.api.navigation.Page;
 import org.gatein.api.organization.Users;
 import org.gatein.api.navigation.Window;
 import org.gatein.api.organization.Group;
-import org.gatein.api.organization.GroupId;
 import org.gatein.api.organization.Groups;
 import org.gatein.api.organization.User;
-import org.gatein.api.organization.UserId;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -47,12 +46,12 @@ public class NavigationPortletTestCase
    @Test(enabled = false)
    public void shouldListGroupPages()
    {
-      Id id = UserId.get("root");
+      Id<User> id = Common.getUserId("root");
       User root = Users.get(id);
 
       List<Group> rootGroups = root.getGroups();
 
-      Id groupId = GroupId.get("platform", "administrators");
+      Id<Group> groupId = Common.getGroupId("platform", "administrators");
       final Group adminGroup = root.getGroup(groupId);
       assert rootGroups.contains(adminGroup);
 
@@ -73,17 +72,17 @@ public class NavigationPortletTestCase
       assert wsrpWindow.equals(Nodes.get(wsrpWindow.getId()));
 
 
-      Group executiveGroup = Groups.get(GroupId.get("organization", "management", "executive-board"));
+      Group executiveGroup = Groups.get(Common.getGroupId("organization", "management", "executive-board"));
       assert rootGroups.contains(executiveGroup);
 
-      Group userGroup = Groups.get(GroupId.get("platform", "users"));
+      Group userGroup = Groups.get(Common.getGroupId("platform", "users"));
       assert rootGroups.contains(userGroup);
    }
 
    @Test(enabled = false)
    public void shouldListSitePages()
    {
-      Id id = UserId.get("root");
+      Id<User> id = Common.getUserId("root");
       User root = Users.get(id);
 
       List<Portal> portals = root.getPortals();

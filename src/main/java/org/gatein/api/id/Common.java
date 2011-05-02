@@ -23,7 +23,11 @@
 
 package org.gatein.api.id;
 
+import org.gatein.api.organization.Group;
+import org.gatein.api.organization.User;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -52,4 +56,20 @@ public class Common
    }
 
    public static final Context PORTLET = new Context("=", components, true);
+
+   private static final Pattern USER_NAME_PATTERN = Pattern.compile(".*"); // todo
+   public final static Context USER = new Context(null, Collections.singletonList(new Component("userName", USER_NAME_PATTERN, true)), true);
+
+   public static Id<User> getUserId(String userId)
+   {
+      return Id.create(USER, userId);
+   }
+
+   private static final Pattern GROUP_PATTERN = Pattern.compile(".*"); // todo
+   public final static Context GROUP = new Context(null, Collections.singletonList(new Component("userName", GROUP_PATTERN, true)), true); // todo: need concept of unbounded hierarchical context
+
+   public static Id<Group> getGroupId(String root, String... children)
+   {
+      return Id.create(GROUP, root, children);
+   }
 }

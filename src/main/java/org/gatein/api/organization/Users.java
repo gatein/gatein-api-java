@@ -24,7 +24,6 @@
 package org.gatein.api.organization;
 
 import org.gatein.api.id.Id;
-import org.gatein.api.organization.User;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -32,7 +31,7 @@ import org.gatein.api.organization.User;
  */
 public class Users
 {
-   public static User get(Id userId)
+   public static User get(Id<User> userId)
    {
       return null;
    }
