@@ -35,6 +35,8 @@ import org.gatein.api.organization.Groups;
 import org.gatein.api.organization.User;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -83,12 +85,22 @@ public class NavigationPortletTestCase
    public void shouldListSitePages()
    {
       Id<User> id = Common.getUserId("root");
-      User root = Users.get(id);
+      final User root = Users.get(id);
 
       List<Portal> portals = root.getPortals();
-      for (Portal portal : portals)
+      Collection<PortalContainer> containers = GateIn.getPortalContainers();
+      List<Portal> fromContainers = new ArrayList<Portal>();
+      for (PortalContainer container : containers)
       {
-         List<Node> nodes = portal.getChildren();
+         Collection<Portal> userPortals = container.get(new Filter<Portal>()
+         {
+            public boolean accept(Portal item)
+            {
+               return item.accessAllowedFrom(root, "read");
+            }
+         });
+         fromContainers.addAll(userPortals);
       }
+      assert portals.equals(fromContainers);
    }
 }
