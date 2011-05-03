@@ -24,11 +24,14 @@
 package org.gatein.api.id;
 
 
+import org.gatein.api.GateInObject;
 import org.gatein.api.ParameterValidation;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -42,15 +45,9 @@ public class Context
    private final String knownComponents;
    private final String requiredComponents;
    private final String defaultSeparator;
-
-   public boolean isIgnoringRemainingAfterFirstMissingOptional()
-   {
-      return ignoreRemainingAfterFirstMissingOptional;
-   }
-
    private final boolean ignoreRemainingAfterFirstMissingOptional;
 
-   public Context(String defaultSeparator, List<Component> componentList, boolean ignoreRemainingAfterFirstMissingOptional)
+   public Context(String defaultSeparator, List<Component<? extends GateInObject>> componentList, boolean ignoreRemainingAfterFirstMissingOptional)
    {
       ParameterValidation.throwIllegalArgExceptionIfNull(componentList, "Component list");
 
@@ -238,6 +235,56 @@ public class Context
       {
          this.index = index;
          this.component = component;
+      }
+   }
+
+   public static class ContextBuilder
+   {
+      private final String name;
+      private boolean unboundedHierarchical;
+      private List<Component<? extends GateInObject>> components = new ArrayList<Component<? extends GateInObject>>(7);
+      private String defaultSeparator;
+      private boolean ignoreRemainingAfterFirstMissingOptional;
+
+      public ContextBuilder(String name)
+      {
+         this.name = name;
+      }
+
+      public <T extends GateInObject> ContextBuilder requiredComponent(String name, Class<T> componentType, Pattern validationPattern)
+      {
+         components.add(new Component<T>(name, validationPattern, true, componentType));
+         return this;
+      }
+
+      public <T extends GateInObject> ContextBuilder optionalComponent(String name, Class<T> componentType, Pattern validationPattern)
+      {
+         components.add(new Component<T>(name, validationPattern, false, componentType));
+         return this;
+      }
+
+      public <T extends GateInObject> ContextBuilder unboundedHierarchicalComponent(String firstComponentName, Class<T> componentType, Pattern validationPattern)
+      {
+         this.unboundedHierarchical = true;
+         // todo: need hierarchical component concept
+         return this;
+      }
+
+      public ContextBuilder withDefaultSeparator(String defaultSeparator)
+      {
+         this.defaultSeparator = defaultSeparator;
+         return this;
+      }
+
+      public ContextBuilder ignoreRemainingAfterFirstMissingOptional()
+      {
+         this.ignoreRemainingAfterFirstMissingOptional = true;
+         return this;
+      }
+
+      public Context createContext()
+      {
+         return new Context(defaultSeparator, components, ignoreRemainingAfterFirstMissingOptional);
       }
    }
 }

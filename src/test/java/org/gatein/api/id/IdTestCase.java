@@ -23,6 +23,8 @@
 
 package org.gatein.api.id;
 
+import org.gatein.api.GateInObject;
+import org.gatein.api.PortalContainer;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -99,10 +101,7 @@ public class IdTestCase
    @Test
    public void testRootComponent()
    {
-      List<Component> components = new ArrayList<Component>(1);
-      components.add(new Component(CONTAINER_COMPONENT_NAME, Pattern.compile("container"), true));
-
-      Id key = Id.create(new Context("-", components, true), CONTAINER);
+      Id key = Id.create(new Context.ContextBuilder("container").withDefaultSeparator("-").requiredComponent(CONTAINER_COMPONENT_NAME, PortalContainer.class, Pattern.compile("container")).createContext(), CONTAINER);
       assert CONTAINER.equals(key.getRootComponent());
 
       key = Id.create(context, CONTAINER, PORTAL, INVOKER, PORTLET, INSTANCE);
@@ -162,7 +161,7 @@ public class IdTestCase
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void anIdShouldAlwaysHaveARoot()
    {
-      Id.create(new Context("-", Collections.<Component>emptyList(), false), null);
+      Id.create(new Context.ContextBuilder("foo").withDefaultSeparator("-").requiredComponent("foo", GateInObject.class, Pattern.compile(".*")).createContext(), null);
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)

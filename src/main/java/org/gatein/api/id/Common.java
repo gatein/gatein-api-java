@@ -23,6 +23,10 @@
 
 package org.gatein.api.id;
 
+import org.gatein.api.GateIn;
+import org.gatein.api.GateInObject;
+import org.gatein.api.Portal;
+import org.gatein.api.PortalContainer;
 import org.gatein.api.organization.Group;
 import org.gatein.api.organization.User;
 
@@ -32,6 +36,10 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
+ * todo: need appropriate classes to represent PortletInvoker, Portlet and Instances
+ * todo: need appropriate validation patterns
+ * todo: need concept of unbounded hierarchical context
+ *
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
@@ -43,30 +51,25 @@ public class Common
    public static final String PORTLET_COMPONENT_NAME = "portletComponent";
    public static final String INSTANCE_COMPONENT_NAME = "instanceComponent";
 
-   private static List<Component> components;
+   public static final Context PORTLET = new Context.ContextBuilder("portlet").withDefaultSeparator("=")
+      .requiredComponent(CONTAINER_COMPONENT_NAME, PortalContainer.class, Pattern.compile("container"))
+      .requiredComponent(PORTAL_COMPONENT_NAME, Portal.class, Pattern.compile("portal"))
+      .optionalComponent(INVOKER_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*"))
+      .optionalComponent(PORTLET_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*"))
+      .optionalComponent(INSTANCE_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*Instance$"))
+      .ignoreRemainingAfterFirstMissingOptional().createContext();
 
-   static
-   {
-      components = new ArrayList<Component>(5);
-      components.add(new Component(CONTAINER_COMPONENT_NAME, Pattern.compile("container"), true));
-      components.add(new Component(PORTAL_COMPONENT_NAME, Pattern.compile("portal"), true));
-      components.add(new Component(INVOKER_COMPONENT_NAME, Pattern.compile(".*"), false));
-      components.add(new Component(PORTLET_COMPONENT_NAME, Pattern.compile(".*"), false));
-      components.add(new Component(INSTANCE_COMPONENT_NAME, Pattern.compile(".*Instance$"), false));
-   }
-
-   public static final Context PORTLET = new Context("=", components, true);
-
-   private static final Pattern USER_NAME_PATTERN = Pattern.compile(".*"); // todo
-   public final static Context USER = new Context(null, Collections.singletonList(new Component("userName", USER_NAME_PATTERN, true)), true);
+   private static final Pattern USER_NAME_PATTERN = Pattern.compile(".*");
+   private static final String USER_COMPONENT_NAME = "userName";
+   public final static Context USER = new Context.ContextBuilder("userName").requiredComponent(USER_COMPONENT_NAME, User.class, USER_NAME_PATTERN).createContext();
 
    public static Id<User> getUserId(String userId)
    {
       return Id.create(USER, userId);
    }
 
-   private static final Pattern GROUP_PATTERN = Pattern.compile(".*"); // todo
-   public final static Context GROUP = new Context(null, Collections.singletonList(new Component("userName", GROUP_PATTERN, true)), true); // todo: need concept of unbounded hierarchical context
+   private static final Pattern GROUP_PATTERN = Pattern.compile(".*");
+   public final static Context GROUP = new Context.ContextBuilder("group").withDefaultSeparator("/").unboundedHierarchicalComponent("root", Group.class, GROUP_PATTERN).createContext();
 
    public static Id<Group> getGroupId(String root, String... children)
    {

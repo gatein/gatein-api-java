@@ -32,21 +32,24 @@ import java.util.regex.Pattern;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public class Component
+public class Component<T>
 {
    private final String name;
    private final Matcher matcher;
    private final String validationPattern;
    private final boolean required;
+   private final Class<T> identifiedComponentClass;
 
-   public Component(String name, Pattern validationPattern, boolean required)
+   public Component(String name, Pattern validationPattern, boolean required, Class<T> identifiedComponentClass)
    {
       ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(name, "Component name", null);
       ParameterValidation.throwIllegalArgExceptionIfNull(validationPattern, "Validation pattern");
+      ParameterValidation.throwIllegalArgExceptionIfNull(identifiedComponentClass, "Class of the objects identified by this component");
       this.name = name;
       matcher = validationPattern.matcher("");
       this.validationPattern = validationPattern.toString();
       this.required = required;
+      this.identifiedComponentClass = identifiedComponentClass;
    }
 
    public String getName()
