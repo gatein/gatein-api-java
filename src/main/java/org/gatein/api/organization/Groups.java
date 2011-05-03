@@ -33,12 +33,12 @@ import java.util.List;
  */
 public class Groups
 {
-   public static List<Group> getForUser(Id userId)
+   public static List<Group> getForUser(Id<User> userId)
    {
       return null;
    }
 
-   public static Group get(Id groupId)
+   public static Group get(Id<Group> groupId)
    {
       return null;
    }
