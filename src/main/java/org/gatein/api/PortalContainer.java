@@ -34,4 +34,6 @@ public interface PortalContainer extends GateInObject
    Portal getPortal(String portalName, boolean createIfInexistent);
 
    Collection<Portal> getPortals();
+
+   Collection<Portal> get(Filter<Portal> filter);
 }
