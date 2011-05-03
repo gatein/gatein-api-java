@@ -26,6 +26,7 @@ package org.gatein.api.navigation;
 import org.gatein.api.GateInObject;
 import org.gatein.api.id.Id;
 import org.gatein.api.organization.Group;
+import org.gatein.api.organization.User;
 
 import java.util.List;
 
@@ -40,6 +41,8 @@ public interface Node extends GateInObject
    Node getParent();
 
    boolean accessAllowedFrom(Group group, String operation);
+
+   boolean accessAllowedFrom(User user, String operation);
 
    boolean hasOwner(Id ownerId);
 }
