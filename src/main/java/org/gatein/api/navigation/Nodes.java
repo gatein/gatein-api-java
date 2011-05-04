@@ -24,9 +24,13 @@
 package org.gatein.api.navigation;
 
 import org.gatein.api.Filter;
+import org.gatein.api.Portal;
 import org.gatein.api.id.Id;
 import org.gatein.api.organization.Group;
+import org.gatein.api.organization.User;
+import org.gatein.api.traits.Titled;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -35,9 +39,20 @@ import java.util.List;
  */
 public class Nodes
 {
-   public static List<Node> get(Filter<Node> filter)
+   public static <T extends Node> List<T> get(Filter<T> filter)
    {
       return null;
+   }
+
+   public static <T extends Node> T getSingleOrFail(Filter<T> filter)
+   {
+      List<T> nodes = get(filter);
+      if (nodes.size() != 1)
+      {
+         throw new IllegalStateException("Excepted filtered output to only return one result. Got " + nodes.size());
+      }
+
+      return nodes.get(0);
    }
 
    public static List<Node> forGroup(Id<Group> groupId)
@@ -50,7 +65,12 @@ public class Nodes
       return null;
    }
 
-   public static class GroupNodeFilter implements Filter<Node>
+   public static <T extends Node> Collection<T> getForUser(Id<User> userId, Class<T> nodeClass)
+   {
+      return null;
+   }
+
+   public static class GroupNodeFilter extends Filter<Node>
    {
       private final Id<Group> group;
 

@@ -21,19 +21,12 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api;
-
-import org.gatein.api.application.ApplicationRegistry;
-import org.gatein.api.navigation.Node;
-import org.gatein.api.navigation.Page;
+package org.gatein.api.navigation;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Portal extends Node<Portal>
+public interface Dashboard extends Node<Dashboard>
 {
-   ApplicationRegistry getApplicationRegistry();
-
-   Page getPage(String pageName, boolean createIfInexistent);
 }

@@ -33,7 +33,7 @@ import org.gatein.api.traits.Titled;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Window extends GateInObject, HasProperties, Titled
+public interface Window extends GateInObject<Window>, HasProperties, Titled
 {
    static final PropertyInfo<Boolean> SHOW_INFO_BAR = PropertyInfo.createPropertyInfo("show-info-bar", Boolean.class);
 

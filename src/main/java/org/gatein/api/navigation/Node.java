@@ -23,9 +23,12 @@
 
 package org.gatein.api.navigation;
 
+import org.gatein.api.Filter;
 import org.gatein.api.GateInObject;
+import org.gatein.api.Portal;
 import org.gatein.api.id.Id;
 import org.gatein.api.organization.Group;
+import org.gatein.api.organization.Operation;
 import org.gatein.api.organization.User;
 
 import java.util.List;
@@ -34,15 +37,17 @@ import java.util.List;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Node extends GateInObject
+public interface Node<T extends Node<T>> extends GateInObject<T>
 {
    List<Node> getChildren();
 
+   List<Node> getChildren(Filter<Node> filter);
+
    Node getParent();
 
-   boolean accessAllowedFrom(Group group, String operation);
+   boolean accessAllowedFrom(Group group, Operation operation);
 
-   boolean accessAllowedFrom(User user, String operation);
+   boolean accessAllowedFrom(User user, Operation operation);
 
    boolean hasOwner(Id ownerId);
 }

@@ -32,7 +32,7 @@ import java.util.Comparator;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface GateInObject extends Named
+public interface GateInObject<T extends GateInObject<T>> extends Named
 {
    Comparator<? extends GateInObject> SORT_BY_ID = new Comparator<GateInObject>()
    {
@@ -42,5 +42,5 @@ public interface GateInObject extends Named
       }
    };
 
-   Id<? extends GateInObject> getId();
+   Id<T> getId();
 }

@@ -30,7 +30,7 @@ import org.gatein.api.traits.Described;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Category extends GateInObject, Described
+public interface Category extends GateInObject<Category>, Described
 {
    Application getApplication(String applicationName);
 

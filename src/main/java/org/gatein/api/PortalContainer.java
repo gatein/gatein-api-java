@@ -29,7 +29,7 @@ import java.util.Collection;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface PortalContainer extends GateInObject
+public interface PortalContainer extends GateInObject<PortalContainer>
 {
    Portal getPortal(String portalName, boolean createIfInexistent);
 

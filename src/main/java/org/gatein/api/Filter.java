@@ -23,13 +23,22 @@
 
 package org.gatein.api;
 
+import java.lang.reflect.ParameterizedType;
+
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Filter<T>
+public abstract class Filter<T>
 {
-   static final Filter ALL = new Filter()
+   private final Class<T> valueType;
+
+   protected Filter()
+   {
+      valueType = (Class<T>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+   }
+
+   public static final Filter ALL = new Filter()
    {
       public boolean accept(Object item)
       {
@@ -37,5 +46,10 @@ public interface Filter<T>
       }
    };
 
-   boolean accept(T item);
+   public abstract boolean accept(T item);
+
+   public Class<T> getValueType()
+   {
+      return valueType;
+   }
 }

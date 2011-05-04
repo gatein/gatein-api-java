@@ -32,7 +32,7 @@ import java.util.Comparator;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Application extends GateInObject, Described
+public interface Application extends GateInObject<Application>, Described
 {
    Comparator<Application> SORT_BY_NAME = new Comparator<Application>()
    {

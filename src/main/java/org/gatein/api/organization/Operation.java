@@ -21,19 +21,57 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api;
+package org.gatein.api.organization;
 
-import org.gatein.api.application.ApplicationRegistry;
-import org.gatein.api.navigation.Node;
-import org.gatein.api.navigation.Page;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Portal extends Node<Portal>
+public class Operation
 {
-   ApplicationRegistry getApplicationRegistry();
+   private final String name;
 
-   Page getPage(String pageName, boolean createIfInexistent);
+   // known operations
+   private final static Map<String, Operation> OPERATIONS = new HashMap<String, Operation>();
+   public static final Operation CREATE = new Operation("CREATE");
+   public static final Operation READ = new Operation("READ");
+   public static final Operation UPDATE = new Operation("UPDATE");
+   public static final Operation DELETE = new Operation("DELETE");
+
+   private Operation(String name)
+   {
+      this.name = name;
+      OPERATIONS.put(name, this);
+   }
+
+   @Override
+   public boolean equals(Object o)
+   {
+      if (this == o)
+      {
+         return true;
+      }
+      if (o == null || getClass() != o.getClass())
+      {
+         return false;
+      }
+
+      Operation operation = (Operation)o;
+
+      if (name != null ? !name.equals(operation.name) : operation.name != null)
+      {
+         return false;
+      }
+
+      return true;
+   }
+
+   @Override
+   public int hashCode()
+   {
+      return name != null ? name.hashCode() : 0;
+   }
 }

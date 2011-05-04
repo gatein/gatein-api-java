@@ -23,11 +23,14 @@
 
 package org.gatein.api;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.NodeType;
 import org.gatein.api.id.Common;
 import org.gatein.api.id.Id;
+import org.gatein.api.navigation.Dashboard;
 import org.gatein.api.navigation.Node;
 import org.gatein.api.navigation.Nodes;
 import org.gatein.api.navigation.Page;
+import org.gatein.api.organization.Operation;
 import org.gatein.api.organization.Users;
 import org.gatein.api.navigation.Window;
 import org.gatein.api.organization.Group;
@@ -87,7 +90,10 @@ public class NavigationPortletTestCase
       Id<User> id = Common.getUserId("root");
       final User root = Users.get(id);
 
+      // from user
       List<Portal> portals = root.getPortals();
+
+      // from container
       Collection<PortalContainer> containers = GateIn.getPortalContainers();
       List<Portal> fromContainers = new ArrayList<Portal>();
       for (PortalContainer container : containers)
@@ -96,11 +102,51 @@ public class NavigationPortletTestCase
          {
             public boolean accept(Portal item)
             {
-               return item.accessAllowedFrom(root, "read");
+               return item.accessAllowedFrom(root, Operation.READ);
             }
          });
          fromContainers.addAll(userPortals);
       }
       assert portals.equals(fromContainers);
+
+      // from Nodes
+      Collection<Portal> fromNodes = Nodes.getForUser(root.getId(), Portal.class);
+      assert portals.equals(fromNodes);
+
+      for (Portal portal : portals)
+      {
+         List<Node> children = portal.getChildren(new Filter<Node>()
+         {
+            public boolean accept(Node item)
+            {
+               return item.accessAllowedFrom(root, Operation.READ);
+            }
+         });
+         // then display
+      }
+   }
+
+   @Test(enabled = false)
+   public void shouldListDashboardPages()
+   {
+      Id<User> id = Common.getUserId("root");
+      final User root = Users.get(id);
+
+      Filter<Dashboard> filter = new Filter<Dashboard>()
+      {
+         public boolean accept(Dashboard item)
+         {
+            return item.accessAllowedFrom(root, Operation.READ);
+         }
+      };
+      List<Dashboard> nodes = Nodes.get(filter);
+      assert 1 == nodes.size();
+      Dashboard dashboard = Nodes.getSingleOrFail(filter);
+      assert dashboard.equals(nodes.get(0));
+
+      // from Nodes
+      Collection<Dashboard> fromNodes = Nodes.getForUser(root.getId(), Dashboard.class);
+      assert nodes.equals(fromNodes);
+      assert dashboard.equals(fromNodes.iterator().next());
    }
 }

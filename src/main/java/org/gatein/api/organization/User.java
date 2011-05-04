@@ -33,7 +33,7 @@ import java.util.List;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface User extends GateInObject
+public interface User extends GateInObject<User>
 {
    List<Group> getGroups();
 

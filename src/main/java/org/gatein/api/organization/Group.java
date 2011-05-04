@@ -30,7 +30,7 @@ import org.gatein.api.id.Id;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Group extends GateInObject
+public interface Group extends GateInObject<Group>
 {
    boolean hasMember(User user);
 }
