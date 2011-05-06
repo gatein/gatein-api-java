@@ -43,15 +43,15 @@ public class ContextTestCase
 
       assert 0 == context.getIndexFor("component");
       assert context.isComponentRequired("component");
-      context.validate(new String[]{"foo"});
+      context.validate("foo");
    }
 
    @Test
    public void testPortletCase()
    {
-      Common.PORTLET.validate(new String[]{"container", "portal"});
-      Common.PORTLET.validate(new String[]{"container", "portal", "foo"});
-      Common.PORTLET.validate(new String[]{"container", "portal", "foo", "bar"});
-      Common.PORTLET.validate(new String[]{"container", "portal", "foo", "bar", "barInstance"});
+      Common.PORTLET.validate("container", "portal");
+      Common.PORTLET.validate("container", "portal", "foo");
+      Common.PORTLET.validate("container", "portal", "foo", "bar");
+      Common.PORTLET.validate("container", "portal", "foo", "bar", "barInstance");
    }
 }

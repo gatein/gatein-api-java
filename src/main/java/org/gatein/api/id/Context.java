@@ -177,7 +177,7 @@ public class Context
       return sb.toString();
    }
 
-   void validate(String[] componentValues)
+   void validate(String... componentValues)
    {
       int componentNumber = namesToComponents.size();
       if (componentValues.length < requiredCardinality)
