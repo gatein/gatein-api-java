@@ -60,7 +60,7 @@ public class ContextTestCase
    }
 
    @Test
-   public void testHierarchicalContext()
+   public void simpleHierarchicalContextShouldWork()
    {
       final Context context = new Context.ContextBuilder("hierarchical").withDefaultSeparator("/")
          .requiredComponent("foo", GateInObject.class, Pattern.compile(".*foo$"))
