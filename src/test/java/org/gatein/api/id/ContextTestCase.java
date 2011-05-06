@@ -26,8 +26,6 @@ package org.gatein.api.id;
 import org.gatein.api.GateInObject;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -71,6 +69,7 @@ public class ContextTestCase
       assert context.isComponentUnboundedHierarchical("bar");
       assert context.isComponentRequired("bar");
       context.validate("foo", "bar");
+      context.validate("foo", "bar", "bar");
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)

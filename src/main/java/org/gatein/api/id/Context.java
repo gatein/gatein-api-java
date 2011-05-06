@@ -46,8 +46,9 @@ public class Context
    private final String requiredComponents;
    private final String defaultSeparator;
    private final boolean ignoreRemainingAfterFirstMissingOptional;
+   private boolean hasHierarchicalComponents;
 
-   public Context(String defaultSeparator, List<Component<? extends GateInObject>> componentList, boolean ignoreRemainingAfterFirstMissingOptional)
+   private Context(String defaultSeparator, List<Component<? extends GateInObject>> componentList, boolean ignoreRemainingAfterFirstMissingOptional)
    {
       ParameterValidation.throwIllegalArgExceptionIfNull(componentList, "Component list");
 
@@ -66,6 +67,11 @@ public class Context
          if (component.isRequired())
          {
             required++;
+         }
+
+         if(!hasHierarchicalComponents && component.isHierarchical())
+         {
+            hasHierarchicalComponents = true;
          }
 
          String name = component.getName();
@@ -180,7 +186,7 @@ public class Context
    void validate(String... componentValues)
    {
       int componentNumber = namesToComponents.size();
-      if (componentValues.length < requiredCardinality || componentValues.length > componentNumber)
+      if (componentValues.length < requiredCardinality || (!hasHierarchicalComponents && componentValues.length > componentNumber))
       {
          throw new IllegalArgumentException("Wrong number of components: " + componentValues.length
             + ". Was expecting at most " + componentNumber + " values for components: "
