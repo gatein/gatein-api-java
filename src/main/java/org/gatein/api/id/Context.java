@@ -180,11 +180,11 @@ public class Context
    void validate(String... componentValues)
    {
       int componentNumber = namesToComponents.size();
-      if (componentValues.length < requiredCardinality)
+      if (componentValues.length < requiredCardinality || componentValues.length > componentNumber)
       {
          throw new IllegalArgumentException("Wrong number of components: " + componentValues.length
             + ". Was expecting at most " + componentNumber + " values for components: "
-            + knownComponents + "; among which " + requiredComponents + " are required.");
+            + knownComponents + "; among which '" + requiredComponents + "' are required. Got: " + Arrays.toString(componentValues));
       }
 
       boolean error = false;

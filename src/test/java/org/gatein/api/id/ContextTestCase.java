@@ -46,6 +46,12 @@ public class ContextTestCase
       context.validate("foo");
    }
 
+   @Test(expectedExceptions = IllegalArgumentException.class)
+   public void testExtraComponents()
+   {
+      Common.PORTLET.validate("container", "portal", "foo", "bar", "barInstance", "unknown");
+   }
+
    @Test
    public void testPortletCase()
    {
