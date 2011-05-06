@@ -263,7 +263,7 @@ public class Context
          return this;
       }
 
-      public <T extends GateInObject> ContextBuilder unboundedHierarchicalComponent(String firstComponentName, Class<T> componentType, Pattern validationPattern)
+      public <T extends GateInObject> ContextBuilder requiredUnboundedHierarchicalComponent(String firstComponentName, Class<T> componentType, Pattern validationPattern)
       {
          this.unboundedHierarchical = true;
          // todo: need hierarchical component concept

@@ -23,16 +23,12 @@
 
 package org.gatein.api.id;
 
-import org.gatein.api.GateIn;
 import org.gatein.api.GateInObject;
 import org.gatein.api.Portal;
 import org.gatein.api.PortalContainer;
 import org.gatein.api.organization.Group;
 import org.gatein.api.organization.User;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -69,7 +65,7 @@ public class Common
    }
 
    private static final Pattern GROUP_PATTERN = Pattern.compile(".*");
-   public final static Context GROUP = new Context.ContextBuilder("group").withDefaultSeparator("/").unboundedHierarchicalComponent("root", Group.class, GROUP_PATTERN).createContext();
+   public final static Context GROUP = new Context.ContextBuilder("group").withDefaultSeparator("/").requiredUnboundedHierarchicalComponent("root", Group.class, GROUP_PATTERN).createContext();
 
    public static Id<Group> getGroupId(String root, String... children)
    {
