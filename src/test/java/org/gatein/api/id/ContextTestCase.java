@@ -60,4 +60,26 @@ public class ContextTestCase
       Common.PORTLET.validate("container", "portal", "foo", "bar");
       Common.PORTLET.validate("container", "portal", "foo", "bar", "barInstance");
    }
+
+   @Test
+   public void testHierarchicalContext()
+   {
+      final Context context = new Context.ContextBuilder("hierarchical").withDefaultSeparator("/")
+         .requiredComponent("foo", GateInObject.class, Pattern.compile(".*foo$"))
+         .requiredUnboundedHierarchicalComponent("bar", GateInObject.class, Pattern.compile("^bar.*"))
+         .createContext();
+      assert context.isComponentUnboundedHierarchical("bar");
+      assert context.isComponentRequired("bar");
+      context.validate("foo", "bar");
+   }
+
+   @Test(expectedExceptions = IllegalArgumentException.class)
+   public void missingRequiredHierarchicalShouldBeDetected()
+   {
+      final Context context = new Context.ContextBuilder("hierarchical").withDefaultSeparator("/")
+         .requiredComponent("foo", GateInObject.class, Pattern.compile(".*foo$"))
+         .requiredUnboundedHierarchicalComponent("bar", GateInObject.class, Pattern.compile("^bar.*"))
+         .createContext();
+      context.validate("foo");
+   }
 }

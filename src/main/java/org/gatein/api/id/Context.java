@@ -226,6 +226,11 @@ public class Context
       return getComponentOrFail(component).component.isRequired();
    }
 
+   public boolean isComponentUnboundedHierarchical(String component)
+   {
+      return getComponentOrFail(component).component.isHierarchical();
+   }
+
    private static class ComponentIndex
    {
       private final int index;
@@ -241,7 +246,6 @@ public class Context
    public static class ContextBuilder
    {
       private final String name;
-      private boolean unboundedHierarchical;
       private List<Component<? extends GateInObject>> components = new ArrayList<Component<? extends GateInObject>>(7);
       private String defaultSeparator;
       private boolean ignoreRemainingAfterFirstMissingOptional;
@@ -265,8 +269,7 @@ public class Context
 
       public <T extends GateInObject> ContextBuilder requiredUnboundedHierarchicalComponent(String firstComponentName, Class<T> componentType, Pattern validationPattern)
       {
-         this.unboundedHierarchical = true;
-         // todo: need hierarchical component concept
+         components.add(new Component<T>(firstComponentName, componentType, validationPattern, true, true));
          return this;
       }
 
