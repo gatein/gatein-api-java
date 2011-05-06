@@ -37,30 +37,42 @@ public class ComponentTestCase
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void aComponentShouldHaveANonNullName()
    {
-      new Component<GateInObject>(null, null, true, GateInObject.class);
+      new Component<GateInObject>(null, GateInObject.class, null, true, false);
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void aComponentShouldHaveANonEmptyName()
    {
-      new Component<GateInObject>("", null, true, GateInObject.class);
+      new Component<GateInObject>("", GateInObject.class, null, true, false);
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void aComponentShouldHaveAValidationPattern()
    {
-      new Component<GateInObject>("name", null, true, GateInObject.class);
+      new Component<GateInObject>("name", GateInObject.class, null, true, false);
    }
 
    @Test
    public void isRequiredShouldWork()
    {
-      Component foo = new Component<GateInObject>("foo", Pattern.compile(".*"), true, GateInObject.class);
+      Component foo = new Component<GateInObject>("foo", GateInObject.class, Pattern.compile(".*"), true, false);
 
       assert "foo".equals(foo.getName());
       assert foo.isRequired();
 
-      foo = new Component<GateInObject>("foo", Pattern.compile(".*"), false, GateInObject.class);
+      foo = new Component<GateInObject>("foo", GateInObject.class, Pattern.compile(".*"), false, false);
       assert !foo.isRequired();
+   }
+
+   @Test
+   public void isHierarchicalShouldWork()
+   {
+      Component foo = new Component<GateInObject>("foo", GateInObject.class, Pattern.compile(".*"), true, true);
+
+      assert "foo".equals(foo.getName());
+      assert foo.isHierarchical();
+
+      foo = new Component<GateInObject>("foo", GateInObject.class, Pattern.compile(".*"), false, false);
+      assert !foo.isHierarchical();
    }
 }

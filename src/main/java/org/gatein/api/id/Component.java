@@ -38,9 +38,10 @@ public class Component<T>
    private final Matcher matcher;
    private final String validationPattern;
    private final boolean required;
+   private final boolean hierarchical;
    private final Class<T> identifiedComponentClass;
 
-   public Component(String name, Pattern validationPattern, boolean required, Class<T> identifiedComponentClass)
+   public Component(String name, Class<T> identifiedComponentClass, Pattern validationPattern, boolean required, boolean hierarchical)
    {
       ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(name, "Component name", null);
       ParameterValidation.throwIllegalArgExceptionIfNull(validationPattern, "Validation pattern");
@@ -50,6 +51,7 @@ public class Component<T>
       this.validationPattern = validationPattern.toString();
       this.required = required;
       this.identifiedComponentClass = identifiedComponentClass;
+      this.hierarchical = hierarchical;
    }
 
    public String getName()
@@ -79,5 +81,10 @@ public class Component<T>
    public boolean isRequired()
    {
       return required;
+   }
+
+   public boolean isHierarchical()
+   {
+      return hierarchical;
    }
 }

@@ -253,13 +253,13 @@ public class Context
 
       public <T extends GateInObject> ContextBuilder requiredComponent(String name, Class<T> componentType, Pattern validationPattern)
       {
-         components.add(new Component<T>(name, validationPattern, true, componentType));
+         components.add(new Component<T>(name, componentType, validationPattern, true, false));
          return this;
       }
 
       public <T extends GateInObject> ContextBuilder optionalComponent(String name, Class<T> componentType, Pattern validationPattern)
       {
-         components.add(new Component<T>(name, validationPattern, false, componentType));
+         components.add(new Component<T>(name, componentType, validationPattern, false, false));
          return this;
       }
 
