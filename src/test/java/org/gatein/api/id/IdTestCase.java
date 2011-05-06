@@ -25,6 +25,7 @@ package org.gatein.api.id;
 
 import org.gatein.api.GateInObject;
 import org.gatein.api.PortalContainer;
+import org.gatein.api.organization.Group;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -96,6 +97,13 @@ public class IdTestCase
       assert INVOKER.equals(parsed.getComponent(INVOKER_COMPONENT_NAME));
       assert parsed.getComponent(PORTLET_COMPONENT_NAME) == null;
       assert parsed.getComponent(INSTANCE_COMPONENT_NAME) == null;
+   }
+
+   @Test
+   public void testRoundtripParsingWithHierarchicalComponents()
+   {
+      final Id<Group> id = Common.getGroupId("root", "1", "2", "3", "4");
+      assert id.equals(Id.parse(id.getOriginalContext(), id.toString()));
    }
 
    @Test

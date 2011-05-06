@@ -153,33 +153,25 @@ public class Context
 
       StringBuilder sb = new StringBuilder(111);
       int componentNumber = id.getComponentNumber();
-      for (ComponentIndex componentIndex : namesToComponents.values())
+
+      final String[] components = id.getComponents();
+
+      // validate that the components for the specified Id are valid for this context
+      validate(components);
+
+      int index = 0;
+      for (String component : components)
       {
-         String name = componentIndex.component.getName();
-         int index = componentIndex.index;
+         sb.append(component);
 
-         String value = id.getComponent(index, name, this);
-         if (value != null)
-         {
-            sb.append(value);
-         }
-         else
-         {
-            if (componentIndex.component.isRequired())
-            {
-               throw new IllegalArgumentException("Missing value for required component '" + name + "'");
-            }
-            else if (ignoreRemainingAfterFirstMissingOptional)
-            {
-               break;
-            }
-         }
-
-         if (index < componentNumber - 1 && index < namesToComponents.size())
+         if (index < componentNumber - 1)
          {
             sb.append(defaultSeparator);
          }
+
+         index++;
       }
+
       return sb.toString();
    }
 
