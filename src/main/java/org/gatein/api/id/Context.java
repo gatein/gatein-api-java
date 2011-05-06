@@ -69,7 +69,7 @@ public class Context
             required++;
          }
 
-         if(!hasHierarchicalComponents && component.isHierarchical())
+         if (!hasHierarchicalComponents && component.isHierarchical())
          {
             hasHierarchicalComponents = true;
          }
@@ -196,23 +196,73 @@ public class Context
       boolean error = false;
       StringBuilder sb = null;
 
-      String[] nullPaddedValues = Arrays.copyOf(componentValues, componentNumber);
+      int testComponentNumber = Math.max(componentNumber, componentValues.length);
+      String[] nullPaddedValues = Arrays.copyOf(componentValues, testComponentNumber);
 
-      int currentValue = 0;
-      for (ComponentIndex index : namesToComponents.values())
+      int currentComponent = 0;
+
+      if (!hasHierarchicalComponents)
       {
-         try
+         for (ComponentIndex index : namesToComponents.values())
          {
-            index.component.validate(nullPaddedValues[currentValue++]);
-         }
-         catch (Exception e)
-         {
-            error = true;
-            if (sb == null)
+            try
             {
-               sb = new StringBuilder(111);
+               index.component.validate(nullPaddedValues[currentComponent]);
             }
-            sb.append(e.getLocalizedMessage()).append("\n");
+            catch (Exception e)
+            {
+               error = true;
+               sb = createErrorMessage(sb, e.getLocalizedMessage());
+            }
+            currentComponent++;
+         }
+      }
+      else
+      {
+         final List<ComponentIndex> components = new ArrayList<ComponentIndex>(namesToComponents.values());
+         for (String value : nullPaddedValues)
+         {
+            // do not go past the number of known components
+            if (currentComponent >= componentNumber)
+            {
+               currentComponent = componentNumber - 1;
+            }
+
+            final ComponentIndex index = components.get(currentComponent);
+            try
+            {
+               index.component.validate(value);
+            }
+            catch (Exception e)
+            {
+               // if the previous component is hierarchical, check if we can validate the current value against it
+               if (currentComponent > 1)
+               {
+                  final Component component = components.get(currentComponent - 1).component;
+                  if (component.isHierarchical())
+                  {
+                     try
+                     {
+                        component.validate(value);
+                        currentComponent--; // set the current component to the hierarchical one before processing the rest
+                        error = false; // we're not in an error situation
+                     }
+                     catch (Exception e1)
+                     {
+                        error = true;
+                        sb = createErrorMessage(sb, e1.getLocalizedMessage());
+                     }
+                  }
+               }
+               else
+               {
+                  error = true;
+                  sb = createErrorMessage(sb, e.getLocalizedMessage());
+               }
+            }
+
+            // by default assume that we're moving to the next component to give priority to non-hierarchical elements
+            currentComponent++;
          }
       }
 
@@ -220,6 +270,16 @@ public class Context
       {
          throw new IllegalArgumentException("Invalid components:\n" + sb.toString());
       }
+   }
+
+   private StringBuilder createErrorMessage(StringBuilder sb, String message)
+   {
+      if (sb == null)
+      {
+         sb = new StringBuilder(111);
+      }
+      sb.append(message).append("\n");
+      return sb;
    }
 
    public String[] extractComponents(String idAsString)

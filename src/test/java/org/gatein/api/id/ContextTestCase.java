@@ -81,4 +81,16 @@ public class ContextTestCase
          .createContext();
       context.validate("foo");
    }
+
+   @Test
+   public void shouldValidateProperlyWhenThereAreRequiredComponentsAfterHierarchical()
+   {
+      final Context context = new Context.ContextBuilder("hierarchical").withDefaultSeparator("/")
+         .requiredComponent("foo", GateInObject.class, Pattern.compile(".*foo$"))
+         .requiredUnboundedHierarchicalComponent("bar", GateInObject.class, Pattern.compile("^bar.*"))
+         .requiredComponent("baz", GateInObject.class, Pattern.compile("^baz\\d*"))
+         .createContext();
+      context.validate("foo", "bar", "baz");
+      context.validate("foo", "bar", "bar2", "baz");
+   }
 }
