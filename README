@@ -25,6 +25,8 @@ GateIn API choices:
 
 - Encapsulate all identifiers (in particular, hierarchical ones) in objects so that we can change the undelying representation and not rely on hardcoding formats into client applications (OO, FP). This will also allow us to put validation code into a single spot.
 
+- Prefer immutable objects over mutable ones. This makes the API safer to use.
+
 Notes:
 ======
 
