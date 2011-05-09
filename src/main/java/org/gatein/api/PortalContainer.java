@@ -31,7 +31,9 @@ import java.util.Collection;
  */
 public interface PortalContainer extends GateInObject<PortalContainer>
 {
-   Portal getPortal(String portalName, boolean createIfInexistent);
+   Portal getPortal(String portalName);
+
+   Portal createPortal(String portalName);
 
    Collection<Portal> getPortals();
 

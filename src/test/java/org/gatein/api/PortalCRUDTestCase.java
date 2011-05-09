@@ -23,6 +23,7 @@
 
 package org.gatein.api;
 
+import org.gatein.api.id.Common;
 import org.testng.annotations.Test;
 
 /**
@@ -65,7 +66,8 @@ public class PortalCRUDTestCase
        */
 
       PortalContainer container = GateIn.getPortalContainer("container");
-      Portal portal = container.getPortal("portal", true);
+      Portal portal = container.createPortal("portal");
+      assert Common.getPortalId("container", "portal").equals(portal.getId());
       assert "portal".equals(portal.getName());
       assert portal.getApplicationRegistry() != null;
    }

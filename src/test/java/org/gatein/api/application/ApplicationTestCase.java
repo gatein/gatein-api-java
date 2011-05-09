@@ -25,10 +25,7 @@ package org.gatein.api.application;
 
 import org.gatein.api.Filter;
 import org.gatein.api.GateIn;
-import org.gatein.api.NotFoundException;
 import org.gatein.api.Portal;
-import org.gatein.api.id.Common;
-import org.gatein.api.id.Id;
 import org.gatein.api.navigation.Page;
 import org.gatein.api.navigation.Window;
 import org.testng.Assert;
@@ -48,13 +45,19 @@ public class ApplicationTestCase
    @BeforeTest
    public void setUp()
    {
-      portal = GateIn.getPortal("container", "portal", true);
+      portal = GateIn.getPortal("container", "portal");
    }
 
    @Test(enabled = false)
    public void getInexistentCategoryShouldReturnNull()
    {
-      assert portal.getApplicationRegistry().getCategory("inexistent", false) == null;
+      assert portal.getApplicationRegistry().getCategory("inexistent") == null;
+   }
+
+   @Test(enabled = false)
+   public void getOrCreateInexistentCategoryShouldCreateANewCategory()
+   {
+      assert portal.getApplicationRegistry().getCategory("inexistent") != null;
    }
 
    @Test(enabled = false)
@@ -75,13 +78,13 @@ public class ApplicationTestCase
        <show-info-bar>false</show-info-bar>
        </portlet-application>
        */
-      Page page = portal.getPage("page", true);
+      Page page = portal.getOrCreatePage("page");
       assert page != null;
 
-      Window window = page.getWindow("window", true);
+      Window window = page.getOrCreateWindow("window");
       assert window != null;
 
-      Category category = portal.getApplicationRegistry().getCategory("category", true);
+      Category category = portal.getApplicationRegistry().getOrCreateCategory("category");
       assert category != null;
 
       Application application = category.getApplication("application");
@@ -102,7 +105,7 @@ public class ApplicationTestCase
    public void assigningAnApplicationToACategory()
    {
       ApplicationRegistry registry = portal.getApplicationRegistry();
-      final Category category = registry.getCategory("category", true);
+      final Category category = registry.getOrCreateCategory("category");
 
       Application application = registry.getDeployedApplication("application");
       assert application.getName().equals(application.getDisplayName());

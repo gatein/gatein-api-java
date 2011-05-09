@@ -23,7 +23,6 @@
 
 package org.gatein.api;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.NodeType;
 import org.gatein.api.id.Common;
 import org.gatein.api.id.Id;
 import org.gatein.api.navigation.Dashboard;
@@ -73,7 +72,7 @@ public class NavigationPortletTestCase
       assert 1 == wsrpChildren.size();
       Node wsrpWindow = wsrpChildren.get(0);
       assert wsrpWindow instanceof Window;
-      assert wsrpWindow.equals(wsrpPage.getWindow(wsrpWindow.getName(), false));
+      assert wsrpWindow.equals(wsrpPage.getWindow(wsrpWindow.getName()));
       assert wsrpWindow.equals(Nodes.get(wsrpWindow.getId()));
 
 

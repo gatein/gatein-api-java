@@ -35,5 +35,9 @@ public interface Portal extends Node<Portal>
 {
    ApplicationRegistry getApplicationRegistry();
 
-   Page getPage(String pageName, boolean createIfInexistent);
+   Page getPage(String pageName);
+
+   Page getOrCreatePage(String pageName);
+
+   Page createPage(String pageName);
 }

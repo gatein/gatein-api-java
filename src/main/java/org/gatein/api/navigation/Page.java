@@ -33,5 +33,7 @@ import org.gatein.api.traits.Titled;
  */
 public interface Page extends Node<Page>, Titled
 {
-   Window getWindow(String windowName, boolean createIfInexistent);
+   Window getWindow(String windowName);
+
+   Window getOrCreateWindow(String windowName);
 }

@@ -44,10 +44,10 @@ public class GateIn
       return portalContainers.get(Common.getContainerId(containerName));
    }
 
-   public static Portal getPortal(String containerName, String portalName, boolean createIfInexistent)
+   public static Portal getPortal(String containerName, String portalName)
    {
       PortalContainer container = getPortalContainer(containerName);
-      if(container == null)
+      if (container == null)
       {
          return null;
       }

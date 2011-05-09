@@ -36,7 +36,9 @@ public interface ApplicationRegistry
 {
    List<Category> getCategories(Filter<Category> filter, Comparator<Category> sortBy);
 
-   Category getCategory(String name, boolean createIfInexistent);
+   Category getOrCreateCategory(String name);
+
+   Category getCategory(String inexistent);
 
    void removeCategory(String name);
 
