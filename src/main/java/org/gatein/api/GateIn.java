@@ -23,6 +23,9 @@
 
 package org.gatein.api;
 
+import org.gatein.api.id.Common;
+import org.gatein.api.id.Id;
+
 import java.util.Collection;
 import java.util.SortedMap;
 
@@ -34,16 +37,21 @@ import java.util.SortedMap;
  */
 public class GateIn
 {
-   private static SortedMap<String, PortalContainer> portalContainers;
+   private static SortedMap<Id<PortalContainer>, PortalContainer> portalContainers;
 
    public static PortalContainer getPortalContainer(String containerName)
    {
-      return portalContainers.get(containerName);
+      return portalContainers.get(Common.getContainerId(containerName));
    }
 
    public static Portal getPortal(String containerName, String portalName, boolean createIfInexistent)
    {
-      return null;
+      PortalContainer container = getPortalContainer(containerName);
+      if(container == null)
+      {
+         return null;
+      }
+      return container.getPortal(portalName);
    }
 
    public static Collection<PortalContainer> getPortalContainers()
