@@ -34,7 +34,6 @@ import java.util.regex.Pattern;
 /**
  * todo: need appropriate classes to represent PortletInvoker, Portlet and Instances
  * todo: need appropriate validation patterns
- * todo: need concept of unbounded hierarchical context
  *
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
