@@ -70,4 +70,14 @@ public class Common
    {
       return Id.create(GROUP, root, children);
    }
+
+   public static Id<PortalContainer> getContainerId(String containerName)
+   {
+      return Id.create(PORTLET, containerName);
+   }
+
+   public static Id<Portal> getPortalId(String containerName, String portalName)
+   {
+      return Id.create(PORTLET, containerName, portalName);
+   }
 }
