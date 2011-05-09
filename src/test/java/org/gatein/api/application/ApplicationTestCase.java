@@ -52,15 +52,9 @@ public class ApplicationTestCase
    }
 
    @Test(enabled = false)
-   public void checkPortalId()
+   public void getInexistentCategoryShouldReturnNull()
    {
-      assert Id.create(Common.PORTLET, "container", "portal").equals(portal.getId());
-   }
-
-   @Test(enabled = false, expectedExceptions = NotFoundException.class)
-   public void getCategoryShouldFailOnInexistentCategoryIfNotAskedToCreateOnInexistent()
-   {
-      portal.getApplicationRegistry().getCategory("inexistent", false);
+      assert portal.getApplicationRegistry().getCategory("inexistent", false) == null;
    }
 
    @Test(enabled = false)
