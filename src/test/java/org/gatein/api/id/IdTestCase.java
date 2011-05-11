@@ -24,17 +24,15 @@
 package org.gatein.api.id;
 
 import org.gatein.api.GateInObject;
+import org.gatein.api.Ids;
 import org.gatein.api.PortalContainer;
 import org.gatein.api.organization.Group;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.regex.Pattern;
 
-import static org.gatein.api.id.Common.*;
+import static org.gatein.api.Ids.*;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -42,7 +40,7 @@ import static org.gatein.api.id.Common.*;
  */
 public class IdTestCase
 {
-   private Context context = Common.PORTLET;
+   private Context context = Ids.PORTLET;
 
    private static final String CONTAINER = "container";
    private static final String PORTAL = "portal";
@@ -102,7 +100,7 @@ public class IdTestCase
    @Test
    public void testRoundtripParsingWithHierarchicalComponents()
    {
-      final Id<Group> id = Common.getGroupId("root", "1", "2", "3", "4");
+      final Id<Group> id = Ids.getGroupId("root", "1", "2", "3", "4");
       assert id.equals(Id.parse(id.getOriginalContext(), id.toString()));
    }
 

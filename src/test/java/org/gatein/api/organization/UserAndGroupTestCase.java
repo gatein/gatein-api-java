@@ -23,7 +23,7 @@
 
 package org.gatein.api.organization;
 
-import org.gatein.api.id.Common;
+import org.gatein.api.Ids;
 import org.gatein.api.id.Id;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -42,7 +42,7 @@ public class UserAndGroupTestCase
    @BeforeTest
    public void setUp()
    {
-      id = Common.getUserId("root");
+      id = Ids.getUserId("root");
       root = Users.get(id);
    }
 
@@ -56,7 +56,7 @@ public class UserAndGroupTestCase
    @Test(enabled = false)
    public void membershipsShouldMatch()
    {
-      Id<Group> groupId = Common.getGroupId("platform", "administrators");
+      Id<Group> groupId = Ids.getGroupId("platform", "administrators");
       final Group adminGroup = root.getGroup(groupId);
       assert adminGroup.equals(Groups.get(groupId));
       assert root.getGroups().contains(adminGroup);

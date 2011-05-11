@@ -24,8 +24,8 @@
 package org.gatein.api.content;
 
 import org.gatein.api.GateInObject;
+import org.gatein.api.Ids;
 import org.gatein.api.ParameterValidation;
-import org.gatein.api.id.Common;
 import org.gatein.api.id.Id;
 
 /**
@@ -41,7 +41,7 @@ public class ManagedContent<T extends Content<T>> implements GateInObject<Manage
    public ManagedContent(Content<T> content)
    {
       ParameterValidation.throwIllegalArgExceptionIfNull(content, "Content");
-      this.id = Common.getManagedContentId(content.getId());
+      this.id = Ids.getManagedContentId(content.getId());
       this.content = content;
    }
 

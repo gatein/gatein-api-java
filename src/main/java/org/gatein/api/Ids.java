@@ -21,14 +21,13 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.id;
+package org.gatein.api;
 
-import org.gatein.api.GateInObject;
-import org.gatein.api.Portal;
-import org.gatein.api.PortalContainer;
 import org.gatein.api.content.Application;
 import org.gatein.api.content.Content;
 import org.gatein.api.content.ManagedContent;
+import org.gatein.api.id.Context;
+import org.gatein.api.id.Id;
 import org.gatein.api.organization.Group;
 import org.gatein.api.organization.User;
 
@@ -41,7 +40,7 @@ import java.util.regex.Pattern;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public class Common
+public class Ids
 {
    public static final String CONTAINER_COMPONENT_NAME = "containerComponent";
    public static final String PORTAL_COMPONENT_NAME = "portalComponent";

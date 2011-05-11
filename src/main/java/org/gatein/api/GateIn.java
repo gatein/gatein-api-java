@@ -23,7 +23,6 @@
 
 package org.gatein.api;
 
-import org.gatein.api.id.Common;
 import org.gatein.api.id.Id;
 
 import java.util.Collection;
@@ -42,7 +41,7 @@ public class GateIn
 
    public static PortalContainer getPortalContainer(String containerName)
    {
-      return portalContainers.get(Common.getContainerId(containerName));
+      return portalContainers.get(Ids.getContainerId(containerName));
    }
 
    public static Portal getPortal(String containerName, String portalName)

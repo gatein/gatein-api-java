@@ -25,8 +25,8 @@ package org.gatein.api.content;
 
 import org.gatein.api.Filter;
 import org.gatein.api.GateIn;
+import org.gatein.api.Ids;
 import org.gatein.api.Portal;
-import org.gatein.api.id.Common;
 import org.gatein.api.id.Id;
 import org.gatein.api.navigation.Page;
 import org.gatein.api.navigation.Window;
@@ -87,7 +87,7 @@ public class ContentTestCase
 
       ContentRegistry registry = portal.getContentRegistry();
 
-      Id<Application> applicationId = Common.getApplicationId("application", "portlet");
+      Id<Application> applicationId = Ids.getApplicationId("application", "portlet");
       window.setContent(applicationId);
 
       Application application = registry.getContent(applicationId);
@@ -108,7 +108,7 @@ public class ContentTestCase
       ContentRegistry registry = portal.getContentRegistry();
       final Category category = registry.getOrCreateCategory("category");
 
-      Id<Application> id = Common.getApplicationId("application", "portlet");
+      Id<Application> id = Ids.getApplicationId("application", "portlet");
       List<Id<? extends ManagedContent>> knownContentIds = category.getKnownManagedContentIds();
       assert !knownContentIds.contains(id) : "A category doesn't contain content directly.";
       ManagedContent<Application> managed = category.addContent(id);
@@ -116,7 +116,7 @@ public class ContentTestCase
       assert category.contains(managed.getId());
       assert knownContentIds.contains(managed.getId());
 
-      Id<Content> wsrp = Common.getWSRPPortletId("invoker", "portlet");
+      Id<Content> wsrp = Ids.getWSRPPortletId("invoker", "portlet");
       ManagedContent<? extends Content> managedWSRP = category.addContent(wsrp);
       assert managedWSRP != null;
       assert category.contains(managedWSRP.getId());
@@ -130,7 +130,7 @@ public class ContentTestCase
       ContentRegistry registry = portal.getContentRegistry();
       final Category category = registry.getOrCreateCategory("category");
 
-      Application application = registry.getDeployedApplication(Common.getApplicationId("application", "portlet"));
+      Application application = registry.getDeployedApplication(Ids.getApplicationId("application", "portlet"));
       assert application.getName().equals(application.getDisplayName());
 
       Id<Application> id = application.getId();

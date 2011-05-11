@@ -24,6 +24,7 @@
 package org.gatein.api.id;
 
 import org.gatein.api.GateInObject;
+import org.gatein.api.Ids;
 import org.testng.annotations.Test;
 
 import java.util.regex.Pattern;
@@ -47,16 +48,16 @@ public class ContextTestCase
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void testExtraComponents()
    {
-      Common.PORTLET.validate("container", "portal", "foo", "bar", "barInstance", "unknown");
+      Ids.PORTLET.validate("container", "portal", "foo", "bar", "barInstance", "unknown");
    }
 
    @Test
    public void testPortletCase()
    {
-      Common.PORTLET.validate("container", "portal");
-      Common.PORTLET.validate("container", "portal", "foo");
-      Common.PORTLET.validate("container", "portal", "foo", "bar");
-      Common.PORTLET.validate("container", "portal", "foo", "bar", "barInstance");
+      Ids.PORTLET.validate("container", "portal");
+      Ids.PORTLET.validate("container", "portal", "foo");
+      Ids.PORTLET.validate("container", "portal", "foo", "bar");
+      Ids.PORTLET.validate("container", "portal", "foo", "bar", "barInstance");
    }
 
    @Test

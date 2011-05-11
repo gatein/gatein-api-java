@@ -23,7 +23,7 @@
 
 package org.gatein.api.navigation;
 
-import org.gatein.api.id.Common;
+import org.gatein.api.Ids;
 import org.gatein.api.id.Id;
 import org.gatein.api.organization.Group;
 import org.testng.annotations.BeforeMethod;
@@ -43,7 +43,7 @@ public class NodesTestCase
    @BeforeMethod
    protected void setUp() throws Exception
    {
-      groupId = Common.getGroupId("platform", "administrators");
+      groupId = Ids.getGroupId("platform", "administrators");
    }
 
    @Test(enabled = false)
