@@ -42,6 +42,4 @@ public interface Named
    String getName();
 
    String getDisplayName();
-
-   void setDisplayName(String displayName);
 }

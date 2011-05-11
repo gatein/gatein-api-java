@@ -24,6 +24,7 @@
 package org.gatein.api.application;
 
 import org.gatein.api.GateInObject;
+import org.gatein.api.id.Id;
 import org.gatein.api.traits.Described;
 
 /**
@@ -32,9 +33,9 @@ import org.gatein.api.traits.Described;
  */
 public interface Category extends GateInObject<Category>, Described
 {
-   Application getApplication(String applicationName);
+   <T extends Content<T>> ManagedContent<T> getContent(Id<T> contentId);
 
-   boolean contains(String applicationName);
+   boolean contains(Id<? extends Content> contentId);
 
-   Application add(Application application);
+   <T extends Content<T>> ManagedContent<T> addContent(Id<T> contentId);
 }

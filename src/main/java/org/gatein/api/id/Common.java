@@ -26,6 +26,8 @@ package org.gatein.api.id;
 import org.gatein.api.GateInObject;
 import org.gatein.api.Portal;
 import org.gatein.api.PortalContainer;
+import org.gatein.api.application.Application;
+import org.gatein.api.application.Content;
 import org.gatein.api.organization.Group;
 import org.gatein.api.organization.User;
 
@@ -64,20 +66,42 @@ public class Common
    }
 
    private static final Pattern GROUP_PATTERN = Pattern.compile(".*");
-   public final static Context GROUP = new Context.ContextBuilder("group").withDefaultSeparator("/").requiredUnboundedHierarchicalComponent("root", Group.class, GROUP_PATTERN).createContext();
+   public final static Context GROUP = new Context.ContextBuilder("group").withDefaultSeparator("/")
+      .requiredUnboundedHierarchicalComponent("root", Group.class, GROUP_PATTERN).createContext();
 
    public static Id<Group> getGroupId(String root, String... children)
    {
       return Id.create(GROUP, root, children);
    }
 
+   public final static Context CONTAINER = new Context.ContextBuilder("PortalContainer").withDefaultSeparator("#")
+      .requiredComponent("container", PortalContainer.class, Pattern.compile("[a-z0-9]*")).createContext();
+
    public static Id<PortalContainer> getContainerId(String containerName)
    {
-      return Id.create(PORTLET, containerName);
+      return Id.create(CONTAINER, containerName);
    }
 
    public static Id<Portal> getPortalId(String containerName, String portalName)
    {
       return Id.create(PORTLET, containerName, portalName);
+   }
+
+   public static final Context APPLICATION = new Context.ContextBuilder("application").withDefaultSeparator("/")
+      .requiredComponent("applicationName", Application.class, Pattern.compile(".*"))
+      .requiredComponent("portletName", GateInObject.class, Pattern.compile(".*")).createContext();
+
+   public static Id<Application> getApplicationId(String applicationName, String portletName)
+   {
+      return Id.create(APPLICATION, applicationName, portletName);
+   }
+
+   public static final Context WSRP = new Context.ContextBuilder("wsrp").withDefaultSeparator(".")
+      .requiredComponent("invokerId", GateInObject.class, Pattern.compile(".*"))
+      .requiredComponent("portletId", GateInObject.class, Pattern.compile(".*")).createContext();
+
+   public static Id<Content> getWSRPPortletId(String invoker, String portlet)
+   {
+      return Id.create(WSRP, invoker, portlet);
    }
 }

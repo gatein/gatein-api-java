@@ -21,25 +21,15 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.navigation;
-
-import org.gatein.api.GateInObject;
-import org.gatein.api.PropertyInfo;
-import org.gatein.api.application.Application;
-import org.gatein.api.application.Content;
-import org.gatein.api.id.Id;
-import org.gatein.api.traits.HasProperties;
-import org.gatein.api.traits.Titled;
+package org.gatein.api.application;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Window extends GateInObject<Window>, HasProperties, Titled
+public interface ManagedContent<T extends Content<T>> extends Content<T>
 {
-   static final PropertyInfo<Boolean> SHOW_INFO_BAR = PropertyInfo.createPropertyInfo("show-info-bar", Boolean.class);
+   T getContent();
 
-   void setContent(Id<? extends Content> content);
-
-   Content getContent();
+   void setDisplayName(String displayName);
 }

@@ -28,6 +28,7 @@ import org.gatein.api.id.Id;
 
 import java.util.Collection;
 import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * Entry point to the API in absence of CDI injection.
@@ -37,7 +38,7 @@ import java.util.SortedMap;
  */
 public class GateIn
 {
-   private static SortedMap<Id<PortalContainer>, PortalContainer> portalContainers;
+   private static SortedMap<Id<PortalContainer>, PortalContainer> portalContainers = new TreeMap<Id<PortalContainer>, PortalContainer>();
 
    public static PortalContainer getPortalContainer(String containerName)
    {

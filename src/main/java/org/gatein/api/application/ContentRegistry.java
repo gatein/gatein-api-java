@@ -24,27 +24,23 @@
 package org.gatein.api.application;
 
 import org.gatein.api.Filter;
+import org.gatein.api.id.Id;
 
 import java.util.Comparator;
-import java.util.List;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface ApplicationRegistry
+public interface ContentRegistry
 {
-   List<Category> getCategories(Filter<Category> filter, Comparator<Category> sortBy);
-
    Category getOrCreateCategory(String name);
 
-   Category getCategory(String inexistent);
+   Category getCategory(String name);
 
-   void removeCategory(String name);
+   <T extends Content<T>> T getContent(Id<T> id);
 
-   List<Application> getManagedApplications(Filter<Category> categoryFilter, Filter<Application> applicationFilter, Comparator<Application> sortBy);
+   Application getDeployedApplication(Id<Application> id);
 
-   List<Application> getDeployedApplications(Filter<Application> applicationFilter, Comparator<Application> sortBy);
-
-   Application getDeployedApplication(String id);
+   <T extends Content<T>> Iterable<ManagedContent<T>> getManagedContents(Filter<Category> categoryFilter, Filter<T> contentFilter, Comparator<T> sortBy);
 }

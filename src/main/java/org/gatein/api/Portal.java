@@ -23,7 +23,7 @@
 
 package org.gatein.api;
 
-import org.gatein.api.application.ApplicationRegistry;
+import org.gatein.api.application.ContentRegistry;
 import org.gatein.api.navigation.Node;
 import org.gatein.api.navigation.Page;
 
@@ -33,11 +33,12 @@ import org.gatein.api.navigation.Page;
  */
 public interface Portal extends Node<Portal>
 {
-   ApplicationRegistry getApplicationRegistry();
 
    Page getPage(String pageName);
 
    Page getOrCreatePage(String pageName);
 
    Page createPage(String pageName);
+
+   ContentRegistry getContentRegistry();
 }

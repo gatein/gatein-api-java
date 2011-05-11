@@ -32,7 +32,7 @@ import java.util.Comparator;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Application extends GateInObject<Application>, Described
+public interface Application extends Content<Application>, Described
 {
    Comparator<Application> SORT_BY_NAME = new Comparator<Application>()
    {
@@ -41,8 +41,4 @@ public interface Application extends GateInObject<Application>, Described
          return o1.getId().compareTo(o2.getId());
       }
    };
-
-   Application getDeployedParent();
-
-   boolean isManaged();
 }

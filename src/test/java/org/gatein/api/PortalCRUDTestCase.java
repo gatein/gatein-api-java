@@ -69,6 +69,6 @@ public class PortalCRUDTestCase
       Portal portal = container.createPortal("portal");
       assert Common.getPortalId("container", "portal").equals(portal.getId());
       assert "portal".equals(portal.getName());
-      assert portal.getApplicationRegistry() != null;
+      assert portal.getContentRegistry() != null;
    }
 }

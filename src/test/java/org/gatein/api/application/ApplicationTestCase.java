@@ -26,6 +26,8 @@ package org.gatein.api.application;
 import org.gatein.api.Filter;
 import org.gatein.api.GateIn;
 import org.gatein.api.Portal;
+import org.gatein.api.id.Common;
+import org.gatein.api.id.Id;
 import org.gatein.api.navigation.Page;
 import org.gatein.api.navigation.Window;
 import org.testng.Assert;
@@ -51,17 +53,17 @@ public class ApplicationTestCase
    @Test(enabled = false)
    public void getInexistentCategoryShouldReturnNull()
    {
-      assert portal.getApplicationRegistry().getCategory("inexistent") == null;
+      assert portal.getContentRegistry().getCategory("inexistent") == null;
    }
 
    @Test(enabled = false)
    public void getOrCreateInexistentCategoryShouldCreateANewCategory()
    {
-      assert portal.getApplicationRegistry().getCategory("inexistent") != null;
+      assert portal.getContentRegistry().getCategory("inexistent") != null;
    }
 
    @Test(enabled = false)
-   public void assigningAnApplicationToAWindowOnAPage()
+   public void assigningContentToAWindowOnAPage()
    {
       /**
        * <name>wsrpConfiguration</name>
@@ -84,14 +86,14 @@ public class ApplicationTestCase
       Window window = page.getOrCreateWindow("window");
       assert window != null;
 
-      Category category = portal.getApplicationRegistry().getOrCreateCategory("category");
-      assert category != null;
+      ContentRegistry registry = portal.getContentRegistry();
 
-      Application application = category.getApplication("application");
+      Id<Application> applicationId = Common.getApplicationId("application", "portlet");
+      window.setContent(applicationId);
+
+      Application application = registry.getContent(applicationId);
       assert application != null;
-
-      window.setApplication(application);
-      assert application.equals(window.getApplication());
+      assert application.equals(window.getContent());
 
       String title = "title";
       window.setTitle(title);
@@ -102,49 +104,44 @@ public class ApplicationTestCase
    }
 
    @Test(enabled = false)
-   public void assigningAnApplicationToACategory()
+   public void assigningContentToACategory()
    {
-      ApplicationRegistry registry = portal.getApplicationRegistry();
+      ContentRegistry registry = portal.getContentRegistry();
       final Category category = registry.getOrCreateCategory("category");
 
-      Application application = registry.getDeployedApplication("application");
-      assert application.getName().equals(application.getDisplayName());
-      assert application.equals(application.getDeployedParent()) : "A deployed app should be its own deployed parent";
-      assert !application.isManaged();
+      Id<Application> id = Common.getApplicationId("application", "portlet");
+      assert !category.contains(id);
+      assert category.addContent(id) != null;
+      assert category.contains(id);
 
-      final String name = application.getName();
-      assert !category.contains(name);
-
-      Application addedApp = category.add(application);
-      assert category.contains(name);
-      assert addedApp.equals(category.getApplication(name));
-      assert addedApp.isManaged();
-      assert !application.equals(category.getApplication(name)) : "The added application should be wrapped so that it can be modified";
-      assert application.equals(addedApp.getDeployedParent());
-
-      List<Application> applications = registry.getManagedApplications(Filter.ALL, Filter.ALL, Application.SORT_BY_NAME);
-      assert applications.size() == 1 : "There should only be one application matching";
-      assert applications.contains(addedApp) : "Application should have become managed";
-      assert !applications.contains(application) : "Original application should have been left untouched";
-
-      try
-      {
-         application.setDisplayName("displayName");
-         Assert.fail("Shouldn't be possible to modify the original application. Use the result of Category.add instead.");
-      }
-      catch (ApplicationException e)
-      {
-         // expected
-      }
-
-      addedApp.setDisplayName("displayName");
-      assert "displayName".equals(addedApp.getDisplayName());
+      Id<Content> wsrp = Common.getWSRPPortletId("invoker", "portlet");
+      assert category.addContent(wsrp) != null;
+      assert category.contains(wsrp);
    }
 
-   @Test(enabled = false, expectedExceptions = ApplicationException.class)
-   public void modifyingADeployedApplicationShouldFail()
+   @Test(enabled = false)
+   public void assigningAnApplicationToACategory()
    {
-      Application application = portal.getApplicationRegistry().getDeployedApplication("application");
-      application.setDisplayName("foo");
+      ContentRegistry registry = portal.getContentRegistry();
+      final Category category = registry.getOrCreateCategory("category");
+
+      Application application = registry.getDeployedApplication(Common.getApplicationId("application", "portlet"));
+      assert application.getName().equals(application.getDisplayName());
+
+      Id<Application> id = application.getId();
+      assert !category.contains(id);
+
+      ManagedContent<Application> managed = category.addContent(id);
+      assert managed != null;
+      assert application.equals(managed.getContent());
+
+      Iterable<ManagedContent> managedContents = registry.getManagedContents(Filter.ALL, Filter.ALL, Application.SORT_BY_NAME);
+      for (ManagedContent managedContent : managedContents)
+      {
+         assert managed.equals(managedContent);
+      }
+
+      managed.setDisplayName("displayName");
+      assert "displayName".equals(managed.getDisplayName());
    }
 }
