@@ -28,6 +28,7 @@ import org.gatein.api.Portal;
 import org.gatein.api.PortalContainer;
 import org.gatein.api.application.Application;
 import org.gatein.api.application.Content;
+import org.gatein.api.application.ManagedContent;
 import org.gatein.api.organization.Group;
 import org.gatein.api.organization.User;
 
@@ -103,5 +104,16 @@ public class Common
    public static Id<Content> getWSRPPortletId(String invoker, String portlet)
    {
       return Id.create(WSRP, invoker, portlet);
+   }
+
+   public static final Context CONTENT = new Context.ContextBuilder("ManagedContent")
+      .requiredComponent("content", Content.class, Pattern.compile(".*"))
+      .optionalComponent("managedContent", ManagedContent.class, Pattern.compile("[a-z0-9]*"))
+      .withDefaultSeparator("_m:").createContext();
+   private static long counter = 0;
+
+   public static <T extends Content<T>> Id<ManagedContent<T>> getManagedContentId(Id<T> contentId)
+   {
+      return Id.getIdForChild(contentId, Long.toString(counter++));
    }
 }

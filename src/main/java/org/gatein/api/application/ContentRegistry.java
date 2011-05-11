@@ -27,6 +27,7 @@ import org.gatein.api.Filter;
 import org.gatein.api.id.Id;
 
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -39,6 +40,8 @@ public interface ContentRegistry
    Category getCategory(String name);
 
    <T extends Content<T>> T getContent(Id<T> id);
+
+   <T extends Content<T>> List<Id<T>> getKnownContentIds();
 
    Application getDeployedApplication(Id<Application> id);
 

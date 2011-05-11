@@ -30,7 +30,6 @@ import org.gatein.api.id.Common;
 import org.gatein.api.id.Id;
 import org.gatein.api.navigation.Page;
 import org.gatein.api.navigation.Window;
-import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -110,13 +109,19 @@ public class ApplicationTestCase
       final Category category = registry.getOrCreateCategory("category");
 
       Id<Application> id = Common.getApplicationId("application", "portlet");
-      assert !category.contains(id);
-      assert category.addContent(id) != null;
-      assert category.contains(id);
+      List<Id<? extends ManagedContent>> knownContentIds = category.getKnownManagedContentIds();
+      assert !knownContentIds.contains(id) : "A category doesn't contain content directly.";
+      ManagedContent<Application> managed = category.addContent(id);
+      assert managed != null;
+      assert category.contains(managed.getId());
+      assert knownContentIds.contains(managed.getId());
 
       Id<Content> wsrp = Common.getWSRPPortletId("invoker", "portlet");
-      assert category.addContent(wsrp) != null;
-      assert category.contains(wsrp);
+      ManagedContent<? extends Content> managedWSRP = category.addContent(wsrp);
+      assert managedWSRP != null;
+      assert category.contains(managedWSRP.getId());
+      knownContentIds = category.getKnownManagedContentIds();
+      assert !knownContentIds.contains(wsrp) : "A category doesn't contain content directly.";
    }
 
    @Test(enabled = false)
@@ -129,11 +134,10 @@ public class ApplicationTestCase
       assert application.getName().equals(application.getDisplayName());
 
       Id<Application> id = application.getId();
-      assert !category.contains(id);
-
       ManagedContent<Application> managed = category.addContent(id);
       assert managed != null;
       assert application.equals(managed.getContent());
+      assert managed.equals(category.getContent(id));
 
       Iterable<ManagedContent> managedContents = registry.getManagedContents(Filter.ALL, Filter.ALL, Application.SORT_BY_NAME);
       for (ManagedContent managedContent : managedContents)

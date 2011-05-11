@@ -23,13 +23,54 @@
 
 package org.gatein.api.application;
 
+import org.gatein.api.GateInObject;
+import org.gatein.api.ParameterValidation;
+import org.gatein.api.id.Common;
+import org.gatein.api.id.Id;
+
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface ManagedContent<T extends Content<T>> extends Content<T>
+public class ManagedContent<T extends Content<T>> implements GateInObject<ManagedContent<T>>
 {
-   T getContent();
+   private final Id<ManagedContent<T>> id;
+   private final Content<T> content;
+   private String displayName;
 
-   void setDisplayName(String displayName);
+   public ManagedContent(Content<T> content)
+   {
+      ParameterValidation.throwIllegalArgExceptionIfNull(content, "Content");
+      this.id = Common.getManagedContentId(content.getId());
+      this.content = content;
+   }
+
+   public Id<ManagedContent<T>> getId()
+   {
+      return id;
+   }
+
+   public String getName()
+   {
+      return content.getName();
+   }
+
+   public String getDisplayName()
+   {
+      if (displayName != null)
+      {
+         return displayName;
+      }
+      return content.getDisplayName();
+   }
+
+   public void setDisplayName(String displayName)
+   {
+      this.displayName = displayName;
+   }
+
+   public Content<T> getContent()
+   {
+      return content;
+   }
 }
