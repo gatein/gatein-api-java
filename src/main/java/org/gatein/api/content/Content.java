@@ -21,24 +21,14 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.application;
+package org.gatein.api.content;
 
 import org.gatein.api.GateInObject;
-import org.gatein.api.traits.Described;
-
-import java.util.Comparator;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Application extends Content<Application>, Described
+public interface Content<T extends Content<T>> extends GateInObject<T>
 {
-   Comparator<Application> SORT_BY_NAME = new Comparator<Application>()
-   {
-      public int compare(Application o1, Application o2)
-      {
-         return o1.getId().compareTo(o2.getId());
-      }
-   };
 }

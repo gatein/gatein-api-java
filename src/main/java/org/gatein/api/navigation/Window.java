@@ -25,8 +25,7 @@ package org.gatein.api.navigation;
 
 import org.gatein.api.GateInObject;
 import org.gatein.api.PropertyInfo;
-import org.gatein.api.application.Application;
-import org.gatein.api.application.Content;
+import org.gatein.api.content.Content;
 import org.gatein.api.id.Id;
 import org.gatein.api.traits.HasProperties;
 import org.gatein.api.traits.Titled;

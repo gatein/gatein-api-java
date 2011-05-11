@@ -21,7 +21,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.application;
+package org.gatein.api.content;
 
 import org.gatein.api.Filter;
 import org.gatein.api.GateIn;
@@ -39,7 +39,7 @@ import java.util.List;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public class ApplicationTestCase
+public class ContentTestCase
 {
    private Portal portal;
 

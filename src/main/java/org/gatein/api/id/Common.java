@@ -26,9 +26,9 @@ package org.gatein.api.id;
 import org.gatein.api.GateInObject;
 import org.gatein.api.Portal;
 import org.gatein.api.PortalContainer;
-import org.gatein.api.application.Application;
-import org.gatein.api.application.Content;
-import org.gatein.api.application.ManagedContent;
+import org.gatein.api.content.Application;
+import org.gatein.api.content.Content;
+import org.gatein.api.content.ManagedContent;
 import org.gatein.api.organization.Group;
 import org.gatein.api.organization.User;
 

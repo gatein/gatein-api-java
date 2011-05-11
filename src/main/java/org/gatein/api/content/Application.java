@@ -21,56 +21,23 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.application;
+package org.gatein.api.content;
 
-import org.gatein.api.GateInObject;
-import org.gatein.api.ParameterValidation;
-import org.gatein.api.id.Common;
-import org.gatein.api.id.Id;
+import org.gatein.api.traits.Described;
+
+import java.util.Comparator;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public class ManagedContent<T extends Content<T>> implements GateInObject<ManagedContent<T>>
+public interface Application extends Content<Application>, Described
 {
-   private final Id<ManagedContent<T>> id;
-   private final Content<T> content;
-   private String displayName;
-
-   public ManagedContent(Content<T> content)
+   Comparator<Application> SORT_BY_NAME = new Comparator<Application>()
    {
-      ParameterValidation.throwIllegalArgExceptionIfNull(content, "Content");
-      this.id = Common.getManagedContentId(content.getId());
-      this.content = content;
-   }
-
-   public Id<ManagedContent<T>> getId()
-   {
-      return id;
-   }
-
-   public String getName()
-   {
-      return content.getName();
-   }
-
-   public String getDisplayName()
-   {
-      if (displayName != null)
+      public int compare(Application o1, Application o2)
       {
-         return displayName;
+         return o1.getId().compareTo(o2.getId());
       }
-      return content.getDisplayName();
-   }
-
-   public void setDisplayName(String displayName)
-   {
-      this.displayName = displayName;
-   }
-
-   public Content<T> getContent()
-   {
-      return content;
-   }
+   };
 }

@@ -21,25 +21,29 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.application;
+package org.gatein.api.content;
 
-import org.gatein.api.GateInObject;
+import org.gatein.api.Filter;
 import org.gatein.api.id.Id;
-import org.gatein.api.traits.Described;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Category extends GateInObject<Category>, Described
+public interface ContentRegistry
 {
-   <T extends Content<T>> ManagedContent<T> getContent(Id<T> contentId);
+   Category getOrCreateCategory(String name);
 
-   boolean contains(Id<? extends ManagedContent> contentId);
+   Category getCategory(String name);
 
-   <T extends Content<T>> ManagedContent<T> addContent(Id<T> contentId);
+   <T extends Content<T>> T getContent(Id<T> id);
 
-   List<Id<? extends ManagedContent>> getKnownManagedContentIds();
+   <T extends Content<T>> List<Id<T>> getKnownContentIds();
+
+   Application getDeployedApplication(Id<Application> id);
+
+   <T extends Content<T>> Iterable<ManagedContent<T>> getManagedContents(Filter<Category> categoryFilter, Filter<T> contentFilter, Comparator<T> sortBy);
 }

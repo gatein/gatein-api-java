@@ -23,7 +23,7 @@
 
 package org.gatein.api;
 
-import org.gatein.api.application.ContentRegistry;
+import org.gatein.api.content.ContentRegistry;
 import org.gatein.api.navigation.Node;
 import org.gatein.api.navigation.Page;
 
