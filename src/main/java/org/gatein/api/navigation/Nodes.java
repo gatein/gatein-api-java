@@ -37,17 +37,17 @@ import java.util.Iterator;
  */
 public class Nodes
 {
-   public static <T extends Node> Iterable<T> get(Query<T> query)
+   public static <T extends Node<T>> Iterable<T> get(Query<T> query)
    {
       return null;
    }
 
-   public static <T extends Node> Iterable<T> getWhere(Filter<T> filter)
+   public static <T extends Node<T>> Iterable<T> getWhere(Filter<T> filter)
    {
       return get(Query.<T>builder().where(filter).build());
    }
 
-   public static <T extends Node> T getSingleOrFail(Query<T> query)
+   public static <T extends Node<T>> T getSingleOrFail(Query<T> query)
    {
       Iterable<T> nodes = get(query);
       Iterator<T> iterator = nodes.iterator();

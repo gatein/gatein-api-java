@@ -63,14 +63,13 @@ public class NavigationPortletTestCase
       Iterator<Node> iterator = adminNodes.iterator();
       Node administrationNode = iterator.next();
       assert "Administration".equals(administrationNode.getDisplayName());
-      assert 2 == administrationNode.getChildren().size();
-      Node wsrp = iterator.next();
+      assert 2 == administrationNode.getChildrenNumber();
+      Node<?> wsrp = iterator.next();
       assert "WSRP".equals(wsrp.getDisplayName());
       assert wsrp instanceof Page;
       Page wsrpPage = (Page)wsrp;
-      List<Node> wsrpChildren = wsrp.getChildren();
-      assert 1 == wsrpChildren.size();
-      Node wsrpWindow = wsrpChildren.get(0);
+      assert 1 == wsrp.getChildrenNumber();
+      Node wsrpWindow = wsrp.getChildren().iterator().next();
       assert wsrpWindow instanceof Window;
       assert wsrpWindow.equals(wsrpPage.getWindow(wsrpWindow.getName()));
       assert wsrpWindow.equals(Nodes.get(wsrpWindow.getId()));
@@ -115,7 +114,7 @@ public class NavigationPortletTestCase
 
       for (Portal portal : portals)
       {
-         List<Node> children = portal.getChildren(new Filter<Node>()
+         portal.getChildrenWhere(new Filter<Node>()
          {
             public boolean accept(Node item)
             {

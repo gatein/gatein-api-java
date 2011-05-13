@@ -25,14 +25,12 @@ package org.gatein.api.navigation;
 
 import org.gatein.api.Filter;
 import org.gatein.api.GateInObject;
-import org.gatein.api.Portal;
 import org.gatein.api.PropertyInfo;
+import org.gatein.api.Query;
 import org.gatein.api.id.Id;
 import org.gatein.api.organization.Group;
 import org.gatein.api.organization.Operation;
 import org.gatein.api.organization.User;
-
-import java.util.List;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -40,9 +38,11 @@ import java.util.List;
  */
 public interface Node<T extends Node<T>> extends GateInObject<T>
 {
-   List<Node> getChildren();
+   Iterable<? extends Node> getChildren();
 
-   List<Node> getChildren(Filter<Node> filter);
+   <U extends Node> Iterable<U> getChildren(Query<U> query);
+
+   <U extends Node> Iterable<U> getChildrenWhere(Filter<U> filter);
 
    Node getParent();
 
@@ -59,4 +59,6 @@ public interface Node<T extends Node<T>> extends GateInObject<T>
    <T> void setProperty(PropertyInfo<T> info, T value);
 
    <T> T getProperty(PropertyInfo<T> info);
+
+   int getChildrenNumber();
 }
