@@ -49,6 +49,11 @@ public class Query<T>
          return this;
       }
 
+      public QueryBuilder<T> limit(int pageSize)
+      {
+         return this;
+      }
+
       public Query<T> build()
       {
          return null;
