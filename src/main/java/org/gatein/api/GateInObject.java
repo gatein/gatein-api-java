@@ -24,23 +24,16 @@
 package org.gatein.api;
 
 import org.gatein.api.id.Id;
-import org.gatein.api.traits.Named;
-
-import java.util.Comparator;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface GateInObject<T extends GateInObject<T>> extends Named
+public interface GateInObject<T extends GateInObject<T>>
 {
-   Comparator<? extends GateInObject> SORT_BY_ID = new Comparator<GateInObject>()
-   {
-      public int compare(GateInObject o1, GateInObject o2)
-      {
-         return o1.getId().compareTo(o2.getId());
-      }
-   };
-
    Id<T> getId();
+
+   String getName();
+
+   String getDisplayName();
 }

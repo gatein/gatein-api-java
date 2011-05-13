@@ -37,6 +37,7 @@ public class ManagedContent<T extends Content<T>> implements GateInObject<Manage
    private final Id<ManagedContent<T>> id;
    private final Content<T> content;
    private String displayName;
+   private String description;
 
    public ManagedContent(Content<T> content)
    {
@@ -72,5 +73,15 @@ public class ManagedContent<T extends Content<T>> implements GateInObject<Manage
    public Content<T> getContent()
    {
       return content;
+   }
+
+   public String getDescription()
+   {
+      return description;
+   }
+
+   public void setDescription(String description)
+   {
+      this.description = description;
    }
 }

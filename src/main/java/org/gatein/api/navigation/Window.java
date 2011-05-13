@@ -23,18 +23,15 @@
 
 package org.gatein.api.navigation;
 
-import org.gatein.api.GateInObject;
 import org.gatein.api.PropertyInfo;
 import org.gatein.api.content.Content;
 import org.gatein.api.id.Id;
-import org.gatein.api.traits.HasProperties;
-import org.gatein.api.traits.Titled;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Window extends GateInObject<Window>, HasProperties, Titled
+public interface Window extends Node<Window>
 {
    static final PropertyInfo<Boolean> SHOW_INFO_BAR = PropertyInfo.createPropertyInfo("show-info-bar", Boolean.class);
 

@@ -26,6 +26,7 @@ package org.gatein.api.navigation;
 import org.gatein.api.Filter;
 import org.gatein.api.GateInObject;
 import org.gatein.api.Portal;
+import org.gatein.api.PropertyInfo;
 import org.gatein.api.id.Id;
 import org.gatein.api.organization.Group;
 import org.gatein.api.organization.Operation;
@@ -50,4 +51,12 @@ public interface Node<T extends Node<T>> extends GateInObject<T>
    boolean accessAllowedFrom(User user, Operation operation);
 
    boolean hasOwner(Id ownerId);
+
+   String getTitle();
+
+   void setTitle(String title);
+
+   <T> void setProperty(PropertyInfo<T> info, T value);
+
+   <T> T getProperty(PropertyInfo<T> info);
 }

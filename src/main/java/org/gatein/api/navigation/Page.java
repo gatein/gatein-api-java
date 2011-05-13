@@ -23,15 +23,11 @@
 
 package org.gatein.api.navigation;
 
-import org.gatein.api.GateInObject;
-import org.gatein.api.Portal;
-import org.gatein.api.traits.Titled;
-
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Page extends Node<Page>, Titled
+public interface Page extends Node<Page>
 {
    Window getWindow(String windowName);
 
