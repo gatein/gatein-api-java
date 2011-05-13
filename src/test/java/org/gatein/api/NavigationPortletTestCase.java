@@ -38,6 +38,7 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -58,12 +59,12 @@ public class NavigationPortletTestCase
       final Group adminGroup = root.getGroup(groupId);
       assert rootGroups.contains(adminGroup);
 
-      List<Node> adminNodes = Nodes.get(new Nodes.GroupNodeFilter(groupId));
-      assert 2 == adminNodes.size();
-      Node administrationNode = adminNodes.get(0);
+      Iterable<Node> adminNodes = Nodes.getWhere(new Nodes.GroupNodeFilter(groupId));
+      Iterator<Node> iterator = adminNodes.iterator();
+      Node administrationNode = iterator.next();
       assert "Administration".equals(administrationNode.getDisplayName());
       assert 2 == administrationNode.getChildren().size();
-      Node wsrp = adminNodes.get(1);
+      Node wsrp = iterator.next();
       assert "WSRP".equals(wsrp.getDisplayName());
       assert wsrp instanceof Page;
       Page wsrpPage = (Page)wsrp;
@@ -73,6 +74,7 @@ public class NavigationPortletTestCase
       assert wsrpWindow instanceof Window;
       assert wsrpWindow.equals(wsrpPage.getWindow(wsrpWindow.getName()));
       assert wsrpWindow.equals(Nodes.get(wsrpWindow.getId()));
+      assert !iterator.hasNext();
 
 
       Group executiveGroup = Groups.get(Ids.getGroupId("organization", "management", "executive-board"));
@@ -108,7 +110,7 @@ public class NavigationPortletTestCase
       assert portals.equals(fromContainers);
 
       // from Nodes
-      Collection<Portal> fromNodes = Nodes.getForUser(root.getId(), Portal.class);
+      Iterable<Portal> fromNodes = Nodes.getForUser(root.getId(), Portal.class);
       assert portals.equals(fromNodes);
 
       for (Portal portal : portals)
@@ -137,13 +139,12 @@ public class NavigationPortletTestCase
             return item.accessAllowedFrom(root, Operation.READ);
          }
       };
-      List<Dashboard> nodes = Nodes.get(filter);
-      assert 1 == nodes.size();
-      Dashboard dashboard = Nodes.getSingleOrFail(filter);
-      assert dashboard.equals(nodes.get(0));
+      Iterable<Dashboard> nodes = Nodes.getWhere(filter);
+      Dashboard dashboard = Nodes.getSingleOrFail(Query.<Dashboard>builder().where(filter).build());
+      assert dashboard.equals(nodes.iterator().next());
 
       // from Nodes
-      Collection<Dashboard> fromNodes = Nodes.getForUser(root.getId(), Dashboard.class);
+      Iterable<Dashboard> fromNodes = Nodes.getForUser(root.getId(), Dashboard.class);
       assert nodes.equals(fromNodes);
       assert dashboard.equals(fromNodes.iterator().next());
    }

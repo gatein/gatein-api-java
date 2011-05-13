@@ -27,9 +27,6 @@ import org.gatein.api.Ids;
 import org.gatein.api.id.Id;
 import org.gatein.api.organization.Group;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import java.util.List;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -44,12 +41,5 @@ public class NodesTestCase
    protected void setUp() throws Exception
    {
       groupId = Ids.getGroupId("platform", "administrators");
-   }
-
-   @Test(enabled = false)
-   public void getFromGroupFilterAndForGroupShouldMatch()
-   {
-      List<Node> adminNodes = Nodes.get(new Nodes.GroupNodeFilter(groupId));
-      assert adminNodes.equals(Nodes.forGroup(groupId));
    }
 }

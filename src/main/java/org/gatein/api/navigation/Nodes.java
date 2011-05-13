@@ -24,14 +24,12 @@
 package org.gatein.api.navigation;
 
 import org.gatein.api.Filter;
-import org.gatein.api.Portal;
+import org.gatein.api.Query;
 import org.gatein.api.id.Id;
 import org.gatein.api.organization.Group;
 import org.gatein.api.organization.User;
-import org.gatein.api.traits.Titled;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.Iterator;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -39,25 +37,31 @@ import java.util.List;
  */
 public class Nodes
 {
-   public static <T extends Node> List<T> get(Filter<T> filter)
+   public static <T extends Node> Iterable<T> get(Query<T> query)
    {
       return null;
    }
 
-   public static <T extends Node> T getSingleOrFail(Filter<T> filter)
+   public static <T extends Node> Iterable<T> getWhere(Filter<T> filter)
    {
-      List<T> nodes = get(filter);
-      if (nodes.size() != 1)
-      {
-         throw new IllegalStateException("Excepted filtered output to only return one result. Got " + nodes.size());
-      }
-
-      return nodes.get(0);
+      return get(Query.<T>builder().where(filter).build());
    }
 
-   public static List<Node> forGroup(Id<Group> groupId)
+   public static <T extends Node> T getSingleOrFail(Query<T> query)
    {
-      return get(new GroupNodeFilter(groupId));
+      Iterable<T> nodes = get(query);
+      Iterator<T> iterator = nodes.iterator();
+      if (!iterator.hasNext())
+      {
+         throw new IllegalStateException("The query " + query + " didn't return any result");
+      }
+      T result = iterator.next();
+      if (iterator.hasNext())
+      {
+         throw new IllegalStateException("The query " + query + " didn't return only one result");
+      }
+
+      return result;
    }
 
    public static Node get(Id id)
@@ -65,7 +69,7 @@ public class Nodes
       return null;
    }
 
-   public static <T extends Node> Collection<T> getForUser(Id<User> userId, Class<T> nodeClass)
+   public static <T extends Node> Iterable<T> getForUser(Id<User> userId, Class<T> nodeClass)
    {
       return null;
    }
