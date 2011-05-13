@@ -38,7 +38,7 @@ public class ContextTestCase
    @Test
    public void simpleContext()
    {
-      Context context = new Context.ContextBuilder("foo").withDefaultSeparator("-").requiredComponent("component", GateInObject.class, Pattern.compile(".*")).createContext();
+      Context context = Context.builder().withDefaultSeparator("-").requiredComponent("component", GateInObject.class, Pattern.compile(".*")).build();
 
       assert 0 == context.getIndexFor("component");
       assert context.isComponentRequired("component");
@@ -63,10 +63,10 @@ public class ContextTestCase
    @Test
    public void simpleHierarchicalContextShouldWork()
    {
-      final Context context = new Context.ContextBuilder("hierarchical").withDefaultSeparator("/")
+      final Context context = Context.builder().withDefaultSeparator("/")
          .requiredComponent("foo", GateInObject.class, Pattern.compile(".*foo$"))
          .requiredUnboundedHierarchicalComponent("bar", GateInObject.class, Pattern.compile("^bar.*"))
-         .createContext();
+         .build();
       assert context.isComponentUnboundedHierarchical("bar");
       assert context.isComponentRequired("bar");
       context.validate("foo", "bar");
@@ -76,21 +76,21 @@ public class ContextTestCase
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void missingRequiredHierarchicalShouldBeDetected()
    {
-      final Context context = new Context.ContextBuilder("hierarchical").withDefaultSeparator("/")
+      final Context context = Context.builder().withDefaultSeparator("/")
          .requiredComponent("foo", GateInObject.class, Pattern.compile(".*foo$"))
          .requiredUnboundedHierarchicalComponent("bar", GateInObject.class, Pattern.compile("^bar.*"))
-         .createContext();
+         .build();
       context.validate("foo");
    }
 
    @Test
    public void shouldValidateProperlyWhenThereAreRequiredComponentsAfterHierarchical()
    {
-      final Context context = new Context.ContextBuilder("hierarchical").withDefaultSeparator("/")
+      final Context context = Context.builder().withDefaultSeparator("/")
          .requiredComponent("foo", GateInObject.class, Pattern.compile(".*foo$"))
          .requiredUnboundedHierarchicalComponent("bar", GateInObject.class, Pattern.compile("^bar.*"))
          .requiredComponent("baz", GateInObject.class, Pattern.compile("^baz\\d*"))
-         .createContext();
+         .build();
       context.validate("foo", "bar", "baz");
       context.validate("foo", "bar", "bar2", "baz");
    }

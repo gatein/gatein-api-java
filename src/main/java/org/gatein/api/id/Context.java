@@ -301,16 +301,19 @@ public class Context
       }
    }
 
+   public static ContextBuilder builder()
+   {
+      return new ContextBuilder();
+   }
+
    public static class ContextBuilder
    {
-      private final String name;
       private List<Component<? extends GateInObject>> components = new ArrayList<Component<? extends GateInObject>>(7);
       private String defaultSeparator;
       private boolean ignoreRemainingAfterFirstMissingOptional;
 
-      public ContextBuilder(String name)
+      private ContextBuilder()
       {
-         this.name = name;
       }
 
       public <T extends GateInObject> ContextBuilder requiredComponent(String name, Class<T> componentType, Pattern validationPattern)
@@ -343,7 +346,7 @@ public class Context
          return this;
       }
 
-      public Context createContext()
+      public Context build()
       {
          return new Context(defaultSeparator, components, ignoreRemainingAfterFirstMissingOptional);
       }

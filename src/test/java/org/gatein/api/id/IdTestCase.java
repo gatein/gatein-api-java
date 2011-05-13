@@ -107,7 +107,7 @@ public class IdTestCase
    @Test
    public void testRootComponent()
    {
-      Id key = Id.create(new Context.ContextBuilder("container").withDefaultSeparator("-").requiredComponent(CONTAINER_COMPONENT_NAME, PortalContainer.class, Pattern.compile("container")).createContext(), CONTAINER);
+      Id key = Id.create(Context.builder().withDefaultSeparator("-").requiredComponent(CONTAINER_COMPONENT_NAME, PortalContainer.class, Pattern.compile("container")).build(), CONTAINER);
       assert CONTAINER.equals(key.getRootComponent());
 
       key = Id.create(context, CONTAINER, PORTAL, INVOKER, PORTLET, INSTANCE);
@@ -167,7 +167,7 @@ public class IdTestCase
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void anIdShouldAlwaysHaveARoot()
    {
-      Id.create(new Context.ContextBuilder("foo").withDefaultSeparator("-").requiredComponent("foo", GateInObject.class, Pattern.compile(".*")).createContext(), null);
+      Id.create(Context.builder().withDefaultSeparator("-").requiredComponent("foo", GateInObject.class, Pattern.compile(".*")).build(), null);
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
