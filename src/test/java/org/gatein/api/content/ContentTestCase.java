@@ -27,12 +27,14 @@ import org.gatein.api.Filter;
 import org.gatein.api.GateIn;
 import org.gatein.api.Ids;
 import org.gatein.api.Portal;
+import org.gatein.api.Query;
 import org.gatein.api.id.Id;
 import org.gatein.api.navigation.Page;
 import org.gatein.api.navigation.Window;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -139,7 +141,21 @@ public class ContentTestCase
       assert application.equals(managed.getContent());
       assert managed.equals(category.getContent(id));
 
-      Iterable<ManagedContent> managedContents = registry.getManagedContents(Filter.ALL, Filter.ALL, Application.SORT_BY_NAME);
+      Iterable<ManagedContent> managedContents = registry.getManagedContents(Query.<ManagedContent>builder().where(new Filter<ManagedContent>()
+      {
+         @Override
+         public boolean accept(ManagedContent item)
+         {
+            return item.getContent() instanceof Application;
+         }
+      }).orderBy(new Comparator<ManagedContent>()
+      {
+         public int compare(ManagedContent o1, ManagedContent o2)
+         {
+            return o1.getId().compareTo(o2.getId());
+         }
+      }).build());
+
       for (ManagedContent managedContent : managedContents)
       {
          assert managed.equals(managedContent);

@@ -21,28 +21,37 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.content;
+package org.gatein.api;
 
-import org.gatein.api.Query;
-import org.gatein.api.id.Id;
-
-import java.util.List;
+import java.util.Comparator;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface ContentRegistry
+public class Query<T>
 {
-   Category getOrCreateCategory(String name);
 
-   Category getCategory(String name);
+   public static <T> QueryBuilder<T> builder()
+   {
+      return new QueryBuilder<T>();
+   }
 
-   <T extends Content<T>> T getContent(Id<T> id);
+   public static class QueryBuilder<T>
+   {
+      public QueryBuilder<T> where(Filter<T> filter)
+      {
+         return this;
+      }
 
-   <T extends Content<T>> List<Id<T>> getKnownContentIds();
+      public QueryBuilder<T> orderBy(Comparator<T> comparator)
+      {
+         return this;
+      }
 
-   Application getDeployedApplication(Id<Application> id);
-
-   Iterable<ManagedContent> getManagedContents(Query<ManagedContent> query);
+      public Query<T> build()
+      {
+         return null;
+      }
+   }
 }
