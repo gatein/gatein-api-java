@@ -37,8 +37,6 @@ public interface User extends GateInObject<User>
 {
    List<Group> getGroups();
 
-   boolean isMemberOf(Group group);
-
    Group getGroup(Id<Group> groupId);
 
    List<Portal> getPortals();

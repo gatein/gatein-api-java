@@ -43,4 +43,9 @@ public class Groups
       return null;
    }
 
+   public static boolean isUserMemberOf(Id<User> userId, Id<Group> groupId)
+   {
+      return false;
+   }
+
 }

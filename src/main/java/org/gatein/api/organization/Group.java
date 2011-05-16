@@ -24,7 +24,6 @@
 package org.gatein.api.organization;
 
 import org.gatein.api.GateInObject;
-import org.gatein.api.id.Id;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -32,5 +31,4 @@ import org.gatein.api.id.Id;
  */
 public interface Group extends GateInObject<Group>
 {
-   boolean hasMember(User user);
 }

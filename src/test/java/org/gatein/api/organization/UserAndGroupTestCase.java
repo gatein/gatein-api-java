@@ -59,8 +59,6 @@ public class UserAndGroupTestCase
       Id<Group> groupId = Ids.getGroupId("platform", "administrators");
       final Group adminGroup = root.getGroup(groupId);
       assert adminGroup.equals(Groups.get(groupId));
-      assert root.getGroups().contains(adminGroup);
-      assert adminGroup.hasMember(root);
-      assert root.isMemberOf(adminGroup);
+      assert Groups.isUserMemberOf(root.getId(), groupId);
    }
 }
