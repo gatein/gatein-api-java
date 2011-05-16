@@ -53,17 +53,18 @@ public class NavigationPortletTestCase
       Id<User> id = Ids.getUserId("root");
       User root = Users.get(id);
 
-      List<Group> rootGroups = root.getGroups();
+      IterableResult<Group> rootGroups = root.getGroups();
 
       Id<Group> groupId = Ids.getGroupId("platform", "administrators");
       final Group adminGroup = root.getGroup(groupId);
       assert rootGroups.contains(adminGroup);
 
-      Iterable<Node> adminNodes = Nodes.getWhere(new Nodes.GroupNodeFilter(groupId));
+      IterableResult<Node> adminNodes = Nodes.getWhere(new Nodes.GroupNodeFilter(groupId));
       Iterator<Node> iterator = adminNodes.iterator();
       Node administrationNode = iterator.next();
       assert "Administration".equals(administrationNode.getDisplayName());
       assert 2 == administrationNode.getChildrenNumber();
+      assert 2 == adminNodes.size();
       Node<?> wsrp = iterator.next();
       assert "WSRP".equals(wsrp.getDisplayName());
       assert wsrp instanceof Page;
@@ -90,7 +91,7 @@ public class NavigationPortletTestCase
       final User root = Users.get(id);
 
       // from user
-      List<Portal> portals = root.getPortals();
+      IterableResult<Portal> portals = root.getPortals();
 
       // from container
       Collection<PortalContainer> containers = GateIn.getPortalContainers();
@@ -109,7 +110,7 @@ public class NavigationPortletTestCase
       assert portals.equals(fromContainers);
 
       // from Nodes
-      Iterable<Portal> fromNodes = Nodes.getForUser(root.getId(), Portal.class);
+      IterableResult<Portal> fromNodes = Nodes.getForUser(root.getId(), Portal.class);
       assert portals.equals(fromNodes);
 
       for (Portal portal : portals)

@@ -24,12 +24,11 @@
 package org.gatein.api.navigation;
 
 import org.gatein.api.Filter;
+import org.gatein.api.IterableResult;
 import org.gatein.api.Query;
 import org.gatein.api.id.Id;
 import org.gatein.api.organization.Group;
 import org.gatein.api.organization.User;
-
-import java.util.Iterator;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -37,31 +36,28 @@ import java.util.Iterator;
  */
 public class Nodes
 {
-   public static <T extends Node<T>> Iterable<T> get(Query<T> query)
+   public static <T extends Node<T>> IterableResult<T> get(Query<T> query)
    {
       return null;
    }
 
-   public static <T extends Node<T>> Iterable<T> getWhere(Filter<T> filter)
+   public static <T extends Node<T>> IterableResult<T> getWhere(Filter<T> filter)
    {
       return get(Query.<T>builder().where(filter).build());
    }
 
    public static <T extends Node<T>> T getSingleOrFail(Query<T> query)
    {
-      Iterable<T> nodes = get(query);
-      Iterator<T> iterator = nodes.iterator();
-      if (!iterator.hasNext())
+      IterableResult<T> nodes = get(query);
+      int size = nodes.size();
+      if (size == 1)
       {
-         throw new IllegalStateException("The query " + query + " didn't return any result");
+         return nodes.iterator().next();
       }
-      T result = iterator.next();
-      if (iterator.hasNext())
+      else
       {
-         throw new IllegalStateException("The query " + query + " didn't return only one result");
+         throw new IllegalStateException("You expected the " + query + " to return exactly one result but it returned " + size);
       }
-
-      return result;
    }
 
    public static Node get(Id id)
@@ -69,7 +65,7 @@ public class Nodes
       return null;
    }
 
-   public static <T extends Node> Iterable<T> getForUser(Id<User> userId, Class<T> nodeClass)
+   public static <T extends Node> IterableResult<T> getForUser(Id<User> userId, Class<T> nodeClass)
    {
       return null;
    }

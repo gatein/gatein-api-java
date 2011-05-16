@@ -26,6 +26,7 @@ package org.gatein.api.content;
 import org.gatein.api.Filter;
 import org.gatein.api.GateIn;
 import org.gatein.api.Ids;
+import org.gatein.api.IterableResult;
 import org.gatein.api.Portal;
 import org.gatein.api.Query;
 import org.gatein.api.id.Id;
@@ -141,7 +142,7 @@ public class ContentTestCase
       assert application.equals(managed.getContent());
       assert managed.equals(category.getContent(id));
 
-      Iterable<ManagedContent> managedContents = registry.getManagedContents(Query.<ManagedContent>builder().where(new Filter<ManagedContent>()
+      IterableResult<ManagedContent> managedContents = registry.getManagedContents(Query.<ManagedContent>builder().where(new Filter<ManagedContent>()
       {
          @Override
          public boolean accept(ManagedContent item)
@@ -156,6 +157,7 @@ public class ContentTestCase
          }
       }).build());
 
+      assert 1 == managedContents.size();
       for (ManagedContent managedContent : managedContents)
       {
          assert managed.equals(managedContent);

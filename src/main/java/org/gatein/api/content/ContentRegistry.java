@@ -23,10 +23,9 @@
 
 package org.gatein.api.content;
 
+import org.gatein.api.IterableResult;
 import org.gatein.api.Query;
 import org.gatein.api.id.Id;
-
-import java.util.List;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -40,9 +39,9 @@ public interface ContentRegistry
 
    <T extends Content<T>> T getContent(Id<T> id);
 
-   <T extends Content<T>> List<Id<T>> getKnownContentIds();
+   <T extends Content<T>> IterableResult<Id<T>> getKnownContentIds();
 
    Application getDeployedApplication(Id<Application> id);
 
-   Iterable<ManagedContent> getManagedContents(Query<ManagedContent> query);
+   IterableResult<ManagedContent> getManagedContents(Query<ManagedContent> query);
 }

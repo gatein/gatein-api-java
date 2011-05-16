@@ -24,11 +24,10 @@
 package org.gatein.api.organization;
 
 import org.gatein.api.Ids;
+import org.gatein.api.IterableResult;
 import org.gatein.api.id.Id;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
-import java.util.List;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -49,7 +48,7 @@ public class UserAndGroupTestCase
    @Test(enabled = false)
    public void userGroupsFromGroupsOrUserShouldMatch()
    {
-      List<Group> rootGroups = root.getGroups();
+      IterableResult<Group> rootGroups = root.getGroups();
       assert rootGroups.equals(Groups.getForUser(id));
    }
 

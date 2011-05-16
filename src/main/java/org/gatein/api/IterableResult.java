@@ -21,30 +21,20 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.organization;
-
-import org.gatein.api.IterableResult;
-import org.gatein.api.id.Id;
+package org.gatein.api;
 
 /**
+ * Encapsulates results of queries. Number of results can be computed when the query is run. Checking if an element is
+ * contained in the results without iterating over all of them should be possible by performing a query against the
+ * original data set. Could be automatically paged (in which case we might need to add methods to know more about the
+ * current page or go to a specific page).
+ *
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public class Groups
+public interface IterableResult<T> extends Iterable<T>
 {
-   public static IterableResult<Group> getForUser(Id<User> userId)
-   {
-      return null;
-   }
+   int size();
 
-   public static Group get(Id<Group> groupId)
-   {
-      return null;
-   }
-
-   public static boolean isUserMemberOf(Id<User> userId, Id<Group> groupId)
-   {
-      return false;
-   }
-
+   boolean contains(T t);
 }

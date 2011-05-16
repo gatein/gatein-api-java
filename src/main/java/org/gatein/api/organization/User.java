@@ -24,10 +24,9 @@
 package org.gatein.api.organization;
 
 import org.gatein.api.GateInObject;
+import org.gatein.api.IterableResult;
 import org.gatein.api.Portal;
 import org.gatein.api.id.Id;
-
-import java.util.List;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -35,9 +34,9 @@ import java.util.List;
  */
 public interface User extends GateInObject<User>
 {
-   List<Group> getGroups();
+   IterableResult<Group> getGroups();
 
    Group getGroup(Id<Group> groupId);
 
-   List<Portal> getPortals();
+   IterableResult<Portal> getPortals();
 }
