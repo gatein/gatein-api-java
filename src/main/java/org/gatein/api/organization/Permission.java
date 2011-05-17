@@ -21,52 +21,62 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.navigation;
+package org.gatein.api.organization;
 
-import org.gatein.api.Filter;
-import org.gatein.api.GateInObject;
-import org.gatein.api.IterableResult;
-import org.gatein.api.PropertyInfo;
-import org.gatein.api.Query;
 import org.gatein.api.id.Id;
-import org.gatein.api.organization.Group;
-import org.gatein.api.organization.Operation;
-import org.gatein.api.organization.Permission;
-import org.gatein.api.organization.User;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Node<T extends Node<T>> extends GateInObject<T>
+public interface Permission
 {
-   IterableResult<? extends Node> getChildren();
+   Type getType();
 
-   <U extends Node> IterableResult<U> getChildren(Query<U> query);
+   Membership getMembership();
 
-   <U extends Node> IterableResult<U> getChildrenWhere(Filter<U> filter);
+   enum Type
+   {
+      ACCESS("ACCESS"), EDIT("EDIT");
 
-   Node getParent();
+      private Type(String name)
+      {
+         this.name = name;
+      }
 
-   boolean accessAllowedFrom(Group group, Operation operation);
+      String getName()
+      {
+         return name;
+      }
 
-   boolean accessAllowedFrom(User user, Operation operation);
+      private final String name;
+   }
 
-   boolean hasOwner(Id ownerId);
+   class Membership
+   {
+      private final String role;
+      private final Id<Group> group;
 
-   String getTitle();
+      /**
+       * Inject based on portal.administrator.groups and portal.administrator.mstype values as defined in portal conf;
+       */
+      public static final Membership ADMINISTRATOR = null;
 
-   void setTitle(String title);
 
-   <T> void setProperty(PropertyInfo<T> info, T value);
+      String getRole()
+      {
+         return role;
+      }
 
-   <T> T getProperty(PropertyInfo<T> info);
+      Id<Group> getGroupId()
+      {
+         return group;
+      }
 
-   int getChildrenNumber();
-
-   /**
-    * adding permissions only if they don't already exist
-    * @param permission
-    */
-   void addPermission(Permission permission);
+      public Membership(String role, Id<Group> group)
+      {
+         this.role = role;
+         this.group = group;
+      }
+   }
 }
