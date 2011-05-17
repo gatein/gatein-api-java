@@ -33,12 +33,5 @@ import org.gatein.api.navigation.Page;
  */
 public interface Portal extends Node<Portal>
 {
-
-   Page getPage(String pageName);
-
-   Page getOrCreatePage(String pageName);
-
-   Page createPage(String pageName);
-
    ContentRegistry getContentRegistry();
 }

@@ -72,7 +72,7 @@ public class NavigationPortletTestCase
       assert 1 == wsrp.getChildrenNumber();
       Node wsrpWindow = wsrp.getChildren().iterator().next();
       assert wsrpWindow instanceof Window;
-      assert wsrpWindow.equals(wsrpPage.getWindow(wsrpWindow.getName()));
+      assert wsrpWindow.equals(wsrpPage.getChild(wsrpWindow.getName(), Window.class));
       assert wsrpWindow.equals(Nodes.get(wsrpWindow.getId()));
       assert !iterator.hasNext();
 

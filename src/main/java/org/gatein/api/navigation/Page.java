@@ -29,7 +29,4 @@ package org.gatein.api.navigation;
  */
 public interface Page extends Node<Page>
 {
-   Window getWindow(String windowName);
-
-   Window getOrCreateWindow(String windowName);
 }

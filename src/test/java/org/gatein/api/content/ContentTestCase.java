@@ -84,10 +84,41 @@ public class ContentTestCase
        <show-info-bar>false</show-info-bar>
        </portlet-application>
        */
-      Page page = portal.getOrCreatePage("page");
-      assert page != null;
 
-      Window window = page.getOrCreateWindow("window");
+      Page page;
+      String pageName = "page";
+      if(!portal.hasChild(pageName))
+      {
+         page = portal.createChild(pageName, Page.class);
+         assert page != null;
+      }
+      else
+      {
+         page = portal.getChild(pageName, Page.class);
+      }
+
+      // an exception should be thrown if child already exists
+      // todo: decide if the exception should be more specific or not
+      try
+      {
+         page = portal.createChild(pageName, Page.class);
+      }
+      catch (IllegalArgumentException e)
+      {
+         // expected
+      }
+
+
+      Window window;
+      String windowName = "window";
+      if(!page.hasChild(windowName))
+      {
+         window = page.createChild(windowName, Window.class);
+      }
+      else
+      {
+         window = page.getChild(windowName, Window.class);
+      }
       assert window != null;
 
       page.addPermission(Permissions.ADMINISTRATOR_ACCESS);

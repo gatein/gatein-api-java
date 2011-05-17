@@ -69,4 +69,10 @@ public interface Node<T extends Node<T>> extends GateInObject<T>
     * @param permission
     */
    void addPermission(Permission permission);
+
+   boolean hasChild(String childName);
+
+   <T extends Node<T>> T createChild(String childName, Class<T> childType);
+
+   <T extends Node<T>> T getChild(String childName, Class<T> childType);
 }
