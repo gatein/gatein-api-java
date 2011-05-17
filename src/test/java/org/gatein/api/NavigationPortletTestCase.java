@@ -31,7 +31,7 @@ import org.gatein.api.navigation.Page;
 import org.gatein.api.navigation.Window;
 import org.gatein.api.organization.Group;
 import org.gatein.api.organization.Groups;
-import org.gatein.api.organization.Operation;
+import org.gatein.api.organization.Permission;
 import org.gatein.api.organization.User;
 import org.gatein.api.organization.Users;
 import org.testng.annotations.Test;
@@ -102,7 +102,7 @@ public class NavigationPortletTestCase
          {
             public boolean accept(Portal item)
             {
-               return item.accessAllowedFrom(root, Operation.READ);
+               return item.accessAllowedFrom(root, Permission.Type.ACCESS);
             }
          });
          fromContainers.addAll(userPortals);
@@ -119,7 +119,7 @@ public class NavigationPortletTestCase
          {
             public boolean accept(Node item)
             {
-               return item.accessAllowedFrom(root, Operation.READ);
+               return item.accessAllowedFrom(root, Permission.Type.ACCESS);
             }
          });
          // then display
@@ -136,7 +136,7 @@ public class NavigationPortletTestCase
       {
          public boolean accept(Dashboard item)
          {
-            return item.accessAllowedFrom(root, Operation.READ);
+            return item.accessAllowedFrom(root, Permission.Type.ACCESS);
          }
       };
       Iterable<Dashboard> nodes = Nodes.getWhere(filter);

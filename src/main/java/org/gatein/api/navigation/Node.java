@@ -30,7 +30,6 @@ import org.gatein.api.PropertyInfo;
 import org.gatein.api.Query;
 import org.gatein.api.id.Id;
 import org.gatein.api.organization.Group;
-import org.gatein.api.organization.Operation;
 import org.gatein.api.organization.Permission;
 import org.gatein.api.organization.User;
 
@@ -48,9 +47,9 @@ public interface Node<T extends Node<T>> extends GateInObject<T>
 
    Node getParent();
 
-   boolean accessAllowedFrom(Group group, Operation operation);
+   boolean accessAllowedFrom(Group group, Permission.Type operation);
 
-   boolean accessAllowedFrom(User user, Operation operation);
+   boolean accessAllowedFrom(User user, Permission.Type operation);
 
    boolean hasOwner(Id ownerId);
 
@@ -66,6 +65,7 @@ public interface Node<T extends Node<T>> extends GateInObject<T>
 
    /**
     * adding permissions only if they don't already exist
+    *
     * @param permission
     */
    void addPermission(Permission permission);
