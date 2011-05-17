@@ -32,7 +32,6 @@ import org.gatein.api.Query;
 import org.gatein.api.id.Id;
 import org.gatein.api.navigation.Page;
 import org.gatein.api.navigation.Window;
-import org.gatein.api.organization.Permission;
 import org.gatein.api.organization.Permissions;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -87,7 +86,7 @@ public class ContentTestCase
 
       Page page;
       String pageName = "page";
-      if(!portal.hasChild(pageName))
+      if (!portal.hasChild(pageName))
       {
          page = portal.createChild(pageName, Page.class);
          assert page != null;
@@ -108,10 +107,12 @@ public class ContentTestCase
          // expected
       }
 
+      page.addPermission(Permissions.ADMINISTRATOR_ACCESS);
+      page.addPermission(Permissions.ADMINISTRATOR_EDIT);
 
       Window window;
       String windowName = "window";
-      if(!page.hasChild(windowName))
+      if (!page.hasChild(windowName))
       {
          window = page.createChild(windowName, Window.class);
       }
@@ -121,8 +122,6 @@ public class ContentTestCase
       }
       assert window != null;
 
-      page.addPermission(Permissions.ADMINISTRATOR_ACCESS);
-      page.addPermission(Permissions.ADMINISTRATOR_EDIT);
       window.addPermission(Permissions.ADMINISTRATOR_ACCESS);
 
       ContentRegistry registry = portal.getContentRegistry();
