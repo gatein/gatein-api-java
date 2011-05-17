@@ -25,6 +25,7 @@ package org.gatein.api.navigation;
 
 import org.gatein.api.Filter;
 import org.gatein.api.GateInObject;
+import org.gatein.api.IterableResult;
 import org.gatein.api.PropertyInfo;
 import org.gatein.api.Query;
 import org.gatein.api.id.Id;
@@ -38,11 +39,11 @@ import org.gatein.api.organization.User;
  */
 public interface Node<T extends Node<T>> extends GateInObject<T>
 {
-   Iterable<? extends Node> getChildren();
+   IterableResult<? extends Node> getChildren();
 
-   <U extends Node> Iterable<U> getChildren(Query<U> query);
+   <U extends Node> IterableResult<U> getChildren(Query<U> query);
 
-   <U extends Node> Iterable<U> getChildrenWhere(Filter<U> filter);
+   <U extends Node> IterableResult<U> getChildrenWhere(Filter<U> filter);
 
    Node getParent();
 
