@@ -29,6 +29,6 @@ import org.gatein.api.GateInObject;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Content<T extends Content<T>> extends GateInObject<T>
+public interface Content<T> extends GateInObject<T>
 {
 }

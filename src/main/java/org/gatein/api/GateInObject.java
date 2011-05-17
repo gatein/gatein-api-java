@@ -29,7 +29,7 @@ import org.gatein.api.id.Id;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface GateInObject<T extends GateInObject<T>>
+public interface GateInObject<T>
 {
    Id<T> getId();
 

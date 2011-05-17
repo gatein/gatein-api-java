@@ -32,7 +32,7 @@ import org.gatein.api.id.Id;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public class ManagedContent<T extends Content<T>> implements GateInObject<ManagedContent<T>>
+public class ManagedContent<T extends Content> implements GateInObject<ManagedContent<T>>
 {
    private final Id<ManagedContent<T>> id;
    private final Content<T> content;

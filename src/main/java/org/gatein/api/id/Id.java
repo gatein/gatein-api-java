@@ -23,7 +23,6 @@
 
 package org.gatein.api.id;
 
-import org.gatein.api.GateInObject;
 import org.gatein.api.ParameterValidation;
 
 import java.util.Arrays;
@@ -32,7 +31,7 @@ import java.util.Arrays;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public abstract class Id<T extends GateInObject> implements Comparable<Id>
+public abstract class Id<T> implements Comparable<Id>
 {
    private final Context originalContext;
 
@@ -52,7 +51,7 @@ public abstract class Id<T extends GateInObject> implements Comparable<Id>
       return originalContext.toString(this);
    }
 
-   public static <T extends GateInObject> Id<T> create(Context context, String rootComponent, String... additionalComponents)
+   public static <T> Id<T> create(Context context, String rootComponent, String... additionalComponents)
    {
       ParameterValidation.throwIllegalArgExceptionIfNull(context, "Context");
       ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(rootComponent, "root component", null);
@@ -60,7 +59,7 @@ public abstract class Id<T extends GateInObject> implements Comparable<Id>
       return internalCreate(context, true, rootComponent, additionalComponents);
    }
 
-   private static <T extends GateInObject> Id<T> internalCreate(Context context, final boolean revalidate, String rootComponent, String... additionalComponents)
+   private static <T> Id<T> internalCreate(Context context, final boolean revalidate, String rootComponent, String... additionalComponents)
    {
       if (ParameterValidation.existsAndIsNotEmpty(additionalComponents))
       {
@@ -95,7 +94,7 @@ public abstract class Id<T extends GateInObject> implements Comparable<Id>
       }
    }
 
-   private static <T extends GateInObject> Id<T> internalCreate(Context context, final boolean revalidate, String... components)
+   private static <T> Id<T> internalCreate(Context context, final boolean revalidate, String... components)
    {
       if (ParameterValidation.existsAndIsNotEmpty(components))
       {
@@ -200,7 +199,7 @@ public abstract class Id<T extends GateInObject> implements Comparable<Id>
 
    public abstract String getRootComponent();
 
-   private static class SimpleId<T extends GateInObject> extends Id<T>
+   private static class SimpleId<T> extends Id<T>
    {
       private final String root;
 
@@ -249,7 +248,7 @@ public abstract class Id<T extends GateInObject> implements Comparable<Id>
       }
    }
 
-   private static class ComplexId<T extends GateInObject> extends Id<T>
+   private static class ComplexId<T> extends Id<T>
    {
       private final String[] components;
 
