@@ -62,7 +62,7 @@ public class ContentTestCase
    @Test(enabled = false)
    public void getOrCreateInexistentCategoryShouldCreateANewCategory()
    {
-      assert portal.getContentRegistry().getCategory("inexistent") != null;
+      assert portal.getContentRegistry().getOrCreateCategory("inexistent") != null;
    }
 
    @Test(enabled = false)
