@@ -15,8 +15,6 @@ GateIn API choices:
 
 - Use Java RuntimeExceptions whenever possible (KISS) and create a minimal number of RuntimeException descendants when needed. Leave it up to the message to provide details. Possibly create a root exception to factorize code (OO).
 
-- Use the get*(String name, String createIfInexistent) pattern (P) instead of get + create methods. Implementation should throw an exception when trying to create an already existing object. This simplifies the API (KISS).
-
 - Avoid as much as possible *Registry objects (OO) that take over responsibilities that should be left up to other objects.
 
 - Avoid hardcoding particulars of current implementation. In particular, the API should be generic enough to handle all kinds of applications (portlet, gadget, wsrp, etc) without having to make special cases for them at the interface level. (KISS, DRY, OO).
