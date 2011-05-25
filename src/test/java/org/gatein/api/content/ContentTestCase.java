@@ -115,6 +115,7 @@ public class ContentTestCase
       if (!page.hasChild(windowName))
       {
          window = page.createChild(windowName, Window.class);
+         assert window != null;
       }
       else
       {
