@@ -54,6 +54,11 @@ public class Query<T>
          return this;
       }
 
+      public QueryBuilder<T> startAt(int firstItem)
+      {
+         return this;
+      }
+
       public Query<T> build()
       {
          return null;
