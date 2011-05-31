@@ -60,7 +60,7 @@ public class Nodes
       }
    }
 
-   public static Node get(Id id)
+   public static <T extends Node<T>> T get(Id<T> id)
    {
       return null;
    }
