@@ -40,6 +40,6 @@ public class NodesTestCase
    @BeforeMethod
    protected void setUp() throws Exception
    {
-      groupId = Ids.getGroupId("platform", "administrators");
+      groupId = Ids.groupId("platform", "administrators");
    }
 }

@@ -60,7 +60,7 @@ public class Ids
    private static final String USER_COMPONENT_NAME = "userName";
    public final static Context USER = Context.builder().requiredComponent(USER_COMPONENT_NAME, User.class, USER_NAME_PATTERN).build();
 
-   public static Id<User> getUserId(String userId)
+   public static Id<User> userId(String userId)
    {
       return Id.create(USER, userId);
    }
@@ -69,7 +69,7 @@ public class Ids
    public final static Context GROUP = Context.builder().withDefaultSeparator("/")
       .requiredUnboundedHierarchicalComponent("root", Group.class, GROUP_PATTERN).build();
 
-   public static Id<Group> getGroupId(String root, String... children)
+   public static Id<Group> groupId(String root, String... children)
    {
       return Id.create(GROUP, root, children);
    }
@@ -77,12 +77,12 @@ public class Ids
    public final static Context CONTAINER = Context.builder().withDefaultSeparator("#")
       .requiredComponent("container", PortalContainer.class, Pattern.compile("[a-z0-9]*")).build();
 
-   public static Id<PortalContainer> getContainerId(String containerName)
+   public static Id<PortalContainer> containerId(String containerName)
    {
       return Id.create(CONTAINER, containerName);
    }
 
-   public static Id<Portal> getPortalId(String containerName, String portalName)
+   public static Id<Portal> portalId(String containerName, String portalName)
    {
       return Id.create(PORTLET, containerName, portalName);
    }
@@ -91,7 +91,7 @@ public class Ids
       .requiredComponent("applicationName", Application.class, Pattern.compile(".*"))
       .requiredComponent("portletName", GateInObject.class, Pattern.compile(".*")).build();
 
-   public static Id<Application> getApplicationId(String applicationName, String portletName)
+   public static Id<Application> applicationId(String applicationName, String portletName)
    {
       return Id.create(APPLICATION, applicationName, portletName);
    }
@@ -100,7 +100,7 @@ public class Ids
       .requiredComponent("invokerId", GateInObject.class, Pattern.compile(".*"))
       .requiredComponent("portletId", GateInObject.class, Pattern.compile(".*")).build();
 
-   public static Id<Content> getWSRPPortletId(String invoker, String portlet)
+   public static Id<Content> wsrpPortletId(String invoker, String portlet)
    {
       return Id.create(WSRP, invoker, portlet);
    }
@@ -111,7 +111,7 @@ public class Ids
       .withDefaultSeparator("_m:").build();
    private static long counter = 0;
 
-   public static <T extends Content<T>> Id<ManagedContent<T>> getManagedContentId(Id<T> contentId)
+   public static <T extends Content<T>> Id<ManagedContent<T>> managedContentId(Id<T> contentId)
    {
       return Id.getIdForChild(contentId, Long.toString(counter++));
    }

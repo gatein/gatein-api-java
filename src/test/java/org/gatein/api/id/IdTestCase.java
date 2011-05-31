@@ -100,7 +100,7 @@ public class IdTestCase
    @Test
    public void testRoundtripParsingWithHierarchicalComponents()
    {
-      final Id<Group> id = Ids.getGroupId("root", "1", "2", "3", "4");
+      final Id<Group> id = Ids.groupId("root", "1", "2", "3", "4");
       assert id.equals(Id.parse(id.getOriginalContext(), id.toString()));
    }
 

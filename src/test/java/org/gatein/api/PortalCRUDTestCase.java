@@ -66,7 +66,7 @@ public class PortalCRUDTestCase
 
       PortalContainer container = GateIn.getPortalContainer("container");
       Portal portal = container.createPortal("portal");
-      assert Ids.getPortalId("container", "portal").equals(portal.getId());
+      assert Ids.portalId("container", "portal").equals(portal.getId());
       assert "portal".equals(portal.getName());
       assert portal.getContentRegistry() != null;
    }

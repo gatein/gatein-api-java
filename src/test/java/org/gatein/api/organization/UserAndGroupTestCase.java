@@ -41,7 +41,7 @@ public class UserAndGroupTestCase
    @BeforeTest
    public void setUp()
    {
-      id = Ids.getUserId("root");
+      id = Ids.userId("root");
       root = Users.get(id);
    }
 
@@ -55,7 +55,7 @@ public class UserAndGroupTestCase
    @Test(enabled = false)
    public void membershipsShouldMatch()
    {
-      Id<Group> groupId = Ids.getGroupId("platform", "administrators");
+      Id<Group> groupId = Ids.groupId("platform", "administrators");
       final Group adminGroup = root.getGroup(groupId);
       assert adminGroup.equals(Groups.get(groupId));
       assert Groups.isUserMemberOf(root.getId(), groupId);

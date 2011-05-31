@@ -127,7 +127,7 @@ public class ContentTestCase
 
       ContentRegistry registry = portal.getContentRegistry();
 
-      Id<Application> applicationId = Ids.getApplicationId("application", "portlet");
+      Id<Application> applicationId = Ids.applicationId("application", "portlet");
       window.setContent(applicationId);
 
       Application application = registry.getContent(applicationId);
@@ -148,7 +148,7 @@ public class ContentTestCase
       ContentRegistry registry = portal.getContentRegistry();
       final Category category = registry.getOrCreateCategory("category");
 
-      Id<Application> id = Ids.getApplicationId("application", "portlet");
+      Id<Application> id = Ids.applicationId("application", "portlet");
       List<Id<? extends ManagedContent>> knownContentIds = category.getKnownManagedContentIds();
       assert !knownContentIds.contains(id) : "A category doesn't contain content directly.";
       ManagedContent<Application> managed = category.addContent(id);
@@ -156,7 +156,7 @@ public class ContentTestCase
       assert category.contains(managed.getId());
       assert knownContentIds.contains(managed.getId());
 
-      Id<Content> wsrp = Ids.getWSRPPortletId("invoker", "portlet");
+      Id<Content> wsrp = Ids.wsrpPortletId("invoker", "portlet");
       ManagedContent<? extends Content> managedWSRP = category.addContent(wsrp);
       assert managedWSRP != null;
       assert category.contains(managedWSRP.getId());
@@ -170,7 +170,7 @@ public class ContentTestCase
       ContentRegistry registry = portal.getContentRegistry();
       final Category category = registry.getOrCreateCategory("category");
 
-      Application application = registry.getDeployedApplication(Ids.getApplicationId("application", "portlet"));
+      Application application = registry.getDeployedApplication(Ids.applicationId("application", "portlet"));
       assert application.getName().equals(application.getDisplayName());
 
       Id<Application> id = application.getId();

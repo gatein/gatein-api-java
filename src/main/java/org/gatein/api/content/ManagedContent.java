@@ -42,7 +42,7 @@ public class ManagedContent<T extends Content> implements GateInObject<ManagedCo
    public ManagedContent(Content<T> content)
    {
       ParameterValidation.throwIllegalArgExceptionIfNull(content, "Content");
-      this.id = Ids.getManagedContentId(content.getId());
+      this.id = Ids.managedContentId(content.getId());
       this.content = content;
    }
 

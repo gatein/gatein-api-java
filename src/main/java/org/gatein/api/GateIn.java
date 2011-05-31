@@ -41,7 +41,7 @@ public class GateIn
 
    public static PortalContainer getPortalContainer(String containerName)
    {
-      return portalContainers.get(Ids.getContainerId(containerName));
+      return portalContainers.get(Ids.containerId(containerName));
    }
 
    public static Portal getPortal(String containerName, String portalName)

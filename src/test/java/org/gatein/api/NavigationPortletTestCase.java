@@ -50,12 +50,12 @@ public class NavigationPortletTestCase
    @Test(enabled = false)
    public void shouldListGroupPages()
    {
-      Id<User> id = Ids.getUserId("root");
+      Id<User> id = Ids.userId("root");
       User root = Users.get(id);
 
       IterableResult<Group> rootGroups = root.getGroups();
 
-      Id<Group> groupId = Ids.getGroupId("platform", "administrators");
+      Id<Group> groupId = Ids.groupId("platform", "administrators");
       final Group adminGroup = root.getGroup(groupId);
       assert rootGroups.contains(adminGroup);
 
@@ -77,17 +77,17 @@ public class NavigationPortletTestCase
       assert !iterator.hasNext();
 
 
-      Group executiveGroup = Groups.get(Ids.getGroupId("organization", "management", "executive-board"));
+      Group executiveGroup = Groups.get(Ids.groupId("organization", "management", "executive-board"));
       assert rootGroups.contains(executiveGroup);
 
-      Group userGroup = Groups.get(Ids.getGroupId("platform", "users"));
+      Group userGroup = Groups.get(Ids.groupId("platform", "users"));
       assert rootGroups.contains(userGroup);
    }
 
    @Test(enabled = false)
    public void shouldListSitePages()
    {
-      Id<User> id = Ids.getUserId("root");
+      Id<User> id = Ids.userId("root");
       final User root = Users.get(id);
 
       // from user
@@ -129,7 +129,7 @@ public class NavigationPortletTestCase
    @Test(enabled = false)
    public void shouldListDashboardPages()
    {
-      Id<User> id = Ids.getUserId("root");
+      Id<User> id = Ids.userId("root");
       final User root = Users.get(id);
 
       Filter<Dashboard> filter = new Filter<Dashboard>()
