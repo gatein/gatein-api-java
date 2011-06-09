@@ -26,12 +26,9 @@ package org.gatein.api.content;
 import org.gatein.api.Filter;
 import org.gatein.api.Ids;
 import org.gatein.api.IterableResult;
-import org.gatein.api.Permissions;
 import org.gatein.api.Portal;
 import org.gatein.api.Query;
 import org.gatein.api.id.Id;
-import org.gatein.api.navigation.Page;
-import org.gatein.api.navigation.Window;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -62,83 +59,6 @@ public class ContentTestCase
    public void getOrCreateInexistentCategoryShouldCreateANewCategory()
    {
       assert portal.getContentRegistry().getOrCreateCategory("inexistent") != null;
-   }
-
-   @Test(enabled = false)
-   public void assigningContentToAWindowOnAPage()
-   {
-      /**
-       * <name>wsrpConfiguration</name>
-       <title>WSRP Admin</title>
-       <access-permissions>manager:/platform/administrators</access-permissions>
-       <edit-permission>manager:/platform/administrators</edit-permission>
-       <portlet-application>
-       <portlet>
-       <application-ref>wsrp-admin-gui</application-ref>
-       <portlet-ref>WSRPConfigurationPortlet</portlet-ref>
-       </portlet>
-       <title>WSRP Admin</title>
-       <access-permissions>manager:/platform/administrators</access-permissions>
-       <show-info-bar>false</show-info-bar>
-       </portlet-application>
-       */
-
-      Page page;
-      String pageName = "page";
-      if (!portal.hasChild(pageName))
-      {
-         page = portal.createChild(pageName, Page.class);
-         assert page != null;
-      }
-      else
-      {
-         page = portal.getChild(pageName, Page.class);
-      }
-
-      // an exception should be thrown if child already exists
-      // todo: decide if the exception should be more specific or not
-      try
-      {
-         page = portal.createChild(pageName, Page.class);
-      }
-      catch (IllegalArgumentException e)
-      {
-         // expected
-      }
-
-      page.addPermission(Permissions.ADMINISTRATOR_ACCESS);
-      page.addPermission(Permissions.ADMINISTRATOR_EDIT);
-
-      Window window;
-      String windowName = "window";
-      if (!page.hasChild(windowName))
-      {
-         window = page.createChild(windowName, Window.class);
-         assert window != null;
-      }
-      else
-      {
-         window = page.getChild(windowName, Window.class);
-      }
-      assert window != null;
-
-      window.addPermission(Permissions.ADMINISTRATOR_ACCESS);
-
-      ContentRegistry registry = portal.getContentRegistry();
-
-      Id<Application> applicationId = Ids.applicationId("application", "portlet");
-      window.setContent(applicationId);
-
-      Application application = registry.getContent(applicationId);
-      assert application != null;
-      assert application.equals(window.getContent());
-
-      String title = "title";
-      window.setTitle(title);
-      assert title.equals(window.getTitle());
-
-      window.setProperty(Window.SHOW_INFO_BAR, false);
-      assert !window.getProperty(Window.SHOW_INFO_BAR);
    }
 
    @Test(enabled = false)

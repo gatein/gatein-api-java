@@ -28,7 +28,6 @@ import org.gatein.api.navigation.Dashboard;
 import org.gatein.api.navigation.Node;
 import org.gatein.api.navigation.Nodes;
 import org.gatein.api.navigation.Page;
-import org.gatein.api.navigation.Window;
 import org.testng.annotations.Test;
 
 import java.util.Iterator;
@@ -42,24 +41,27 @@ public class NavigationPortletTestCase
    @Test(enabled = false)
    public void shouldListGroupPages()
    {
-      Id id = Ids.userId("root");
       Id groupId = Ids.groupId("platform", "administrators");
 
       IterableResult<Node> adminNodes = Nodes.getWhere(new Nodes.GroupNodeFilter(groupId));
+      assert 2 == adminNodes.size();
       Iterator<Node> iterator = adminNodes.iterator();
+
       Node administrationNode = iterator.next();
       assert "Administration".equals(administrationNode.getDisplayName());
       assert 2 == administrationNode.getChildrenNumber();
-      assert 2 == adminNodes.size();
+      IterableResult<? extends Node> children = administrationNode.getChildren();
+      for (Node child : children)
+      {
+         assert child.equals(administrationNode.getChild(child.getName(), child.getClass()));
+         assert child.equals(Nodes.get(child.getId()));
+      }
+
       Node<?> wsrp = iterator.next();
       assert "WSRP".equals(wsrp.getDisplayName());
       assert wsrp instanceof Page;
-      Page wsrpPage = (Page)wsrp;
       assert 1 == wsrp.getChildrenNumber();
-      Node wsrpWindow = wsrp.getChildren().iterator().next();
-      assert wsrpWindow instanceof Window;
-      assert wsrpWindow.equals(wsrpPage.getChild(wsrpWindow.getName(), Window.class));
-      assert wsrpWindow.equals(Nodes.get(wsrpWindow.getId()));
+
       assert !iterator.hasNext();
    }
 
