@@ -68,6 +68,11 @@ public class Nodes
       return null;
    }
 
+   public static <T extends Node> IterableResult<T> getForUser(Id userId, Node.Type<T> type)
+   {
+      return null;
+   }
+
    public static class GroupNodeFilter extends Filter<Node>
    {
       private final Id group;

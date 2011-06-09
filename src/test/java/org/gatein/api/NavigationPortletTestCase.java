@@ -24,7 +24,6 @@
 package org.gatein.api;
 
 import org.gatein.api.id.Id;
-import org.gatein.api.navigation.Dashboard;
 import org.gatein.api.navigation.Node;
 import org.gatein.api.navigation.Nodes;
 import org.gatein.api.navigation.Page;
@@ -70,8 +69,19 @@ public class NavigationPortletTestCase
    {
       final Id id = Ids.userId("root");
 
-      // from Nodes
-      IterableResult<Portal> fromNodes = Nodes.getForUser(id, Portal.class);
+      // with a Query
+      IterableResult<Portal> fromNodes = Nodes.get(Query.<Portal>builder().where(new Filter<Portal>()
+      {
+         @Override
+         public boolean accept(Portal item)
+         {
+            return item.accessAllowedFromUser(id, Permission.Type.ACCESS);
+         }
+      }).build());
+
+      // with getForUser using type
+      IterableResult<Portal> forUser = Nodes.getForUser(id, Node.Type.SITE);
+      assert fromNodes.equals(forUser);
 
       for (Portal portal : fromNodes)
       {
@@ -91,19 +101,19 @@ public class NavigationPortletTestCase
    {
       final Id id = Ids.userId("root");
 
-      Filter<Dashboard> filter = new Filter<Dashboard>()
+      Filter<Node> filter = new Filter<Node>()
       {
-         public boolean accept(Dashboard item)
+         public boolean accept(Node item)
          {
-            return item.accessAllowedFromUser(id, Permission.Type.ACCESS);
+            return item.accessAllowedFromUser(id, Permission.Type.ACCESS) && Node.Type.DASHBOARD.equals(item.getOwnerType());
          }
       };
-      Iterable<Dashboard> nodes = Nodes.getWhere(filter);
-      Dashboard dashboard = Nodes.getSingleOrFail(Query.<Dashboard>builder().where(filter).build());
+      Iterable<Node> nodes = Nodes.getWhere(filter);
+      Node dashboard = Nodes.getSingleOrFail(Query.<Node>builder().where(filter).build());
       assert dashboard.equals(nodes.iterator().next());
 
       // from Nodes
-      Iterable<Dashboard> fromNodes = Nodes.getForUser(id, Dashboard.class);
+      Iterable<Node> fromNodes = Nodes.getForUser(id, Node.Type.DASHBOARD);
       assert nodes.equals(fromNodes);
       assert dashboard.equals(fromNodes.iterator().next());
    }

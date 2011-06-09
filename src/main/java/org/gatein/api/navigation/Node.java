@@ -27,6 +27,7 @@ import org.gatein.api.Filter;
 import org.gatein.api.GateInObject;
 import org.gatein.api.IterableResult;
 import org.gatein.api.Permission;
+import org.gatein.api.Portal;
 import org.gatein.api.PropertyInfo;
 import org.gatein.api.Query;
 import org.gatein.api.id.Id;
@@ -71,4 +72,14 @@ public interface Node<T extends Node<T>> extends GateInObject<T>
    <T extends Node<T>> T createChild(String childName, Class<T> childType);
 
    <T extends Node<T>> T getChild(String childName, Class<T> childType);
+
+   Type<Node<T>> getOwnerType();
+
+   public class Type<U extends Node>
+   {
+      public static final Type<Portal> SITE = new Type<Portal>();
+      public static final Type<Node> DASHBOARD = new Type<Node>();
+      public static final Type<Node> GROUP = new Type<Node>();
+      public static final Type<Node> SELF = new Type<Node>();
+   }
 }
