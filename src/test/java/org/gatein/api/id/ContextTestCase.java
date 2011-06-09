@@ -24,10 +24,11 @@
 package org.gatein.api.id;
 
 import org.gatein.api.GateInObject;
-import org.gatein.api.Ids;
 import org.testng.annotations.Test;
 
 import java.util.regex.Pattern;
+
+import static org.gatein.api.Ids.*;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -35,6 +36,14 @@ import java.util.regex.Pattern;
  */
 public class ContextTestCase
 {
+   private static final Context CONTEXT = Context.builder().withDefaultSeparator("=")
+      .requiredComponent(CONTAINER_COMPONENT_NAME, GateInObject.class, Pattern.compile("container"))
+      .requiredComponent(PORTAL_COMPONENT_NAME, GateInObject.class, Pattern.compile("portal"))
+      .optionalComponent(INVOKER_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*"))
+      .optionalComponent(PORTLET_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*"))
+      .optionalComponent(INSTANCE_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*Instance$"))
+      .ignoreRemainingAfterFirstMissingOptional().build();
+
    @Test
    public void simpleContext()
    {
@@ -48,16 +57,16 @@ public class ContextTestCase
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void testExtraComponents()
    {
-      Ids.PORTLET.validate("container", "portal", "foo", "bar", "barInstance", "unknown");
+      CONTEXT.validate("container", "portal", "foo", "bar", "barInstance", "unknown");
    }
 
    @Test
    public void testPortletCase()
    {
-      Ids.PORTLET.validate("container", "portal");
-      Ids.PORTLET.validate("container", "portal", "foo");
-      Ids.PORTLET.validate("container", "portal", "foo", "bar");
-      Ids.PORTLET.validate("container", "portal", "foo", "bar", "barInstance");
+      CONTEXT.validate("container", "portal");
+      CONTEXT.validate("container", "portal", "foo");
+      CONTEXT.validate("container", "portal", "foo", "bar");
+      CONTEXT.validate("container", "portal", "foo", "bar", "barInstance");
    }
 
    @Test

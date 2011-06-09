@@ -25,7 +25,6 @@ package org.gatein.api.id;
 
 import org.gatein.api.GateInObject;
 import org.gatein.api.Ids;
-import org.gatein.api.PortalContainer;
 import org.gatein.api.organization.Group;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -40,7 +39,13 @@ import static org.gatein.api.Ids.*;
  */
 public class IdTestCase
 {
-   private Context context = Ids.PORTLET;
+   private Context context = Context.builder().withDefaultSeparator("=")
+      .requiredComponent(CONTAINER_COMPONENT_NAME, GateInObject.class, Pattern.compile("container"))
+      .requiredComponent(PORTAL_COMPONENT_NAME, GateInObject.class, Pattern.compile("portal"))
+      .optionalComponent(INVOKER_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*"))
+      .optionalComponent(PORTLET_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*"))
+      .optionalComponent(INSTANCE_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*Instance$"))
+      .ignoreRemainingAfterFirstMissingOptional().build();
 
    private static final String CONTAINER = "container";
    private static final String PORTAL = "portal";
@@ -107,7 +112,7 @@ public class IdTestCase
    @Test
    public void testRootComponent()
    {
-      Id key = Id.create(Context.builder().withDefaultSeparator("-").requiredComponent(CONTAINER_COMPONENT_NAME, PortalContainer.class, Pattern.compile("container")).build(), CONTAINER);
+      Id key = Id.create(Context.builder().withDefaultSeparator("-").requiredComponent(CONTAINER_COMPONENT_NAME, GateInObject.class, Pattern.compile("container")).build(), CONTAINER);
       assert CONTAINER.equals(key.getRootComponent());
 
       key = Id.create(context, CONTAINER, PORTAL, INVOKER, PORTLET, INSTANCE);

@@ -49,10 +49,8 @@ public class Ids
    public static final String INSTANCE_COMPONENT_NAME = "instanceComponent";
 
    public static final Context PORTLET = Context.builder().withDefaultSeparator("=")
-      .requiredComponent(CONTAINER_COMPONENT_NAME, PortalContainer.class, Pattern.compile("container"))
-      .requiredComponent(PORTAL_COMPONENT_NAME, Portal.class, Pattern.compile("portal"))
-      .optionalComponent(INVOKER_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*"))
-      .optionalComponent(PORTLET_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*"))
+      .requiredComponent(INVOKER_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*"))
+      .requiredComponent(PORTLET_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*"))
       .optionalComponent(INSTANCE_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*Instance$"))
       .ignoreRemainingAfterFirstMissingOptional().build();
 
@@ -72,19 +70,6 @@ public class Ids
    public static Id<Group> groupId(String root, String... children)
    {
       return Id.create(GROUP, root, children);
-   }
-
-   public final static Context CONTAINER = Context.builder().withDefaultSeparator("#")
-      .requiredComponent("container", PortalContainer.class, Pattern.compile("[a-z0-9]*")).build();
-
-   public static Id<PortalContainer> containerId(String containerName)
-   {
-      return Id.create(CONTAINER, containerName);
-   }
-
-   public static Id<Portal> portalId(String containerName, String portalName)
-   {
-      return Id.create(PORTLET, containerName, portalName);
    }
 
    public static final Context APPLICATION = Context.builder().withDefaultSeparator("/")
