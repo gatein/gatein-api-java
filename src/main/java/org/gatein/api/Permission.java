@@ -21,30 +21,60 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.organization;
+package org.gatein.api;
 
-import org.gatein.api.IterableResult;
 import org.gatein.api.id.Id;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public class Groups
+public interface Permission
 {
-   public static IterableResult<Group> getForUser(Id<User> userId)
+   Type getType();
+
+   Membership getMembership();
+
+   enum Type
    {
-      return null;
+      ACCESS("ACCESS"), EDIT("EDIT");
+
+      private Type(String name)
+      {
+         this.name = name;
+      }
+
+      String getName()
+      {
+         return name;
+      }
+
+      private final String name;
    }
 
-   public static Group get(Id<Group> groupId)
+   class Membership
    {
-      return null;
-   }
+      private final String role;
+      private final Id group;
 
-   public static boolean isUserMemberOf(Id<User> userId, Id<Group> groupId)
-   {
-      return false;
-   }
+      /** Inject based on portal.administrator.groups and portal.administrator.mstype values as defined in portal conf; */
+      public static final Membership ADMINISTRATOR = null;
 
+
+      String getRole()
+      {
+         return role;
+      }
+
+      Id getGroupId()
+      {
+         return group;
+      }
+
+      public Membership(String role, Id group)
+      {
+         this.role = role;
+         this.group = group;
+      }
+   }
 }

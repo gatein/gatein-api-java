@@ -27,8 +27,6 @@ import org.gatein.api.Filter;
 import org.gatein.api.IterableResult;
 import org.gatein.api.Query;
 import org.gatein.api.id.Id;
-import org.gatein.api.organization.Group;
-import org.gatein.api.organization.User;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -65,16 +63,16 @@ public class Nodes
       return null;
    }
 
-   public static <T extends Node> IterableResult<T> getForUser(Id<User> userId, Class<T> nodeClass)
+   public static <T extends Node> IterableResult<T> getForUser(Id userId, Class<T> nodeClass)
    {
       return null;
    }
 
    public static class GroupNodeFilter extends Filter<Node>
    {
-      private final Id<Group> group;
+      private final Id group;
 
-      public GroupNodeFilter(Id<Group> groupId)
+      public GroupNodeFilter(Id groupId)
       {
          this.group = groupId;
       }

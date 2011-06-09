@@ -26,12 +26,10 @@ package org.gatein.api.navigation;
 import org.gatein.api.Filter;
 import org.gatein.api.GateInObject;
 import org.gatein.api.IterableResult;
+import org.gatein.api.Permission;
 import org.gatein.api.PropertyInfo;
 import org.gatein.api.Query;
 import org.gatein.api.id.Id;
-import org.gatein.api.organization.Group;
-import org.gatein.api.organization.Permission;
-import org.gatein.api.organization.User;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -47,9 +45,7 @@ public interface Node<T extends Node<T>> extends GateInObject<T>
 
    Node getParent();
 
-   boolean accessAllowedFrom(Group group, Permission.Type operation);
-
-   boolean accessAllowedFrom(User user, Permission.Type operation);
+   boolean accessAllowedFromUser(Id userId, Permission.Type operation);
 
    boolean hasOwner(Id ownerId);
 

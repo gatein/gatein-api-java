@@ -28,8 +28,6 @@ import org.gatein.api.content.Content;
 import org.gatein.api.content.ManagedContent;
 import org.gatein.api.id.Context;
 import org.gatein.api.id.Id;
-import org.gatein.api.organization.Group;
-import org.gatein.api.organization.User;
 
 import java.util.regex.Pattern;
 
@@ -56,18 +54,18 @@ public class Ids
 
    private static final Pattern USER_NAME_PATTERN = Pattern.compile(".*");
    private static final String USER_COMPONENT_NAME = "userName";
-   public final static Context USER = Context.builder().requiredComponent(USER_COMPONENT_NAME, User.class, USER_NAME_PATTERN).build();
+   public final static Context USER = Context.builder().requiredComponent(USER_COMPONENT_NAME, GateInObject.class, USER_NAME_PATTERN).build();
 
-   public static Id<User> userId(String userId)
+   public static Id userId(String userId)
    {
       return Id.create(USER, userId);
    }
 
    private static final Pattern GROUP_PATTERN = Pattern.compile(".*");
    public final static Context GROUP = Context.builder().withDefaultSeparator("/")
-      .requiredUnboundedHierarchicalComponent("root", Group.class, GROUP_PATTERN).build();
+      .requiredUnboundedHierarchicalComponent("root", GateInObject.class, GROUP_PATTERN).build();
 
-   public static Id<Group> groupId(String root, String... children)
+   public static Id groupId(String root, String... children)
    {
       return Id.create(GROUP, root, children);
    }

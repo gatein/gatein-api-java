@@ -25,7 +25,6 @@ package org.gatein.api.id;
 
 import org.gatein.api.GateInObject;
 import org.gatein.api.Ids;
-import org.gatein.api.organization.Group;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -105,7 +104,7 @@ public class IdTestCase
    @Test
    public void testRoundtripParsingWithHierarchicalComponents()
    {
-      final Id<Group> id = Ids.groupId("root", "1", "2", "3", "4");
+      final Id id = Ids.groupId("root", "1", "2", "3", "4");
       assert id.equals(Id.parse(id.getOriginalContext(), id.toString()));
    }
 

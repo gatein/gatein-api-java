@@ -29,11 +29,6 @@ import org.gatein.api.navigation.Node;
 import org.gatein.api.navigation.Nodes;
 import org.gatein.api.navigation.Page;
 import org.gatein.api.navigation.Window;
-import org.gatein.api.organization.Group;
-import org.gatein.api.organization.Groups;
-import org.gatein.api.organization.Permission;
-import org.gatein.api.organization.User;
-import org.gatein.api.organization.Users;
 import org.testng.annotations.Test;
 
 import java.util.Iterator;
@@ -47,14 +42,8 @@ public class NavigationPortletTestCase
    @Test(enabled = false)
    public void shouldListGroupPages()
    {
-      Id<User> id = Ids.userId("root");
-      User root = Users.get(id);
-
-      IterableResult<Group> rootGroups = root.getGroups();
-
-      Id<Group> groupId = Ids.groupId("platform", "administrators");
-      final Group adminGroup = root.getGroup(groupId);
-      assert rootGroups.contains(adminGroup);
+      Id id = Ids.userId("root");
+      Id groupId = Ids.groupId("platform", "administrators");
 
       IterableResult<Node> adminNodes = Nodes.getWhere(new Nodes.GroupNodeFilter(groupId));
       Iterator<Node> iterator = adminNodes.iterator();
@@ -72,35 +61,23 @@ public class NavigationPortletTestCase
       assert wsrpWindow.equals(wsrpPage.getChild(wsrpWindow.getName(), Window.class));
       assert wsrpWindow.equals(Nodes.get(wsrpWindow.getId()));
       assert !iterator.hasNext();
-
-
-      Group executiveGroup = Groups.get(Ids.groupId("organization", "management", "executive-board"));
-      assert rootGroups.contains(executiveGroup);
-
-      Group userGroup = Groups.get(Ids.groupId("platform", "users"));
-      assert rootGroups.contains(userGroup);
    }
 
    @Test(enabled = false)
    public void shouldListSitePages()
    {
-      Id<User> id = Ids.userId("root");
-      final User root = Users.get(id);
-
-      // from user
-      IterableResult<Portal> portals = root.getPortals();
+      final Id id = Ids.userId("root");
 
       // from Nodes
-      IterableResult<Portal> fromNodes = Nodes.getForUser(root.getId(), Portal.class);
-      assert portals.equals(fromNodes);
+      IterableResult<Portal> fromNodes = Nodes.getForUser(id, Portal.class);
 
-      for (Portal portal : portals)
+      for (Portal portal : fromNodes)
       {
          portal.getChildrenWhere(new Filter<Node>()
          {
             public boolean accept(Node item)
             {
-               return item.accessAllowedFrom(root, Permission.Type.ACCESS);
+               return item.accessAllowedFromUser(id, Permission.Type.ACCESS);
             }
          });
          // then display
@@ -110,14 +87,13 @@ public class NavigationPortletTestCase
    @Test(enabled = false)
    public void shouldListDashboardPages()
    {
-      Id<User> id = Ids.userId("root");
-      final User root = Users.get(id);
+      final Id id = Ids.userId("root");
 
       Filter<Dashboard> filter = new Filter<Dashboard>()
       {
          public boolean accept(Dashboard item)
          {
-            return item.accessAllowedFrom(root, Permission.Type.ACCESS);
+            return item.accessAllowedFromUser(id, Permission.Type.ACCESS);
          }
       };
       Iterable<Dashboard> nodes = Nodes.getWhere(filter);
@@ -125,7 +101,7 @@ public class NavigationPortletTestCase
       assert dashboard.equals(nodes.iterator().next());
 
       // from Nodes
-      Iterable<Dashboard> fromNodes = Nodes.getForUser(root.getId(), Dashboard.class);
+      Iterable<Dashboard> fromNodes = Nodes.getForUser(id, Dashboard.class);
       assert nodes.equals(fromNodes);
       assert dashboard.equals(fromNodes.iterator().next());
    }
