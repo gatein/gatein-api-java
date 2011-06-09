@@ -36,10 +36,7 @@ import org.gatein.api.organization.User;
 import org.gatein.api.organization.Users;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -92,22 +89,6 @@ public class NavigationPortletTestCase
 
       // from user
       IterableResult<Portal> portals = root.getPortals();
-
-      // from container
-      Collection<PortalContainer> containers = GateIn.getPortalContainers();
-      List<Portal> fromContainers = new ArrayList<Portal>();
-      for (PortalContainer container : containers)
-      {
-         Collection<Portal> userPortals = container.get(new Filter<Portal>()
-         {
-            public boolean accept(Portal item)
-            {
-               return item.accessAllowedFrom(root, Permission.Type.ACCESS);
-            }
-         });
-         fromContainers.addAll(userPortals);
-      }
-      assert portals.equals(fromContainers);
 
       // from Nodes
       IterableResult<Portal> fromNodes = Nodes.getForUser(root.getId(), Portal.class);

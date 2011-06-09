@@ -24,7 +24,6 @@
 package org.gatein.api.content;
 
 import org.gatein.api.Filter;
-import org.gatein.api.GateIn;
 import org.gatein.api.Ids;
 import org.gatein.api.IterableResult;
 import org.gatein.api.Portal;
@@ -50,7 +49,7 @@ public class ContentTestCase
    @BeforeTest
    public void setUp()
    {
-      portal = GateIn.getPortal("container", "portal");
+      // get portal from CDI?
    }
 
    @Test(enabled = false)

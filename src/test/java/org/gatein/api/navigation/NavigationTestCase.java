@@ -23,7 +23,6 @@
 
 package org.gatein.api.navigation;
 
-import org.gatein.api.GateIn;
 import org.gatein.api.Portal;
 import org.testng.annotations.Test;
 
@@ -36,7 +35,7 @@ public class NavigationTestCase
    @Test(enabled = false)
    public void creatingASimplePage()
    {
-      Portal portal = GateIn.getPortal("container", "portal");
+      Portal portal = null; // get the portal somehow, from CDI would be good!
 
       String name = "name", title = "title";
       Page page = portal.createChild(name, Page.class);
