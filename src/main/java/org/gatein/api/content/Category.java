@@ -45,4 +45,6 @@ public interface Category extends GateInObject<Category>
    String getDescription();
 
    void setDescription(String description);
+
+   <T extends Content<T>> void removeContent(Id<ManagedContent<T>> id);
 }

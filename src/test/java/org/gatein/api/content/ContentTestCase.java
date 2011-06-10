@@ -153,4 +153,19 @@ public class ContentTestCase
       assert gadget.equals(managedContent.getContent());
       assert managedContent.equals(category.getContent(managedContent.getId()));
    }
+
+   @Test(enabled = false)
+   public void removeContentFromCategory()
+   {
+      ContentRegistry registry = portal.getContentRegistry();
+      Category category = registry.getOrCreateCategory("category");
+
+      Id<Application> id = Ids.applicationId("application", "portlet");
+      Application application = registry.getContent(id);
+      ManagedContent<Application> managed = category.addContent(id);
+      assert category.contains(managed.getId());
+
+      category.removeContent(managed.getId());
+      assert !category.contains(managed.getId());
+   }
 }
