@@ -41,7 +41,5 @@ public interface ContentRegistry
 
    <T extends Content<T>> IterableResult<Id<T>> getKnownContentIds();
 
-   Application getDeployedApplication(Id<Application> id);
-
    IterableResult<ManagedContent> getManagedContents(Query<ManagedContent> query);
 }

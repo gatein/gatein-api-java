@@ -91,7 +91,7 @@ public class ContentTestCase
       ContentRegistry registry = portal.getContentRegistry();
       final Category category = registry.getOrCreateCategory("category");
 
-      Application application = registry.getDeployedApplication(Ids.applicationId("application", "portlet"));
+      Application application = registry.getContent(Ids.applicationId("application", "portlet"));
       assert application.getName().equals(application.getDisplayName());
 
       Id<Application> id = application.getId();
