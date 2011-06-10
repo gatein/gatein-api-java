@@ -33,6 +33,9 @@ import org.gatein.api.id.Id;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Comparator;
 import java.util.List;
 
@@ -123,5 +126,31 @@ public class ContentTestCase
 
       managed.setDisplayName("displayName");
       assert "displayName".equals(managed.getDisplayName());
+   }
+
+   @Test(enabled = false)
+   public void assigningAGadgetToACategory() throws URISyntaxException, MalformedURLException
+   {
+      ContentRegistry registry = portal.getContentRegistry();
+      final Category category = registry.getOrCreateCategory("category");
+
+      // from name
+      Id<Gadget> gadgetId = Ids.gadgetId("gadgetName");
+      Gadget gadget = registry.getContent(gadgetId);
+      assert "gadgetName".equals(gadget.getName());
+
+      ManagedContent<Gadget> managedContent = category.addContent(gadgetId);
+      assert managedContent != null;
+      assert gadget.equals(managedContent.getContent());
+      assert managedContent.equals(category.getContent(managedContent.getId()));
+
+      // from URL
+      gadgetId = Ids.gadgetId(new URI("http://foo.bar.com/gadget.xml").toURL());
+      gadget = registry.getContent(gadgetId);
+
+      managedContent = category.addContent(gadgetId);
+      assert managedContent != null;
+      assert gadget.equals(managedContent.getContent());
+      assert managedContent.equals(category.getContent(managedContent.getId()));
    }
 }
