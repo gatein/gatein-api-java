@@ -25,10 +25,12 @@ package org.gatein.api;
 
 import org.gatein.api.content.Application;
 import org.gatein.api.content.Content;
+import org.gatein.api.content.Gadget;
 import org.gatein.api.content.ManagedContent;
 import org.gatein.api.id.Context;
 import org.gatein.api.id.Id;
 
+import java.net.URL;
 import java.util.regex.Pattern;
 
 /**
@@ -97,5 +99,15 @@ public class Ids
    public static <T extends Content<T>> Id<ManagedContent<T>> managedContentId(Id<T> contentId)
    {
       return Id.getIdForChild(contentId, Long.toString(counter++));
+   }
+
+   public static Id<Gadget> gadgetId(String name)
+   {
+      return null; // fix-me
+   }
+
+   public static Id<Gadget> gadgetId(URL url)
+   {
+      return null; // fix-me
    }
 }
