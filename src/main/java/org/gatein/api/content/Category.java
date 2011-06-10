@@ -34,7 +34,7 @@ import java.util.List;
  */
 public interface Category extends GateInObject<Category>
 {
-   <T extends Content<T>> ManagedContent<T> getContent(Id<T> contentId);
+   <T extends Content<T>> ManagedContent<T> getContent(Id<ManagedContent<T>> contentId);
 
    boolean contains(Id<? extends ManagedContent> contentId);
 

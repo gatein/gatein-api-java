@@ -98,7 +98,7 @@ public class ContentTestCase
       ManagedContent<Application> managed = category.addContent(id);
       assert managed != null;
       assert application.equals(managed.getContent());
-      assert managed.equals(category.getContent(id));
+      assert managed.equals(category.getContent(managed.getId()));
 
       IterableResult<ManagedContent> managedContents = registry.getManagedContents(Query.<ManagedContent>builder().where(new Filter<ManagedContent>()
       {
