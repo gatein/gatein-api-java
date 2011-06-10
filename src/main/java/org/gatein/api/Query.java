@@ -59,6 +59,16 @@ public class Query<T>
          return this;
       }
 
+      public QueryBuilder<T> scope(GateInObject root)
+      {
+         return this;
+      }
+
+      public QueryBuilder<T> refine(Query<T> query)
+      {
+         return this;
+      }
+
       public Query<T> build()
       {
          return null;
