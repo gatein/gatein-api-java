@@ -24,6 +24,7 @@
 package org.gatein.api;
 
 import org.gatein.api.id.Id;
+import org.gatein.api.navigation.Node;
 import org.gatein.api.navigation.Site;
 
 /**
@@ -49,4 +50,6 @@ public interface GateIn
    IterableResult<Site> getPortalSites(Id userId);
 
    Site getDashboard(Id userId);
+
+   <T> T get(Id<T> id);
 }

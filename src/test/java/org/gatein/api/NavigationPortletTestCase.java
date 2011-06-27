@@ -26,7 +26,6 @@ package org.gatein.api;
 import org.gatein.api.id.Id;
 import org.gatein.api.navigation.Navigation;
 import org.gatein.api.navigation.Node;
-import org.gatein.api.navigation.Nodes;
 import org.gatein.api.navigation.Page;
 import org.gatein.api.navigation.Site;
 import org.testng.annotations.BeforeTest;
@@ -61,7 +60,7 @@ public class NavigationPortletTestCase
       {
          assert child.equals(administrationNode.getChild(child.getName(), child.getClass()));
          Node<?> target = child.getTarget();
-         assert target.equals(Nodes.get(target.getId()));
+         assert target.equals(gateIn.get(target.getId()));
       }
 
       Navigation wsrp = iterator.next();
