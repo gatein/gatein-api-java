@@ -45,14 +45,7 @@ import java.util.List;
  */
 public class ContentTestCase
 {
-   private Portal portal;
-
-   @BeforeTest
-   public void setUp()
-   {
-      GateIn gateIn = null;
-      portal = gateIn.getDefaultPortal();
-   }
+   private Portal portal = null;
 
    @Test(enabled = false)
    public void getInexistentCategoryShouldReturnNull()

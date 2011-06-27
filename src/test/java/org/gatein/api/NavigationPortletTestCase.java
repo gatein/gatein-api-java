@@ -40,13 +40,7 @@ import java.util.Iterator;
  */
 public class NavigationPortletTestCase
 {
-   private GateIn gateIn;
-
-   @BeforeTest
-   public void setUp()
-   {
-      GateIn gateIn = null;
-   }
+   private GateIn gateIn = null;
 
    @Test(enabled = false)
    public void shouldListSpecificGroupPages()
