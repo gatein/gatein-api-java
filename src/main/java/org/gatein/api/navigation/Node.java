@@ -34,7 +34,7 @@ import org.gatein.api.id.Id;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Node<T extends Node<T>> extends GateInObject<T>, Container<Node<T>>
+public interface Node<T extends Node<T>> extends GateInObject<T>, Container<Node>
 {
 
    Node getParent();
