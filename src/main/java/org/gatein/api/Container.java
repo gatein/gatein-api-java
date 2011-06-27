@@ -23,30 +23,23 @@
 
 package org.gatein.api;
 
-import org.gatein.api.id.Id;
-import org.gatein.api.navigation.Site;
-
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface GateIn
+public interface Container<T>
 {
-   IterableResult<Portal> getPortals();
+   <S extends T> IterableResult<S> getChildren();
 
-   Portal getPortal(Id<Portal> portalId);
+   <U extends T> IterableResult<U> getChildren(Query<U> query);
 
-   Portal getDefaultPortal();
+   <U extends T> IterableResult<U> getChildrenWhere(Filter<U> filter);
 
-   IterableResult<Site> getSites();
+   int getChildrenNumber();
 
-   IterableResult<Site> getGroupSites();
+   boolean hasChild(String childName);
 
-   Site getGroupSite(Id groupId);
+   <S extends T> S createChild(String childName, Class<S> childType);
 
-   IterableResult<Site> getGroupSites(Id userId);
-
-   IterableResult<Site> getPortalSites(Id userId);
-
-   Site getDashboard(Id userId);
+   <S extends T> S getChild(String childName, Class<S> childType);
 }

@@ -24,9 +24,12 @@
 package org.gatein.api;
 
 import org.gatein.api.id.Id;
+import org.gatein.api.navigation.Navigation;
 import org.gatein.api.navigation.Node;
 import org.gatein.api.navigation.Nodes;
 import org.gatein.api.navigation.Page;
+import org.gatein.api.navigation.Site;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.util.Iterator;
@@ -37,31 +40,70 @@ import java.util.Iterator;
  */
 public class NavigationPortletTestCase
 {
+   private GateIn gateIn;
+
+   @BeforeTest
+   public void setUp()
+   {
+      GateIn gateIn = null;
+   }
+
    @Test(enabled = false)
-   public void shouldListGroupPages()
+   public void shouldListSpecificGroupPages()
    {
       Id groupId = Ids.groupId("platform", "administrators");
 
-      IterableResult<Node> adminNodes = Nodes.getWhere(new Nodes.GroupNodeFilter(groupId));
+      Site adminSite = gateIn.getGroupSite(groupId);
+      IterableResult<Navigation> adminNodes = adminSite.getNavigationNodes();
       assert 2 == adminNodes.size();
-      Iterator<Node> iterator = adminNodes.iterator();
 
-      Node administrationNode = iterator.next();
+      Iterator<Navigation> iterator = adminNodes.iterator();
+
+      Navigation administrationNode = iterator.next();
       assert "Administration".equals(administrationNode.getDisplayName());
       assert 2 == administrationNode.getChildrenNumber();
-      IterableResult<? extends Node> children = administrationNode.getChildren();
-      for (Node child : children)
+      IterableResult<Navigation> children = administrationNode.getChildren();
+      for (Navigation child : children)
       {
          assert child.equals(administrationNode.getChild(child.getName(), child.getClass()));
-         assert child.equals(Nodes.get(child.getId()));
+         Node<?> target = child.getTarget();
+         assert target.equals(Nodes.get(target.getId()));
       }
 
-      Node<?> wsrp = iterator.next();
+      Navigation wsrp = iterator.next();
       assert "WSRP".equals(wsrp.getDisplayName());
-      assert wsrp instanceof Page;
+      assert wsrp.getTarget() instanceof Page;
       assert 1 == wsrp.getChildrenNumber();
 
       assert !iterator.hasNext();
+   }
+
+   @Test(enabled = false)
+   public void shouldListGroupPages()
+   {
+      final Id id = Ids.userId("root");
+
+      IterableResult<Site> rootSites = gateIn.getGroupSites(id);
+      assert 3 == rootSites.size();
+
+      Iterator<Site> sites = rootSites.iterator();
+
+      Site site = sites.next();
+      assert "Administrators's pages".equals(site.getDisplayName());
+      assert Site.Type.GROUP.equals(site.getType());
+      assert 2 == site.getNavigationNodes().size();
+
+      site = sites.next();
+      assert "Executive Board's pages".equals(site.getDisplayName());
+      assert Site.Type.GROUP.equals(site.getType());
+      assert 1 == site.getNavigationNodes().size();
+
+      site = sites.next();
+      assert "Users's pages".equals(site.getDisplayName());
+      assert Site.Type.GROUP.equals(site.getType());
+      assert 1 == site.getNavigationNodes().size();
+
+      assert !sites.hasNext();
    }
 
    @Test(enabled = false)
@@ -69,31 +111,15 @@ public class NavigationPortletTestCase
    {
       final Id id = Ids.userId("root");
 
-      // with a Query
-      IterableResult<Portal> fromNodes = Nodes.get(Query.<Portal>builder().where(new Filter<Portal>()
-      {
-         @Override
-         public boolean accept(Portal item)
-         {
-            return item.accessAllowedFromUser(id, Permission.Type.ACCESS);
-         }
-      }).build());
+      IterableResult<Site> portals = gateIn.getPortalSites(id);
+      assert 1 == portals.size();
 
-      // with getForUser using type
-      IterableResult<Portal> forUser = Nodes.getForUser(id, Node.Type.SITE);
-      assert fromNodes.equals(forUser);
+      Iterator<Site> sites = portals.iterator();
 
-      for (Portal portal : fromNodes)
-      {
-         portal.getChildrenWhere(new Filter<Node>()
-         {
-            public boolean accept(Node item)
-            {
-               return item.accessAllowedFromUser(id, Permission.Type.ACCESS);
-            }
-         });
-         // then display
-      }
+      Site site = sites.next();
+      assert "classic".equals(site.getName());
+      IterableResult<Navigation> nodes = site.getNavigationNodes();
+      assert 2 == nodes.size();
    }
 
    @Test(enabled = false)
@@ -101,20 +127,9 @@ public class NavigationPortletTestCase
    {
       final Id id = Ids.userId("root");
 
-      Filter<Node> filter = new Filter<Node>()
-      {
-         public boolean accept(Node item)
-         {
-            return item.accessAllowedFromUser(id, Permission.Type.ACCESS) && Node.Type.DASHBOARD.equals(item.getOwnerType());
-         }
-      };
-      Iterable<Node> nodes = Nodes.getWhere(filter);
-      Node dashboard = Nodes.getSingleOrFail(Query.<Node>builder().where(filter).build());
-      assert dashboard.equals(nodes.iterator().next());
-
-      // from Nodes
-      Iterable<Node> fromNodes = Nodes.getForUser(id, Node.Type.DASHBOARD);
-      assert nodes.equals(fromNodes);
-      assert dashboard.equals(fromNodes.iterator().next());
+      Site dashboard = gateIn.getDashboard(id);
+      IterableResult<Navigation> nodes = dashboard.getNavigationNodes();
+      assert 1 == nodes.size();
+      assert "Dashboard".equals(nodes.iterator().next().getDisplayName());
    }
 }

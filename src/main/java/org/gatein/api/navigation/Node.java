@@ -23,26 +23,19 @@
 
 package org.gatein.api.navigation;
 
-import org.gatein.api.Filter;
+import org.gatein.api.Container;
 import org.gatein.api.GateInObject;
-import org.gatein.api.IterableResult;
 import org.gatein.api.Permission;
 import org.gatein.api.Portal;
 import org.gatein.api.PropertyInfo;
-import org.gatein.api.Query;
 import org.gatein.api.id.Id;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Node<T extends Node<T>> extends GateInObject<T>
+public interface Node<T extends Node<T>> extends GateInObject<T>, Container<Node<T>>
 {
-   IterableResult<? extends Node> getChildren();
-
-   <U extends Node> IterableResult<U> getChildren(Query<U> query);
-
-   <U extends Node> IterableResult<U> getChildrenWhere(Filter<U> filter);
 
    Node getParent();
 
@@ -58,20 +51,12 @@ public interface Node<T extends Node<T>> extends GateInObject<T>
 
    <T> T getProperty(PropertyInfo<T> info);
 
-   int getChildrenNumber();
-
    /**
     * adding permissions only if they don't already exist
     *
     * @param permission
     */
    void addPermission(Permission permission);
-
-   boolean hasChild(String childName);
-
-   <T extends Node<T>> T createChild(String childName, Class<T> childType);
-
-   <T extends Node<T>> T getChild(String childName, Class<T> childType);
 
    Type<Node<T>> getOwnerType();
 

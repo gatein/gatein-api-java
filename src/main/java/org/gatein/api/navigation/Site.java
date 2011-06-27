@@ -21,32 +21,26 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api;
+package org.gatein.api.navigation;
 
-import org.gatein.api.id.Id;
-import org.gatein.api.navigation.Site;
+import org.gatein.api.GateInObject;
+import org.gatein.api.IterableResult;
+import org.gatein.api.Portal;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface GateIn
+public interface Site extends GateInObject<Site>
 {
-   IterableResult<Portal> getPortals();
+   IterableResult<Navigation> getNavigationNodes();
 
-   Portal getPortal(Id<Portal> portalId);
+   <T> Type<T> getType();
 
-   Portal getDefaultPortal();
-
-   IterableResult<Site> getSites();
-
-   IterableResult<Site> getGroupSites();
-
-   Site getGroupSite(Id groupId);
-
-   IterableResult<Site> getGroupSites(Id userId);
-
-   IterableResult<Site> getPortalSites(Id userId);
-
-   Site getDashboard(Id userId);
+   public class Type<U>
+   {
+      public static final Type<Portal> SITE = new Type<Portal>();
+      public static final Type<Navigation> DASHBOARD = new Type<Navigation>();
+      public static final Type<Navigation> GROUP = new Type<Navigation>();
+   }
 }
