@@ -24,13 +24,11 @@
 package org.gatein.api.content;
 
 import org.gatein.api.Filter;
-import org.gatein.api.GateIn;
 import org.gatein.api.Ids;
 import org.gatein.api.IterableResult;
 import org.gatein.api.Portal;
 import org.gatein.api.Query;
 import org.gatein.api.id.Id;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
@@ -145,6 +143,22 @@ public class ContentTestCase
       assert managedContent != null;
       assert gadget.equals(managedContent.getContent());
       assert managedContent.equals(category.getContent(managedContent.getId()));
+   }
+
+   @Test(enabled = false)
+   public void creatingAGadgetFromSource()
+   {
+      ContentRegistry registry = portal.getContentRegistry();
+
+      Gadget gadget = registry.createGadget("gadget", "source");
+      assert Ids.gadgetId("gadget").equals(gadget.getId());
+      assert "source".equals(gadget.getSource());
+
+      assert gadget.getEditURL() != null;
+      assert gadget.getViewURL() != null;
+      assert gadget.getReferenceURL() != null;
+
+      assert gadget.equals(registry.getContent(gadget.getId()));
    }
 
    @Test(enabled = false)

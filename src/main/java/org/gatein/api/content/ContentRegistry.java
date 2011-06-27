@@ -42,4 +42,6 @@ public interface ContentRegistry
    <T extends Content<T>> IterableResult<Id<T>> getKnownContentIds();
 
    IterableResult<ManagedContent> getManagedContents(Query<ManagedContent> query);
+
+   Gadget createGadget(String gadget, String source);
 }
