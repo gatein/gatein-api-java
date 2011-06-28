@@ -25,6 +25,7 @@ package org.gatein.api.navigation;
 
 import org.gatein.api.Container;
 import org.gatein.api.GateInObject;
+import org.gatein.api.Node;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>

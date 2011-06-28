@@ -25,7 +25,6 @@ package org.gatein.api;
 
 import org.gatein.api.id.Id;
 import org.gatein.api.navigation.Navigation;
-import org.gatein.api.navigation.Node;
 import org.gatein.api.navigation.Page;
 import org.gatein.api.navigation.Site;
 import org.testng.annotations.Test;

@@ -24,6 +24,7 @@
 package org.gatein.api.navigation;
 
 import org.gatein.api.IterableResult;
+import org.gatein.api.Node;
 import org.gatein.api.Portal;
 
 /**

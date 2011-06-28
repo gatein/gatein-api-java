@@ -21,11 +21,10 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.navigation;
+package org.gatein.api;
 
-import org.gatein.api.Container;
-import org.gatein.api.GateInObject;
-import org.gatein.api.IterableResult;
+import org.gatein.api.navigation.Navigation;
+import org.gatein.api.navigation.Site;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>

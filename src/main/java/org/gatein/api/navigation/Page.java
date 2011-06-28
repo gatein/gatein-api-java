@@ -23,6 +23,8 @@
 
 package org.gatein.api.navigation;
 
+import org.gatein.api.Node;
+
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
