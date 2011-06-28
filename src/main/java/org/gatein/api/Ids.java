@@ -29,6 +29,7 @@ import org.gatein.api.content.Gadget;
 import org.gatein.api.content.ManagedContent;
 import org.gatein.api.id.Context;
 import org.gatein.api.id.Id;
+import org.gatein.api.navigation.Site;
 
 import java.net.URL;
 import java.util.regex.Pattern;
@@ -112,6 +113,11 @@ public class Ids
    }
 
    public static Id<Portal> portalId(String id)
+   {
+      return null;
+   }
+
+   public static Id<Site> siteId(String siteId)
    {
       return null;
    }

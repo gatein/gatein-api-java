@@ -52,4 +52,6 @@ public interface GateIn
    Site<Page> getDashboard(Id userId);
 
    <T> T get(Id<T> id);
+
+   Site getSite(Id<Site> siteId);
 }

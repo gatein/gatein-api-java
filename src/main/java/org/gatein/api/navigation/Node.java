@@ -25,6 +25,7 @@ package org.gatein.api.navigation;
 
 import org.gatein.api.Container;
 import org.gatein.api.GateInObject;
+import org.gatein.api.IterableResult;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -37,4 +38,8 @@ public interface Node<T extends Node<T>> extends GateInObject<T>, Container<Node
    String getTitle();
 
    void setTitle(String title);
+
+   IterableResult<Navigation> getInboundNavigations();
+
+   Navigation createInboundNavigationIn(Site site, Navigation parent);
 }

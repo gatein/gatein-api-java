@@ -23,7 +23,10 @@
 
 package org.gatein.api.navigation;
 
+import org.gatein.api.GateIn;
+import org.gatein.api.Ids;
 import org.gatein.api.Portal;
+import org.gatein.api.id.Id;
 import org.testng.annotations.Test;
 
 /**
@@ -32,10 +35,12 @@ import org.testng.annotations.Test;
  */
 public class NavigationTestCase
 {
+   private GateIn gateIn = null;
+
    @Test(enabled = false)
    public void creatingASimplePage()
    {
-      Portal portal = null; // get the portal somehow, from CDI would be good!
+      Portal portal = gateIn.getDefaultPortal();
 
       String name = "name", title = "title";
       Page page = portal.createChild(name, Page.class);
@@ -45,5 +50,32 @@ public class NavigationTestCase
 
       page.setTitle(title);
       assert title.equals(page.getTitle());
+   }
+
+   @Test(enabled = false)
+   public void creatingANavigationShouldLinkNavigationAndNode()
+   {
+      Site site = gateIn.getSite(Ids.siteId("site"));
+
+      Id<Portal> classic = Ids.portalId("classic");
+      Portal portal = gateIn.get(classic);
+      assert portal.equals(gateIn.getPortal(classic));
+
+      Page page = portal.getChild("page", Page.class);
+      Id<Page> pageId = page.getId();
+      assert page.equals(gateIn.get(pageId));
+
+      Page sub = page.getChild("sub", Page.class);
+      assert sub.equals(gateIn.get(Id.getIdForChild(pageId, "sub")));
+
+      Navigation navigation = site.createNavigationTo(sub, site);
+      assert sub.equals(navigation.getTarget());
+      assert sub.getInboundNavigations().contains(navigation);
+      assert site.getNavigations().contains(navigation);
+
+      Navigation inboundNavigation = sub.createInboundNavigationIn(site, site);
+      assert sub.equals(inboundNavigation.getTarget());
+      assert sub.getInboundNavigations().contains(inboundNavigation);
+      assert site.getNavigations().contains(inboundNavigation);
    }
 }

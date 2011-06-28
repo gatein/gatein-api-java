@@ -36,6 +36,8 @@ public interface Site<T extends Node<T>> extends Navigation<T>
 
    Type<T> getType();
 
+   Navigation createNavigationTo(Node node, Navigation parent);
+
    public class Type<U>
    {
       public static final Type<Portal> PORTAL = new Type<Portal>();
