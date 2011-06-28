@@ -28,7 +28,6 @@ import org.gatein.api.navigation.Navigation;
 import org.gatein.api.navigation.Node;
 import org.gatein.api.navigation.Page;
 import org.gatein.api.navigation.Site;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.util.Iterator;
@@ -46,7 +45,7 @@ public class NavigationPortletTestCase
    {
       Id groupId = Ids.groupId("platform", "administrators");
 
-      Site adminSite = gateIn.getGroupSite(groupId);
+      Site<Page> adminSite = gateIn.getGroupSite(groupId);
       IterableResult<Navigation> adminNodes = adminSite.getNavigations();
       assert 2 == adminNodes.size();
 
@@ -65,7 +64,8 @@ public class NavigationPortletTestCase
 
       Navigation wsrp = iterator.next();
       assert "WSRP".equals(wsrp.getDisplayName());
-      assert wsrp.getTarget() instanceof Page;
+      Node<?> target = wsrp.getTarget();
+      assert target instanceof Page;
       assert 1 == wsrp.getChildrenNumber();
 
       assert !iterator.hasNext();
@@ -76,27 +76,16 @@ public class NavigationPortletTestCase
    {
       final Id id = Ids.userId("root");
 
-      IterableResult<Site> rootSites = gateIn.getGroupSites(id);
+      IterableResult<Site<Page>> rootSites = gateIn.getGroupSites(id);
       assert 3 == rootSites.size();
 
-      Iterator<Site> sites = rootSites.iterator();
-
-      Site site = sites.next();
-      assert "Administrators's pages".equals(site.getDisplayName());
-      assert Site.Type.GROUP.equals(site.getType());
-      assert 2 == site.getNavigations().size();
-
-      site = sites.next();
-      assert "Executive Board's pages".equals(site.getDisplayName());
-      assert Site.Type.GROUP.equals(site.getType());
-      assert 1 == site.getNavigations().size();
-
-      site = sites.next();
-      assert "Users's pages".equals(site.getDisplayName());
-      assert Site.Type.GROUP.equals(site.getType());
-      assert 1 == site.getNavigations().size();
-
-      assert !sites.hasNext();
+      for (Site<Page> site : rootSites)
+      {
+         Page page = site.getTarget();
+         assert page.getDisplayName().equals(site.getDisplayName());
+         assert Site.Type.GROUP.equals(site.getType());
+         assert site.getNavigations().size() >= page.getChildrenNumber(); // we should have at least as many navigations as the target page has children pages
+      }
    }
 
    @Test(enabled = false)
@@ -104,14 +93,16 @@ public class NavigationPortletTestCase
    {
       final Id id = Ids.userId("root");
 
-      IterableResult<Site> portals = gateIn.getPortalSites(id);
+      IterableResult<Site<Portal>> portals = gateIn.getPortalSites(id);
       assert 1 == portals.size();
 
-      Iterator<Site> sites = portals.iterator();
+      Iterator<Site<Portal>> sites = portals.iterator();
 
-      Site site = sites.next();
+      Site<Portal> site = sites.next();
       assert Site.Type.PORTAL.equals(site.getType());
       assert "classic".equals(site.getName());
+      Portal target = site.getTarget();
+      assert gateIn.getPortal(Ids.portalId("classic")).equals(target);
       IterableResult<Navigation> navigations = site.getNavigations();
       assert 2 == navigations.size();
    }

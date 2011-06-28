@@ -23,7 +23,6 @@
 
 package org.gatein.api.navigation;
 
-import org.gatein.api.GateInObject;
 import org.gatein.api.IterableResult;
 import org.gatein.api.Portal;
 
@@ -31,16 +30,16 @@ import org.gatein.api.Portal;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Site extends GateInObject<Site>
+public interface Site<T extends Node<T>> extends Navigation<T>
 {
    IterableResult<Navigation> getNavigations();
 
-   <T> Type<T> getType();
+   Type<T> getType();
 
    public class Type<U>
    {
       public static final Type<Portal> PORTAL = new Type<Portal>();
-      public static final Type<Navigation> DASHBOARD = new Type<Navigation>();
-      public static final Type<Navigation> GROUP = new Type<Navigation>();
+      public static final Type<Page> DASHBOARD = new Type<Page>();
+      public static final Type<Page> GROUP = new Type<Page>();
    }
 }

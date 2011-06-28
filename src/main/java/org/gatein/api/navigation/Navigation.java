@@ -30,9 +30,9 @@ import org.gatein.api.GateInObject;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Navigation extends GateInObject<Navigation>, Container<Navigation>
+public interface Navigation<T extends Node<T>> extends GateInObject<Navigation>, Container<Navigation>
 {
-   Node getTarget();
+   T getTarget();
 
-   void setTarget(Node node);
+   void setTarget(T node);
 }

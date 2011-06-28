@@ -110,4 +110,9 @@ public class Ids
    {
       return null; // fix-me
    }
+
+   public static Id<Portal> portalId(String id)
+   {
+      return null;
+   }
 }
