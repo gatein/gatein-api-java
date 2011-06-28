@@ -36,4 +36,8 @@ public interface GateInObject<T>
    String getName();
 
    String getDisplayName();
+
+   <T> void setProperty(PropertyInfo<T> info, T value);
+
+   <T> T getProperty(PropertyInfo<T> info);
 }

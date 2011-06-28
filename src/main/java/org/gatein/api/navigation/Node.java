@@ -36,35 +36,11 @@ import org.gatein.api.id.Id;
  */
 public interface Node<T extends Node<T>> extends GateInObject<T>, Container<Node>
 {
-
    Node getParent();
-
-   boolean accessAllowedFromUser(Id userId, Permission.Type operation);
-
-   boolean hasOwner(Id ownerId);
 
    String getTitle();
 
    void setTitle(String title);
 
-   <T> void setProperty(PropertyInfo<T> info, T value);
 
-   <T> T getProperty(PropertyInfo<T> info);
-
-   /**
-    * adding permissions only if they don't already exist
-    *
-    * @param permission
-    */
-   void addPermission(Permission permission);
-
-   Type<Node<T>> getOwnerType();
-
-   public class Type<U extends Node>
-   {
-      public static final Type<Portal> SITE = new Type<Portal>();
-      public static final Type<Node> DASHBOARD = new Type<Node>();
-      public static final Type<Node> GROUP = new Type<Node>();
-      public static final Type<Node> SELF = new Type<Node>();
-   }
 }
