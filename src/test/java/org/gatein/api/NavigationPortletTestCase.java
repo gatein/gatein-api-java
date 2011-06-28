@@ -47,7 +47,7 @@ public class NavigationPortletTestCase
       Id groupId = Ids.groupId("platform", "administrators");
 
       Site adminSite = gateIn.getGroupSite(groupId);
-      IterableResult<Navigation> adminNodes = adminSite.getNavigationNodes();
+      IterableResult<Navigation> adminNodes = adminSite.getNavigations();
       assert 2 == adminNodes.size();
 
       Iterator<Navigation> iterator = adminNodes.iterator();
@@ -84,17 +84,17 @@ public class NavigationPortletTestCase
       Site site = sites.next();
       assert "Administrators's pages".equals(site.getDisplayName());
       assert Site.Type.GROUP.equals(site.getType());
-      assert 2 == site.getNavigationNodes().size();
+      assert 2 == site.getNavigations().size();
 
       site = sites.next();
       assert "Executive Board's pages".equals(site.getDisplayName());
       assert Site.Type.GROUP.equals(site.getType());
-      assert 1 == site.getNavigationNodes().size();
+      assert 1 == site.getNavigations().size();
 
       site = sites.next();
       assert "Users's pages".equals(site.getDisplayName());
       assert Site.Type.GROUP.equals(site.getType());
-      assert 1 == site.getNavigationNodes().size();
+      assert 1 == site.getNavigations().size();
 
       assert !sites.hasNext();
    }
@@ -110,9 +110,10 @@ public class NavigationPortletTestCase
       Iterator<Site> sites = portals.iterator();
 
       Site site = sites.next();
+      assert Site.Type.PORTAL.equals(site.getType());
       assert "classic".equals(site.getName());
-      IterableResult<Navigation> nodes = site.getNavigationNodes();
-      assert 2 == nodes.size();
+      IterableResult<Navigation> navigations = site.getNavigations();
+      assert 2 == navigations.size();
    }
 
    @Test(enabled = false)
@@ -121,7 +122,8 @@ public class NavigationPortletTestCase
       final Id id = Ids.userId("root");
 
       Site dashboard = gateIn.getDashboard(id);
-      IterableResult<Navigation> nodes = dashboard.getNavigationNodes();
+      assert Site.Type.DASHBOARD.equals(dashboard.getType());
+      IterableResult<Navigation> nodes = dashboard.getNavigations();
       assert 1 == nodes.size();
       assert "Dashboard".equals(nodes.iterator().next().getDisplayName());
    }

@@ -33,13 +33,13 @@ import org.gatein.api.Portal;
  */
 public interface Site extends GateInObject<Site>
 {
-   IterableResult<Navigation> getNavigationNodes();
+   IterableResult<Navigation> getNavigations();
 
    <T> Type<T> getType();
 
    public class Type<U>
    {
-      public static final Type<Portal> SITE = new Type<Portal>();
+      public static final Type<Portal> PORTAL = new Type<Portal>();
       public static final Type<Navigation> DASHBOARD = new Type<Navigation>();
       public static final Type<Navigation> GROUP = new Type<Navigation>();
    }
