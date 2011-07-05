@@ -59,7 +59,7 @@ public class Query<T>
          return this;
       }
 
-      public QueryBuilder<T> scope(GateInObject root)
+      public QueryBuilder<T> scope(Object root)
       {
          return this;
       }

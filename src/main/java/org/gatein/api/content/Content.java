@@ -23,12 +23,17 @@
 
 package org.gatein.api.content;
 
-import org.gatein.api.GateInObject;
+import org.gatein.api.id.Id;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Content<T> extends GateInObject<T>
+public interface Content<T>
 {
+   Id<T> getId();
+
+   String getName();
+
+   String getDisplayName();
 }

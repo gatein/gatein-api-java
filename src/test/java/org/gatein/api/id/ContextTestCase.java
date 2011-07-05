@@ -23,7 +23,6 @@
 
 package org.gatein.api.id;
 
-import org.gatein.api.GateInObject;
 import org.testng.annotations.Test;
 
 import java.util.regex.Pattern;
@@ -37,17 +36,17 @@ import static org.gatein.api.Ids.*;
 public class ContextTestCase
 {
    private static final Context CONTEXT = Context.builder().withDefaultSeparator("=")
-      .requiredComponent(CONTAINER_COMPONENT_NAME, GateInObject.class, Pattern.compile("container"))
-      .requiredComponent(PORTAL_COMPONENT_NAME, GateInObject.class, Pattern.compile("portal"))
-      .optionalComponent(INVOKER_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*"))
-      .optionalComponent(PORTLET_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*"))
-      .optionalComponent(INSTANCE_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*Instance$"))
+      .requiredComponent(CONTAINER_COMPONENT_NAME, Object.class, Pattern.compile("container"))
+      .requiredComponent(PORTAL_COMPONENT_NAME, Object.class, Pattern.compile("portal"))
+      .optionalComponent(INVOKER_COMPONENT_NAME, Object.class, Pattern.compile(".*"))
+      .optionalComponent(PORTLET_COMPONENT_NAME, Object.class, Pattern.compile(".*"))
+      .optionalComponent(INSTANCE_COMPONENT_NAME, Object.class, Pattern.compile(".*Instance$"))
       .ignoreRemainingAfterFirstMissingOptional().build();
 
    @Test
    public void simpleContext()
    {
-      Context context = Context.builder().withDefaultSeparator("-").requiredComponent("component", GateInObject.class, Pattern.compile(".*")).build();
+      Context context = Context.builder().withDefaultSeparator("-").requiredComponent("component", Object.class, Pattern.compile(".*")).build();
 
       assert 0 == context.getIndexFor("component");
       assert context.isComponentRequired("component");
@@ -73,8 +72,8 @@ public class ContextTestCase
    public void simpleHierarchicalContextShouldWork()
    {
       final Context context = Context.builder().withDefaultSeparator("/")
-         .requiredComponent("foo", GateInObject.class, Pattern.compile(".*foo$"))
-         .requiredUnboundedHierarchicalComponent("bar", GateInObject.class, Pattern.compile("^bar.*"))
+         .requiredComponent("foo", Object.class, Pattern.compile(".*foo$"))
+         .requiredUnboundedHierarchicalComponent("bar", Object.class, Pattern.compile("^bar.*"))
          .build();
       assert context.isComponentUnboundedHierarchical("bar");
       assert context.isComponentRequired("bar");
@@ -86,8 +85,8 @@ public class ContextTestCase
    public void missingRequiredHierarchicalShouldBeDetected()
    {
       final Context context = Context.builder().withDefaultSeparator("/")
-         .requiredComponent("foo", GateInObject.class, Pattern.compile(".*foo$"))
-         .requiredUnboundedHierarchicalComponent("bar", GateInObject.class, Pattern.compile("^bar.*"))
+         .requiredComponent("foo", Object.class, Pattern.compile(".*foo$"))
+         .requiredUnboundedHierarchicalComponent("bar", Object.class, Pattern.compile("^bar.*"))
          .build();
       context.validate("foo");
    }
@@ -96,9 +95,9 @@ public class ContextTestCase
    public void shouldValidateProperlyWhenThereAreRequiredComponentsAfterHierarchical()
    {
       final Context context = Context.builder().withDefaultSeparator("/")
-         .requiredComponent("foo", GateInObject.class, Pattern.compile(".*foo$"))
-         .requiredUnboundedHierarchicalComponent("bar", GateInObject.class, Pattern.compile("^bar.*"))
-         .requiredComponent("baz", GateInObject.class, Pattern.compile("^baz\\d*"))
+         .requiredComponent("foo", Object.class, Pattern.compile(".*foo$"))
+         .requiredUnboundedHierarchicalComponent("bar", Object.class, Pattern.compile("^bar.*"))
+         .requiredComponent("baz", Object.class, Pattern.compile("^baz\\d*"))
          .build();
       context.validate("foo", "bar", "baz");
       context.validate("foo", "bar", "bar2", "baz");

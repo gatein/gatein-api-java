@@ -23,6 +23,7 @@
 
 package org.gatein.api;
 
+import org.gatein.api.id.Id;
 import org.gatein.api.navigation.Navigation;
 import org.gatein.api.navigation.Site;
 
@@ -30,7 +31,7 @@ import org.gatein.api.navigation.Site;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Node<T extends Node<T>> extends GateInObject<T>, Container<Node>
+public interface Node<T extends Node<T>> extends Container<Node>
 {
    Node getParent();
 
@@ -41,4 +42,10 @@ public interface Node<T extends Node<T>> extends GateInObject<T>, Container<Node
    IterableResult<Navigation> getInboundNavigations();
 
    Navigation createInboundNavigationIn(Site site, Navigation parent);
+
+   Id<T> getId();
+
+   String getName();
+
+   String getDisplayName();
 }

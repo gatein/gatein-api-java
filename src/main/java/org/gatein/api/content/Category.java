@@ -23,7 +23,6 @@
 
 package org.gatein.api.content;
 
-import org.gatein.api.GateInObject;
 import org.gatein.api.id.Id;
 
 import java.util.List;
@@ -32,7 +31,7 @@ import java.util.List;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Category extends GateInObject<Category>
+public interface Category
 {
    <T extends Content<T>> ManagedContent<T> getContent(Id<ManagedContent<T>> contentId);
 
@@ -47,4 +46,10 @@ public interface Category extends GateInObject<Category>
    void setDescription(String description);
 
    <T extends Content<T>> void removeContent(Id<ManagedContent<T>> id);
+
+   Id<Category> getId();
+
+   String getName();
+
+   String getDisplayName();
 }

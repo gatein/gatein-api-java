@@ -23,7 +23,6 @@
 
 package org.gatein.api.id;
 
-import org.gatein.api.GateInObject;
 import org.testng.annotations.Test;
 
 import java.util.regex.Pattern;
@@ -37,42 +36,42 @@ public class ComponentTestCase
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void aComponentShouldHaveANonNullName()
    {
-      new Component<GateInObject>(null, GateInObject.class, null, true, false);
+      new Component<Object>(null, Object.class, null, true, false);
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void aComponentShouldHaveANonEmptyName()
    {
-      new Component<GateInObject>("", GateInObject.class, null, true, false);
+      new Component<Object>("", Object.class, null, true, false);
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void aComponentShouldHaveAValidationPattern()
    {
-      new Component<GateInObject>("name", GateInObject.class, null, true, false);
+      new Component<Object>("name", Object.class, null, true, false);
    }
 
    @Test
    public void isRequiredShouldWork()
    {
-      Component foo = new Component<GateInObject>("foo", GateInObject.class, Pattern.compile(".*"), true, false);
+      Component foo = new Component<Object>("foo", Object.class, Pattern.compile(".*"), true, false);
 
       assert "foo".equals(foo.getName());
       assert foo.isRequired();
 
-      foo = new Component<GateInObject>("foo", GateInObject.class, Pattern.compile(".*"), false, false);
+      foo = new Component<Object>("foo", Object.class, Pattern.compile(".*"), false, false);
       assert !foo.isRequired();
    }
 
    @Test
    public void isHierarchicalShouldWork()
    {
-      Component foo = new Component<GateInObject>("foo", GateInObject.class, Pattern.compile(".*"), true, true);
+      Component foo = new Component<Object>("foo", Object.class, Pattern.compile(".*"), true, true);
 
       assert "foo".equals(foo.getName());
       assert foo.isHierarchical();
 
-      foo = new Component<GateInObject>("foo", GateInObject.class, Pattern.compile(".*"), false, false);
+      foo = new Component<Object>("foo", Object.class, Pattern.compile(".*"), false, false);
       assert !foo.isHierarchical();
    }
 }

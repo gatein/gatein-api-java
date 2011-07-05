@@ -23,7 +23,6 @@
 
 package org.gatein.api.id;
 
-import org.gatein.api.GateInObject;
 import org.gatein.api.Ids;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -39,11 +38,11 @@ import static org.gatein.api.Ids.*;
 public class IdTestCase
 {
    private Context context = Context.builder().withDefaultSeparator("=")
-      .requiredComponent(CONTAINER_COMPONENT_NAME, GateInObject.class, Pattern.compile("container"))
-      .requiredComponent(PORTAL_COMPONENT_NAME, GateInObject.class, Pattern.compile("portal"))
-      .optionalComponent(INVOKER_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*"))
-      .optionalComponent(PORTLET_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*"))
-      .optionalComponent(INSTANCE_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*Instance$"))
+      .requiredComponent(CONTAINER_COMPONENT_NAME, Object.class, Pattern.compile("container"))
+      .requiredComponent(PORTAL_COMPONENT_NAME, Object.class, Pattern.compile("portal"))
+      .optionalComponent(INVOKER_COMPONENT_NAME, Object.class, Pattern.compile(".*"))
+      .optionalComponent(PORTLET_COMPONENT_NAME, Object.class, Pattern.compile(".*"))
+      .optionalComponent(INSTANCE_COMPONENT_NAME, Object.class, Pattern.compile(".*Instance$"))
       .ignoreRemainingAfterFirstMissingOptional().build();
 
    private static final String CONTAINER = "container";
@@ -111,7 +110,7 @@ public class IdTestCase
    @Test
    public void testRootComponent()
    {
-      Id key = Id.create(Context.builder().withDefaultSeparator("-").requiredComponent(CONTAINER_COMPONENT_NAME, GateInObject.class, Pattern.compile("container")).build(), CONTAINER);
+      Id key = Id.create(Context.builder().withDefaultSeparator("-").requiredComponent(CONTAINER_COMPONENT_NAME, Object.class, Pattern.compile("container")).build(), CONTAINER);
       assert CONTAINER.equals(key.getRootComponent());
 
       key = Id.create(context, CONTAINER, PORTAL, INVOKER, PORTLET, INSTANCE);
@@ -171,7 +170,7 @@ public class IdTestCase
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void anIdShouldAlwaysHaveARoot()
    {
-      Id.create(Context.builder().withDefaultSeparator("-").requiredComponent("foo", GateInObject.class, Pattern.compile(".*")).build(), null);
+      Id.create(Context.builder().withDefaultSeparator("-").requiredComponent("foo", Object.class, Pattern.compile(".*")).build(), null);
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)

@@ -49,15 +49,9 @@ public class Ids
    public static final String PORTLET_COMPONENT_NAME = "portletComponent";
    public static final String INSTANCE_COMPONENT_NAME = "instanceComponent";
 
-   public static final Context PORTLET = Context.builder().withDefaultSeparator("=")
-      .requiredComponent(INVOKER_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*"))
-      .requiredComponent(PORTLET_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*"))
-      .optionalComponent(INSTANCE_COMPONENT_NAME, GateInObject.class, Pattern.compile(".*Instance$"))
-      .ignoreRemainingAfterFirstMissingOptional().build();
-
    private static final Pattern USER_NAME_PATTERN = Pattern.compile(".*");
    private static final String USER_COMPONENT_NAME = "userName";
-   public final static Context USER = Context.builder().requiredComponent(USER_COMPONENT_NAME, GateInObject.class, USER_NAME_PATTERN).build();
+   public final static Context USER = Context.builder().requiredComponent(USER_COMPONENT_NAME, Object.class, USER_NAME_PATTERN).build();
 
    public static Id userId(String userId)
    {
@@ -66,7 +60,7 @@ public class Ids
 
    private static final Pattern GROUP_PATTERN = Pattern.compile(".*");
    public final static Context GROUP = Context.builder().withDefaultSeparator("/")
-      .requiredUnboundedHierarchicalComponent("root", GateInObject.class, GROUP_PATTERN).build();
+      .requiredUnboundedHierarchicalComponent("root", Object.class, GROUP_PATTERN).build();
 
    public static Id groupId(String root, String... children)
    {
@@ -75,7 +69,7 @@ public class Ids
 
    public static final Context APPLICATION = Context.builder().withDefaultSeparator("/")
       .requiredComponent("applicationName", Application.class, Pattern.compile(".*"))
-      .requiredComponent("portletName", GateInObject.class, Pattern.compile(".*")).build();
+      .requiredComponent("portletName", Object.class, Pattern.compile(".*")).build();
 
    public static Id<Application> applicationId(String applicationName, String portletName)
    {
@@ -83,18 +77,14 @@ public class Ids
    }
 
    public static final Context WSRP = Context.builder().withDefaultSeparator(".")
-      .requiredComponent("invokerId", GateInObject.class, Pattern.compile(".*"))
-      .requiredComponent("portletId", GateInObject.class, Pattern.compile(".*")).build();
+      .requiredComponent("invokerId", Object.class, Pattern.compile(".*"))
+      .requiredComponent("portletId", Object.class, Pattern.compile(".*")).build();
 
    public static Id<Content> wsrpPortletId(String invoker, String portlet)
    {
       return Id.create(WSRP, invoker, portlet);
    }
 
-   public static final Context CONTENT = Context.builder()
-      .requiredComponent("content", Content.class, Pattern.compile(".*"))
-      .optionalComponent("managedContent", ManagedContent.class, Pattern.compile("[a-z0-9]*"))
-      .withDefaultSeparator("_m:").build();
    private static long counter = 0;
 
    public static <T extends Content<T>> Id<ManagedContent<T>> managedContentId(Id<T> contentId)

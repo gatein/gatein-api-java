@@ -23,17 +23,15 @@
 
 package org.gatein.api.content;
 
-import org.gatein.api.GateInObject;
 import org.gatein.api.Ids;
 import org.gatein.api.ParameterValidation;
-import org.gatein.api.PropertyInfo;
 import org.gatein.api.id.Id;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public class ManagedContent<T extends Content> implements GateInObject<ManagedContent<T>>
+public class ManagedContent<T extends Content>
 {
    private final Id<ManagedContent<T>> id;
    private final Content<T> content;
@@ -84,15 +82,5 @@ public class ManagedContent<T extends Content> implements GateInObject<ManagedCo
    public void setDescription(String description)
    {
       this.description = description;
-   }
-
-   public <T> void setProperty(PropertyInfo<T> info, T value)
-   {
-      //To change body of implemented methods use File | Settings | File Templates.
-   }
-
-   public <T> T getProperty(PropertyInfo<T> info)
-   {
-      return null;  //To change body of implemented methods use File | Settings | File Templates.
    }
 }
