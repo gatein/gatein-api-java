@@ -23,12 +23,19 @@
 
 package org.gatein.api.navigation;
 
-import org.gatein.api.Node;
+import org.gatein.api.id.Id;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Page extends Node<Page>
+public interface Page extends Targetable
 {
+   Site getSite();
+
+   String getTitle();
+
+   void setTitle(String title);
+
+   Id<Page> getId();
 }

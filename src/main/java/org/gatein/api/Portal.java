@@ -24,12 +24,17 @@
 package org.gatein.api;
 
 import org.gatein.api.content.ContentRegistry;
+import org.gatein.api.id.Id;
+import org.gatein.api.navigation.Site;
+import org.gatein.api.navigation.Targetable;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Portal extends Node<Portal>
+public interface Portal extends Site, Targetable
 {
    ContentRegistry getContentRegistry();
+
+   Id<Portal> getId();
 }

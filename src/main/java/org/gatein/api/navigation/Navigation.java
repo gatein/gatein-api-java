@@ -24,22 +24,19 @@
 package org.gatein.api.navigation;
 
 import org.gatein.api.Container;
-import org.gatein.api.Node;
 import org.gatein.api.id.Id;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Navigation<T extends Node<T>> extends Container<Navigation>
+public interface Navigation extends Targetable, Container<Navigation>
 {
-   T getTarget();
+   Targetable getTarget();
 
-   void setTarget(T node);
+   void setTarget(Targetable target);
+
+   Site getSite();
 
    Id<Navigation> getId();
-
-   String getName();
-
-   String getDisplayName();
 }

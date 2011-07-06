@@ -43,10 +43,10 @@ public class NavigationTestCase
       Portal portal = gateIn.getDefaultPortal();
 
       String name = "name", title = "title";
-      Page page = portal.createChild(name, Page.class);
+      Page page = portal.createChild(name);
       assert name.equals(page.getId().toString());
       assert name.equals(page.getTitle()) : "By default, a Page's title should be the same as its name";
-      assert portal.equals(page.getParent());
+      assert portal.equals(page.getSite());
 
       page.setTitle(title);
       assert title.equals(page.getTitle());
@@ -55,27 +55,28 @@ public class NavigationTestCase
    @Test(enabled = false)
    public void creatingANavigationShouldLinkNavigationAndNode()
    {
-      Site site = gateIn.getSite(Ids.siteId("site"));
-
       Id<Portal> classic = Ids.portalId("classic");
       Portal portal = gateIn.get(classic);
       assert portal.equals(gateIn.getPortal(classic));
 
-      Page page = portal.getChild("page", Page.class);
+      Page page = portal.getChild("page");
       Id<Page> pageId = page.getId();
       assert page.equals(gateIn.get(pageId));
 
-      Page sub = page.getChild("sub", Page.class);
+      Navigation nav = portal.getNavigation().getChild("page");
+      assert page.equals(nav.getTarget());
+
+      Navigation sub = nav.getChild("sub");
       assert sub.equals(gateIn.get(Id.getIdForChild(pageId, "sub")));
 
-      Navigation navigation = site.createNavigationTo(sub, site);
+      Navigation navigation = portal.createNavigationTo(sub, portal.getNavigation());
       assert sub.equals(navigation.getTarget());
       assert sub.getInboundNavigations().contains(navigation);
-      assert site.getNavigations().contains(navigation);
+      assert portal.getNavigation().hasChild(navigation.getName());
 
-      Navigation inboundNavigation = sub.createInboundNavigationIn(site, site);
+      Navigation inboundNavigation = sub.createInboundNavigationIn(portal, portal.getNavigation());
       assert sub.equals(inboundNavigation.getTarget());
       assert sub.getInboundNavigations().contains(inboundNavigation);
-      assert site.getNavigations().contains(inboundNavigation);
+      assert portal.getNavigation().hasChild(inboundNavigation.getName());
    }
 }

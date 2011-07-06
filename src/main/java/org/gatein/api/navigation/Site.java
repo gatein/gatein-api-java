@@ -23,26 +23,28 @@
 
 package org.gatein.api.navigation;
 
-import org.gatein.api.IterableResult;
-import org.gatein.api.Node;
+import org.gatein.api.Container;
 import org.gatein.api.Portal;
+import org.gatein.api.id.Identifiable;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Site<T extends Node<T>> extends Navigation<T>
+public interface Site extends Identifiable, Container<Page>
 {
-   IterableResult<Navigation> getNavigations();
+   Navigation getNavigation();
 
-   Type<T> getType();
+   Type getType();
 
-   Navigation createNavigationTo(Node node, Navigation parent);
+   Navigation createNavigationTo(Targetable node, Navigation parent);
 
-   public class Type<U>
+   int getPriority();
+
+   public class Type<U extends Site>
    {
       public static final Type<Portal> PORTAL = new Type<Portal>();
-      public static final Type<Page> DASHBOARD = new Type<Page>();
-      public static final Type<Page> GROUP = new Type<Page>();
+      public static final Type<Site> DASHBOARD = new Type<Site>();
+      public static final Type<Site> GROUP = new Type<Site>();
    }
 }

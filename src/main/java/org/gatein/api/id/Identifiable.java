@@ -21,28 +21,11 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api;
+package org.gatein.api.id;
 
-import org.gatein.api.id.Id;
-import org.gatein.api.navigation.Navigation;
-import org.gatein.api.navigation.Site;
-
-/**
- * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
- * @version $Revision$
- */
-public interface Node<T extends Node<T>> extends Container<Node>
+/** @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a> */
+public interface Identifiable<T extends Identifiable<T>>
 {
-   Node getParent();
-
-   String getTitle();
-
-   void setTitle(String title);
-
-   IterableResult<Navigation> getInboundNavigations();
-
-   Navigation createInboundNavigationIn(Site site, Navigation parent);
-
    Id<T> getId();
 
    String getName();

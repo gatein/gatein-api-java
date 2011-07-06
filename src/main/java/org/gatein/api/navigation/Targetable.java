@@ -19,27 +19,24 @@
  * License along with this software; if not, write to the Free
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */ PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api;
+package org.gatein.api.navigation;
 
-/**
- * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
- * @version $Revision$
- */
-public interface Container<T>
+import org.gatein.api.IterableResult;
+import org.gatein.api.id.Identifiable;
+
+/** @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a> */
+public interface Targetable extends Identifiable
 {
-   IterableResult<T> getChildren();
+   IterableResult<Navigation> getInboundNavigations();
 
-   <U extends T> IterableResult<U> getChildren(Query<U> query);
-
-   <U extends T> IterableResult<U> getChildrenWhere(Filter<U> filter);
-
-   int getChildrenNumber();
-
-   boolean hasChild(String childName);
-
-   T createChild(String childName);
-
-   T getChild(String childName);
+   Navigation createInboundNavigationIn(Site site, Navigation parent);
 }
