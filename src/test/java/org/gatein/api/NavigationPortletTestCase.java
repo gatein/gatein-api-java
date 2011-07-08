@@ -25,8 +25,8 @@ package org.gatein.api;
 
 import org.gatein.api.id.Id;
 import org.gatein.api.navigation.Navigation;
+import org.gatein.api.navigation.Page;
 import org.gatein.api.navigation.Site;
-import org.gatein.api.navigation.Targetable;
 import org.testng.annotations.Test;
 
 import java.util.Iterator;
@@ -59,7 +59,7 @@ public class NavigationPortletTestCase
       for (Navigation child : children)
       {
          assert child.equals(administrationNode.get(child.getName()));
-         Targetable target = child.getTarget();
+         Page target = child.getTargetPage();
          assert target.equals(gateIn.get(target.getId()));
          assert target.getInboundNavigations().contains(child);
       }

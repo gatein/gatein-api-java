@@ -23,13 +23,14 @@
 
 package org.gatein.api.navigation;
 
-import org.gatein.api.id.Id;
+import org.gatein.api.IterableResult;
+import org.gatein.api.id.Identifiable;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Page extends Targetable
+public interface Page extends Identifiable<Page>
 {
    Site getSite();
 
@@ -37,5 +38,7 @@ public interface Page extends Targetable
 
    void setTitle(String title);
 
-   Id<Page> getId();
+   IterableResult<Navigation> getInboundNavigations();
+
+   Navigation createInboundNavigationIn(Site site, Navigation parent);
 }

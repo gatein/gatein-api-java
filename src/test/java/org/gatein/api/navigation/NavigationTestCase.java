@@ -64,18 +64,18 @@ public class NavigationTestCase
       assert page.equals(gateIn.get(pageId));
 
       Navigation nav = portal.getNavigation().get("page");
-      assert page.equals(nav.getTarget());
+      assert page.equals(nav.getTargetPage());
 
       Page sub = portal.getPageRegistry().get("sub");
       assert sub.equals(gateIn.get(Id.getIdForChild(pageId, "sub")));
 
       Navigation navigation = portal.createNavigationTo(sub, portal.getNavigation());
-      assert sub.equals(navigation.getTarget());
+      assert sub.equals(navigation.getTargetPage());
       assert sub.getInboundNavigations().contains(navigation);
       assert portal.getNavigation().contains(navigation.getName());
 
       Navigation inboundNavigation = sub.createInboundNavigationIn(portal, portal.getNavigation());
-      assert sub.equals(inboundNavigation.getTarget());
+      assert sub.equals(inboundNavigation.getTargetPage());
       assert sub.getInboundNavigations().contains(inboundNavigation);
       assert portal.getNavigation().contains(inboundNavigation.getName());
    }

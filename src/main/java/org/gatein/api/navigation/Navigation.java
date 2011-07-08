@@ -32,9 +32,9 @@ import org.gatein.api.id.Identifiable;
  */
 public interface Navigation extends Identifiable<Navigation>, Container<String, Navigation>
 {
-   Targetable getTarget();
+   Page getTargetPage();
 
-   void setTarget(Targetable target);
+   void setTargetPage(Page target);
 
    Site getSite();
 }

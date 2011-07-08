@@ -39,7 +39,7 @@ public interface Site extends Identifiable
 
    Type getType();
 
-   Navigation createNavigationTo(Targetable node, Navigation parent);
+   Navigation createNavigationTo(Page node, Navigation parent);
 
    int getPriority();
 
