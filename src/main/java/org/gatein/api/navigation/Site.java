@@ -31,7 +31,7 @@ import org.gatein.api.id.Identifiable;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Site extends Identifiable, Container<Page>
+public interface Site extends Identifiable, Container<String, Page>
 {
    Navigation getNavigation();
 

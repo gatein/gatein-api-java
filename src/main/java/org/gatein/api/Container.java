@@ -27,19 +27,19 @@ package org.gatein.api;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Container<T>
+public interface Container<K, T>
 {
-   IterableResult<T> getChildren();
+   IterableResult<T> getAll();
 
-   <U extends T> IterableResult<U> getChildren(Query<U> query);
+   <U extends T> IterableResult<U> getAllSatisfying(Query<U> query);
 
-   <U extends T> IterableResult<U> getChildrenWhere(Filter<U> filter);
+   <U extends T> IterableResult<U> getAllWhere(Filter<U> filter);
 
-   int getChildrenNumber();
+   int size();
 
-   boolean hasChild(String childName);
+   boolean contains(K key);
 
-   T createChild(String childName);
+   T createAndAdd(K key);
 
-   T getChild(String childName);
+   T get(K key);
 }
