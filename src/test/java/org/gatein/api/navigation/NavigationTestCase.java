@@ -43,7 +43,7 @@ public class NavigationTestCase
       Portal portal = gateIn.getDefaultPortal();
 
       String name = "name", title = "title";
-      Page page = portal.createAndAdd(name);
+      Page page = portal.getPageRegistry().createAndAdd(name);
       assert name.equals(page.getId().toString());
       assert name.equals(page.getTitle()) : "By default, a Page's title should be the same as its name";
       assert portal.equals(page.getSite());
@@ -59,14 +59,14 @@ public class NavigationTestCase
       Portal portal = gateIn.get(classic);
       assert portal.equals(gateIn.getPortal(classic));
 
-      Page page = portal.get("page");
+      Page page = portal.getPageRegistry().get("page");
       Id<Page> pageId = page.getId();
       assert page.equals(gateIn.get(pageId));
 
       Navigation nav = portal.getNavigation().get("page");
       assert page.equals(nav.getTarget());
 
-      Page sub = portal.get("sub");
+      Page sub = portal.getPageRegistry().get("sub");
       assert sub.equals(gateIn.get(Id.getIdForChild(pageId, "sub")));
 
       Navigation navigation = portal.createNavigationTo(sub, portal.getNavigation());
