@@ -23,6 +23,8 @@
 
 package org.gatein.api.id;
 
+import org.gatein.api.GateIn;
+
 /** @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a> */
 public interface Identifiable<T extends Identifiable<T>>
 {
@@ -31,4 +33,6 @@ public interface Identifiable<T extends Identifiable<T>>
    String getName();
 
    String getDisplayName();
+
+   GateIn getGateIn();
 }

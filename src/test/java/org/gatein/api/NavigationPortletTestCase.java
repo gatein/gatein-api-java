@@ -42,7 +42,7 @@ public class NavigationPortletTestCase
    @Test(enabled = false)
    public void shouldListSpecificGroupPages()
    {
-      Id groupId = Ids.groupId("platform", "administrators");
+      Id groupId = gateIn.groupId("platform", "administrators");
 
       Site adminSite = gateIn.getGroupSite(groupId);
       Navigation navigation = adminSite.getNavigation();
@@ -74,7 +74,7 @@ public class NavigationPortletTestCase
    @Test(enabled = false)
    public void shouldListGroupPages()
    {
-      final Id id = Ids.userId("root");
+      final Id id = gateIn.userId("root");
 
       IterableResult<Site> rootSites = gateIn.getGroupSites(id);
       assert 3 == rootSites.size();
@@ -104,7 +104,7 @@ public class NavigationPortletTestCase
    @Test(enabled = false)
    public void shouldListSitePages()
    {
-      final Id id = Ids.userId("root");
+      final Id id = gateIn.userId("root");
 
       IterableResult<Portal> portalResult = gateIn.getPortalSites(id);
       assert 1 == portalResult.size();
@@ -114,7 +114,7 @@ public class NavigationPortletTestCase
       Portal portal = portals.next();
       assert Site.Type.PORTAL.equals(portal.getType());
       assert "classic".equals(portal.getName());
-      assert gateIn.getPortal(Ids.portalId("classic")).equals(portal);
+      assert gateIn.getPortal(gateIn.portalId("classic")).equals(portal);
       IterableResult<Navigation> navigations = portal.getNavigation().getAll();
       assert 2 == navigations.size();
    }
@@ -122,7 +122,7 @@ public class NavigationPortletTestCase
    @Test(enabled = false)
    public void shouldListDashboardPages()
    {
-      final Id id = Ids.userId("root");
+      final Id id = gateIn.userId("root");
 
       Site dashboard = gateIn.getDashboard(id);
       assert Site.Type.DASHBOARD.equals(dashboard.getType());

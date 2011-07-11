@@ -23,17 +23,12 @@
 
 package org.gatein.api.content;
 
-import org.gatein.api.id.Id;
+import org.gatein.api.id.Identifiable;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Content<T>
+public interface Content<T> extends Identifiable
 {
-   Id<T> getId();
-
-   String getName();
-
-   String getDisplayName();
 }

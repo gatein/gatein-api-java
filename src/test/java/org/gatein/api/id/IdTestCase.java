@@ -23,13 +23,10 @@
 
 package org.gatein.api.id;
 
-import org.gatein.api.Ids;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.regex.Pattern;
-
-import static org.gatein.api.Ids.*;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -37,6 +34,12 @@ import static org.gatein.api.Ids.*;
  */
 public class IdTestCase
 {
+   private static final String CONTAINER_COMPONENT_NAME = "containerComponent";
+   private static final String PORTAL_COMPONENT_NAME = "portalComponent";
+   private static final String INVOKER_COMPONENT_NAME = "invokerComponent";
+   private static final String PORTLET_COMPONENT_NAME = "portletComponent";
+   private static final String INSTANCE_COMPONENT_NAME = "instanceComponent";
+
    private Context context = Context.builder().withDefaultSeparator("=")
       .requiredComponent(CONTAINER_COMPONENT_NAME, Object.class, Pattern.compile("container"))
       .requiredComponent(PORTAL_COMPONENT_NAME, Object.class, Pattern.compile("portal"))
@@ -103,7 +106,9 @@ public class IdTestCase
    @Test
    public void testRoundtripParsingWithHierarchicalComponents()
    {
-      final Id id = Ids.groupId("root", "1", "2", "3", "4");
+      Context groupContext = Context.builder().withDefaultSeparator("/")
+         .requiredUnboundedHierarchicalComponent("root", Object.class, Pattern.compile("\\w*")).build();
+      final Id id = Id.create(groupContext, "root", "1", "2", "3", "4");
       assert id.equals(Id.parse(id.getOriginalContext(), id.toString()));
    }
 

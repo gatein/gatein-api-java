@@ -24,7 +24,6 @@
 package org.gatein.api.navigation;
 
 import org.gatein.api.GateIn;
-import org.gatein.api.Ids;
 import org.gatein.api.Portal;
 import org.gatein.api.id.Id;
 import org.testng.annotations.Test;
@@ -55,7 +54,7 @@ public class NavigationTestCase
    @Test(enabled = false)
    public void creatingANavigationShouldLinkNavigationAndNode()
    {
-      Id<Portal> classic = Ids.portalId("classic");
+      Id<Portal> classic = gateIn.portalId("classic");
       Portal portal = gateIn.get(classic);
       assert portal.equals(gateIn.getPortal(classic));
 

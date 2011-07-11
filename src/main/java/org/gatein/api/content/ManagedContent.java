@@ -23,7 +23,6 @@
 
 package org.gatein.api.content;
 
-import org.gatein.api.Ids;
 import org.gatein.api.ParameterValidation;
 import org.gatein.api.id.Id;
 
@@ -41,7 +40,7 @@ public class ManagedContent<T extends Content>
    public ManagedContent(Content<T> content)
    {
       ParameterValidation.throwIllegalArgExceptionIfNull(content, "Content");
-      this.id = Ids.managedContentId(content.getId());
+      this.id = content.getGateIn().managedContentId(content.getId());
       this.content = content;
    }
 

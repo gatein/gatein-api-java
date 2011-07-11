@@ -23,9 +23,15 @@
 
 package org.gatein.api;
 
+import org.gatein.api.content.Application;
+import org.gatein.api.content.Content;
+import org.gatein.api.content.Gadget;
+import org.gatein.api.content.ManagedContent;
 import org.gatein.api.id.Id;
 import org.gatein.api.id.Identifiable;
 import org.gatein.api.navigation.Site;
+
+import java.net.URI;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -54,4 +60,20 @@ public interface GateIn
    <T extends Identifiable> T get(Id<T> id);
 
    <T extends Site> Site getSite(Id<Site> siteId, Site.Type<T> type);
+
+   Id userId(String user);
+
+   Id groupId(String root, String... children);
+
+   Id<Application> applicationId(String application, String portlet);
+
+   Id<Content> wsrpPortletId(String invoker, String portlet);
+
+   Id<Gadget> gadgetId(String gadgetName);
+
+   Id<Gadget> gadgetId(URI uri);
+
+   <T extends Content> Id<ManagedContent<T>> managedContentId(Id<Content<T>> contentId);
+
+   Id<Portal> portalId(String portalName);
 }

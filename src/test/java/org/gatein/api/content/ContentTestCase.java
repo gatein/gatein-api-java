@@ -24,7 +24,7 @@
 package org.gatein.api.content;
 
 import org.gatein.api.Filter;
-import org.gatein.api.Ids;
+import org.gatein.api.GateIn;
 import org.gatein.api.IterableResult;
 import org.gatein.api.Portal;
 import org.gatein.api.Query;
@@ -44,6 +44,7 @@ import java.util.List;
 public class ContentTestCase
 {
    private Portal portal = null;
+   private GateIn gateIn = null;
 
    @Test(enabled = false)
    public void getInexistentCategoryShouldReturnNull()
@@ -63,7 +64,7 @@ public class ContentTestCase
       ContentRegistry registry = portal.getContentRegistry();
       final Category category = registry.getOrCreateCategory("category");
 
-      Id<Application> id = Ids.applicationId("application", "portlet");
+      Id<Application> id = gateIn.applicationId("application", "portlet");
       List<Id<? extends ManagedContent>> knownContentIds = category.getKnownManagedContentIds();
       assert !knownContentIds.contains(id) : "A category doesn't contain content directly.";
       ManagedContent<Application> managed = category.addContent(id);
@@ -71,7 +72,7 @@ public class ContentTestCase
       assert category.contains(managed.getId());
       assert knownContentIds.contains(managed.getId());
 
-      Id<Content> wsrp = Ids.wsrpPortletId("invoker", "portlet");
+      Id<Content> wsrp = gateIn.wsrpPortletId("invoker", "portlet");
       ManagedContent<? extends Content> managedWSRP = category.addContent(wsrp);
       assert managedWSRP != null;
       assert category.contains(managedWSRP.getId());
@@ -85,7 +86,7 @@ public class ContentTestCase
       ContentRegistry registry = portal.getContentRegistry();
       final Category category = registry.getOrCreateCategory("category");
 
-      Application application = registry.getContent(Ids.applicationId("application", "portlet"));
+      Application application = registry.getContent(gateIn.applicationId("application", "portlet"));
       assert application.getName().equals(application.getDisplayName());
 
       Id<Application> id = application.getId();
@@ -126,7 +127,7 @@ public class ContentTestCase
       final Category category = registry.getOrCreateCategory("category");
 
       // from name
-      Id<Gadget> gadgetId = Ids.gadgetId("gadgetName");
+      Id<Gadget> gadgetId = gateIn.gadgetId("gadgetName");
       Gadget gadget = registry.getContent(gadgetId);
       assert "gadgetName".equals(gadget.getName());
 
@@ -136,7 +137,7 @@ public class ContentTestCase
       assert managedContent.equals(category.getContent(managedContent.getId()));
 
       // from URL
-      gadgetId = Ids.gadgetId(new URI("http://foo.bar.com/gadget.xml").toURL());
+      gadgetId = gateIn.gadgetId(new URI("http://foo.bar.com/gadget.xml"));
       gadget = registry.getContent(gadgetId);
 
       managedContent = category.addContent(gadgetId);
@@ -151,7 +152,7 @@ public class ContentTestCase
       ContentRegistry registry = portal.getContentRegistry();
 
       Gadget gadget = registry.createGadget("gadget", "source");
-      assert Ids.gadgetId("gadget").equals(gadget.getId());
+      assert gateIn.gadgetId("gadget").equals(gadget.getId());
       assert "source".equals(gadget.getSource());
 
       assert gadget.getEditURL() != null;
@@ -167,7 +168,7 @@ public class ContentTestCase
       ContentRegistry registry = portal.getContentRegistry();
       Category category = registry.getOrCreateCategory("category");
 
-      Id<Application> id = Ids.applicationId("application", "portlet");
+      Id<Application> id = gateIn.applicationId("application", "portlet");
       Application application = registry.getContent(id);
       ManagedContent<Application> managed = category.addContent(id);
       assert category.contains(managed.getId());

@@ -27,14 +27,18 @@ import org.testng.annotations.Test;
 
 import java.util.regex.Pattern;
 
-import static org.gatein.api.Ids.*;
-
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
 public class ContextTestCase
 {
+   private static final String CONTAINER_COMPONENT_NAME = "containerComponent";
+   private static final String PORTAL_COMPONENT_NAME = "portalComponent";
+   private static final String INVOKER_COMPONENT_NAME = "invokerComponent";
+   private static final String PORTLET_COMPONENT_NAME = "portletComponent";
+   private static final String INSTANCE_COMPONENT_NAME = "instanceComponent";
+
    private static final Context CONTEXT = Context.builder().withDefaultSeparator("=")
       .requiredComponent(CONTAINER_COMPONENT_NAME, Object.class, Pattern.compile("container"))
       .requiredComponent(PORTAL_COMPONENT_NAME, Object.class, Pattern.compile("portal"))
