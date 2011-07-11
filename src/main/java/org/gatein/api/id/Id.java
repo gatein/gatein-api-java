@@ -51,15 +51,20 @@ public abstract class Id<T> implements Comparable<Id>
       return originalContext.toString(this);
    }
 
-   public static <T> Id<T> create(Context context, String rootComponent, String... additionalComponents)
+   public static Id create(Context context, String rootComponent, String... additionalComponent)
+   {
+      return create(context, Object.class, rootComponent, additionalComponent);
+   }
+
+   public static <T> Id<T> create(Context context, Class<T> type, String rootComponent, String... additionalComponents)
    {
       ParameterValidation.throwIllegalArgExceptionIfNull(context, "Context");
       ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(rootComponent, "root component", null);
 
-      return internalCreate(context, true, rootComponent, additionalComponents);
+      return internalCreate(context, type, true, rootComponent, additionalComponents);
    }
 
-   private static <T> Id<T> internalCreate(Context context, final boolean revalidate, String rootComponent, String... additionalComponents)
+   private static <T> Id<T> internalCreate(Context context, Class<T> type, final boolean revalidate, String rootComponent, String... additionalComponents)
    {
       if (ParameterValidation.existsAndIsNotEmpty(additionalComponents))
       {
