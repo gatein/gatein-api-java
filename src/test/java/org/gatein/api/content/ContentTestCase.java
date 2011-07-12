@@ -26,9 +26,9 @@ package org.gatein.api.content;
 import org.gatein.api.Filter;
 import org.gatein.api.GateIn;
 import org.gatein.api.IterableResult;
-import org.gatein.api.Portal;
 import org.gatein.api.Query;
 import org.gatein.api.id.Id;
+import org.gatein.api.navigation.Portal;
 import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;

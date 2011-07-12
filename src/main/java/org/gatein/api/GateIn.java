@@ -29,6 +29,7 @@ import org.gatein.api.content.Gadget;
 import org.gatein.api.content.ManagedContent;
 import org.gatein.api.id.Id;
 import org.gatein.api.id.Identifiable;
+import org.gatein.api.navigation.Portal;
 import org.gatein.api.navigation.Site;
 
 import java.net.URI;
