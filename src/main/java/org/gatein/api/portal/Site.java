@@ -21,7 +21,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.navigation;
+package org.gatein.api.portal;
 
 import org.gatein.api.Container;
 import org.gatein.api.id.Identifiable;
@@ -30,11 +30,22 @@ import org.gatein.api.id.Identifiable;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Navigation extends Identifiable<Navigation>, Container<String, Navigation>
+public interface Site extends Identifiable
 {
-   Page getTargetPage();
+   Container<String, Page> getPageRegistry();
 
-   void setTargetPage(Page target);
+   Navigation getNavigation();
 
-   Site getSite();
+   Type getType();
+
+   Navigation createNavigationTo(Page node, Navigation parent);
+
+   int getPriority();
+
+   public class Type<U extends Site>
+   {
+      public static final Type<Portal> PORTAL = new Type<Portal>();
+      public static final Type<Site> DASHBOARD = new Type<Site>();
+      public static final Type<Site> GROUP = new Type<Site>();
+   }
 }

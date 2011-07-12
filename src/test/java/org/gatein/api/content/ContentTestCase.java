@@ -28,7 +28,7 @@ import org.gatein.api.GateIn;
 import org.gatein.api.IterableResult;
 import org.gatein.api.Query;
 import org.gatein.api.id.Id;
-import org.gatein.api.navigation.Portal;
+import org.gatein.api.portal.Portal;
 import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;

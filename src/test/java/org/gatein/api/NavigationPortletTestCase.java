@@ -24,10 +24,10 @@
 package org.gatein.api;
 
 import org.gatein.api.id.Id;
-import org.gatein.api.navigation.Navigation;
-import org.gatein.api.navigation.Page;
-import org.gatein.api.navigation.Portal;
-import org.gatein.api.navigation.Site;
+import org.gatein.api.portal.Navigation;
+import org.gatein.api.portal.Page;
+import org.gatein.api.portal.Portal;
+import org.gatein.api.portal.Site;
 import org.testng.annotations.Test;
 
 import java.util.Iterator;

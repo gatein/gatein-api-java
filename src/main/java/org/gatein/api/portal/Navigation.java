@@ -21,18 +21,20 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.navigation;
+package org.gatein.api.portal;
 
-import org.gatein.api.content.ContentRegistry;
-import org.gatein.api.id.Id;
+import org.gatein.api.Container;
+import org.gatein.api.id.Identifiable;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Portal extends Site
+public interface Navigation extends Identifiable<Navigation>, Container<String, Navigation>
 {
-   ContentRegistry getContentRegistry();
+   Page getTargetPage();
 
-   Id<Portal> getId();
+   void setTargetPage(Page target);
+
+   Site getSite();
 }

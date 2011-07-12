@@ -21,7 +21,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.navigation;
+package org.gatein.api.portal;
 
 import org.gatein.api.GateIn;
 import org.gatein.api.id.Id;
