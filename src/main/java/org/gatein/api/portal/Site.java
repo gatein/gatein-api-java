@@ -42,10 +42,22 @@ public interface Site extends Identifiable
 
    int getPriority();
 
-   public class Type<U extends Site>
+   public static final class Type<U extends Site>
    {
-      public static final Type<Portal> PORTAL = new Type<Portal>();
-      public static final Type<Site> DASHBOARD = new Type<Site>();
-      public static final Type<Site> GROUP = new Type<Site>();
+      private final String name;
+
+      private Type(String name)
+      {
+         this.name = name;
+      }
+
+      public String getName()
+      {
+         return name;
+      }
+
+      public static final Type<Portal> PORTAL = new Type<Portal>("portal");
+      public static final Type<Site> DASHBOARD = new Type<Site>("user");
+      public static final Type<Site> GROUP = new Type<Site>("group");
    }
 }
