@@ -29,6 +29,7 @@ import org.gatein.api.IterableResult;
 import org.gatein.api.Query;
 import org.gatein.api.id.Id;
 import org.gatein.api.portal.Portal;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
@@ -41,24 +42,27 @@ import java.util.List;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public class ContentTestCase
+public abstract class ContentTestCase
 {
-   private Portal portal = null;
-   private GateIn gateIn = null;
+   protected Portal portal;
+   protected GateIn gateIn;
 
-   @Test(enabled = false)
+   @BeforeTest
+   public abstract void setUp();
+
+   @Test
    public void getInexistentCategoryShouldReturnNull()
    {
       assert portal.getContentRegistry().getCategory("inexistent") == null;
    }
 
-   @Test(enabled = false)
+   @Test
    public void getOrCreateInexistentCategoryShouldCreateANewCategory()
    {
       assert portal.getContentRegistry().getOrCreateCategory("inexistent") != null;
    }
 
-   @Test(enabled = false)
+   @Test
    public void assigningContentToACategory()
    {
       ContentRegistry registry = portal.getContentRegistry();
@@ -80,7 +84,7 @@ public class ContentTestCase
       assert !knownContentIds.contains(wsrp) : "A category doesn't contain content directly.";
    }
 
-   @Test(enabled = false)
+   @Test
    public void assigningAnApplicationToACategory()
    {
       ContentRegistry registry = portal.getContentRegistry();
@@ -120,7 +124,7 @@ public class ContentTestCase
       assert "displayName".equals(managed.getDisplayName());
    }
 
-   @Test(enabled = false)
+   @Test
    public void assigningAGadgetToACategory() throws URISyntaxException, MalformedURLException
    {
       ContentRegistry registry = portal.getContentRegistry();
@@ -146,7 +150,7 @@ public class ContentTestCase
       assert managedContent.equals(category.getContent(managedContent.getId()));
    }
 
-   @Test(enabled = false)
+   @Test
    public void creatingAGadgetFromSource()
    {
       ContentRegistry registry = portal.getContentRegistry();
@@ -162,7 +166,7 @@ public class ContentTestCase
       assert gadget.equals(registry.getContent(gadget.getId()));
    }
 
-   @Test(enabled = false)
+   @Test
    public void removeContentFromCategory()
    {
       ContentRegistry registry = portal.getContentRegistry();

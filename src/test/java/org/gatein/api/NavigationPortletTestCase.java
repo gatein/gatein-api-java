@@ -28,6 +28,7 @@ import org.gatein.api.portal.Navigation;
 import org.gatein.api.portal.Page;
 import org.gatein.api.portal.Portal;
 import org.gatein.api.portal.Site;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.util.Iterator;
@@ -36,11 +37,14 @@ import java.util.Iterator;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public class NavigationPortletTestCase
+public abstract class NavigationPortletTestCase
 {
-   private GateIn gateIn = null;
+   protected GateIn gateIn;
 
-   @Test(enabled = false)
+   @BeforeTest
+   public abstract void setUp();
+
+   @Test
    public void shouldListSpecificGroupPages()
    {
       Id groupId = gateIn.groupId("platform", "administrators");

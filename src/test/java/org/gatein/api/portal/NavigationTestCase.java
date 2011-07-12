@@ -25,17 +25,21 @@ package org.gatein.api.portal;
 
 import org.gatein.api.GateIn;
 import org.gatein.api.id.Id;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public class NavigationTestCase
+public abstract class NavigationTestCase
 {
-   private GateIn gateIn = null;
+   protected GateIn gateIn;
 
-   @Test(enabled = false)
+   @BeforeTest
+   public abstract void setUp();
+
+   @Test
    public void creatingASimplePage()
    {
       Portal portal = gateIn.getDefaultPortal();
@@ -50,7 +54,7 @@ public class NavigationTestCase
       assert title.equals(page.getTitle());
    }
 
-   @Test(enabled = false)
+   @Test
    public void creatingANavigationShouldLinkNavigationAndNode()
    {
       Id<Portal> classic = gateIn.portalId("classic");
