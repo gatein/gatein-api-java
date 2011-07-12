@@ -56,8 +56,31 @@ public interface Site extends Identifiable
          return name;
       }
 
-      public static final Type<Portal> PORTAL = new Type<Portal>("portal");
-      public static final Type<Site> DASHBOARD = new Type<Site>("user");
-      public static final Type<Site> GROUP = new Type<Site>("group");
+      public static Type forName(String name)
+      {
+         if (PORTAL_NAME.equals(name))
+         {
+            return PORTAL;
+         }
+         else if (GROUP_NAME.equals(name))
+         {
+            return GROUP;
+         }
+         else if (DASHBOARD_NAME.equals(name))
+         {
+            return DASHBOARD;
+         }
+         else
+         {
+            throw new IllegalArgumentException("Unknown Type: " + name);
+         }
+      }
+
+      public static final String PORTAL_NAME = "portal";
+      public static final String DASHBOARD_NAME = "user";
+      public static final String GROUP_NAME = "group";
+      public static final Type<Portal> PORTAL = new Type<Portal>(Type.PORTAL_NAME);
+      public static final Type<Site> DASHBOARD = new Type<Site>(DASHBOARD_NAME);
+      public static final Type<Site> GROUP = new Type<Site>(GROUP_NAME);
    }
 }
