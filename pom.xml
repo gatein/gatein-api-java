@@ -27,9 +27,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <modelVersion>4.0.0</modelVersion>
 
-   <groupId>org.gatein.portal</groupId>
-   <artifactId>gatein-api</artifactId>
-   <version>1.0.0-GA-SNAPSHOT</version>
+   <groupId>org.gatein.api</groupId>
+   <artifactId>gatein-java-api</artifactId>
+   <version>1.0.0-Beta01-SNAPSHOT</version>
 
    <parent>
       <groupId>org.gatein</groupId>
