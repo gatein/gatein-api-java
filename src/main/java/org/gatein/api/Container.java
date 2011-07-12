@@ -23,11 +23,13 @@
 
 package org.gatein.api;
 
+import org.gatein.api.id.Identifiable;
+
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Container<K, T>
+public interface Container<K, T extends Identifiable>
 {
    IterableResult<T> getAll();
 

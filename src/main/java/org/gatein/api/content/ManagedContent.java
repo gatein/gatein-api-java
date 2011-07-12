@@ -23,14 +23,16 @@
 
 package org.gatein.api.content;
 
+import org.gatein.api.GateIn;
 import org.gatein.api.ParameterValidation;
 import org.gatein.api.id.Id;
+import org.gatein.api.id.Identifiable;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public class ManagedContent<T extends Content>
+public class ManagedContent<T extends Content> implements Identifiable
 {
    private final Id<ManagedContent<T>> id;
    private final Content<T> content;
@@ -61,6 +63,11 @@ public class ManagedContent<T extends Content>
          return displayName;
       }
       return content.getDisplayName();
+   }
+
+   public GateIn getGateIn()
+   {
+      return content.getGateIn();
    }
 
    public void setDisplayName(String displayName)
