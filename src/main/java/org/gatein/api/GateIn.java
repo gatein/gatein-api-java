@@ -76,5 +76,5 @@ public interface GateIn
 
    <T extends Content> Id<ManagedContent<T>> managedContentId(Id<Content<T>> contentId);
 
-   Id<Portal> portalId(String portalName);
+   Id<Portal> portalId(Site.Type siteType, String portalName);
 }
