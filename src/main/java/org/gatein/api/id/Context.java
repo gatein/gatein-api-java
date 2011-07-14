@@ -315,19 +315,19 @@ public class Context
       {
       }
 
-      public <T> ContextBuilder requiredComponent(String name, Class<T> componentType, Pattern validationPattern)
+      public <T extends Identifiable<T>> ContextBuilder requiredComponent(String name, Class<T> componentType, Pattern validationPattern)
       {
          components.add(new Component<T>(name, componentType, validationPattern, true, false));
          return this;
       }
 
-      public <T> ContextBuilder optionalComponent(String name, Class<T> componentType, Pattern validationPattern)
+      public <T extends Identifiable> ContextBuilder optionalComponent(String name, Class<T> componentType, Pattern validationPattern)
       {
          components.add(new Component<T>(name, componentType, validationPattern, false, false));
          return this;
       }
 
-      public <T> ContextBuilder requiredUnboundedHierarchicalComponent(String firstComponentName, Class<T> componentType, Pattern validationPattern)
+      public <T extends Identifiable> ContextBuilder requiredUnboundedHierarchicalComponent(String firstComponentName, Class<T> componentType, Pattern validationPattern)
       {
          components.add(new Component<T>(firstComponentName, componentType, validationPattern, true, true));
          return this;

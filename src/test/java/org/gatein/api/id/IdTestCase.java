@@ -23,6 +23,7 @@
 
 package org.gatein.api.id;
 
+import org.gatein.api.GateIn;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -41,11 +42,11 @@ public class IdTestCase
    private static final String INSTANCE_COMPONENT_NAME = "instanceComponent";
 
    private Context context = Context.builder().withDefaultSeparator("=")
-      .requiredComponent(CONTAINER_COMPONENT_NAME, Object.class, Pattern.compile("container"))
-      .requiredComponent(PORTAL_COMPONENT_NAME, Object.class, Pattern.compile("portal"))
-      .optionalComponent(INVOKER_COMPONENT_NAME, Object.class, Pattern.compile(".*"))
-      .optionalComponent(PORTLET_COMPONENT_NAME, Object.class, Pattern.compile(".*"))
-      .optionalComponent(INSTANCE_COMPONENT_NAME, Object.class, Pattern.compile(".*Instance$"))
+      .requiredComponent(CONTAINER_COMPONENT_NAME, Identifiable.class, Pattern.compile("container"))
+      .requiredComponent(PORTAL_COMPONENT_NAME, Identifiable.class, Pattern.compile("portal"))
+      .optionalComponent(INVOKER_COMPONENT_NAME, Identifiable.class, Pattern.compile(".*"))
+      .optionalComponent(PORTLET_COMPONENT_NAME, Identifiable.class, Pattern.compile(".*"))
+      .optionalComponent(INSTANCE_COMPONENT_NAME, Identifiable.class, Pattern.compile(".*Instance$"))
       .ignoreRemainingAfterFirstMissingOptional().build();
 
    private static final String CONTAINER = "container";
@@ -107,7 +108,7 @@ public class IdTestCase
    public void testRoundtripParsingWithHierarchicalComponents()
    {
       Context groupContext = Context.builder().withDefaultSeparator("/")
-         .requiredUnboundedHierarchicalComponent("root", Object.class, Pattern.compile("\\w*")).build();
+         .requiredUnboundedHierarchicalComponent("root", Identifiable.class, Pattern.compile("\\w*")).build();
       final Id id = Id.create(groupContext, "root", "1", "2", "3", "4");
       assert id.equals(Id.parse(id.getOriginalContext(), id.toString()));
    }
@@ -115,7 +116,7 @@ public class IdTestCase
    @Test
    public void testRootComponent()
    {
-      Id key = Id.create(Context.builder().withDefaultSeparator("-").requiredComponent(CONTAINER_COMPONENT_NAME, Object.class, Pattern.compile("container")).build(), CONTAINER);
+      Id key = Id.create(Context.builder().withDefaultSeparator("-").requiredComponent(CONTAINER_COMPONENT_NAME, Identifiable.class, Pattern.compile("container")).build(), CONTAINER);
       assert CONTAINER.equals(key.getRootComponent());
 
       key = Id.create(context, CONTAINER, PORTAL, INVOKER, PORTLET, INSTANCE);
@@ -175,7 +176,7 @@ public class IdTestCase
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void anIdShouldAlwaysHaveARoot()
    {
-      Id.create(Context.builder().withDefaultSeparator("-").requiredComponent("foo", Object.class, Pattern.compile(".*")).build(), null);
+      Id.create(Context.builder().withDefaultSeparator("-").requiredComponent("foo", Identifiable.class, Pattern.compile(".*")).build(), null);
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
@@ -231,6 +232,38 @@ public class IdTestCase
       catch (IllegalArgumentException e)
       {
          // expected
+      }
+   }
+
+   @Test
+   public void getIdentifiableTypeShouldReturnTheReifiedType()
+   {
+      Id<A> foo = Id.create(A.context, A.class, "foo");
+      assert A.class.equals(foo.getIdentifiableType());
+   }
+
+   private static class A implements Identifiable<A>
+   {
+      static final Context context = Context.builder().requiredComponent("foo", A.class, Pattern.compile(".*")).build();
+
+      public Id<A> getId()
+      {
+         return Id.create(context, A.class, "foo");
+      }
+
+      public String getName()
+      {
+         return null;  //To change body of implemented methods use File | Settings | File Templates.
+      }
+
+      public String getDisplayName()
+      {
+         return null;  //To change body of implemented methods use File | Settings | File Templates.
+      }
+
+      public GateIn getGateIn()
+      {
+         return null;  //To change body of implemented methods use File | Settings | File Templates.
       }
    }
 }

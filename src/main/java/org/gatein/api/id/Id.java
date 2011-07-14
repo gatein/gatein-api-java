@@ -34,15 +34,22 @@ import java.util.Arrays;
 public abstract class Id<T extends Identifiable> implements Comparable<Id>
 {
    private final Context originalContext;
+   private final Class<T> identifiableType;
 
-   private Id(Context context)
+   private Id(Context context, Class<T> identifiableType)
    {
       this.originalContext = context;
+      this.identifiableType = identifiableType;
    }
 
    public String toString(Context context)
    {
       return context.toString(this);
+   }
+
+   public Class<T> getIdentifiableType()
+   {
+      return identifiableType;
    }
 
    @Override
@@ -86,7 +93,7 @@ public abstract class Id<T extends Identifiable> implements Comparable<Id>
          System.arraycopy(additionalComponents, 0, components, 1, length);
          components[0] = rootComponent;
 
-         return internalCreate(context, revalidate, components);
+         return internalCreate(context, type, revalidate, components);
       }
       else
       {
@@ -95,11 +102,11 @@ public abstract class Id<T extends Identifiable> implements Comparable<Id>
             context.validate(new String[]{rootComponent});
          }
 
-         return new SimpleId<T>(context, rootComponent);
+         return new SimpleId<T>(context, type, rootComponent);
       }
    }
 
-   private static <T extends Identifiable> Id<T> internalCreate(Context context, final boolean revalidate, String... components)
+   private static <T extends Identifiable> Id<T> internalCreate(Context context, Class<T> type, final boolean revalidate, String... components)
    {
       if (ParameterValidation.existsAndIsNotEmpty(components))
       {
@@ -110,11 +117,15 @@ public abstract class Id<T extends Identifiable> implements Comparable<Id>
 
          if (components.length == 1)
          {
-            return new SimpleId<T>(context, components[0]);
+            return new SimpleId<T>(context, type, components[0])
+            {
+            };
          }
          else
          {
-            return new ComplexId<T>(context, components);
+            return new ComplexId<T>(context, type, components)
+            {
+            };
          }
       }
       else
@@ -129,7 +140,7 @@ public abstract class Id<T extends Identifiable> implements Comparable<Id>
       ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(idAsString, "String to interpret as Id", null);
 
       String[] components = context.extractComponents(idAsString);
-      return internalCreate(context, false, components);
+      return internalCreate(context, Identifiable.class, false, components);
    }
 
    public static Id getIdForChild(Id parent, String childId)
@@ -147,7 +158,7 @@ public abstract class Id<T extends Identifiable> implements Comparable<Id>
       System.arraycopy(components, 0, newComponents, 0, childIndex);
       newComponents[childIndex] = childId;
 
-      return internalCreate(context, false, newComponents);
+      return internalCreate(context, Identifiable.class, false, newComponents);
    }
 
    public String getComponent(String component)
@@ -208,9 +219,9 @@ public abstract class Id<T extends Identifiable> implements Comparable<Id>
    {
       private final String root;
 
-      private SimpleId(Context context, String rootComponent)
+      private SimpleId(Context context, Class<T> identifiableType, String rootComponent)
       {
-         super(context);
+         super(context, identifiableType);
          this.root = rootComponent;
       }
 
@@ -253,13 +264,13 @@ public abstract class Id<T extends Identifiable> implements Comparable<Id>
       }
    }
 
-   private static class ComplexId<T extends Identifiable> extends Id<T>
+   private static abstract class ComplexId<T extends Identifiable> extends Id<T>
    {
       private final String[] components;
 
-      public ComplexId(Context context, String[] components)
+      public ComplexId(Context context, Class<T> identifiableType, String[] components)
       {
-         super(context);
+         super(context, identifiableType);
          this.components = components;
       }
 
