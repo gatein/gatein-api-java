@@ -119,7 +119,7 @@ public abstract class NavigationPortletTestCase
       Portal portal = portals.next();
       assert Site.Type.PORTAL.equals(portal.getType());
       assert "classic".equals(portal.getName());
-      assert gateIn.getPortal(gateIn.portalId(Site.Type.PORTAL, "classic")).equals(portal);
+      assert gateIn.getPortal(gateIn.siteId(Site.Type.PORTAL, "classic")).equals(portal);
       IterableResult<Navigation> navigations = portal.getNavigation().getAll();
       assert 2 == navigations.size();
    }

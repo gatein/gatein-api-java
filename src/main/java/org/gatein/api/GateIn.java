@@ -60,7 +60,7 @@ public interface GateIn
 
    <T extends Identifiable> T get(Id<T> id);
 
-   <T extends Site> Site getSite(Id<Site> siteId, Site.Type<T> type);
+   <T extends Site> T getSite(Id<T> siteId, Site.Type<T> type);
 
    Id userId(String user);
 
@@ -76,5 +76,5 @@ public interface GateIn
 
    <T extends Content> Id<ManagedContent<T>> managedContentId(Id<Content<T>> contentId);
 
-   Id<Portal> portalId(Site.Type siteType, String portalName);
+   <T extends Site> Id<T> siteId(Site.Type<T> siteType, String portalName);
 }
