@@ -41,4 +41,12 @@ public class TypeTestCase
    {
       Site.Type.forName("foo");
    }
+
+   @Test
+   public void shouldProperlyReturnValueType()
+   {
+      assert Portal.class.equals(Site.Type.PORTAL.getValueType());
+      assert Site.class.equals(Site.Type.GROUP.getValueType());
+      assert Site.class.equals(Site.Type.DASHBOARD.getValueType());
+   }
 }

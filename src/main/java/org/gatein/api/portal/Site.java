@@ -26,6 +26,8 @@ package org.gatein.api.portal;
 import org.gatein.api.Container;
 import org.gatein.api.id.Identifiable;
 
+import java.lang.reflect.ParameterizedType;
+
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
@@ -42,13 +44,15 @@ public interface Site extends Identifiable
 
    int getPriority();
 
-   public static final class Type<U extends Site>
+   public static abstract class Type<U extends Site>
    {
       private final String name;
+      private final Class<U> valueType;
 
       private Type(String name)
       {
          this.name = name;
+         valueType = (Class<U>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
       }
 
       public String getName()
@@ -56,7 +60,7 @@ public interface Site extends Identifiable
          return name;
       }
 
-      public static Type forName(String name)
+      public static Type<? extends Site> forName(String name)
       {
          if (PORTAL_NAME.equals(name))
          {
@@ -76,11 +80,22 @@ public interface Site extends Identifiable
          }
       }
 
+      public Class<U> getValueType()
+      {
+         return valueType;
+      }
+
       public static final String PORTAL_NAME = "portal";
       public static final String DASHBOARD_NAME = "user";
       public static final String GROUP_NAME = "group";
-      public static final Type<Portal> PORTAL = new Type<Portal>(Type.PORTAL_NAME);
-      public static final Type<Site> DASHBOARD = new Type<Site>(DASHBOARD_NAME);
-      public static final Type<Site> GROUP = new Type<Site>(GROUP_NAME);
+      public static final Type<Portal> PORTAL = new Type<Portal>(Type.PORTAL_NAME)
+      {
+      };
+      public static final Type<Site> DASHBOARD = new Type<Site>(DASHBOARD_NAME)
+      {
+      };
+      public static final Type<Site> GROUP = new Type<Site>(GROUP_NAME)
+      {
+      };
    }
 }
