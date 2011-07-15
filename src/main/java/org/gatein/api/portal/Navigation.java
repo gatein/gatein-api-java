@@ -24,6 +24,7 @@
 package org.gatein.api.portal;
 
 import org.gatein.api.Container;
+import org.gatein.api.id.Id;
 import org.gatein.api.id.Identifiable;
 
 /**
@@ -35,6 +36,8 @@ public interface Navigation extends Identifiable<Navigation>, Container<String, 
    Page getTargetPage();
 
    void setTargetPage(Page target);
+
+   void setTargetPage(Id<Page> targetId);
 
    Site getSite();
 }
