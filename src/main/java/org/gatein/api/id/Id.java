@@ -161,6 +161,11 @@ public abstract class Id<T extends Identifiable> implements Comparable<Id>
       return internalCreate(context, Identifiable.class, false, newComponents);
    }
 
+   public Id getIdforChild(String childId)
+   {
+      return getIdForChild(this, childId);
+   }
+
    public String getComponent(String component)
    {
       int index = originalContext.getIndexFor(component);
