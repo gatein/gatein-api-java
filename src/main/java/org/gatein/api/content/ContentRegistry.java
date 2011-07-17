@@ -23,9 +23,9 @@
 
 package org.gatein.api.content;
 
-import org.gatein.api.IterableResult;
-import org.gatein.api.Query;
 import org.gatein.api.id.Id;
+import org.gatein.api.util.IterableResult;
+import org.gatein.api.util.Query;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>

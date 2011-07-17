@@ -23,8 +23,8 @@
 
 package org.gatein.api.portal;
 
-import org.gatein.api.Container;
 import org.gatein.api.id.Identifiable;
+import org.gatein.api.util.Container;
 
 import java.lang.reflect.ParameterizedType;
 

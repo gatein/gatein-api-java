@@ -21,57 +21,23 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api;
+package org.gatein.api.util;
 
-import java.util.Comparator;
+import org.gatein.api.id.Id;
+import org.gatein.api.id.Identifiable;
 
 /**
+ * Encapsulates results of queries. Number of results can be computed when the query is run. Checking if an element is
+ * contained in the results without iterating over all of them should be possible by performing a query against the
+ * original data set. Could be automatically paged (in which case we might need to add methods to know more about the
+ * current page or go to a specific page).
+ *
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public class Query<T>
+public interface IterableResult<T extends Identifiable> extends Iterable<T>
 {
+   int size();
 
-   public static <T> QueryBuilder<T> builder()
-   {
-      return new QueryBuilder<T>();
-   }
-
-   public static class QueryBuilder<T>
-   {
-      public QueryBuilder<T> where(Filter<T> filter)
-      {
-         return this;
-      }
-
-      public QueryBuilder<T> orderBy(Comparator<T> comparator)
-      {
-         return this;
-      }
-
-      public QueryBuilder<T> limit(int pageSize)
-      {
-         return this;
-      }
-
-      public QueryBuilder<T> startAt(int firstItem)
-      {
-         return this;
-      }
-
-      public QueryBuilder<T> scope(Object root)
-      {
-         return this;
-      }
-
-      public QueryBuilder<T> refine(Query<T> query)
-      {
-         return this;
-      }
-
-      public Query<T> build()
-      {
-         return null;
-      }
-   }
+   boolean contains(Id<T> t);
 }

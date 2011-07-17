@@ -28,6 +28,7 @@ import org.gatein.api.portal.Navigation;
 import org.gatein.api.portal.Page;
 import org.gatein.api.portal.Portal;
 import org.gatein.api.portal.Site;
+import org.gatein.api.util.IterableResult;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 

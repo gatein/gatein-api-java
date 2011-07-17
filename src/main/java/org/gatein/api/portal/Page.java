@@ -23,8 +23,8 @@
 
 package org.gatein.api.portal;
 
-import org.gatein.api.IterableResult;
 import org.gatein.api.id.Identifiable;
+import org.gatein.api.util.IterableResult;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>

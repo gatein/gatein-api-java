@@ -24,9 +24,9 @@
 package org.gatein.api.content;
 
 import org.gatein.api.GateIn;
-import org.gatein.api.ParameterValidation;
 import org.gatein.api.id.Id;
 import org.gatein.api.id.Identifiable;
+import org.gatein.api.util.ParameterValidation;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>

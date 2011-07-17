@@ -23,12 +23,12 @@
 
 package org.gatein.api.content;
 
-import org.gatein.api.Filter;
 import org.gatein.api.GateIn;
-import org.gatein.api.IterableResult;
-import org.gatein.api.Query;
 import org.gatein.api.id.Id;
 import org.gatein.api.portal.Portal;
+import org.gatein.api.util.Filter;
+import org.gatein.api.util.IterableResult;
+import org.gatein.api.util.Query;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 

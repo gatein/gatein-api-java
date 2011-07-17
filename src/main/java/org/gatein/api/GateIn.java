@@ -31,6 +31,7 @@ import org.gatein.api.id.Id;
 import org.gatein.api.id.Identifiable;
 import org.gatein.api.portal.Portal;
 import org.gatein.api.portal.Site;
+import org.gatein.api.util.IterableResult;
 
 import java.net.URI;
 

@@ -21,7 +21,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api;
+package org.gatein.api.util;
 
 import org.gatein.api.id.Id;
 import org.gatein.api.id.Identifiable;
@@ -41,12 +41,15 @@ public interface Container<K, T extends Identifiable>
    int size();
 
    boolean contains(K key);
+
    boolean contains(Id<T> id);
 
    T createAndAdd(K key);
+
    T createAndAdd(Id<T> id);
 
    T get(K key);
+
    T get(Id<T> id);
 
    Id<T> getIdForChild(K key);

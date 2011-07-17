@@ -23,7 +23,7 @@
 
 package org.gatein.api.id;
 
-import org.gatein.api.ParameterValidation;
+import org.gatein.api.util.ParameterValidation;
 
 import java.util.Arrays;
 

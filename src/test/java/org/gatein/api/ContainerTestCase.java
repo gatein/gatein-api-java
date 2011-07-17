@@ -25,6 +25,7 @@ package org.gatein.api;
 
 import org.gatein.api.id.Id;
 import org.gatein.api.id.Identifiable;
+import org.gatein.api.util.Container;
 import org.testng.annotations.Test;
 
 /** @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a> */

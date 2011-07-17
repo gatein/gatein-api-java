@@ -21,35 +21,39 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api;
-
-import java.lang.reflect.ParameterizedType;
+package org.gatein.api.util;
 
 /**
+ * Ideally, we'd use the version from common...
+ *
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public abstract class Filter<T>
+public class ParameterValidation
 {
-   private final Class<T> valueType;
-
-   protected Filter()
+   public static void throwIllegalArgExceptionIfNullOrEmpty(String valueToCheck, String valueName, String contextName)
    {
-      valueType = (Class<T>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+      if (isNullOrEmpty(valueToCheck))
+      {
+         throw new IllegalArgumentException((contextName != null ? contextName + " r" : "R") + "equires a non-null, non-empty " + valueName);
+      }
    }
 
-   public static final Filter ALL = new Filter()
+   public static boolean isNullOrEmpty(String valueToCheck)
    {
-      public boolean accept(Object item)
+      return valueToCheck == null || valueToCheck.trim().length() == 0;
+   }
+
+   public static void throwIllegalArgExceptionIfNull(Object objectToTest, String name)
+   {
+      if (objectToTest == null)
       {
-         return true;
+         throw new IllegalArgumentException("Must pass a non null " + name);
       }
-   };
+   }
 
-   public abstract boolean accept(T item);
-
-   public Class<T> getValueType()
+   public static <T> boolean existsAndIsNotEmpty(T[] array)
    {
-      return valueType;
+      return array != null && array.length > 0;
    }
 }

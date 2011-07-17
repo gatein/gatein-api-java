@@ -23,9 +23,9 @@
 
 package org.gatein.api.portal;
 
-import org.gatein.api.Container;
 import org.gatein.api.id.Id;
 import org.gatein.api.id.Identifiable;
+import org.gatein.api.util.Container;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
