@@ -47,6 +47,12 @@ public class ContextTestCase
       .optionalComponent(INSTANCE_COMPONENT_NAME, Identifiable.class, Pattern.compile(".*Instance$"))
       .ignoreRemainingAfterFirstMissingOptional().build();
 
+   @Test(expectedExceptions = IllegalStateException.class)
+   public void contextBuilderBuildShouldProperlyFailOnEmptyContext()
+   {
+      Context.builder().build();
+   }
+
    @Test
    public void simpleContext()
    {

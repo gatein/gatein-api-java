@@ -347,6 +347,10 @@ public class Context
 
       public Context build()
       {
+         if (components.isEmpty())
+         {
+            throw new IllegalStateException("Cannot build a Context with empty components");
+         }
          return new Context(defaultSeparator, components, ignoreRemainingAfterFirstMissingOptional);
       }
    }
