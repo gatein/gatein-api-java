@@ -29,6 +29,7 @@ import org.gatein.api.content.Gadget;
 import org.gatein.api.content.ManagedContent;
 import org.gatein.api.id.Id;
 import org.gatein.api.id.Identifiable;
+import org.gatein.api.portal.Page;
 import org.gatein.api.portal.Portal;
 import org.gatein.api.portal.Site;
 import org.gatein.api.util.IterableResult;
@@ -74,6 +75,8 @@ public interface GateIn
    Id<Gadget> gadgetId(String gadgetName);
 
    Id<Gadget> gadgetId(URI uri);
+
+   <T extends Site> Id<Page> pageId(Id<T> ownerSite, String pageName);
 
    <T extends Content> Id<ManagedContent<T>> managedContentId(Id<Content<T>> contentId);
 
