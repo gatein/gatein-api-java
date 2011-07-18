@@ -87,4 +87,9 @@ public class Component<T>
    {
       return hierarchical;
    }
+
+   public Class<T> getIdentifiedComponentClass()
+   {
+      return identifiedComponentClass;
+   }
 }

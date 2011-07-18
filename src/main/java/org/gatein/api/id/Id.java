@@ -33,7 +33,7 @@ import java.util.Arrays;
  */
 public abstract class Id<T extends Identifiable> implements Comparable<Id>
 {
-   private final Context originalContext;
+   protected final Context originalContext;
    private final Class<T> identifiableType;
 
    private Id(Context context, Class<T> identifiableType)
@@ -97,12 +97,14 @@ public abstract class Id<T extends Identifiable> implements Comparable<Id>
       }
       else
       {
+         SimpleId<T> id = new SimpleId<T>(context, type, rootComponent);
+
          if (revalidate)
          {
-            context.validate(new String[]{rootComponent});
+            context.validate(id, rootComponent);
          }
 
-         return new SimpleId<T>(context, type, rootComponent);
+         return id;
       }
    }
 
@@ -110,23 +112,22 @@ public abstract class Id<T extends Identifiable> implements Comparable<Id>
    {
       if (ParameterValidation.existsAndIsNotEmpty(components))
       {
-         if (revalidate)
-         {
-            context.validate(components);
-         }
-
+         Id<T> id;
          if (components.length == 1)
          {
-            return new SimpleId<T>(context, type, components[0])
-            {
-            };
+            id = new SimpleId<T>(context, type, components[0]);
          }
          else
          {
-            return new ComplexId<T>(context, type, components)
-            {
-            };
+            id = new ComplexId<T>(context, type, components);
          }
+
+         if (revalidate)
+         {
+            context.validate(id, components);
+         }
+
+         return id;
       }
       else
       {
@@ -220,9 +221,28 @@ public abstract class Id<T extends Identifiable> implements Comparable<Id>
 
    public abstract String getRootComponent();
 
+   abstract void associateCurrentValueWith(int currentComponent, String componentName);
+
+   abstract String getComponentNameFor(int currentComponent);
+
+   public Id getParent()
+   {
+      int componentNumber = getComponentNumber();
+      if (componentNumber > 1)
+      {
+         int parent = componentNumber - 1;
+         return internalCreate(originalContext, originalContext.getComponent(getComponentNameFor(parent)).getIdentifiedComponentClass(), true, Arrays.copyOf(getComponents(), parent));
+      }
+      else
+      {
+         return null;
+      }
+   }
+
    private static class SimpleId<T extends Identifiable> extends Id<T>
    {
       private final String root;
+      private String componentName;
 
       private SimpleId(Context context, Class<T> identifiableType, String rootComponent)
       {
@@ -267,16 +287,41 @@ public abstract class Id<T extends Identifiable> implements Comparable<Id>
       {
          return root;
       }
+
+      @Override
+      void associateCurrentValueWith(int currentComponent, String componentName)
+      {
+         if (currentComponent != 0)
+         {
+            throw new IllegalStateException("Shouldn't be possible");
+         }
+         this.componentName = componentName;
+      }
+
+      @Override
+      String getComponentNameFor(int componentIndex)
+      {
+         if (componentIndex != 0)
+         {
+            throw new IllegalArgumentException("Invalid component index: " + componentIndex);
+         }
+         else
+         {
+            return componentName;
+         }
+      }
    }
 
-   private static abstract class ComplexId<T extends Identifiable> extends Id<T>
+   private static class ComplexId<T extends Identifiable> extends Id<T>
    {
       private final String[] components;
+      private final String[] associatedComponentName;
 
       public ComplexId(Context context, Class<T> identifiableType, String[] components)
       {
          super(context, identifiableType);
          this.components = components;
+         associatedComponentName = new String[components.length];
       }
 
       @Override
@@ -315,6 +360,18 @@ public abstract class Id<T extends Identifiable> implements Comparable<Id>
       public String getRootComponent()
       {
          return components[0];
+      }
+
+      @Override
+      void associateCurrentValueWith(int currentComponent, String componentName)
+      {
+         associatedComponentName[currentComponent] = componentName;
+      }
+
+      @Override
+      String getComponentNameFor(int currentComponent)
+      {
+         return associatedComponentName[currentComponent];
       }
    }
 }

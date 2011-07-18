@@ -105,12 +105,30 @@ public class IdTestCase
    }
 
    @Test
+   public void getParentShouldWork()
+   {
+      Id portal = Id.create(context, CONTAINER, PORTAL);
+
+      Id invoker = Id.create(context, CONTAINER, PORTAL, INVOKER);
+      assert portal.equals(invoker.getParent());
+
+      Id portlet = Id.create(context, CONTAINER, PORTAL, INVOKER, PORTLET);
+      assert invoker.equals(portlet.getParent());
+
+      Id instance = Id.create(context, CONTAINER, PORTAL, INVOKER, PORTLET, INSTANCE);
+      assert portlet.equals(instance.getParent());
+   }
+
+   @Test
    public void testRoundtripParsingWithHierarchicalComponents()
    {
       Context groupContext = Context.builder().withDefaultSeparator("/")
          .requiredUnboundedHierarchicalComponent("root", Identifiable.class, Pattern.compile("\\w*")).build();
       final Id id = Id.create(groupContext, "root", "1", "2", "3", "4");
       assert id.equals(Id.parse(id.getOriginalContext(), id.toString()));
+
+      Id parent = Id.create(groupContext, "root", "1", "2", "3");
+      assert parent.equals(id.getParent());
    }
 
    @Test
@@ -118,6 +136,7 @@ public class IdTestCase
    {
       Id key = Id.create(Context.builder().withDefaultSeparator("-").requiredComponent(CONTAINER_COMPONENT_NAME, Identifiable.class, Pattern.compile("container")).build(), CONTAINER);
       assert CONTAINER.equals(key.getRootComponent());
+      assert key.getParent() == null;
 
       key = Id.create(context, CONTAINER, PORTAL, INVOKER, PORTLET, INSTANCE);
       assert CONTAINER.equals(key.getRootComponent());

@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -119,6 +120,25 @@ public class Context
       return getComponentOrFail(component).index;
    }
 
+   private Component getComponentAt(int index)
+   {
+      for (Map.Entry<String, ComponentIndex> entry : namesToComponents.entrySet())
+      {
+         ComponentIndex componentIndex = entry.getValue();
+         if (index == componentIndex.index)
+         {
+            return componentIndex.component;
+         }
+      }
+
+      throw errorOnUnknownComponent("No component with index: " + index);
+   }
+
+   private IllegalArgumentException errorOnUnknownComponent(String message)
+   {
+      throw new IllegalArgumentException(message + ". Known components are: " + knownComponents);
+   }
+
    protected void validate(String value, int index)
    {
       for (ComponentIndex componentIndex : namesToComponents.values())
@@ -130,7 +150,12 @@ public class Context
          }
       }
 
-      throw new IllegalArgumentException("No component with index: " + index + ". Known components are: " + knownComponents);
+      throw errorOnUnknownComponent("No component with index: " + index);
+   }
+
+   Component getComponent(String component)
+   {
+      return getComponentOrFail(component).component;
    }
 
    private ComponentIndex getComponentOrFail(String component)
@@ -138,7 +163,7 @@ public class Context
       ComponentIndex index = namesToComponents.get(component);
       if (index == null)
       {
-         throw new IllegalArgumentException("Unknown component: " + component + ". Known components are: " + knownComponents);
+         throw errorOnUnknownComponent("Unknown component: " + component);
       }
       else
       {
@@ -156,7 +181,7 @@ public class Context
       final String[] components = id.getComponents();
 
       // validate that the components for the specified Id are valid for this context
-      validate(components);
+      validate(id, components);
 
       int index = 0;
       for (String component : components)
@@ -176,10 +201,16 @@ public class Context
 
    void validate(String... componentValues)
    {
+      validate(null, componentValues);
+   }
+
+   void validate(Id id, String... componentValues)
+   {
       int componentNumber = namesToComponents.size();
-      if (componentValues.length < requiredCardinality || (!hasHierarchicalComponents && componentValues.length > componentNumber))
+      int valueNumber = componentValues.length;
+      if (valueNumber < requiredCardinality || (!hasHierarchicalComponents && valueNumber > componentNumber))
       {
-         throw new IllegalArgumentException("Wrong number of components: " + componentValues.length
+         throw new IllegalArgumentException("Wrong number of components: " + valueNumber
             + ". Was expecting at most " + componentNumber + " values for components: "
             + knownComponents + "; among which '" + requiredComponents + "' are required. Got: " + Arrays.toString(componentValues));
       }
@@ -187,10 +218,11 @@ public class Context
       boolean error = false;
       StringBuilder sb = null;
 
-      int testComponentNumber = Math.max(componentNumber, componentValues.length);
+      int testComponentNumber = Math.max(componentNumber, valueNumber);
       String[] nullPaddedValues = Arrays.copyOf(componentValues, testComponentNumber);
 
       int currentComponent = 0;
+      int actualCurrentComponent = 0;
 
       if (!hasHierarchicalComponents)
       {
@@ -199,6 +231,12 @@ public class Context
             try
             {
                index.component.validate(nullPaddedValues[currentComponent]);
+
+               // associate the current value with the current component name only if we have an actual value for this component
+               if (currentComponent < valueNumber)
+               {
+                  id.associateCurrentValueWith(currentComponent, index.component.getName());
+               }
             }
             catch (Exception e)
             {
@@ -223,6 +261,7 @@ public class Context
             try
             {
                index.component.validate(value);
+               id.associateCurrentValueWith(actualCurrentComponent, index.component.getName());
             }
             catch (Exception e)
             {
@@ -235,6 +274,7 @@ public class Context
                      try
                      {
                         component.validate(value);
+                        id.associateCurrentValueWith(currentComponent, index.component.getName());
                         currentComponent--; // set the current component to the hierarchical one before processing the rest
                         error = false; // we're not in an error situation
                      }
@@ -254,6 +294,7 @@ public class Context
 
             // by default assume that we're moving to the next component to give priority to non-hierarchical elements
             currentComponent++;
+            actualCurrentComponent++;
          }
       }
 
