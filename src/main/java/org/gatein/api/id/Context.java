@@ -233,7 +233,7 @@ public class Context
                index.component.validate(nullPaddedValues[currentComponent]);
 
                // associate the current value with the current component name only if we have an actual value for this component
-               if (currentComponent < valueNumber)
+               if (id != null && currentComponent < valueNumber)
                {
                   id.associateCurrentValueWith(currentComponent, index.component.getName());
                }
@@ -261,7 +261,10 @@ public class Context
             try
             {
                index.component.validate(value);
-               id.associateCurrentValueWith(actualCurrentComponent, index.component.getName());
+               if (id != null)
+               {
+                  id.associateCurrentValueWith(actualCurrentComponent, index.component.getName());
+               }
             }
             catch (Exception e)
             {
@@ -274,7 +277,10 @@ public class Context
                      try
                      {
                         component.validate(value);
-                        id.associateCurrentValueWith(currentComponent, index.component.getName());
+                        if (id != null)
+                        {
+                           id.associateCurrentValueWith(actualCurrentComponent, index.component.getName());
+                        }
                         currentComponent--; // set the current component to the hierarchical one before processing the rest
                         error = false; // we're not in an error situation
                      }
