@@ -177,6 +177,13 @@ public class Context
       ParameterValidation.throwIllegalArgExceptionIfNull(id, "Id to output as String");
 
       StringBuilder sb = new StringBuilder(111);
+
+      // deal with required first separator
+      if (requiresSeparatorInFirstPosition)
+      {
+         sb.append(defaultSeparator);
+      }
+
       int componentNumber = id.getComponentNumber();
 
       final String[] components = id.getComponents();

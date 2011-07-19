@@ -105,6 +105,19 @@ public class IdTestCase
    }
 
    @Test
+   public void testRoundtripParsingWithRequiredFirstSeparator()
+   {
+      final Context context = Context.builder().withDefaultSeparator("/")
+         .requiredUnboundedHierarchicalComponent("foo", Identifiable.class, Pattern.compile("\\w+"))
+         .requireSeparatorInFirstPosition()
+         .build();
+
+      Id key = Id.create(context, "foo", "bar", "baz");
+      Id parsed = Id.parse(key.getOriginalContext(), key.toString());
+      assert key.equals(parsed);
+   }
+
+   @Test
    public void getParentShouldWork()
    {
       Id portal = Id.create(context, CONTAINER, PORTAL);
