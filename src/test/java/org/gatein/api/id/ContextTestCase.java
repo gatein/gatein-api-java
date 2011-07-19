@@ -25,6 +25,7 @@ package org.gatein.api.id;
 
 import org.testng.annotations.Test;
 
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 /**
@@ -89,6 +90,28 @@ public class ContextTestCase
       assert context.isComponentRequired("bar");
       context.validate("foo", "bar");
       context.validate("foo", "bar", "bar");
+   }
+
+   @Test
+   public void shouldProperlyWorkWhenSeparatorIsRequiredInFirstPosition()
+   {
+      final Context context = Context.builder().withDefaultSeparator("/")
+         .requiredComponent("root", Identifiable.class, Pattern.compile("\\w+"))
+         .requiredUnboundedHierarchicalComponent("bar", Identifiable.class, Pattern.compile("\\w+"))
+         .requireSeparatorInFirstPosition()
+         .build();
+
+      assert Arrays.equals(new String[]{"foo", "bar"}, context.extractComponents("/foo/bar"));
+
+      try
+      {
+         context.extractComponents("foo/bar");
+         assert false : "Should have failed";
+      }
+      catch (IllegalArgumentException iae)
+      {
+         // expected
+      }
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)

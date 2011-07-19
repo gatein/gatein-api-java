@@ -47,6 +47,7 @@ public class Context
    private final String defaultSeparator;
    private final boolean ignoreRemainingAfterFirstMissingOptional;
    private boolean hasHierarchicalComponents;
+   private boolean requiresSeparatorInFirstPosition;
 
    private Context(String defaultSeparator, List<Component> componentList, boolean ignoreRemainingAfterFirstMissingOptional)
    {
@@ -322,6 +323,17 @@ public class Context
 
    public String[] extractComponents(String idAsString)
    {
+      if (requiresSeparatorInFirstPosition)
+      {
+         if (!idAsString.startsWith(defaultSeparator))
+         {
+            throw new IllegalArgumentException("Context requires separator '" + defaultSeparator + "' in first position. Given composite was: " + idAsString);
+         }
+
+         // remove separator to avoid empty component
+         idAsString = idAsString.substring(defaultSeparator.length());
+      }
+
       return idAsString.split(defaultSeparator);
    }
 
@@ -357,6 +369,7 @@ public class Context
       private List<Component> components = new ArrayList<Component>(7);
       private String defaultSeparator;
       private boolean ignoreRemainingAfterFirstMissingOptional;
+      private boolean requireSeparatorInFirstPosition;
 
       private ContextBuilder()
       {
@@ -392,13 +405,29 @@ public class Context
          return this;
       }
 
+      public ContextBuilder requireSeparatorInFirstPosition()
+      {
+         this.requireSeparatorInFirstPosition = true;
+         return this;
+      }
+
       public Context build()
       {
          if (components.isEmpty())
          {
             throw new IllegalStateException("Cannot build a Context with empty components");
          }
-         return new Context(defaultSeparator, components, ignoreRemainingAfterFirstMissingOptional);
+         Context context = new Context(defaultSeparator, components, ignoreRemainingAfterFirstMissingOptional);
+         if (requireSeparatorInFirstPosition)
+         {
+            context.requiresSeparatorInFirstPosition();
+         }
+         return context;
       }
+   }
+
+   private void requiresSeparatorInFirstPosition()
+   {
+      this.requiresSeparatorInFirstPosition = true;
    }
 }
