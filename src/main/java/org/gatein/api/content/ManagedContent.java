@@ -32,7 +32,7 @@ import org.gatein.api.util.ParameterValidation;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public class ManagedContent<T extends Content> implements Identifiable
+public class ManagedContent<T extends Content<T>> implements Identifiable<ManagedContent<T>>
 {
    private final Id<ManagedContent<T>> id;
    private final Content<T> content;
