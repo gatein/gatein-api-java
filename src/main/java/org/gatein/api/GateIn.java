@@ -24,6 +24,7 @@
 package org.gatein.api;
 
 import org.gatein.api.content.Application;
+import org.gatein.api.content.Category;
 import org.gatein.api.content.Content;
 import org.gatein.api.content.Gadget;
 import org.gatein.api.content.ManagedContent;
@@ -75,6 +76,8 @@ public interface GateIn
    Id<Gadget> gadgetId(String gadgetName);
 
    Id<Gadget> gadgetId(URI uri);
+
+   Id<Category> categoryId(String name);
 
    <T extends Site> Id<Page> pageId(Id<T> ownerSite, String pageName);
 
