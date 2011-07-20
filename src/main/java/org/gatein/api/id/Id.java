@@ -137,11 +137,16 @@ public abstract class Id<T extends Identifiable> implements Comparable<Id>
 
    public static Id parse(Context context, String idAsString)
    {
+      return parse(context, idAsString, Identifiable.class);
+   }
+
+   public static <U extends Identifiable<U>> Id<U> parse(Context context, String idAsString, Class<U> expectedType)
+   {
       ParameterValidation.throwIllegalArgExceptionIfNull(context, "Context to interpret String as an Id");
       ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(idAsString, "String to interpret as Id", null);
 
       String[] components = context.extractComponents(idAsString);
-      return internalCreate(context, Identifiable.class, false, components);
+      return internalCreate(context, expectedType, false, components);
    }
 
    public static Id getIdForChild(Id parent, String childId)
