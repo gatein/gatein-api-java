@@ -141,8 +141,12 @@ public abstract class ContentTestCase
       assert managedContent.equals(category.getContent(managedContent.getId()));
 
       // from URL
-      gadgetId = gateIn.gadgetId(new URI("http://foo.bar.com/gadget.xml"));
+      URI uri = new URI("http://foo.bar.com/gadget.xml");
+      gadgetId = gateIn.gadgetId(uri);
       gadget = registry.getContent(gadgetId);
+      assert !gadget.isLocal();
+      assert uri.equals(gadget.getURI());
+      assert uri.equals(((Gadget.RemoteData)gadget.getData()).getURI());
 
       managedContent = category.addContent(gadgetId);
       assert managedContent != null;
@@ -157,11 +161,12 @@ public abstract class ContentTestCase
 
       Gadget gadget = registry.createGadget("gadget", "source");
       assert gateIn.gadgetId("gadget").equals(gadget.getId());
-      assert "source".equals(gadget.getSource());
+      assert gadget.getURI() != null;
+      assert gadget.isLocal();
+      assert gadget.getData() instanceof Gadget.LocalData;
+      assert "source".equals(((Gadget.LocalData)gadget.getData()).getSource());
 
-      assert gadget.getEditURL() != null;
-      assert gadget.getViewURL() != null;
-      assert gadget.getReferenceURL() != null;
+      assert gadget.getReferenceURI() != null;
 
       assert gadget.equals(registry.getContent(gadget.getId()));
    }

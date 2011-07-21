@@ -23,7 +23,7 @@
 
 package org.gatein.api.content;
 
-import java.net.URL;
+import java.net.URI;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -31,10 +31,29 @@ import java.net.URL;
  */
 public interface Gadget extends Content<Gadget>
 {
-   URL getViewURL();
-   URL getEditURL();
-   URL getReferenceURL();
+   URI getReferenceURI();
 
-   String getSource();
-   void setSource(String source);
+   URI getURI();
+
+   Data getData();
+
+   boolean isLocal();
+
+   interface Data
+   {
+   }
+
+   interface LocalData extends Data
+   {
+      String getSource();
+
+      void setSource(String source);
+   }
+
+   interface RemoteData extends Data
+   {
+      URI getURI();
+
+      void setURI(URI uri);
+   }
 }
