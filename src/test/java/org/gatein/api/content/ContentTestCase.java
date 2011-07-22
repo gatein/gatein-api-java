@@ -36,7 +36,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Comparator;
-import java.util.List;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -69,19 +68,21 @@ public abstract class ContentTestCase
       final Category category = registry.getOrCreateCategory("category");
 
       Id<Application> id = gateIn.applicationId("application", "portlet");
-      List<Id<? extends ManagedContent>> knownContentIds = category.getKnownManagedContentIds();
-      assert !knownContentIds.contains(id) : "A category doesn't contain content directly.";
-      ManagedContent<Application> managed = category.addContent(id);
-      assert managed != null;
-      assert category.contains(managed.getId());
-      assert knownContentIds.contains(managed.getId());
+      final Application application = registry.get(id);
+
+      final ManagedContent<Application> managedContent = category.addContent(id);
+      assert managedContent != null;
+      assert application.equals(managedContent.getContent());
+
+      final String name = managedContent.getName();
+      assert managedContent.equals(category.getManagedContent(name));
+      assert category.contains(name);
+      assert category.getKnownManagedContentNames().contains(name);
 
       Id<Content> wsrp = gateIn.wsrpPortletId("invoker", "portlet");
-      ManagedContent<? extends Content> managedWSRP = category.addContent(wsrp);
+      ManagedContent<Content> managedWSRP = category.addContent(wsrp);
       assert managedWSRP != null;
-      assert category.contains(managedWSRP.getId());
-      knownContentIds = category.getKnownManagedContentIds();
-      assert !knownContentIds.contains(wsrp) : "A category doesn't contain content directly.";
+      assert category.contains(managedWSRP.getName());
    }
 
    @Test
@@ -97,7 +98,7 @@ public abstract class ContentTestCase
       ManagedContent<Application> managed = category.addContent(id);
       assert managed != null;
       assert application.equals(managed.getContent());
-      assert managed.equals(category.getContent(managed.getId()));
+      assert managed.equals(category.getManagedContent(managed.getName()));
 
       IterableResult<ManagedContent> managedContents = registry.getManagedContents(Query.<ManagedContent>builder().where(new Filter<ManagedContent>()
       {
@@ -110,7 +111,7 @@ public abstract class ContentTestCase
       {
          public int compare(ManagedContent o1, ManagedContent o2)
          {
-            return o1.getId().compareTo(o2.getId());
+            return o1.getName().compareTo(o2.getName());
          }
       }).build());
 
@@ -138,7 +139,7 @@ public abstract class ContentTestCase
       ManagedContent<Gadget> managedContent = category.addContent(gadgetId);
       assert managedContent != null;
       assert gadget.equals(managedContent.getContent());
-      assert managedContent.equals(category.getContent(managedContent.getId()));
+      assert managedContent.equals(category.getManagedContent(managedContent.getName()));
 
       // from URL
       URI uri = new URI("http://foo.bar.com/gadget.xml");
@@ -151,7 +152,7 @@ public abstract class ContentTestCase
       managedContent = category.addContent(gadgetId);
       assert managedContent != null;
       assert gadget.equals(managedContent.getContent());
-      assert managedContent.equals(category.getContent(managedContent.getId()));
+      assert managedContent.equals(category.getManagedContent(managedContent.getName()));
    }
 
    @Test
@@ -180,9 +181,9 @@ public abstract class ContentTestCase
       Id<Application> id = gateIn.applicationId("application", "portlet");
       Application application = registry.get(id);
       ManagedContent<Application> managed = category.addContent(id);
-      assert category.contains(managed.getId());
+      assert category.contains(managed.getName());
 
-      category.removeContent(managed.getId());
-      assert !category.contains(managed.getId());
+      category.removeContent(managed.getName());
+      assert !category.contains(managed.getName());
    }
 }

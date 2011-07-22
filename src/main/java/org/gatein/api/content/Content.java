@@ -24,6 +24,8 @@
 package org.gatein.api.content;
 
 import org.gatein.api.id.Identifiable;
+import org.gatein.api.util.Filter;
+import org.gatein.api.util.Type;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -31,4 +33,44 @@ import org.gatein.api.id.Identifiable;
  */
 public interface Content<T extends Content<T>> extends Identifiable<T>
 {
+   Type<T, Content> getType();
+
+   Type<Application, Content> PORTLET = new Type<Application, Content>("portlet")
+   {
+   };
+
+   Filter<Content> PORTLETS = new Filter<Content>()
+   {
+      @Override
+      public boolean accept(Content item)
+      {
+         return PORTLET.equals(item.getType());
+      }
+   };
+
+   Type<Content, Content> WSRP = new Type<Content, Content>("wsrp")
+   {
+   };
+
+   Filter<Content> WSRPS = new Filter<Content>()
+   {
+      @Override
+      public boolean accept(Content item)
+      {
+         return WSRP.equals(item.getType());
+      }
+   };
+
+   Type<Gadget, Content> GADGET = new Type<Gadget, Content>("gadget")
+   {
+   };
+
+   Filter<Content> GADGETS = new Filter<Content>()
+   {
+      @Override
+      public boolean accept(Content item)
+      {
+         return GADGET.equals(item.getType());
+      }
+   };
 }

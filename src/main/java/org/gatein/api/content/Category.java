@@ -26,7 +26,7 @@ package org.gatein.api.content;
 import org.gatein.api.id.Id;
 import org.gatein.api.id.Identifiable;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -34,17 +34,17 @@ import java.util.List;
  */
 public interface Category extends Identifiable<Category>
 {
-   <T extends Content<T>> ManagedContent<T> getContent(Id<ManagedContent<T>> contentId);
+   boolean contains(String managedContentName);
 
-   boolean contains(Id<? extends ManagedContent> contentId);
-
-   <T extends Content<T>> ManagedContent<T> addContent(Id<T> contentId);
-
-   List<Id<? extends ManagedContent>> getKnownManagedContentIds();
+   <T extends Content> ManagedContent<T> addContent(Id<T> contentId);
 
    String getDescription();
 
    void setDescription(String description);
 
-   <T extends Content<T>> void removeContent(Id<ManagedContent<T>> id);
+   void removeContent(String managedContentName);
+
+   <T extends Content> ManagedContent<T> getManagedContent(String name);
+
+   Collection<String> getKnownManagedContentNames();
 }

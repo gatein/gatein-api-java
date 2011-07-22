@@ -24,26 +24,35 @@
 package org.gatein.api.content;
 
 import org.gatein.api.GateIn;
+import org.gatein.api.id.Context;
 import org.gatein.api.id.Id;
 import org.gatein.api.id.Identifiable;
 import org.gatein.api.util.ParameterValidation;
+
+import java.util.regex.Pattern;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public class ManagedContent<T extends Content<T>> implements Identifiable<ManagedContent<T>>
+public class ManagedContent<T extends Content> implements Identifiable<ManagedContent<T>>
 {
+   private final T content;
    private final Id<ManagedContent<T>> id;
-   private final Content<T> content;
+   private String name;
    private String displayName;
    private String description;
+   private static final String MANAGED = "managed";
+   private static final Context CONTEXT = Context.builder()
+      .requiredComponent(MANAGED, ManagedContent.class, Pattern.compile(MANAGED))
+      .requiredComponent("content", Content.class, Pattern.compile(".+"))
+      .build();
 
-   public ManagedContent(Content<T> content)
+   public ManagedContent(T content)
    {
       ParameterValidation.throwIllegalArgExceptionIfNull(content, "Content");
-      this.id = content.getGateIn().managedContentId(content.getId());
       this.content = content;
+      this.id = Id.create(CONTEXT, MANAGED, content.getId().toString());
    }
 
    public Id<ManagedContent<T>> getId()
@@ -53,7 +62,16 @@ public class ManagedContent<T extends Content<T>> implements Identifiable<Manage
 
    public String getName()
    {
+      if (name != null)
+      {
+         return name;
+      }
       return content.getName();
+   }
+
+   public void setName(String name)
+   {
+      this.name = name;
    }
 
    public String getDisplayName()
@@ -75,7 +93,7 @@ public class ManagedContent<T extends Content<T>> implements Identifiable<Manage
       this.displayName = displayName;
    }
 
-   public Content<T> getContent()
+   public T getContent()
    {
       return content;
    }
