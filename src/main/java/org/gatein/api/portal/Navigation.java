@@ -25,13 +25,13 @@ package org.gatein.api.portal;
 
 import org.gatein.api.id.Id;
 import org.gatein.api.id.Identifiable;
-import org.gatein.api.util.Container;
+import org.gatein.api.util.HierarchicalContainer;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Navigation extends Identifiable<Navigation>, Container<String, Navigation>
+public interface Navigation extends Identifiable<Navigation>, HierarchicalContainer<String, Navigation>
 {
    Page getTargetPage();
 

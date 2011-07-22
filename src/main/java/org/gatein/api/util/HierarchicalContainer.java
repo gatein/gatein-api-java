@@ -25,36 +25,20 @@ package org.gatein.api.util;
 
 import org.gatein.api.id.Id;
 import org.gatein.api.id.Identifiable;
-import org.testng.annotations.Test;
 
-/** @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a> */
-public abstract class ContainerTestCase
+/**
+ * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
+ * @version $Revision$
+ */
+public interface HierarchicalContainer<K, T extends Identifiable> extends Container<T>
 {
-   protected Container<String, Identifiable> container;
+   boolean contains(K key);
 
-   @Test
-   public void createAndAddShouldBeIdempotent()
-   {
-      String foo = "foo";
-      assert container.createAndAdd(foo).equals(container.createAndAdd(container.getIdForChild(foo)));
+   T createAndAdd(K key);
 
-      String bar = "bar";
-      assert container.createAndAdd(container.getIdForChild(bar)).equals(container.createAndAdd(bar));
-   }
+   <U extends T> U createAndAdd(Id<U> id);
 
-   @Test
-   public void keyAndIdEquivalenceShouldWorkFine()
-   {
-      String fooName = "foo";
-      Identifiable foo = container.createAndAdd(fooName);
+   T get(K key);
 
-      Id fooId = foo.getId();
-      assert fooId.equals(container.getIdForChild(fooName));
-
-      assert container.contains(fooName);
-      assert container.contains(fooId);
-
-      assert foo.equals(container.get(fooName));
-      assert foo.equals(container.get(fooId));
-   }
+   Id<T> getIdForChild(K key);
 }

@@ -24,7 +24,7 @@
 package org.gatein.api.portal;
 
 import org.gatein.api.id.Identifiable;
-import org.gatein.api.util.Container;
+import org.gatein.api.util.HierarchicalContainer;
 import org.gatein.api.util.Type;
 
 /**
@@ -33,7 +33,7 @@ import org.gatein.api.util.Type;
  */
 public interface Site extends Identifiable
 {
-   Container<String, Page> getPageRegistry();
+   HierarchicalContainer<String, Page> getPageRegistry();
 
    Navigation getNavigation();
 
