@@ -90,7 +90,7 @@ public abstract class ContentTestCase
       ContentRegistry registry = portal.getContentRegistry();
       final Category category = registry.getOrCreateCategory("category");
 
-      Application application = registry.getContent(gateIn.applicationId("application", "portlet"));
+      Application application = registry.get(gateIn.applicationId("application", "portlet"));
       assert application.getName().equals(application.getDisplayName());
 
       Id<Application> id = application.getId();
@@ -132,7 +132,7 @@ public abstract class ContentTestCase
 
       // from name
       Id<Gadget> gadgetId = gateIn.gadgetId("gadgetName");
-      Gadget gadget = registry.getContent(gadgetId);
+      Gadget gadget = registry.get(gadgetId);
       assert "gadgetName".equals(gadget.getName());
 
       ManagedContent<Gadget> managedContent = category.addContent(gadgetId);
@@ -143,7 +143,7 @@ public abstract class ContentTestCase
       // from URL
       URI uri = new URI("http://foo.bar.com/gadget.xml");
       gadgetId = gateIn.gadgetId(uri);
-      gadget = registry.getContent(gadgetId);
+      gadget = registry.get(gadgetId);
       assert !gadget.isLocal();
       assert uri.equals(gadget.getURI());
       assert uri.equals(((Gadget.RemoteData)gadget.getData()).getURI());
@@ -168,7 +168,7 @@ public abstract class ContentTestCase
 
       assert gadget.getReferenceURI() != null;
 
-      assert gadget.equals(registry.getContent(gadget.getId()));
+      assert gadget.equals(registry.get(gadget.getId()));
    }
 
    @Test
@@ -178,7 +178,7 @@ public abstract class ContentTestCase
       Category category = registry.getOrCreateCategory("category");
 
       Id<Application> id = gateIn.applicationId("application", "portlet");
-      Application application = registry.getContent(id);
+      Application application = registry.get(id);
       ManagedContent<Application> managed = category.addContent(id);
       assert category.contains(managed.getId());
 

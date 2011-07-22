@@ -23,7 +23,7 @@
 
 package org.gatein.api.content;
 
-import org.gatein.api.id.Id;
+import org.gatein.api.util.Container;
 import org.gatein.api.util.IterableResult;
 import org.gatein.api.util.Query;
 
@@ -31,13 +31,11 @@ import org.gatein.api.util.Query;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface ContentRegistry
+public interface ContentRegistry extends Container<Content>
 {
    Category getOrCreateCategory(String name);
 
    Category getCategory(String name);
-
-   <T extends Content<T>> T getContent(Id<T> id);
 
    IterableResult<ManagedContent> getManagedContents(Query<ManagedContent> query);
 
