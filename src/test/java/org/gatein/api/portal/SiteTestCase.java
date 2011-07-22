@@ -23,30 +23,31 @@
 
 package org.gatein.api.portal;
 
+import org.gatein.api.util.Type;
 import org.testng.annotations.Test;
 
 /** @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a> */
-public class TypeTestCase
+public class SiteTestCase
 {
    @Test
    public void forNameShouldProperlyResolveTypes()
    {
-      assert Site.Type.PORTAL.equals(Site.Type.forName(Site.Type.PORTAL_NAME));
-      assert Site.Type.DASHBOARD.equals(Site.Type.forName(Site.Type.DASHBOARD_NAME));
-      assert Site.Type.GROUP.equals(Site.Type.forName(Site.Type.GROUP_NAME));
+      assert Site.PORTAL.equals(Type.forName(Site.PORTAL_NAME, Site.class));
+      assert Site.DASHBOARD.equals(Type.forName(Site.DASHBOARD_NAME, Site.class));
+      assert Site.GROUP.equals(Type.forName(Site.GROUP_NAME, Site.class));
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void forNameShouldThrowAnExceptionOnUnknownTypeName()
    {
-      Site.Type.forName("foo");
+      Type.forName("foo", Site.class);
    }
 
    @Test
    public void shouldProperlyReturnValueType()
    {
-      assert Portal.class.equals(Site.Type.PORTAL.getValueType());
-      assert Site.class.equals(Site.Type.GROUP.getValueType());
-      assert Site.class.equals(Site.Type.DASHBOARD.getValueType());
+      assert Portal.class.equals(Site.PORTAL.getValueType());
+      assert Site.class.equals(Site.GROUP.getValueType());
+      assert Site.class.equals(Site.DASHBOARD.getValueType());
    }
 }

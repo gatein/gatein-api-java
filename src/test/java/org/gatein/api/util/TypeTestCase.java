@@ -21,7 +21,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api;
+package org.gatein.api.util;
 
 import org.testng.annotations.Test;
 
@@ -29,26 +29,17 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public class PropertyInfoTestCase
+public class TypeTestCase
 {
-   @Test
-   public void testFactory()
-   {
-      PropertyInfo<String> info = PropertyInfo.createPropertyInfo("property-name", String.class);
-
-      assert "property-name".equals(info.getName());
-      assert String.class.equals(info.getValueType());
-   }
-
    @Test
    public void testConstructor()
    {
-      PropertyInfo<String> info = new PropertyInfo<String>("property-name")
+      Type<String, Object> info = new Type<String, Object>("property-name")
       {
       };
 
       assert "property-name".equals(info.getName());
       assert String.class.equals(info.getValueType());
-
+      assert Object.class.equals(info.getOriginatingClass());
    }
 }

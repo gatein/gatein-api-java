@@ -34,6 +34,7 @@ import org.gatein.api.portal.Page;
 import org.gatein.api.portal.Portal;
 import org.gatein.api.portal.Site;
 import org.gatein.api.util.IterableResult;
+import org.gatein.api.util.Type;
 
 import java.net.URI;
 
@@ -63,7 +64,7 @@ public interface GateIn
 
    <T extends Identifiable> T get(Id<T> id);
 
-   <T extends Site> T getSite(Id<T> siteId, Site.Type<T> type);
+   <T extends Site> T getSite(Id<T> siteId, Type<T, Site> type);
 
    Id userId(String user);
 
@@ -83,5 +84,5 @@ public interface GateIn
 
    <T extends Content<T>> Id<ManagedContent<T>> managedContentId(Id<T> contentId);
 
-   <T extends Site> Id<T> siteId(Site.Type<T> siteType, String portalName);
+   <T extends Site> Id<T> siteId(Type<T, Site> siteType, String portalName);
 }

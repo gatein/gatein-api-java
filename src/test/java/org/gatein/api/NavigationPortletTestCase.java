@@ -94,7 +94,7 @@ public abstract class NavigationPortletTestCase
 
    private void checkGroupSite(Site site, final int priority, final int navigationsNumber, final String groupName)
    {
-      assert Site.Type.GROUP.equals(site.getType());
+      assert Site.GROUP.equals(site.getType());
       assert priority == site.getPriority();
       assert site.getDisplayName().contains(groupName);
 
@@ -118,9 +118,9 @@ public abstract class NavigationPortletTestCase
       Iterator<Portal> portals = portalResult.iterator();
 
       Portal portal = portals.next();
-      assert Site.Type.PORTAL.equals(portal.getType());
+      assert Site.PORTAL.equals(portal.getType());
       assert "classic".equals(portal.getName());
-      assert gateIn.getPortal(gateIn.siteId(Site.Type.PORTAL, "classic")).equals(portal);
+      assert gateIn.getPortal(gateIn.siteId(Site.PORTAL, "classic")).equals(portal);
       IterableResult<Navigation> navigations = portal.getNavigation().getAll();
       assert 2 == navigations.size();
    }
@@ -131,7 +131,7 @@ public abstract class NavigationPortletTestCase
       final Id id = gateIn.userId("root");
 
       Site dashboard = gateIn.getDashboard(id);
-      assert Site.Type.DASHBOARD.equals(dashboard.getType());
+      assert Site.DASHBOARD.equals(dashboard.getType());
       IterableResult<Navigation> nodes = dashboard.getNavigation().getAll();
       assert 1 == nodes.size();
       assert "Dashboard".equals(nodes.iterator().next().getDisplayName());

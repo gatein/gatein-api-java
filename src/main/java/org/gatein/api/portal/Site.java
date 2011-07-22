@@ -25,8 +25,7 @@ package org.gatein.api.portal;
 
 import org.gatein.api.id.Identifiable;
 import org.gatein.api.util.Container;
-
-import java.lang.reflect.ParameterizedType;
+import org.gatein.api.util.Type;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -44,58 +43,16 @@ public interface Site extends Identifiable
 
    int getPriority();
 
-   public static abstract class Type<U extends Site>
+   public static final String PORTAL_NAME = "portal";
+   public static final String DASHBOARD_NAME = "user";
+   public static final String GROUP_NAME = "group";
+   public static final Type<Portal, Site> PORTAL = new Type<Portal, Site>(PORTAL_NAME)
    {
-      private final String name;
-      private final Class<U> valueType;
-
-      private Type(String name)
-      {
-         this.name = name;
-         valueType = (Class<U>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-      }
-
-      public String getName()
-      {
-         return name;
-      }
-
-      public static Type<? extends Site> forName(String name)
-      {
-         if (PORTAL_NAME.equals(name))
-         {
-            return PORTAL;
-         }
-         else if (GROUP_NAME.equals(name))
-         {
-            return GROUP;
-         }
-         else if (DASHBOARD_NAME.equals(name))
-         {
-            return DASHBOARD;
-         }
-         else
-         {
-            throw new IllegalArgumentException("Unknown Type: " + name);
-         }
-      }
-
-      public Class<U> getValueType()
-      {
-         return valueType;
-      }
-
-      public static final String PORTAL_NAME = "portal";
-      public static final String DASHBOARD_NAME = "user";
-      public static final String GROUP_NAME = "group";
-      public static final Type<Portal> PORTAL = new Type<Portal>(Type.PORTAL_NAME)
-      {
-      };
-      public static final Type<Site> DASHBOARD = new Type<Site>(DASHBOARD_NAME)
-      {
-      };
-      public static final Type<Site> GROUP = new Type<Site>(GROUP_NAME)
-      {
-      };
-   }
+   };
+   public static final Type<Site, Site> DASHBOARD = new Type<Site, Site>(DASHBOARD_NAME)
+   {
+   };
+   public static final Type<Site, Site> GROUP = new Type<Site, Site>(GROUP_NAME)
+   {
+   };
 }
