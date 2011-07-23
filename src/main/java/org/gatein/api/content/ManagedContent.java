@@ -23,88 +23,21 @@
 
 package org.gatein.api.content;
 
-import org.gatein.api.GateIn;
-import org.gatein.api.id.Context;
-import org.gatein.api.id.Id;
 import org.gatein.api.id.Identifiable;
-import org.gatein.api.util.ParameterValidation;
-
-import java.util.regex.Pattern;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public class ManagedContent<T extends Content> implements Identifiable<ManagedContent<T>>
+public interface ManagedContent<T extends Content> extends Identifiable<ManagedContent<T>>
 {
-   private final T content;
-   private final Id<ManagedContent<T>> id;
-   private String name;
-   private String displayName;
-   private String description;
-   private static final String MANAGED = "managed";
-   private static final Context CONTEXT = Context.builder()
-      .requiredComponent(MANAGED, ManagedContent.class, Pattern.compile(MANAGED))
-      .requiredComponent("content", Content.class, Pattern.compile(".+"))
-      .build();
+   public void setName(String name);
 
-   public ManagedContent(T content)
-   {
-      ParameterValidation.throwIllegalArgExceptionIfNull(content, "Content");
-      this.content = content;
-      this.id = Id.create(CONTEXT, MANAGED, content.getId().toString());
-   }
+   public void setDisplayName(String displayName);
 
-   public Id<ManagedContent<T>> getId()
-   {
-      return id;
-   }
+   public T getContent();
 
-   public String getName()
-   {
-      if (name != null)
-      {
-         return name;
-      }
-      return content.getName();
-   }
+   public String getDescription();
 
-   public void setName(String name)
-   {
-      this.name = name;
-   }
-
-   public String getDisplayName()
-   {
-      if (displayName != null)
-      {
-         return displayName;
-      }
-      return content.getDisplayName();
-   }
-
-   public GateIn getGateIn()
-   {
-      return content.getGateIn();
-   }
-
-   public void setDisplayName(String displayName)
-   {
-      this.displayName = displayName;
-   }
-
-   public T getContent()
-   {
-      return content;
-   }
-
-   public String getDescription()
-   {
-      return description;
-   }
-
-   public void setDescription(String description)
-   {
-      this.description = description;
-   }
+   public void setDescription(String description);
 }
