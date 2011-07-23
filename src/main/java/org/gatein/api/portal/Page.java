@@ -24,7 +24,7 @@
 package org.gatein.api.portal;
 
 import org.gatein.api.id.Identifiable;
-import org.gatein.api.util.IterableResult;
+import org.gatein.api.util.IterableIdentifiableCollection;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -38,7 +38,7 @@ public interface Page extends Identifiable<Page>
 
    void setTitle(String title);
 
-   IterableResult<Navigation> getInboundNavigations();
+   IterableIdentifiableCollection<Navigation> getInboundNavigations();
 
    Navigation createInboundNavigationIn(Site site, Navigation parent);
 }

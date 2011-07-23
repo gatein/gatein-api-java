@@ -33,7 +33,7 @@ import org.gatein.api.id.Identifiable;
 import org.gatein.api.portal.Page;
 import org.gatein.api.portal.Portal;
 import org.gatein.api.portal.Site;
-import org.gatein.api.util.IterableResult;
+import org.gatein.api.util.IterableIdentifiableCollection;
 import org.gatein.api.util.Type;
 
 import java.net.URI;
@@ -44,21 +44,21 @@ import java.net.URI;
  */
 public interface GateIn
 {
-   IterableResult<Portal> getPortals();
+   IterableIdentifiableCollection<Portal> getPortals();
 
    Portal getPortal(Id<Portal> portalId);
 
    Portal getDefaultPortal();
 
-   IterableResult<Site> getSites();
+   IterableIdentifiableCollection<Site> getSites();
 
-   IterableResult<Site> getGroupSites();
+   IterableIdentifiableCollection<Site> getGroupSites();
 
    Site getGroupSite(Id groupId);
 
-   IterableResult<Site> getGroupSites(Id userId);
+   IterableIdentifiableCollection<Site> getGroupSites(Id userId);
 
-   IterableResult<Portal> getPortalSites(Id userId);
+   IterableIdentifiableCollection<Portal> getPortalSites(Id userId);
 
    Site getDashboard(Id userId);
 

@@ -27,7 +27,7 @@ import org.gatein.api.GateIn;
 import org.gatein.api.id.Id;
 import org.gatein.api.portal.Portal;
 import org.gatein.api.util.Filter;
-import org.gatein.api.util.IterableResult;
+import org.gatein.api.util.IterableIdentifiableCollection;
 import org.gatein.api.util.Query;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -100,7 +100,7 @@ public abstract class ContentTestCase
       assert application.equals(managed.getContent());
       assert managed.equals(category.getManagedContent(managed.getName()));
 
-      IterableResult<ManagedContent> managedContents = registry.getManagedContents(Query.<ManagedContent>builder().where(new Filter<ManagedContent>()
+      IterableIdentifiableCollection<ManagedContent> managedContents = registry.getManagedContents(Query.<ManagedContent>builder().where(new Filter<ManagedContent>()
       {
          @Override
          public boolean accept(ManagedContent item)

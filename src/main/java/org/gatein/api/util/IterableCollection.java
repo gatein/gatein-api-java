@@ -23,21 +23,10 @@
 
 package org.gatein.api.util;
 
-import org.gatein.api.id.Id;
-import org.gatein.api.id.Identifiable;
-
-/**
- * Encapsulates results of queries. Number of results can be computed when the query is run. Checking if an element is
- * contained in the results without iterating over all of them should be possible by performing a query against the
- * original data set. Could be automatically paged (in which case we might need to add methods to know more about the
- * current page or go to a specific page).
- *
- * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
- * @version $Revision$
- */
-public interface IterableResult<T extends Identifiable> extends Iterable<T>
+/** @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a> */
+public interface IterableCollection<T> extends Iterable<T>
 {
    int size();
 
-   boolean contains(Id<T> t);
+   boolean contains(T t);
 }

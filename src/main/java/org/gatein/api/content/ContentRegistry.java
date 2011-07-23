@@ -24,7 +24,7 @@
 package org.gatein.api.content;
 
 import org.gatein.api.util.Container;
-import org.gatein.api.util.IterableResult;
+import org.gatein.api.util.IterableIdentifiableCollection;
 import org.gatein.api.util.Query;
 
 /**
@@ -37,7 +37,7 @@ public interface ContentRegistry extends Container<Content>
 
    Category getCategory(String name);
 
-   IterableResult<ManagedContent> getManagedContents(Query<ManagedContent> query);
+   IterableIdentifiableCollection<ManagedContent> getManagedContents(Query<ManagedContent> query);
 
    Gadget createGadget(String gadget, String source);
 }
