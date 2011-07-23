@@ -25,6 +25,7 @@ package org.gatein.api.content;
 
 import org.gatein.api.id.Id;
 import org.gatein.api.id.Identifiable;
+import org.gatein.api.util.IterableCollection;
 
 import java.util.Collection;
 
@@ -46,5 +47,5 @@ public interface Category extends Identifiable<Category>
 
    <T extends Content> ManagedContent<T> getManagedContent(String name);
 
-   Collection<String> getKnownManagedContentNames();
+   IterableCollection<String> getKnownManagedContentNames();
 }
