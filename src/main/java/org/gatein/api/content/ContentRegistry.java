@@ -24,6 +24,7 @@
 package org.gatein.api.content;
 
 import org.gatein.api.util.Container;
+import org.gatein.api.util.IterableCollection;
 import org.gatein.api.util.IterableIdentifiableCollection;
 import org.gatein.api.util.Query;
 
@@ -36,6 +37,10 @@ public interface ContentRegistry extends Container<Content>
    Category getOrCreateCategory(String name);
 
    Category getCategory(String name);
+
+   IterableCollection<String> getCategoryNames();
+
+   IterableIdentifiableCollection<Category> getAllCategories();
 
    IterableIdentifiableCollection<ManagedContent> getManagedContents(Query<ManagedContent> query);
 
