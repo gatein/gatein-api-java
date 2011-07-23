@@ -23,8 +23,6 @@
 
 package org.gatein.api.id;
 
-import org.gatein.api.util.ParameterValidation;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
