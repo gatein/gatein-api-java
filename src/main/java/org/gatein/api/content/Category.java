@@ -27,8 +27,6 @@ import org.gatein.api.id.Id;
 import org.gatein.api.id.Identifiable;
 import org.gatein.api.util.IterableCollection;
 
-import java.util.Collection;
-
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
@@ -45,7 +43,7 @@ public interface Category extends Identifiable<Category>
 
    void removeContent(String managedContentName);
 
-   <T extends Content> ManagedContent<T> getManagedContent(String name);
+   ManagedContent getManagedContent(String name);
 
    IterableCollection<String> getKnownManagedContentNames();
 }
