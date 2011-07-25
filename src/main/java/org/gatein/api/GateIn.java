@@ -71,7 +71,7 @@ public interface GateIn
 
    Id groupId(String root, String... children);
 
-   Id<Portlet> applicationId(String application, String portlet);
+   Id<Portlet> portletId(String application, String portlet);
 
    Id<WSRP> wsrpPortletId(String invoker, String portlet);
 
