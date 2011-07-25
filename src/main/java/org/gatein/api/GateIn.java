@@ -23,11 +23,12 @@
 
 package org.gatein.api;
 
-import org.gatein.api.content.Application;
 import org.gatein.api.content.Category;
 import org.gatein.api.content.Content;
 import org.gatein.api.content.Gadget;
 import org.gatein.api.content.ManagedContent;
+import org.gatein.api.content.Portlet;
+import org.gatein.api.content.WSRP;
 import org.gatein.api.id.Id;
 import org.gatein.api.id.Identifiable;
 import org.gatein.api.portal.Page;
@@ -70,9 +71,9 @@ public interface GateIn
 
    Id groupId(String root, String... children);
 
-   Id<Application> applicationId(String application, String portlet);
+   Id<Portlet> applicationId(String application, String portlet);
 
-   Id<Content> wsrpPortletId(String invoker, String portlet);
+   Id<WSRP> wsrpPortletId(String invoker, String portlet);
 
    Id<Gadget> gadgetId(String gadgetName);
 

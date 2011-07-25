@@ -67,20 +67,20 @@ public abstract class ContentTestCase
       ContentRegistry registry = portal.getContentRegistry();
       final Category category = registry.getOrCreateCategory("category");
 
-      Id<Application> id = gateIn.applicationId("application", "portlet");
-      final Application application = registry.get(id);
+      Id<Portlet> id = gateIn.applicationId("application", "portlet");
+      final Portlet portlet = registry.get(id);
 
-      final ManagedContent<Application> managedContent = category.addContent(id);
+      final ManagedContent<Portlet> managedContent = category.addContent(id);
       assert managedContent != null;
-      assert application.equals(managedContent.getContent());
+      assert portlet.equals(managedContent.getContent());
 
       final String name = managedContent.getName();
       assert managedContent.equals(category.getManagedContent(name));
       assert category.contains(name);
       assert category.getKnownManagedContentNames().contains(name);
 
-      Id<Content> wsrp = gateIn.wsrpPortletId("invoker", "portlet");
-      ManagedContent<Content> managedWSRP = category.addContent(wsrp);
+      Id<WSRP> wsrp = gateIn.wsrpPortletId("invoker", "portlet");
+      ManagedContent<WSRP> managedWSRP = category.addContent(wsrp);
       assert managedWSRP != null;
       assert category.contains(managedWSRP.getName());
    }
@@ -91,13 +91,13 @@ public abstract class ContentTestCase
       ContentRegistry registry = portal.getContentRegistry();
       final Category category = registry.getOrCreateCategory("category");
 
-      Application application = registry.get(gateIn.applicationId("application", "portlet"));
-      assert application.getName().equals(application.getDisplayName());
+      Portlet portlet = registry.get(gateIn.applicationId("application", "portlet"));
+      assert portlet.getName().equals(portlet.getDisplayName());
 
-      Id<Application> id = application.getId();
-      ManagedContent<Application> managed = category.addContent(id);
+      Id<Portlet> id = portlet.getId();
+      ManagedContent<Portlet> managed = category.addContent(id);
       assert managed != null;
-      assert application.equals(managed.getContent());
+      assert portlet.equals(managed.getContent());
       assert managed.equals(category.getManagedContent(managed.getName()));
 
       IterableIdentifiableCollection<ManagedContent> managedContents = registry.getManagedContents(Query.<ManagedContent>builder().where(new Filter<ManagedContent>()
@@ -105,7 +105,7 @@ public abstract class ContentTestCase
          @Override
          public boolean accept(ManagedContent item)
          {
-            return item.getContent() instanceof Application;
+            return item.getContent() instanceof Portlet;
          }
       }).orderBy(new Comparator<ManagedContent>()
       {
@@ -178,9 +178,9 @@ public abstract class ContentTestCase
       ContentRegistry registry = portal.getContentRegistry();
       Category category = registry.getOrCreateCategory("category");
 
-      Id<Application> id = gateIn.applicationId("application", "portlet");
-      Application application = registry.get(id);
-      ManagedContent<Application> managed = category.addContent(id);
+      Id<Portlet> id = gateIn.applicationId("application", "portlet");
+      Portlet portlet = registry.get(id);
+      ManagedContent<Portlet> managed = category.addContent(id);
       assert category.contains(managed.getName());
 
       category.removeContent(managed.getName());

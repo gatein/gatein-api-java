@@ -35,7 +35,7 @@ public interface Content<T extends Content<T>> extends Identifiable<T>
 {
    Type<T, Content> getType();
 
-   Type<Application, Content> PORTLET = new Type<Application, Content>("portlet")
+   Type<Portlet, Content> PORTLET = new Type<Portlet, Content>("portlet")
    {
    };
 
@@ -48,7 +48,7 @@ public interface Content<T extends Content<T>> extends Identifiable<T>
       }
    };
 
-   Type<Content, Content> WSRP = new Type<Content, Content>("wsrp")
+   Type<WSRP, Content> WSRP = new Type<WSRP, Content>("wsrp")
    {
    };
 
