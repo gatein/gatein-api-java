@@ -29,7 +29,7 @@
 
    <groupId>org.gatein.api</groupId>
    <artifactId>gatein-java-api</artifactId>
-   <version>1.0.0-Beta01-SNAPSHOT</version>
+   <version>1.0.0-Alpha01-SNAPSHOT</version>
 
    <parent>
       <groupId>org.gatein</groupId>
