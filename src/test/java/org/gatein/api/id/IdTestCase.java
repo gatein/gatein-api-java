@@ -177,14 +177,13 @@ public class IdTestCase
    public void testGetChildFor()
    {
       Id key = Id.create(context, CONTAINER, PORTAL);
-      Id child = key.getIdforChild(INVOKER);
-      assert child.equals(Id.getIdForChild(key, INVOKER));
+      Id child = key.getIdForChild(INVOKER);
       assert Id.create(context, CONTAINER, PORTAL, INVOKER, null).equals(child);
 
-      child = child.getIdforChild(PORTLET);
+      child = child.getIdForChild(PORTLET);
       assert Id.create(context, CONTAINER, PORTAL, INVOKER, PORTLET).equals(child);
 
-      child = child.getIdforChild(INSTANCE);
+      child = child.getIdForChild(INSTANCE);
       assert Id.create(context, CONTAINER, PORTAL, INVOKER, PORTLET, INSTANCE).equals(child);
    }
 
@@ -195,15 +194,9 @@ public class IdTestCase
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
-   public void testGetChildForShouldFailOnNullParent()
-   {
-      Id.getIdForChild(null, null);
-   }
-
-   @Test(expectedExceptions = IllegalArgumentException.class)
    public void testGetChildForShouldFailOnNullChildId()
    {
-      Id.create(context, CONTAINER, PORTAL).getIdforChild(null);
+      Id.create(context, CONTAINER, PORTAL).getIdForChild(null);
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)

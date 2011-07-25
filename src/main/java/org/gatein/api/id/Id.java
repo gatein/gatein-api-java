@@ -147,15 +147,15 @@ public abstract class Id<T extends Identifiable> implements Comparable<Id>
       return internalCreate(context, expectedType, false, components);
    }
 
-   public static Id getIdForChild(Id parent, String childId)
+   public Id getIdForChild(String childId)
    {
-      ParameterValidation.throwIllegalArgExceptionIfNull(parent, "Parent resource");
+      ParameterValidation.throwIllegalArgExceptionIfNull(this, "Parent resource");
       ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(childId, "child identifier", null);
 
-      String[] components = parent.getComponents();
+      String[] components = getComponents();
       int childIndex = components.length;
 
-      Context context = parent.getOriginalContext();
+      Context context = getOriginalContext();
       context.validate(childId, childIndex);
 
       String[] newComponents = new String[childIndex + 1];
@@ -163,11 +163,6 @@ public abstract class Id<T extends Identifiable> implements Comparable<Id>
       newComponents[childIndex] = childId;
 
       return internalCreate(context, Identifiable.class, false, newComponents);
-   }
-
-   public Id getIdforChild(String childId)
-   {
-      return getIdForChild(this, childId);
    }
 
    public String getComponent(String component)
