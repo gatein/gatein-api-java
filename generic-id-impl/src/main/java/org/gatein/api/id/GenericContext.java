@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public class Context
+public class GenericContext implements Context
 {
    private static final String LIST_SEPARATOR = ", ";
    private final LinkedHashMap<String, ComponentIndex> namesToComponents;
@@ -47,7 +47,7 @@ public class Context
    private boolean hasHierarchicalComponents;
    private boolean requiresSeparatorInFirstPosition;
 
-   private Context(String defaultSeparator, List<Component> componentList, boolean ignoreRemainingAfterFirstMissingOptional)
+   private GenericContext(String defaultSeparator, List<Component> componentList, boolean ignoreRemainingAfterFirstMissingOptional)
    {
       ParameterValidation.throwIllegalArgExceptionIfNull(componentList, "Component list");
 
@@ -94,6 +94,97 @@ public class Context
       requiredComponents = requiredComponentsSB.toString();
       this.defaultSeparator = defaultSeparator;
    }
+
+
+   public Id create(String rootComponent, String... additionalComponent)
+   {
+      return create(Identifiable.class, rootComponent, additionalComponent);
+   }
+
+   public <T extends Identifiable> Id<T> create(Class<T> type, String rootComponent, String... additionalComponents)
+   {
+      ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(rootComponent, "root component", null);
+
+      return internalCreate(type, true, rootComponent, additionalComponents);
+   }
+
+   private <T extends Identifiable> Id<T> internalCreate(Class<T> type, final boolean revalidate, String rootComponent, String... additionalComponents)
+   {
+      if (ParameterValidation.existsAndIsNotEmpty(additionalComponents))
+      {
+         int length = additionalComponents.length;
+         int indexOfFirstNull = -1;
+         int current = 0;
+         for (String additionalComponent : additionalComponents)
+         {
+            if (ParameterValidation.isNullOrEmpty(additionalComponent))
+            {
+               indexOfFirstNull = current;
+               break;
+            }
+            current++;
+         }
+
+         length = (indexOfFirstNull != -1 ? indexOfFirstNull : length);
+         String[] components = new String[length + 1];
+         System.arraycopy(additionalComponents, 0, components, 1, length);
+         components[0] = rootComponent;
+
+         return internalCreate(type, revalidate, components);
+      }
+      else
+      {
+         GenericId.SimpleGenericId<T> id = new GenericId.SimpleGenericId<T>(this, type, rootComponent);
+
+         if (revalidate)
+         {
+            validate(id, rootComponent);
+         }
+
+         return id;
+      }
+   }
+
+   <T extends Identifiable> Id<T> internalCreate(Class<T> type, final boolean revalidate, String... components)
+   {
+      if (ParameterValidation.existsAndIsNotEmpty(components))
+      {
+         GenericId<T> id;
+         if (components.length == 1)
+         {
+            id = new GenericId.SimpleGenericId<T>(this, type, components[0]);
+         }
+         else
+         {
+            id = new GenericId.ComplexGenericId<T>(this, type, components);
+         }
+
+         if (revalidate)
+         {
+            validate(id, components);
+         }
+
+         return id;
+      }
+      else
+      {
+         throw new IllegalArgumentException("A valid root component is required to create an Id.");
+      }
+   }
+
+   public Id parse(String idAsString)
+   {
+      return parse(idAsString, Identifiable.class);
+   }
+
+   public <U extends Identifiable<U>> Id<U> parse(String idAsString, Class<U> expectedType)
+   {
+      ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(idAsString, "String to interpret as Id", null);
+
+      String[] components = extractComponents(idAsString);
+      return internalCreate(expectedType, false, components);
+   }
+
 
    private void buildString(StringBuilder sb, String toAppend, boolean appendSeparator, String separator)
    {
@@ -241,7 +332,7 @@ public class Context
                // associate the current value with the current component name only if we have an actual value for this component
                if (id != null && currentComponent < valueNumber)
                {
-                  id.associateCurrentValueWith(currentComponent, index.component.getName());
+                  id.associateComponentWith(currentComponent, index.component.getName());
                }
             }
             catch (Exception e)
@@ -269,7 +360,7 @@ public class Context
                index.component.validate(value);
                if (id != null)
                {
-                  id.associateCurrentValueWith(actualCurrentComponent, index.component.getName());
+                  id.associateComponentWith(actualCurrentComponent, index.component.getName());
                }
             }
             catch (Exception e)
@@ -285,7 +376,7 @@ public class Context
                         component.validate(value);
                         if (id != null)
                         {
-                           id.associateCurrentValueWith(actualCurrentComponent, index.component.getName());
+                           id.associateComponentWith(actualCurrentComponent, index.component.getName());
                         }
                         currentComponent--; // set the current component to the hierarchical one before processing the rest
                         error = false; // we're not in an error situation
@@ -369,6 +460,11 @@ public class Context
       return new ContextBuilder();
    }
 
+   private void requiresSeparatorInFirstPosition()
+   {
+      this.requiresSeparatorInFirstPosition = true;
+   }
+
    public static class ContextBuilder
    {
       private List<Component> components = new ArrayList<Component>(7);
@@ -416,23 +512,18 @@ public class Context
          return this;
       }
 
-      public Context build()
+      public GenericContext build()
       {
          if (components.isEmpty())
          {
             throw new IllegalStateException("Cannot build a Context with empty components");
          }
-         Context context = new Context(defaultSeparator, components, ignoreRemainingAfterFirstMissingOptional);
+         GenericContext context = new GenericContext(defaultSeparator, components, ignoreRemainingAfterFirstMissingOptional);
          if (requireSeparatorInFirstPosition)
          {
             context.requiresSeparatorInFirstPosition();
          }
          return context;
       }
-   }
-
-   private void requiresSeparatorInFirstPosition()
-   {
-      this.requiresSeparatorInFirstPosition = true;
    }
 }

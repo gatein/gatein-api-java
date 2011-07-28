@@ -41,7 +41,7 @@ public class IdTestCase
    private static final String PORTLET_COMPONENT_NAME = "portletComponent";
    private static final String INSTANCE_COMPONENT_NAME = "instanceComponent";
 
-   private Context context = Context.builder().withDefaultSeparator("=")
+   private Context context = GenericContext.builder().withDefaultSeparator("=")
       .requiredComponent(CONTAINER_COMPONENT_NAME, Identifiable.class, Pattern.compile("container"))
       .requiredComponent(PORTAL_COMPONENT_NAME, Identifiable.class, Pattern.compile("portal"))
       .optionalComponent(INVOKER_COMPONENT_NAME, Identifiable.class, Pattern.compile(".*"))
@@ -58,8 +58,8 @@ public class IdTestCase
    @Test
    public void testRoundtripParsing()
    {
-      Id key = Id.create(context, CONTAINER, PORTAL, INVOKER, PORTLET, INSTANCE);
-      Id parsed = Id.parse(key.getOriginalContext(), key.toString());
+      Id key = context.create(CONTAINER, PORTAL, INVOKER, PORTLET, INSTANCE);
+      Id parsed = context.parse(key.toString());
       assert key.equals(parsed);
       assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT_NAME));
       assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT_NAME));
@@ -67,8 +67,8 @@ public class IdTestCase
       assert PORTLET.equals(key.getComponent(PORTLET_COMPONENT_NAME));
       assert INSTANCE.equals(key.getComponent(INSTANCE_COMPONENT_NAME));
 
-      key = Id.create(context, CONTAINER, PORTAL, INVOKER);
-      parsed = Id.parse(key.getOriginalContext(), key.toString());
+      key = context.create(CONTAINER, PORTAL, INVOKER);
+      parsed = context.parse(key.toString());
       assert key.equals(parsed);
       assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT_NAME));
       assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT_NAME));
@@ -76,8 +76,8 @@ public class IdTestCase
       assert parsed.getComponent(PORTLET_COMPONENT_NAME) == null;
       assert parsed.getComponent(INSTANCE_COMPONENT_NAME) == null;
 
-      key = Id.create(context, CONTAINER, PORTAL);
-      parsed = Id.parse(key.getOriginalContext(), key.toString());
+      key = context.create(CONTAINER, PORTAL);
+      parsed = context.parse(key.toString());
       assert key.equals(parsed);
       assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT_NAME));
       assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT_NAME));
@@ -85,8 +85,8 @@ public class IdTestCase
       assert parsed.getComponent(PORTLET_COMPONENT_NAME) == null;
       assert parsed.getComponent(INSTANCE_COMPONENT_NAME) == null;
 
-      key = Id.create(context, CONTAINER, PORTAL, null, PORTLET);
-      parsed = Id.parse(key.getOriginalContext(), key.toString());
+      key = context.create(CONTAINER, PORTAL, null, PORTLET);
+      parsed = context.parse(key.toString());
       assert key.equals(parsed);
       assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT_NAME));
       assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT_NAME));
@@ -94,8 +94,8 @@ public class IdTestCase
       assert parsed.getComponent(PORTLET_COMPONENT_NAME) == null;
       assert parsed.getComponent(INSTANCE_COMPONENT_NAME) == null;
 
-      key = Id.create(context, CONTAINER, PORTAL, INVOKER, null, INSTANCE);
-      parsed = Id.parse(key.getOriginalContext(), key.toString());
+      key = context.create(CONTAINER, PORTAL, INVOKER, null, INSTANCE);
+      parsed = context.parse(key.toString());
       assert key.equals(parsed);
       assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT_NAME));
       assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT_NAME));
@@ -107,59 +107,59 @@ public class IdTestCase
    @Test
    public void testRoundtripParsingWithRequiredFirstSeparator()
    {
-      final Context context = Context.builder().withDefaultSeparator("/")
+      final Context context = GenericContext.builder().withDefaultSeparator("/")
          .requiredUnboundedHierarchicalComponent("foo", Identifiable.class, Pattern.compile("\\w+"))
          .requireSeparatorInFirstPosition()
          .build();
 
-      Id key = Id.create(context, "foo", "bar", "baz");
-      Id parsed = Id.parse(key.getOriginalContext(), key.toString());
+      Id key = context.create("foo", "bar", "baz");
+      Id parsed = context.parse(key.toString());
       assert key.equals(parsed);
    }
 
    @Test
    public void getParentShouldWork()
    {
-      Id portal = Id.create(context, CONTAINER, PORTAL);
+      Id portal = context.create(CONTAINER, PORTAL);
 
-      Id invoker = Id.create(context, CONTAINER, PORTAL, INVOKER);
+      Id invoker = context.create(CONTAINER, PORTAL, INVOKER);
       assert portal.equals(invoker.getParent());
 
-      Id portlet = Id.create(context, CONTAINER, PORTAL, INVOKER, PORTLET);
+      Id portlet = context.create(CONTAINER, PORTAL, INVOKER, PORTLET);
       assert invoker.equals(portlet.getParent());
 
-      Id instance = Id.create(context, CONTAINER, PORTAL, INVOKER, PORTLET, INSTANCE);
+      Id instance = context.create(CONTAINER, PORTAL, INVOKER, PORTLET, INSTANCE);
       assert portlet.equals(instance.getParent());
    }
 
    @Test
    public void testRoundtripParsingWithHierarchicalComponents()
    {
-      Context groupContext = Context.builder().withDefaultSeparator("/")
+      Context groupContext = GenericContext.builder().withDefaultSeparator("/")
          .requiredUnboundedHierarchicalComponent("root", Identifiable.class, Pattern.compile("\\w*")).build();
-      final Id id = Id.create(groupContext, "root", "1", "2", "3", "4");
-      assert id.equals(Id.parse(id.getOriginalContext(), id.toString()));
+      final Id id = groupContext.create("root", "1", "2", "3", "4");
+      assert id.equals(groupContext.parse(id.toString()));
 
-      Id parent = Id.create(groupContext, "root", "1", "2", "3");
+      Id parent = groupContext.create("root", "1", "2", "3");
       assert parent.equals(id.getParent());
    }
 
    @Test
    public void testRootComponent()
    {
-      Id key = Id.create(Context.builder().withDefaultSeparator("-").requiredComponent(CONTAINER_COMPONENT_NAME, Identifiable.class, Pattern.compile("container")).build(), CONTAINER);
+      Id key = GenericContext.builder().withDefaultSeparator("-").requiredComponent(CONTAINER_COMPONENT_NAME, Identifiable.class, Pattern.compile("container")).build().create(CONTAINER);
       assert CONTAINER.equals(key.getRootComponent());
       assert key.getParent() == null;
 
-      key = Id.create(context, CONTAINER, PORTAL, INVOKER, PORTLET, INSTANCE);
+      key = context.create(CONTAINER, PORTAL, INVOKER, PORTLET, INSTANCE);
       assert CONTAINER.equals(key.getRootComponent());
    }
 
    @Test
    public void testPortletNameWithSlash()
    {
-      Id key = Id.create(context, CONTAINER, PORTAL, INVOKER, "category/portlet");
-      Id parsed = Id.parse(key.getOriginalContext(), key.toString());
+      Id key = context.create(CONTAINER, PORTAL, INVOKER, "category/portlet");
+      Id parsed = context.parse(key.toString());
       assert key.equals(parsed);
       assert CONTAINER.equals(key.getComponent(CONTAINER_COMPONENT_NAME));
       assert PORTAL.equals(key.getComponent(PORTAL_COMPONENT_NAME));
@@ -170,59 +170,52 @@ public class IdTestCase
    @Test
    public void shouldNotSetOptionalComponents()
    {
-      assert Id.create(context, CONTAINER, PORTAL, INVOKER, null).equals(Id.create(context, CONTAINER, PORTAL, INVOKER));
+      assert context.create(CONTAINER, PORTAL, INVOKER, null).equals(context.create(CONTAINER, PORTAL, INVOKER));
    }
 
    @Test
    public void testGetChildFor()
    {
-      Id key = Id.create(context, CONTAINER, PORTAL);
+      Id key = context.create(CONTAINER, PORTAL);
       Id child = key.getIdForChild(INVOKER);
-      assert Id.create(context, CONTAINER, PORTAL, INVOKER, null).equals(child);
+      assert context.create(CONTAINER, PORTAL, INVOKER, null).equals(child);
 
       child = child.getIdForChild(PORTLET);
-      assert Id.create(context, CONTAINER, PORTAL, INVOKER, PORTLET).equals(child);
+      assert context.create(CONTAINER, PORTAL, INVOKER, PORTLET).equals(child);
 
       child = child.getIdForChild(INSTANCE);
-      assert Id.create(context, CONTAINER, PORTAL, INVOKER, PORTLET, INSTANCE).equals(child);
+      assert context.create(CONTAINER, PORTAL, INVOKER, PORTLET, INSTANCE).equals(child);
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void testAnIdShouldAlwaysHaveAPortalKey()
    {
-      Id.create(context, null);
+      context.create(null);
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void testGetChildForShouldFailOnNullChildId()
    {
-      Id.create(context, CONTAINER, PORTAL).getIdForChild(null);
+      context.create(CONTAINER, PORTAL).getIdForChild(null);
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void anIdShouldAlwaysHaveARoot()
    {
-      Id.create(Context.builder().withDefaultSeparator("-").requiredComponent("foo", Identifiable.class, Pattern.compile(".*")).build(), null);
+      GenericContext.builder().withDefaultSeparator("-").requiredComponent("foo", Identifiable.class, Pattern.compile(".*")).build().create(null);
    }
-
-   @Test(expectedExceptions = IllegalArgumentException.class)
-   public void shouldNotBePossibleToCreateAnIdWithoutAContext()
-   {
-      Id.create(null, null);
-   }
-
 
    @Test
    public void testPortletIdsScenarios()
    {
-      Id id = Id.create(context, "container", "portal");
+      Id id = context.create("container", "portal");
       assert "container".equals(id.getComponent(CONTAINER_COMPONENT_NAME));
       assert "portal".equals(id.getComponent(PORTAL_COMPONENT_NAME));
       Assert.assertEquals(id.toString(context), "container=portal");
 
       try
       {
-         Id.create(context, null);
+         context.create(null);
          Assert.fail("Should have failed as " + CONTAINER_COMPONENT_NAME + " is required");
       }
       catch (IllegalArgumentException e)
@@ -232,7 +225,7 @@ public class IdTestCase
 
       try
       {
-         Id.create(context, "foo");
+         context.create("foo");
          Assert.fail("Should have failed as only 'container' is allowed as value for " + CONTAINER_COMPONENT_NAME);
       }
       catch (IllegalArgumentException e)
@@ -242,7 +235,7 @@ public class IdTestCase
 
       try
       {
-         Id.create(context, "container");
+         context.create("container");
          Assert.fail("Should have failed as portalComponent is required");
       }
       catch (IllegalArgumentException e)
@@ -252,7 +245,7 @@ public class IdTestCase
 
       try
       {
-         Id.create(context, "container", "goo");
+         context.create("container", "goo");
          Assert.fail("Should have failed as only 'portal' is allowed as value for portalComponent");
       }
       catch (IllegalArgumentException e)
@@ -264,17 +257,17 @@ public class IdTestCase
    @Test
    public void getIdentifiableTypeShouldReturnTheReifiedType()
    {
-      Id<A> foo = Id.create(A.context, A.class, "foo");
+      Id<A> foo = A.context.create(A.class, "foo");
       assert A.class.equals(foo.getIdentifiableType());
    }
 
    private static class A implements Identifiable<A>
    {
-      static final Context context = Context.builder().requiredComponent("foo", A.class, Pattern.compile(".*")).build();
+      static final Context context = GenericContext.builder().requiredComponent("foo", A.class, Pattern.compile(".*")).build();
 
       public Id<A> getId()
       {
-         return Id.create(context, A.class, "foo");
+         return context.create(A.class, "foo");
       }
 
       public String getName()
