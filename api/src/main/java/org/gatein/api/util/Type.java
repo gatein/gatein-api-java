@@ -48,6 +48,18 @@ public abstract class Type<T, C>
       register(name);
    }
 
+   @Override
+   public String toString()
+   {
+      final StringBuilder sb = new StringBuilder();
+      sb.append("Type");
+      sb.append("{name='").append(name).append('\'');
+      sb.append(", valueType=").append(valueType);
+      sb.append(", originatingClass=").append(originatingClass);
+      sb.append('}');
+      return sb.toString();
+   }
+
    private void register(String name)
    {
       Map<String, Type> typeMap = getTypeMapFor(originatingClass);
