@@ -27,6 +27,8 @@ import org.gatein.api.id.Id;
 import org.gatein.api.id.Identifiable;
 import org.gatein.api.util.HierarchicalContainer;
 
+import java.net.URI;
+
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
@@ -38,6 +40,8 @@ public interface Navigation extends Identifiable<Navigation>, HierarchicalContai
    void setTargetPage(Page target);
 
    void setTargetPage(Id<Page> targetId);
+
+   URI getURI();
 
    Site getSite();
 }
