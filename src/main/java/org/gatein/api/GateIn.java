@@ -51,7 +51,7 @@ public interface GateIn
 
    Portal getDefaultPortal();
 
-   IterableIdentifiableCollection<Site> getSites();
+   IterableIdentifiableCollection<? extends Site> getSites();
 
    IterableIdentifiableCollection<Site> getGroupSites();
 
