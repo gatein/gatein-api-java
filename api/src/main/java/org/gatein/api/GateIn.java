@@ -86,4 +86,8 @@ public interface GateIn
    <T extends Content> Id<ManagedContent> managedContentId(Id<T> contentId);
 
    <T extends Site> Id<T> siteId(Type<T, Site> siteType, String portalName);
+
+   <T> T getProperty(Type<T, GateIn> property);
+
+   <T> void setProperty(Type<T, GateIn> property, T value);
 }
