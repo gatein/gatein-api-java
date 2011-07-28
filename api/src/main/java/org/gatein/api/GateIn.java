@@ -90,4 +90,29 @@ public interface GateIn
    <T> T getProperty(Type<T, GateIn> property);
 
    <T> void setProperty(Type<T, GateIn> property, T value);
+
+   Type<LifecycleManager, GateIn> LIFECYCLE_MANAGER = new Type<LifecycleManager, GateIn>("org.gatein.api.lifecyclemanager")
+   {
+   };
+
+   LifecycleManager NO_OP_MANAGER = new LifecycleManager()
+   {
+      public void begin()
+      {
+         // do nothing
+      }
+
+      public void end()
+      {
+         // do nothing
+      }
+   };
+
+   public interface LifecycleManager
+   {
+      void begin();
+
+      void end();
+   }
+
 }
