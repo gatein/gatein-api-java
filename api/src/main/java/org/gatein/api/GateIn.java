@@ -45,6 +45,8 @@ import java.net.URI;
  */
 public interface GateIn
 {
+   String GATEIN_API = "org.gatein.api.instance";
+
    IterableIdentifiableCollection<Portal> getPortals();
 
    Portal getPortal(Id<Portal> portalId);
