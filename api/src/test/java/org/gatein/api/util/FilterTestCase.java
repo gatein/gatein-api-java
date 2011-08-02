@@ -23,43 +23,22 @@
 
 package org.gatein.api.util;
 
-import java.lang.reflect.ParameterizedType;
+import org.testng.annotations.Test;
 
-/**
- * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
- * @version $Revision$
- */
-public abstract class Filter<T>
+/** @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a> */
+public class FilterTestCase
 {
-   private final Class<T> valueType;
-
-   public Filter()
+   @Test
+   public void getValueTypeShouldWork()
    {
-      final java.lang.reflect.Type genericSuperclass = getClass().getGenericSuperclass();
-      if (genericSuperclass instanceof ParameterizedType)
+      final Filter<String> filter = new Filter<String>()
       {
-         ParameterizedType superclass = (ParameterizedType)genericSuperclass;
+         public boolean accept(String item)
+         {
+            return true;
+         }
+      };
 
-         valueType = (Class<T>)superclass.getActualTypeArguments()[0];
-      }
-      else
-      {
-         throw new IllegalArgumentException("Must instantiate Type with a specific Java type parameter");
-      }
-   }
-
-   public static final Filter ALL = new Filter<Object>()
-   {
-      public boolean accept(Object item)
-      {
-         return true;
-      }
-   };
-
-   public abstract boolean accept(T item);
-
-   public Class<T> getValueType()
-   {
-      return valueType;
+      assert String.class.equals(filter.getValueType());
    }
 }

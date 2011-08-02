@@ -38,7 +38,17 @@ public abstract class Type<T>
    public Type(String name)
    {
       this.name = name;
-      valueType = (Class<T>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+      final java.lang.reflect.Type genericSuperclass = getClass().getGenericSuperclass();
+      if (genericSuperclass instanceof ParameterizedType)
+      {
+         ParameterizedType superclass = (ParameterizedType)genericSuperclass;
+
+         valueType = (Class<T>)superclass.getActualTypeArguments()[0];
+      }
+      else
+      {
+         throw new IllegalArgumentException("Must instantiate Type with a specific Java type parameter");
+      }
    }
 
    @Override
