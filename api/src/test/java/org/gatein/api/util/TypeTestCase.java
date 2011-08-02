@@ -34,12 +34,11 @@ public class TypeTestCase
    @Test
    public void testConstructor()
    {
-      Type<String, Object> info = new Type<String, Object>("property-name")
+      Type<String> info = new Type<String>("property-name")
       {
       };
 
       assert "property-name".equals(info.getName());
       assert String.class.equals(info.getValueType());
-      assert Object.class.equals(info.getOriginatingClass());
    }
 }

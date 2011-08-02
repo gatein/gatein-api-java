@@ -33,9 +33,10 @@ import org.gatein.api.util.Type;
  */
 public interface Content<T extends Content<T>> extends Identifiable<T>
 {
-   Type<T, Content> getType();
+   Type<T> getType();
 
-   Type<Portlet, Content> PORTLET = new Type<Portlet, Content>("portlet")
+   String PORTLET_TYPE_NAME = "portlet";
+   Type<Portlet> PORTLET = new Type<Portlet>(PORTLET_TYPE_NAME)
    {
    };
 
@@ -48,7 +49,8 @@ public interface Content<T extends Content<T>> extends Identifiable<T>
       }
    };
 
-   Type<WSRP, Content> WSRP = new Type<WSRP, Content>("wsrp")
+   String WSRP_TYPE_NAME = "wsrp";
+   Type<WSRP> WSRP = new Type<WSRP>(WSRP_TYPE_NAME)
    {
    };
 
@@ -61,7 +63,8 @@ public interface Content<T extends Content<T>> extends Identifiable<T>
       }
    };
 
-   Type<Gadget, Content> GADGET = new Type<Gadget, Content>("gadget")
+   String GADGET_TYPE_NAME = "gadget";
+   Type<Gadget> GADGET = new Type<Gadget>(GADGET_TYPE_NAME)
    {
    };
 

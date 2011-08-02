@@ -43,16 +43,16 @@ public interface Site extends Identifiable
 
    int getPriority();
 
-   public static final String PORTAL_NAME = "portal";
-   public static final String DASHBOARD_NAME = "user";
-   public static final String GROUP_NAME = "group";
-   public static final Type<Portal, Site> PORTAL = new Type<Portal, Site>(PORTAL_NAME)
+   public static final String PORTAL_TYPE_NAME = "portal";
+   public static final String DASHBOARD_TYPE_NAME = "user";
+   public static final String GROUP_TYPE_NAME = "group";
+   public static final Type<Portal> PORTAL = new Type<Portal>(PORTAL_TYPE_NAME)
    {
    };
-   public static final Type<Site, Site> DASHBOARD = new Type<Site, Site>(DASHBOARD_NAME)
+   public static final Type<Site> DASHBOARD = new Type<Site>(DASHBOARD_TYPE_NAME)
    {
    };
-   public static final Type<Site, Site> GROUP = new Type<Site, Site>(GROUP_NAME)
+   public static final Type<Site> GROUP = new Type<Site>(GROUP_TYPE_NAME)
    {
    };
 }

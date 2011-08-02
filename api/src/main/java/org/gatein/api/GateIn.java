@@ -67,7 +67,7 @@ public interface GateIn
 
    <T extends Identifiable> T get(Id<T> id);
 
-   <T extends Site> T getSite(Id<T> siteId, Type<T, Site> type);
+   <T extends Site> T getSite(Id<T> siteId, Type<T> type);
 
    Id userId(String user);
 
@@ -87,13 +87,14 @@ public interface GateIn
 
    <T extends Content> Id<ManagedContent> managedContentId(Id<T> contentId);
 
-   <T extends Site> Id<T> siteId(Type<T, Site> siteType, String portalName);
+   <T extends Site> Id<T> siteId(Type<T> siteType, String portalName);
 
-   <T> T getProperty(Type<T, GateIn> property);
+   <T> T getProperty(Type<T> property);
 
-   <T> void setProperty(Type<T, GateIn> property, T value);
+   <T> void setProperty(Type<T> property, T value);
 
-   Type<LifecycleManager, GateIn> LIFECYCLE_MANAGER = new Type<LifecycleManager, GateIn>("org.gatein.api.lifecyclemanager")
+   String LIFECYCLEMANAGER_TYPE_NAME = "org.gatein.api.lifecyclemanager";
+   Type<LifecycleManager> LIFECYCLE_MANAGER = new Type<LifecycleManager>(LIFECYCLEMANAGER_TYPE_NAME)
    {
    };
 

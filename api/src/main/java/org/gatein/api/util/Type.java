@@ -24,28 +24,21 @@
 package org.gatein.api.util;
 
 import java.lang.reflect.ParameterizedType;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public abstract class Type<T, C>
+public abstract class Type<T>
 {
    private final String name;
    private final Class<T> valueType;
-   private final Class<C> originatingClass;
-   private static final Map<Class, Map<String, Type>> registeredTypes = new HashMap<Class, Map<String, Type>>(7);
 
    @SuppressWarnings("unchecked")
    public Type(String name)
    {
       this.name = name;
       valueType = (Class<T>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-      originatingClass = (Class<C>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-
-      register(name);
    }
 
    @Override
@@ -55,42 +48,8 @@ public abstract class Type<T, C>
       sb.append("Type");
       sb.append("{name='").append(name).append('\'');
       sb.append(", valueType=").append(valueType);
-      sb.append(", originatingClass=").append(originatingClass);
       sb.append('}');
       return sb.toString();
-   }
-
-   private void register(String name)
-   {
-      Map<String, Type> typeMap = getTypeMapFor(originatingClass);
-
-      typeMap.put(name, this);
-   }
-
-   private static Map<String, Type> getTypeMapFor(Class originatingClass)
-   {
-      Map<String, Type> typeMap = registeredTypes.get(originatingClass);
-      if (typeMap == null)
-      {
-         typeMap = new HashMap<String, Type>(7);
-         registeredTypes.put(originatingClass, typeMap);
-      }
-      return typeMap;
-   }
-
-
-   public static Type forName(String name, Class originatingClass)
-   {
-      Map<String, Type> typeMap = getTypeMapFor(originatingClass);
-      Type type = typeMap.get(name);
-      if (type != null)
-      {
-         return type;
-      }
-      else
-      {
-         throw new IllegalArgumentException("Unknown Type: " + name + " for originating class " + originatingClass.getCanonicalName());
-      }
    }
 
    public String getName()
@@ -101,10 +60,5 @@ public abstract class Type<T, C>
    public Class<T> getValueType()
    {
       return valueType;
-   }
-
-   public Class<C> getOriginatingClass()
-   {
-      return originatingClass;
    }
 }
