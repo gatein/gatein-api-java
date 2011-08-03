@@ -64,7 +64,7 @@ public class Component<T>
          matcher.reset(componentValue);
          if (!matcher.matches())
          {
-            throw new IllegalArgumentException("Invalid value '" + componentValue + "'. Valid values should match: '" + validationPattern + "'");
+            throw new IllegalArgumentException("Invalid value '" + componentValue + "' for component '" + name + "'. Valid values should match: '" + validationPattern + "'");
          }
       }
       else
