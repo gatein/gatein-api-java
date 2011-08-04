@@ -109,7 +109,7 @@ public class GenericContext implements Context
 
    public <T extends Identifiable> Id<T> create(Class<T> type, String rootComponent, String... additionalComponents)
    {
-      ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(rootComponent, "root component", null);
+      ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(rootComponent, "root component", "Context '" + name + "'");
 
       return internalCreate(type, true, rootComponent, additionalComponents);
    }
@@ -227,7 +227,7 @@ public class GenericContext implements Context
          }
       }
 
-      throw errorOnUnknownComponent("No component with index: " + index);
+      throw errorOnUnknownComponent("No component with index: " + index + " for Context '" + name + "'");
    }
 
    private IllegalArgumentException errorOnUnknownComponent(String message)
@@ -259,7 +259,7 @@ public class GenericContext implements Context
       ComponentIndex index = namesToComponents.get(component);
       if (index == null)
       {
-         throw errorOnUnknownComponent("Unknown component: " + component);
+         throw errorOnUnknownComponent("Unknown component '" + component + "' for Context '" + name + "'");
       }
       else
       {
@@ -314,7 +314,7 @@ public class GenericContext implements Context
       if (valueNumber < requiredCardinality || (!hasHierarchicalComponents && valueNumber > componentNumber))
       {
          throw new IllegalArgumentException("Wrong number of components: " + valueNumber
-            + ". Was expecting at most " + componentNumber + " values for components: "
+            + " for Context '" + name + "'. Was expecting at most " + componentNumber + " values for components: "
             + knownComponents + "; among which '" + requiredComponents + "' are required. Got: " + Arrays.toString(componentValues));
       }
 
@@ -409,7 +409,7 @@ public class GenericContext implements Context
 
       if (error)
       {
-         throw new IllegalArgumentException("Invalid components:\n" + sb.toString());
+         throw new IllegalArgumentException("Invalid components for Context '" + name + "':\n" + sb.toString());
       }
    }
 
@@ -429,7 +429,7 @@ public class GenericContext implements Context
       {
          if (!idAsString.startsWith(defaultSeparator))
          {
-            throw new IllegalArgumentException("Context requires separator '" + defaultSeparator + "' in first position. Given composite was: " + idAsString);
+            throw new IllegalArgumentException("Context '" + name + "' requires separator '" + defaultSeparator + "' in first position. Given composite was: " + idAsString);
          }
 
          // remove separator to avoid empty component
