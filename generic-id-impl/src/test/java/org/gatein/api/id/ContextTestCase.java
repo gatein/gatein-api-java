@@ -40,7 +40,7 @@ public class ContextTestCase
    private static final String PORTLET_COMPONENT_NAME = "portletComponent";
    private static final String INSTANCE_COMPONENT_NAME = "instanceComponent";
 
-   private static final GenericContext CONTEXT = GenericContext.builder().withDefaultSeparator("=")
+   private static final GenericContext CONTEXT = GenericContext.builder().named("Context").withDefaultSeparator("=")
       .requiredComponent(CONTAINER_COMPONENT_NAME, Identifiable.class, Pattern.compile("container"))
       .requiredComponent(PORTAL_COMPONENT_NAME, Identifiable.class, Pattern.compile("portal"))
       .optionalComponent(INVOKER_COMPONENT_NAME, Identifiable.class, Pattern.compile(".*"))
@@ -51,13 +51,27 @@ public class ContextTestCase
    @Test(expectedExceptions = IllegalStateException.class)
    public void contextBuilderBuildShouldProperlyFailOnEmptyContext()
    {
-      GenericContext.builder().build();
+      GenericContext.builder().named("empty").build();
+   }
+
+   @Test(expectedExceptions = IllegalStateException.class)
+   public void contextBuilderShouldFailOnUnspecifiedSeparatorWithSeveralComponents()
+   {
+      GenericContext.builder().named("several components no separator").requiredComponent("component1", Identifiable.class, Pattern.compile(".*"))
+         .requiredComponent("component2", Identifiable.class, Pattern.compile(".*")).build();
+   }
+
+   @Test
+   public void contextBuilderShouldWorkOnUnspecifiedSeparatorWithOnlyOneComponent()
+   {
+      final GenericContext context = GenericContext.builder().named("one component").requiredComponent("component1", Identifiable.class, Pattern.compile(".*")).build();
+      assert context != null;
    }
 
    @Test
    public void simpleContext()
    {
-      GenericContext context = GenericContext.builder().withDefaultSeparator("-").requiredComponent("component", Identifiable.class, Pattern.compile(".*")).build();
+      GenericContext context = GenericContext.builder().named("simple").withDefaultSeparator("-").requiredComponent("component", Identifiable.class, Pattern.compile(".*")).build();
 
       assert 0 == context.getIndexFor("component");
       assert context.isComponentRequired("component");
@@ -82,7 +96,7 @@ public class ContextTestCase
    @Test
    public void simpleHierarchicalContextShouldWork()
    {
-      final GenericContext context = GenericContext.builder().withDefaultSeparator("/")
+      final GenericContext context = GenericContext.builder().named("hierarchical").withDefaultSeparator("/")
          .requiredComponent("foo", Identifiable.class, Pattern.compile(".*foo$"))
          .requiredUnboundedHierarchicalComponent("bar", Identifiable.class, Pattern.compile("^bar.*"))
          .build();
@@ -95,7 +109,7 @@ public class ContextTestCase
    @Test
    public void shouldProperlyWorkWhenSeparatorIsRequiredInFirstPosition()
    {
-      final GenericContext context = GenericContext.builder().withDefaultSeparator("/")
+      final GenericContext context = GenericContext.builder().named("separator in first").withDefaultSeparator("/")
          .requiredComponent("root", Identifiable.class, Pattern.compile("\\w+"))
          .requiredUnboundedHierarchicalComponent("bar", Identifiable.class, Pattern.compile("\\w+"))
          .requireSeparatorInFirstPosition()
@@ -117,7 +131,7 @@ public class ContextTestCase
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void missingRequiredHierarchicalShouldBeDetected()
    {
-      final GenericContext context = GenericContext.builder().withDefaultSeparator("/")
+      final GenericContext context = GenericContext.builder().named("missing required hierarchical").withDefaultSeparator("/")
          .requiredComponent("foo", Identifiable.class, Pattern.compile(".*foo$"))
          .requiredUnboundedHierarchicalComponent("bar", Identifiable.class, Pattern.compile("^bar.*"))
          .build();
@@ -127,7 +141,7 @@ public class ContextTestCase
    @Test
    public void shouldValidateProperlyWhenThereAreRequiredComponentsAfterHierarchical()
    {
-      final GenericContext context = GenericContext.builder().withDefaultSeparator("/")
+      final GenericContext context = GenericContext.builder().named("required after hierarchical").withDefaultSeparator("/")
          .requiredComponent("foo", Identifiable.class, Pattern.compile(".*foo$"))
          .requiredUnboundedHierarchicalComponent("bar", Identifiable.class, Pattern.compile("^bar.*"))
          .requiredComponent("baz", Identifiable.class, Pattern.compile("^baz\\d*"))

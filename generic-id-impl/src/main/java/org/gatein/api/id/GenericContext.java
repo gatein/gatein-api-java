@@ -46,8 +46,9 @@ public class GenericContext implements Context
    private final boolean ignoreRemainingAfterFirstMissingOptional;
    private boolean hasHierarchicalComponents;
    private boolean requiresSeparatorInFirstPosition;
+   private final String name;
 
-   private GenericContext(String defaultSeparator, List<Component> componentList, boolean ignoreRemainingAfterFirstMissingOptional)
+   private GenericContext(String name, String defaultSeparator, List<Component> componentList, boolean ignoreRemainingAfterFirstMissingOptional)
    {
       ParameterValidation.throwIllegalArgExceptionIfNull(componentList, "Component list");
 
@@ -73,8 +74,8 @@ public class GenericContext implements Context
             hasHierarchicalComponents = true;
          }
 
-         String name = component.getName();
-         buildString(knownComponentsSB, name, current <= size, LIST_SEPARATOR);
+         String componentName = component.getName();
+         buildString(knownComponentsSB, componentName, current <= size, LIST_SEPARATOR);
       }
 
       this.requiredCardinality = required;
@@ -93,8 +94,13 @@ public class GenericContext implements Context
       knownComponents = knownComponentsSB.toString();
       requiredComponents = requiredComponentsSB.toString();
       this.defaultSeparator = defaultSeparator;
+      this.name = name;
    }
 
+   public String getName()
+   {
+      return name;
+   }
 
    public Id create(String rootComponent, String... additionalComponent)
    {
@@ -471,6 +477,7 @@ public class GenericContext implements Context
       private String defaultSeparator;
       private boolean ignoreRemainingAfterFirstMissingOptional;
       private boolean requireSeparatorInFirstPosition;
+      private String name;
 
       private ContextBuilder()
       {
@@ -512,13 +519,27 @@ public class GenericContext implements Context
          return this;
       }
 
+      public ContextBuilder named(String name)
+      {
+         this.name = name;
+         return this;
+      }
+
       public GenericContext build()
       {
+         ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(name, "Context name", null);
+
          if (components.isEmpty())
          {
-            throw new IllegalStateException("Cannot build a Context with empty components");
+            throw new IllegalStateException("Cannot build Context '" + name + "' with empty components");
          }
-         GenericContext context = new GenericContext(defaultSeparator, components, ignoreRemainingAfterFirstMissingOptional);
+
+         if (components.size() > 1 && defaultSeparator == null)
+         {
+            throw new IllegalStateException("Need to specify a separator if the Context accommodates several components for Context '" + name + "'");
+         }
+
+         GenericContext context = new GenericContext(name, defaultSeparator, components, ignoreRemainingAfterFirstMissingOptional);
          if (requireSeparatorInFirstPosition)
          {
             context.requiresSeparatorInFirstPosition();

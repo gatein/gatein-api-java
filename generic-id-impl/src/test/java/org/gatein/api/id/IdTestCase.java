@@ -41,7 +41,7 @@ public class IdTestCase
    private static final String PORTLET_COMPONENT_NAME = "portletComponent";
    private static final String INSTANCE_COMPONENT_NAME = "instanceComponent";
 
-   private Context context = GenericContext.builder().withDefaultSeparator("=")
+   private Context context = GenericContext.builder().named("context").withDefaultSeparator("=")
       .requiredComponent(CONTAINER_COMPONENT_NAME, Identifiable.class, Pattern.compile("container"))
       .requiredComponent(PORTAL_COMPONENT_NAME, Identifiable.class, Pattern.compile("portal"))
       .optionalComponent(INVOKER_COMPONENT_NAME, Identifiable.class, Pattern.compile(".*"))
@@ -107,7 +107,7 @@ public class IdTestCase
    @Test
    public void testRoundtripParsingWithRequiredFirstSeparator()
    {
-      final Context context = GenericContext.builder().withDefaultSeparator("/")
+      final Context context = GenericContext.builder().named("separator in first").withDefaultSeparator("/")
          .requiredUnboundedHierarchicalComponent("foo", Identifiable.class, Pattern.compile("\\w+"))
          .requireSeparatorInFirstPosition()
          .build();
@@ -135,7 +135,7 @@ public class IdTestCase
    @Test
    public void testRoundtripParsingWithHierarchicalComponents()
    {
-      Context groupContext = GenericContext.builder().withDefaultSeparator("/")
+      Context groupContext = GenericContext.builder().named("hierarchical").withDefaultSeparator("/")
          .requiredUnboundedHierarchicalComponent("root", Identifiable.class, Pattern.compile("\\w*")).build();
       final Id id = groupContext.create("root", "1", "2", "3", "4");
       assert id.equals(groupContext.parse(id.toString()));
@@ -147,7 +147,7 @@ public class IdTestCase
    @Test
    public void testRootComponent()
    {
-      Id key = GenericContext.builder().withDefaultSeparator("-").requiredComponent(CONTAINER_COMPONENT_NAME, Identifiable.class, Pattern.compile("container")).build().create(CONTAINER);
+      Id key = GenericContext.builder().named("root").withDefaultSeparator("-").requiredComponent(CONTAINER_COMPONENT_NAME, Identifiable.class, Pattern.compile("container")).build().create(CONTAINER);
       assert CONTAINER.equals(key.getRootComponent());
       assert key.getParent() == null;
 
@@ -202,7 +202,7 @@ public class IdTestCase
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void anIdShouldAlwaysHaveARoot()
    {
-      GenericContext.builder().withDefaultSeparator("-").requiredComponent("foo", Identifiable.class, Pattern.compile(".*")).build().create(null);
+      GenericContext.builder().named("missing root").withDefaultSeparator("-").requiredComponent("foo", Identifiable.class, Pattern.compile(".*")).build().create(null);
    }
 
    @Test
@@ -263,7 +263,7 @@ public class IdTestCase
 
    private static class A implements Identifiable<A>
    {
-      static final Context context = GenericContext.builder().requiredComponent("foo", A.class, Pattern.compile(".*")).build();
+      static final Context context = GenericContext.builder().named("foo").requiredComponent("foo", A.class, Pattern.compile(".*")).build();
 
       public Id<A> getId()
       {

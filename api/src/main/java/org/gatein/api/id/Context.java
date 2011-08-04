@@ -26,6 +26,8 @@ package org.gatein.api.id;
 /** @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a> */
 public interface Context
 {
+   String getName();
+
    Id create(String rootComponent, String... additionalComponent);
 
    <T extends Identifiable> Id<T> create(Class<T> type, String rootComponent, String... additionalComponents);
