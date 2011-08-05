@@ -33,8 +33,6 @@ public interface Container<T extends Identifiable>
 
    <U extends T> IterableIdentifiableCollection<U> getAllSatisfying(Query<U> query);
 
-   <U extends T> IterableIdentifiableCollection<U> getAllWhere(Filter<U> filter);
-
    int size();
 
    <U extends T> boolean contains(Id<U> id);
