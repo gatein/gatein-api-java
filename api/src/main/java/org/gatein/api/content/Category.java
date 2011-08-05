@@ -41,6 +41,8 @@ public interface Category extends Identifiable<Category>
 
    void setDescription(String description);
 
+   void setDisplayName(String displayName);
+
    void removeContent(String managedContentName);
 
    ManagedContent getManagedContent(String name);
