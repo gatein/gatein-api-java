@@ -38,6 +38,8 @@ public interface ContentRegistry extends Container<Content>
 
    Category getCategory(String name);
 
+   void deleteCategory(String name);
+
    IterableCollection<String> getCategoryNames();
 
    IterableIdentifiableCollection<Category> getAllCategories();
