@@ -48,4 +48,6 @@ public interface Category extends Identifiable<Category>
    ManagedContent getManagedContent(String name);
 
    IterableCollection<String> getKnownManagedContentNames();
+
+   IterableCollection<ManagedContent> getManagedContents();
 }
