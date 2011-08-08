@@ -70,7 +70,7 @@ public abstract class ContentTestCase
       Id<Portlet> id = gateIn.portletId("application", "portlet");
       final Portlet portlet = registry.get(id);
 
-      final ManagedContent<Portlet> managedContent = category.addContent(id);
+      final ManagedContent<Portlet> managedContent = category.addContent(id, portlet.getName());
       assert managedContent != null;
       assert portlet.equals(managedContent.getContent());
 
@@ -80,7 +80,7 @@ public abstract class ContentTestCase
       assert category.getKnownManagedContentNames().contains(name);
 
       Id<WSRP> wsrp = gateIn.wsrpPortletId("invoker", "portlet");
-      ManagedContent<WSRP> managedWSRP = category.addContent(wsrp);
+      ManagedContent<WSRP> managedWSRP = category.addContent(wsrp, "foo");
       assert managedWSRP != null;
       assert category.contains(managedWSRP.getName());
    }
@@ -95,7 +95,7 @@ public abstract class ContentTestCase
       assert portlet.getName().equals(portlet.getDisplayName());
 
       Id<Portlet> id = portlet.getId();
-      ManagedContent<Portlet> managed = category.addContent(id);
+      ManagedContent<Portlet> managed = category.addContent(id, portlet.getName());
       assert managed != null;
       assert portlet.equals(managed.getContent());
       assert managed.equals(category.getManagedContent(managed.getName()));
@@ -136,7 +136,7 @@ public abstract class ContentTestCase
       Gadget gadget = registry.get(gadgetId);
       assert "gadgetName".equals(gadget.getName());
 
-      ManagedContent<Gadget> managedContent = category.addContent(gadgetId);
+      ManagedContent<Gadget> managedContent = category.addContent(gadgetId, gadget.getName());
       assert managedContent != null;
       assert gadget.equals(managedContent.getContent());
       assert managedContent.equals(category.getManagedContent(managedContent.getName()));
@@ -149,7 +149,7 @@ public abstract class ContentTestCase
       assert uri.equals(gadget.getURI());
       assert uri.equals(((Gadget.RemoteData)gadget.getData()).getURI());
 
-      managedContent = category.addContent(gadgetId);
+      managedContent = category.addContent(gadgetId, gadget.getName());
       assert managedContent != null;
       assert gadget.equals(managedContent.getContent());
       assert managedContent.equals(category.getManagedContent(managedContent.getName()));
@@ -180,10 +180,29 @@ public abstract class ContentTestCase
 
       Id<Portlet> id = gateIn.portletId("application", "portlet");
       Portlet portlet = registry.get(id);
-      ManagedContent<Portlet> managed = category.addContent(id);
+      ManagedContent<Portlet> managed = category.addContent(id, portlet.getName());
       assert category.contains(managed.getName());
 
       category.removeContent(managed.getName());
       assert !category.contains(managed.getName());
+   }
+
+   @Test(expectedExceptions = IllegalArgumentException.class)
+   public void addingContentToACategoryWithoutAValidNameShouldFail()
+   {
+      ContentRegistry registry = portal.getContentRegistry();
+      Category category = registry.getOrCreateCategory("category");
+
+      Id<Portlet> id = gateIn.portletId("application", "portlet");
+      category.addContent(id, null);
+   }
+
+   @Test(expectedExceptions = IllegalArgumentException.class)
+   public void addingContentToACategoryWithoutAValidIdShouldFail()
+   {
+      ContentRegistry registry = portal.getContentRegistry();
+      Category category = registry.getOrCreateCategory("category");
+
+      category.addContent(null, null);
    }
 }
