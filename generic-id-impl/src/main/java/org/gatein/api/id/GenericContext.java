@@ -459,6 +459,11 @@ public class GenericContext implements Context
       return getComponentOrFail(component).component.isHierarchical();
    }
 
+   public void validateValueFor(String component, String value)
+   {
+      getComponentOrFail(component).component.validate(value);
+   }
+
    private static class ComponentIndex
    {
       private final int index;
