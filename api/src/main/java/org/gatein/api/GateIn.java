@@ -85,7 +85,7 @@ public interface GateIn
 
    <T extends Site> Id<Page> pageId(Id<T> ownerSite, String pageName);
 
-   <T extends Content> Id<ManagedContent> managedContentId(Id<T> contentId);
+   <T extends Content> Id<ManagedContent> managedContentId(Id<Category> categoryId, String name, Id<T> contentId);
 
    <T extends Site> Id<T> siteId(Type<T> siteType, String portalName);
 
