@@ -40,7 +40,7 @@ public abstract class GenericId<T extends Identifiable> implements Id<T>
       this.identifiableType = identifiableType;
    }
 
-   public String toString(Context context)
+   public String toString(RenderingContext context)
    {
       return context.toString(this);
    }

@@ -24,7 +24,7 @@
 package org.gatein.api.id;
 
 /** @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a> */
-public interface Context
+public interface Context extends RenderingContext
 {
    String getName();
 
@@ -35,8 +35,6 @@ public interface Context
    Id parse(String idAsString);
 
    <U extends Identifiable<U>> Id<U> parse(String idAsString, Class<U> expectedType);
-
-   String toString(Id id);
 
    boolean isComponentRequired(String component);
 
