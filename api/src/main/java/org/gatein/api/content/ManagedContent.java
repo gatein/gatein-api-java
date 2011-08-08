@@ -31,8 +31,6 @@ import org.gatein.api.id.Identifiable;
  */
 public interface ManagedContent<T extends Content> extends Identifiable<ManagedContent<T>>
 {
-   public void setName(String name);
-
    public void setDisplayName(String displayName);
 
    public T getContent();
