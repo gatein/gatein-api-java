@@ -464,6 +464,11 @@ public class GenericContext implements Context
       getComponentOrFail(component).component.validate(value);
    }
 
+   public boolean hasComponent(String component)
+   {
+      return namesToComponents.containsKey(component);
+   }
+
    private static class ComponentIndex
    {
       private final int index;

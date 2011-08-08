@@ -79,6 +79,11 @@ public abstract class GenericId<T extends Identifiable> implements Id<T>
       return getComponent(index, component, originalContext);
    }
 
+   public boolean knowsComponent(String name)
+   {
+      return originalContext.hasComponent(name);
+   }
+
    protected abstract String getComponent(int index, String component, Context context);
 
    public GenericContext getOriginalContext()

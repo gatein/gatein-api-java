@@ -42,5 +42,7 @@ public interface Context
 
    boolean isComponentUnboundedHierarchical(String component);
 
+   boolean hasComponent(String component);
+
    void validateValueFor(String component, String value) throws IllegalArgumentException;
 }
