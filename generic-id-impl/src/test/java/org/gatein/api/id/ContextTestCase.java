@@ -149,4 +149,26 @@ public class ContextTestCase
       context.validate("foo", "bar", "baz");
       context.validate("foo", "bar", "bar2", "baz");
    }
+
+   @Test
+   public void parsingShouldWorkWhenSeparatorIsPeriod()
+   {
+      GenericContext context = GenericContext.builder().named("separator is period").withDefaultSeparator(".")
+         .requiredComponent("foo", Identifiable.class, Pattern.compile(".*"))
+         .requiredComponent("baz", Identifiable.class, Pattern.compile(".*"))
+         .requiredComponent("bar", Identifiable.class, Pattern.compile(".*")).build();
+
+      assert Arrays.equals(new String[]{"foo", "baz", "bar"}, context.extractComponents("foo.baz.bar"));
+   }
+
+   @Test
+   public void parsingShouldWorkWhenSeparatorIsRegexp()
+   {
+      GenericContext context = GenericContext.builder().named("separator is regexp").withDefaultSeparator(".+")
+         .requiredComponent("foo", Identifiable.class, Pattern.compile(".*"))
+         .requiredComponent("baz", Identifiable.class, Pattern.compile(".*"))
+         .requiredComponent("bar", Identifiable.class, Pattern.compile(".*")).build();
+
+      assert Arrays.equals(new String[]{"foo", "baz", "bar"}, context.extractComponents("foo.+baz.+bar"));
+   }
 }

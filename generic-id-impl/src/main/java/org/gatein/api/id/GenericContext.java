@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
 /**
@@ -436,7 +437,16 @@ public class GenericContext implements Context
          idAsString = idAsString.substring(defaultSeparator.length());
       }
 
-      return idAsString.split(defaultSeparator);
+      final StringTokenizer tokenizer = new StringTokenizer(idAsString, defaultSeparator);
+      final int tokenCounts = tokenizer.countTokens();
+      String[] result = new String[tokenCounts];
+      int i = 0;
+      while (tokenizer.hasMoreTokens())
+      {
+         result[i++] = tokenizer.nextToken();
+      }
+
+      return result;
    }
 
    public boolean isComponentRequired(String component)
