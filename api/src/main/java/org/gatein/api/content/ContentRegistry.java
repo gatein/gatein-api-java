@@ -26,7 +26,6 @@ package org.gatein.api.content;
 import org.gatein.api.util.Container;
 import org.gatein.api.util.IterableCollection;
 import org.gatein.api.util.IterableIdentifiableCollection;
-import org.gatein.api.util.Query;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -43,8 +42,6 @@ public interface ContentRegistry extends Container<Content>
    IterableCollection<String> getCategoryNames();
 
    IterableIdentifiableCollection<Category> getAllCategories();
-
-   IterableIdentifiableCollection<ManagedContent> getManagedContents(Query<ManagedContent> query);
 
    Gadget createGadget(String gadget, String source);
 }

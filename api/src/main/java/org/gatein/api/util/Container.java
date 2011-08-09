@@ -31,8 +31,6 @@ public interface Container<T extends Identifiable>
 {
    IterableIdentifiableCollection<T> getAll();
 
-   <U extends T> IterableIdentifiableCollection<U> getAllSatisfying(Query<U> query);
-
    int size();
 
    <U extends T> boolean contains(Id<U> id);
