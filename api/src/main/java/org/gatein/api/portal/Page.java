@@ -36,6 +36,8 @@ public interface Page extends Identifiable<Page>
 
    String getTitle();
 
+   void setTitle(String title);
+
    IterableIdentifiableCollection<Navigation> getInboundNavigations();
 
    Navigation createInboundNavigationIn(Site site, Navigation parent);
