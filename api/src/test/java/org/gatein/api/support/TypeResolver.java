@@ -21,14 +21,15 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.util;
+package org.gatein.api.support;
 
 import org.gatein.api.GateIn;
 import org.gatein.api.content.Content;
 import org.gatein.api.portal.Site;
+import org.gatein.api.util.Type;
 
 /** @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a> */
-public class GateInTypesResolver
+public class TypeResolver
 {
    public static Type forName(String name, Class originatingClass)
    {
