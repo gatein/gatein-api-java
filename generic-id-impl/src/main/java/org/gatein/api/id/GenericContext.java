@@ -339,7 +339,7 @@ public class GenericContext implements Context
                // associate the current value with the current component name only if we have an actual value for this component
                if (id != null && currentComponent < valueNumber)
                {
-                  id.associateComponentWith(currentComponent, index.component.getName());
+                  ((GenericId)id).associateComponentWith(currentComponent, index.component.getName());
                }
             }
             catch (Exception e)
@@ -367,7 +367,7 @@ public class GenericContext implements Context
                index.component.validate(value);
                if (id != null)
                {
-                  id.associateComponentWith(actualCurrentComponent, index.component.getName());
+                  ((GenericId)id).associateComponentWith(actualCurrentComponent, index.component.getName());
                }
             }
             catch (Exception e)
@@ -383,7 +383,7 @@ public class GenericContext implements Context
                         component.validate(value);
                         if (id != null)
                         {
-                           id.associateComponentWith(actualCurrentComponent, index.component.getName());
+                           ((GenericId)id).associateComponentWith(actualCurrentComponent, index.component.getName());
                         }
                         currentComponent--; // set the current component to the hierarchical one before processing the rest
                         error = false; // we're not in an error situation

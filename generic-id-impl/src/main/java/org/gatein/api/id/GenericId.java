@@ -86,6 +86,8 @@ public abstract class GenericId<T extends Identifiable> implements Id<T>
 
    protected abstract String getComponent(int index, String component, Context context);
 
+   protected abstract void associateComponentWith(int componentIndex, String componentName);
+
    public GenericContext getOriginalContext()
    {
       return originalContext;

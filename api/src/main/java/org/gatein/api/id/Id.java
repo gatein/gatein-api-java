@@ -46,7 +46,5 @@ public interface Id<T extends Identifiable> extends Comparable<Id>
 
    String[] getComponents();
 
-   void associateComponentWith(int componentIndex, String name);
-
    boolean knowsComponent(String name);
 }
