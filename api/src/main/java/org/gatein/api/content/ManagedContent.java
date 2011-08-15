@@ -29,11 +29,11 @@ import org.gatein.api.id.Identifiable;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface ManagedContent<T extends Content> extends Identifiable<ManagedContent<T>>
+public interface ManagedContent extends Identifiable<ManagedContent>
 {
    public void setDisplayName(String displayName);
 
-   public T getContent();
+   public Content getContent();
 
    public String getDescription();
 

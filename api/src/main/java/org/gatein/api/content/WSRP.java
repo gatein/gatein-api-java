@@ -24,6 +24,6 @@
 package org.gatein.api.content;
 
 /** @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a> */
-public interface WSRP extends Content<WSRP>
+public interface WSRP extends Content
 {
 }

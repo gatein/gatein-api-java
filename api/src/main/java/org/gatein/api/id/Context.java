@@ -30,7 +30,7 @@ public interface Context extends RenderingContext
 
    Id create(String rootComponent, String... additionalComponent);
 
-   <T extends Identifiable> Id<T> create(Class<T> type, String rootComponent, String... additionalComponents);
+   <T extends Identifiable<T>> Id<T> create(Class<T> type, String rootComponent, String... additionalComponents);
 
    Id parse(String idAsString);
 

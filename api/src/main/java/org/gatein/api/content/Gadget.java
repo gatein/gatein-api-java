@@ -29,7 +29,7 @@ import java.net.URI;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Gadget extends Content<Gadget>
+public interface Gadget extends Content
 {
    URI getReferenceURI();
 

@@ -57,8 +57,8 @@ public abstract class NavigationTestCase
    @Test
    public void creatingANavigationShouldLinkNavigationAndNode()
    {
-      Id<Portal> classic = gateIn.siteId(Site.PORTAL, "classic");
-      Portal portal = gateIn.get(classic);
+      Id<Site> classic = gateIn.siteId(Site.PORTAL, "classic");
+      Portal portal = (Portal)gateIn.get(classic);
       assert portal.equals(gateIn.getPortal(classic));
 
       Page page = portal.getPageRegistry().get(classic.getIdForChild("page"));

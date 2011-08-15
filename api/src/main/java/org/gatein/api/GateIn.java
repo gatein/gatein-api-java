@@ -47,9 +47,9 @@ public interface GateIn
 {
    String GATEIN_API = "org.gatein.api.instance";
 
-   IterableIdentifiableCollection<Portal> getPortals();
+   IterableIdentifiableCollection<? extends Site> getPortals();
 
-   Portal getPortal(Id<Portal> portalId);
+   Portal getPortal(Id<Site> portalId);
 
    Portal getDefaultPortal();
 
@@ -61,33 +61,33 @@ public interface GateIn
 
    IterableIdentifiableCollection<Site> getGroupSites(Id userId);
 
-   IterableIdentifiableCollection<Portal> getPortalSites(Id userId);
+   IterableIdentifiableCollection<? extends Site> getPortalSites(Id userId);
 
    Site getDashboard(Id userId);
 
-   <T extends Identifiable> T get(Id<T> id);
+   <T extends Identifiable<T>> T get(Id<T> id);
 
-   <T extends Site> T getSite(Id<T> siteId, Type<T> type);
+   Site getSite(Id<Site> siteId, Type<Site> type);
 
    Id userId(String user);
 
    Id groupId(String root, String... children);
 
-   Id<Portlet> portletId(String application, String portlet);
+   Id<Content> portletId(String application, String portlet);
 
-   Id<WSRP> wsrpPortletId(String invoker, String portlet);
+   Id<Content> wsrpPortletId(String invoker, String portlet);
 
-   Id<Gadget> gadgetId(String gadgetName);
+   Id<Content> gadgetId(String gadgetName);
 
-   Id<Gadget> gadgetId(URI uri);
+   Id<Content> gadgetId(URI uri);
 
    Id<Category> categoryId(String name);
 
-   <T extends Site> Id<Page> pageId(Id<T> ownerSite, String pageName);
+   Id<Page> pageId(Id<Site> ownerSite, String pageName);
 
-   <T extends Content> Id<ManagedContent> managedContentId(Id<Category> categoryId, String name, Id<T> contentId);
+   Id<ManagedContent> managedContentId(Id<Category> categoryId, String name, Id<Content> contentId);
 
-   <T extends Site> Id<T> siteId(Type<T> siteType, String portalName);
+   Id<Site> siteId(Type<Site> siteType, String portalName);
 
    <T> T getProperty(Type<T> property);
 

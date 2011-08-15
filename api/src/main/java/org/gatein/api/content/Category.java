@@ -40,11 +40,10 @@ public interface Category extends Identifiable<Category>
     *
     * @param contentId the id of the Content to be managed by this Category
     * @param name      the name (if any) associated with the Content once managed by this Category
-    * @param <T>       the type of the associated Content
     * @return a new ManagedContent proxying the associated Content and that can be manipulated in the context of this
     *         Category
     */
-   <T extends Content> ManagedContent<T> addContent(Id<T> contentId, String name);
+   ManagedContent addContent(Id<Content> contentId, String name);
 
    String getDescription();
 

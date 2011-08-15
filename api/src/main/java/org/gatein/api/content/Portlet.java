@@ -27,6 +27,6 @@ package org.gatein.api.content;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Portlet extends Content<Portlet>
+public interface Portlet extends Content
 {
 }

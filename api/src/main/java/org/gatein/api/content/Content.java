@@ -31,9 +31,9 @@ import org.gatein.api.util.Type;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Content<T extends Content<T>> extends Identifiable<T>
+public interface Content extends Identifiable<Content>
 {
-   Type<T> getType();
+   Type<Content> getType();
 
    String PORTLET_TYPE_NAME = "portlet";
    Type<Portlet> PORTLET = new Type<Portlet>(PORTLET_TYPE_NAME)

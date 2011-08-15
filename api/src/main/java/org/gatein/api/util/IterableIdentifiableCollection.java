@@ -35,7 +35,7 @@ import org.gatein.api.id.Identifiable;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface IterableIdentifiableCollection<T extends Identifiable> extends IterableCollection<T>
+public interface IterableIdentifiableCollection<T extends Identifiable<T>> extends IterableCollection<T>
 {
    boolean contains(Id<T> t);
 }

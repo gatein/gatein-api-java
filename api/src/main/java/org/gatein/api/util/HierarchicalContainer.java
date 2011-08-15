@@ -30,13 +30,13 @@ import org.gatein.api.id.Identifiable;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface HierarchicalContainer<K, T extends Identifiable> extends Container<T>
+public interface HierarchicalContainer<K, T extends Identifiable<T>> extends Container<T>
 {
    boolean contains(K key);
 
    T createAndAdd(K key);
 
-   <U extends T> U createAndAdd(Id<U> id);
+   T createAndAdd(Id<T> id);
 
    T get(K key);
 

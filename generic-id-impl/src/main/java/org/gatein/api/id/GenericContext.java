@@ -108,14 +108,14 @@ public class GenericContext implements Context
       return create(Identifiable.class, rootComponent, additionalComponent);
    }
 
-   public <T extends Identifiable> Id<T> create(Class<T> type, String rootComponent, String... additionalComponents)
+   public <T extends Identifiable<T>> Id<T> create(Class<T> type, String rootComponent, String... additionalComponents)
    {
       ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(rootComponent, "root component", "Context '" + name + "'");
 
       return internalCreate(type, true, rootComponent, additionalComponents);
    }
 
-   private <T extends Identifiable> Id<T> internalCreate(Class<T> type, final boolean revalidate, String rootComponent, String... additionalComponents)
+   private <T extends Identifiable<T>> Id<T> internalCreate(Class<T> type, final boolean revalidate, String rootComponent, String... additionalComponents)
    {
       if (ParameterValidation.existsAndIsNotEmpty(additionalComponents))
       {
@@ -152,7 +152,7 @@ public class GenericContext implements Context
       }
    }
 
-   <T extends Identifiable> Id<T> internalCreate(Class<T> type, final boolean revalidate, String... components)
+   <T extends Identifiable<T>> Id<T> internalCreate(Class<T> type, final boolean revalidate, String... components)
    {
       if (ParameterValidation.existsAndIsNotEmpty(components))
       {

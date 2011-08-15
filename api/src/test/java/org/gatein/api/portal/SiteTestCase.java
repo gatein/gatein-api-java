@@ -46,7 +46,7 @@ public class SiteTestCase
    @Test
    public void shouldProperlyReturnValueType()
    {
-      assert Portal.class.equals(Site.PORTAL.getValueType());
+      assert Site.class.equals(Site.PORTAL.getValueType());
       assert Site.class.equals(Site.GROUP.getValueType());
       assert Site.class.equals(Site.DASHBOARD.getValueType());
    }

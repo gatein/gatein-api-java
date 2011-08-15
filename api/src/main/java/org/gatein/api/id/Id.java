@@ -24,7 +24,7 @@
 package org.gatein.api.id;
 
 /** @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a> */
-public interface Id<T extends Identifiable> extends Comparable<Id>
+public interface Id<T extends Identifiable<T>> extends Comparable<Id<T>>
 {
    String toString(RenderingContext context);
 
@@ -42,7 +42,7 @@ public interface Id<T extends Identifiable> extends Comparable<Id>
 
    String getRootComponent();
 
-   Id getParent();
+   Id<?> getParent();
 
    String[] getComponents();
 

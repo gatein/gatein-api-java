@@ -112,12 +112,12 @@ public abstract class NavigationPortletTestCase
    {
       final Id id = gateIn.userId("root");
 
-      IterableIdentifiableCollection<Portal> portalResult = gateIn.getPortalSites(id);
+      IterableIdentifiableCollection<? extends Site> portalResult = gateIn.getPortalSites(id);
       assert 1 == portalResult.size();
 
-      Iterator<Portal> portals = portalResult.iterator();
+      Iterator<? extends Site> portals = portalResult.iterator();
 
-      Portal portal = portals.next();
+      Portal portal = (Portal)portals.next();
       assert Site.PORTAL.equals(portal.getType());
       assert "classic".equals(portal.getName());
       assert gateIn.getPortal(gateIn.siteId(Site.PORTAL, "classic")).equals(portal);

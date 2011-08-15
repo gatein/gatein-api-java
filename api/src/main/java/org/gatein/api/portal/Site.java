@@ -31,13 +31,13 @@ import org.gatein.api.util.Type;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Site extends Identifiable
+public interface Site extends Identifiable<Site>
 {
    HierarchicalContainer<String, Page> getPageRegistry();
 
    Navigation getNavigation();
 
-   Type getType();
+   Type<Site> getType();
 
    Navigation createNavigationTo(Page node, Navigation parent);
 
@@ -46,7 +46,7 @@ public interface Site extends Identifiable
    public static final String PORTAL_TYPE_NAME = "portal";
    public static final String DASHBOARD_TYPE_NAME = "user";
    public static final String GROUP_TYPE_NAME = "group";
-   public static final Type<Portal> PORTAL = new Type<Portal>(PORTAL_TYPE_NAME)
+   public static final Type<Site> PORTAL = new Type<Site>(PORTAL_TYPE_NAME)
    {
    };
    public static final Type<Site> DASHBOARD = new Type<Site>(DASHBOARD_TYPE_NAME)

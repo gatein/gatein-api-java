@@ -32,7 +32,7 @@ import org.gatein.api.id.Id;
  */
 public interface Portal extends Site
 {
+
    ContentRegistry getContentRegistry();
 
-   Id<Portal> getId();
 }
