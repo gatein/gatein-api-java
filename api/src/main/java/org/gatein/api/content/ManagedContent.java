@@ -23,6 +23,7 @@
 
 package org.gatein.api.content;
 
+import org.gatein.api.id.BaseId;
 import org.gatein.api.id.Identifiable;
 
 /**
@@ -31,6 +32,9 @@ import org.gatein.api.id.Identifiable;
  */
 public interface ManagedContent extends Identifiable<ManagedContent>
 {
+
+   Id getId();
+
    public void setDisplayName(String displayName);
 
    public Content getContent();
@@ -38,4 +42,12 @@ public interface ManagedContent extends Identifiable<ManagedContent>
    public String getDescription();
 
    public void setDescription(String description);
+
+   final class Id extends BaseId<ManagedContent>
+   {
+      public Class<ManagedContent> getIdentifiableType()
+      {
+         return ManagedContent.class;
+      }
+   }
 }

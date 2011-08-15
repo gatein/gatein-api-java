@@ -23,6 +23,8 @@
 
 package org.gatein.api.content;
 
+import org.gatein.api.util.Type;
+
 import java.net.URI;
 
 /**
@@ -31,6 +33,11 @@ import java.net.URI;
  */
 public interface Gadget extends Content
 {
+
+   // Gadget.Id getId();
+
+   Type<Gadget> getType();
+
    URI getReferenceURI();
 
    URI getURI();
@@ -55,5 +62,9 @@ public interface Gadget extends Content
       URI getURI();
 
       void setURI(URI uri);
+   }
+
+   class Id extends Content.Id
+   {
    }
 }

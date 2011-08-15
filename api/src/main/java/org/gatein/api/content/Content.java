@@ -23,6 +23,7 @@
 
 package org.gatein.api.content;
 
+import org.gatein.api.id.BaseId;
 import org.gatein.api.id.Identifiable;
 import org.gatein.api.util.Filter;
 import org.gatein.api.util.Type;
@@ -33,7 +34,10 @@ import org.gatein.api.util.Type;
  */
 public interface Content extends Identifiable<Content>
 {
-   Type<Content> getType();
+
+   Id getId();
+
+   Type<? extends Content> getType();
 
    String PORTLET_TYPE_NAME = "portlet";
    Type<Portlet> PORTLET = new Type<Portlet>(PORTLET_TYPE_NAME)
@@ -76,4 +80,12 @@ public interface Content extends Identifiable<Content>
          return GADGET.equals(item.getType());
       }
    };
+
+   abstract class Id extends BaseId<Content>
+   {
+      public Class<Content> getIdentifiableType()
+      {
+         return Content.class;
+      }
+   }
 }

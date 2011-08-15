@@ -23,6 +23,7 @@
 
 package org.gatein.api.portal;
 
+import org.gatein.api.id.BaseId;
 import org.gatein.api.id.Identifiable;
 import org.gatein.api.util.HierarchicalContainer;
 import org.gatein.api.util.Type;
@@ -33,6 +34,9 @@ import org.gatein.api.util.Type;
  */
 public interface Site extends Identifiable<Site>
 {
+
+   Id getId();
+
    HierarchicalContainer<String, Page> getPageRegistry();
 
    Navigation getNavigation();
@@ -55,4 +59,66 @@ public interface Site extends Identifiable<Site>
    public static final Type<Site> GROUP = new Type<Site>(GROUP_TYPE_NAME)
    {
    };
+
+   final class Id extends BaseId<Site>
+   {
+
+      /** . */
+      private final Type<Site> type;
+
+      /** . */
+      private final String name;
+
+      public Id(Type<Site> type, String name)
+      {
+         if (type == null)
+         {
+            throw new NullPointerException();
+         }
+         if (name == null)
+         {
+            throw new NullPointerException();
+         }
+
+         //
+         this.type = type;
+         this.name = name;
+      }
+
+      public Type<Site> getType()
+      {
+         return type;
+      }
+
+      public String getName()
+      {
+         return name;
+      }
+
+      @Override
+      public boolean equals(Object obj)
+      {
+         if (obj == this)
+         {
+            return true;
+         }
+         if (obj instanceof Id)
+         {
+            Id that = (Id)obj;
+            return type.equals(that.type) && name.equals(that.name);
+         }
+         return false;
+      }
+
+      @Override
+      public int hashCode()
+      {
+         return type.hashCode() & name.hashCode();
+      }
+
+      public Class<Site> getIdentifiableType()
+      {
+         return Site.class;
+      }
+   }
 }

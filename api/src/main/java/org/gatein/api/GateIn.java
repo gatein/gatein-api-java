@@ -47,47 +47,43 @@ public interface GateIn
 {
    String GATEIN_API = "org.gatein.api.instance";
 
-   IterableIdentifiableCollection<? extends Site> getPortals();
+   IterableIdentifiableCollection<Site> getPortals();
 
-   Portal getPortal(Id<Site> portalId);
+   Portal getPortal(Site.Id portalId);
 
    Portal getDefaultPortal();
 
-   IterableIdentifiableCollection<? extends Site> getSites();
+   IterableIdentifiableCollection<Site> getSites();
 
    IterableIdentifiableCollection<Site> getGroupSites();
 
-   Site getGroupSite(Id groupId);
+   Site getGroupSite(String... groupName);
 
-   IterableIdentifiableCollection<Site> getGroupSites(Id userId);
+   IterableIdentifiableCollection<Site> getGroupSites(String userId);
 
-   IterableIdentifiableCollection<? extends Site> getPortalSites(Id userId);
+   IterableIdentifiableCollection<Site> getPortalSites(String userId);
 
-   Site getDashboard(Id userId);
+   Site getDashboard(String userId);
 
    <T extends Identifiable<T>> T get(Id<T> id);
 
-   Site getSite(Id<Site> siteId, Type<Site> type);
+   Site getSite(Site.Id siteId);
 
-   Id userId(String user);
+   Portlet.Id portletId(String application, String portlet);
 
-   Id groupId(String root, String... children);
+   WSRP.Id wsrpPortletId(String invoker, String portlet);
 
-   Id<Content> portletId(String application, String portlet);
+   Gadget.Id gadgetId(String gadgetName);
 
-   Id<Content> wsrpPortletId(String invoker, String portlet);
+   Gadget.Id gadgetId(URI uri);
 
-   Id<Content> gadgetId(String gadgetName);
+   Category.Id categoryId(String name);
 
-   Id<Content> gadgetId(URI uri);
+   Page.Id pageId(Site.Id ownerSite, String pageName);
 
-   Id<Category> categoryId(String name);
+   ManagedContent.Id managedContentId(Category.Id categoryId, String name, Content.Id contentId);
 
-   Id<Page> pageId(Id<Site> ownerSite, String pageName);
-
-   Id<ManagedContent> managedContentId(Id<Category> categoryId, String name, Id<Content> contentId);
-
-   Id<Site> siteId(Type<Site> siteType, String portalName);
+   Site.Id siteId(Type<Site> siteType, String portalName);
 
    <T> T getProperty(Type<T> property);
 

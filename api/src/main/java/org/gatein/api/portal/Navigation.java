@@ -23,7 +23,7 @@
 
 package org.gatein.api.portal;
 
-import org.gatein.api.id.Id;
+import org.gatein.api.id.BaseId;
 import org.gatein.api.id.Identifiable;
 import org.gatein.api.util.HierarchicalContainer;
 
@@ -35,13 +35,49 @@ import java.net.URI;
  */
 public interface Navigation extends Identifiable<Navigation>, HierarchicalContainer<String, Navigation>
 {
+
+   Id getId();
+
    Page getTargetPage();
 
    void setTargetPage(Page target);
 
-   void setTargetPage(Id<Page> targetId);
+   void setTargetPage(Page.Id targetId);
 
    URI getURI();
 
    Site getSite();
+
+   class Id extends BaseId<Navigation>
+   {
+
+      /** . */
+      private final String value;
+
+      public Id(String value)
+      {
+         if (value == null)
+         {
+            throw new NullPointerException();
+         }
+         this.value = value;
+      }
+
+      public Class<Navigation> getIdentifiableType()
+      {
+         return Navigation.class;
+      }
+
+      @Override
+      public boolean equals(Object obj)
+      {
+         return obj == this || (obj instanceof Id && value.equals(((Id)obj).value));
+      }
+
+      @Override
+      public int hashCode()
+      {
+         return value.hashCode();
+      }
+   }
 }

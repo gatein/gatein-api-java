@@ -23,6 +23,8 @@
 
 package org.gatein.api.portal;
 
+import org.gatein.api.id.BaseId;
+import org.gatein.api.id.Id;
 import org.gatein.api.id.Identifiable;
 import org.gatein.api.util.IterableIdentifiableCollection;
 
@@ -32,6 +34,9 @@ import org.gatein.api.util.IterableIdentifiableCollection;
  */
 public interface Page extends Identifiable<Page>
 {
+
+   Id getId();
+
    Site getSite();
 
    String getTitle();
@@ -41,4 +46,67 @@ public interface Page extends Identifiable<Page>
    IterableIdentifiableCollection<Navigation> getInboundNavigations();
 
    Navigation createInboundNavigationIn(Site site, Navigation parent);
+
+   public static class Id extends BaseId<Page>
+   {
+
+      /** . */
+      private final Site.Id site;
+
+      /** . */
+      private final String name;
+
+      public Id(Site.Id site, String name)
+      {
+         if (site == null)
+         {
+            throw new NullPointerException();
+         }
+         if (name == null)
+         {
+            throw new NullPointerException();
+         }
+
+         //
+         this.site = site;
+         this.name = name;
+      }
+
+      public Site.Id getSite()
+      {
+         return site;
+      }
+
+      public String getName()
+      {
+         return name;
+      }
+
+      public Class<Page> getIdentifiableType()
+      {
+         return Page.class;
+      }
+
+      @Override
+      public boolean equals(Object obj)
+      {
+         if (obj == this)
+         {
+            return true;
+         }
+         if (obj instanceof Id)
+         {
+            Id that = (Id)obj;
+            return site.equals(that.site) && name.equals(that.name);
+         }
+         return false;
+      }
+
+      @Override
+      public int hashCode()
+      {
+         return site.hashCode() ^ name.hashCode();
+      }
+   }
+
 }
