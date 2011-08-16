@@ -62,13 +62,33 @@ public interface Site extends Identifiable<Site>
    final class Id extends BaseId<Site>
    {
 
+      public static Id create(Type<Site> type, String name)
+      {
+         return new Id(type, name);
+      }
+
+      public static Id createPortal(String name)
+      {
+         return create(PORTAL, name);
+      }
+
+      public static Id createGroup(String name)
+      {
+         return create(GROUP, name);
+      }
+
+      public static Id createDashboard(String name)
+      {
+         return create(DASHBOARD, name);
+      }
+
       /** . */
       private final Type<Site> type;
 
       /** . */
       private final String name;
 
-      public Id(Type<Site> type, String name)
+      private Id(Type<Site> type, String name)
       {
          if (type == null)
          {

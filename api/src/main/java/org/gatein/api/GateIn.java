@@ -83,8 +83,6 @@ public interface GateIn
 
    ManagedContent.Id managedContentId(Category.Id categoryId, String name, Content.Id contentId);
 
-   Site.Id siteId(Type<Site> siteType, String portalName);
-
    <T> T getProperty(Type<T> property);
 
    <T> void setProperty(Type<T> property, T value);
