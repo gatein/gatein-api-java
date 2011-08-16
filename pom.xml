@@ -48,6 +48,10 @@
       <url>https://github.com/gatein/gatein-api-java.git</url>
    </scm>
 
+   <properties>
+      <pushChanges>false</pushChanges>
+   </properties>
+
    <dependencyManagement>
       <dependencies>
          <dependency>
