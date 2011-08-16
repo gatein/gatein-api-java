@@ -42,7 +42,7 @@ public interface Navigation extends Identifiable<Navigation>, HierarchicalContai
 
    void setTargetPage(Page target);
 
-   void setTargetPage(Page.Id targetId);
+   void setTargetPageRef(Page.Id targetId);
 
    URI getURI();
 
