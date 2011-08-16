@@ -29,7 +29,7 @@ import java.util.Arrays;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public abstract class GenericId<T extends Identifiable> implements Id<T>
+public abstract class GenericId<T extends Identifiable<T>> implements Id<T>
 {
    protected final GenericContext originalContext;
    private final Class<T> identifiableType;
@@ -85,6 +85,8 @@ public abstract class GenericId<T extends Identifiable> implements Id<T>
    }
 
    protected abstract String getComponent(int index, String component, Context context);
+
+   protected abstract void associateComponentWith(int componentIndex, String componentName);
 
    public GenericContext getOriginalContext()
    {
@@ -142,7 +144,7 @@ public abstract class GenericId<T extends Identifiable> implements Id<T>
       }
    }
 
-   static class SimpleGenericId<T extends Identifiable> extends GenericId<T>
+   static class SimpleGenericId<T extends Identifiable<T>> extends GenericId<T>
    {
       private final String root;
       private String componentName;
@@ -211,7 +213,7 @@ public abstract class GenericId<T extends Identifiable> implements Id<T>
       }
    }
 
-   static class ComplexGenericId<T extends Identifiable> extends GenericId<T>
+   static class ComplexGenericId<T extends Identifiable<T>> extends GenericId<T>
    {
       private final String[] components;
       private final String[] associatedComponentName;

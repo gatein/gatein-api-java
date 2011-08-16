@@ -23,10 +23,19 @@
 
 package org.gatein.api.content;
 
+import org.gatein.api.util.Type;
+
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Portlet extends Content<Portlet>
+public interface Portlet extends Content
 {
+   // Portlet.Id getId();
+
+   Type<Portlet> getType();
+
+   class Id extends Content.Id
+   {
+   }
 }

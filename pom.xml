@@ -31,7 +31,9 @@
    <version>1.0.0-Beta02-SNAPSHOT</version>
    <modules>
       <module>api</module>
+<!--
       <module>generic-id-impl</module>
+-->
    </modules>
 
    <parent>
@@ -46,31 +48,62 @@
       <url>https://github.com/gatein/gatein-api-java.git</url>
    </scm>
 
+   <dependencyManagement>
+      <dependencies>
+         <dependency>
+            <groupId>org.gatein.api</groupId>
+            <artifactId>gatein-java-api</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+<!--
+         <dependency>
+            <groupId>org.gatein.api</groupId>
+            <artifactId>generic-id-impl</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+-->
+         <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>5.14.10</version>
+         </dependency>
+      </dependencies>
+   </dependencyManagement>
+
    <dependencies>
       <dependency>
          <groupId>org.testng</groupId>
          <artifactId>testng</artifactId>
-         <version>5.14.10</version>
          <scope>test</scope>
       </dependency>
    </dependencies>
 
    <build>
+
+      <pluginManagement>
+         <plugins>
+            <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-release-plugin</artifactId>
+               <version>2.2</version>
+            </plugin>
+            <plugin>
+               <groupId>org.codehaus.mojo</groupId>
+               <artifactId>buildnumber-maven-plugin</artifactId>
+               <version>1.0</version>
+            </plugin>
+            <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-jar-plugin</artifactId>
+               <version>2.3.1</version>
+            </plugin>
+         </plugins>
+      </pluginManagement>
+
       <plugins>
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-release-plugin</artifactId>
-            <version>2.2</version>
-         </plugin>
-         <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>buildnumber-maven-plugin</artifactId>
-            <version>1.0</version>
-         </plugin>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
-            <version>2.3.1</version>
             <executions>
                <execution>
                   <goals>

@@ -23,7 +23,7 @@
 
 package org.gatein.api.portal;
 
-import org.gatein.api.util.GateInTypesResolver;
+import org.gatein.api.support.TypeResolver;
 import org.testng.annotations.Test;
 
 /** @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a> */
@@ -32,21 +32,21 @@ public class SiteTestCase
    @Test
    public void forNameShouldProperlyResolveTypes()
    {
-      assert Site.PORTAL.equals(GateInTypesResolver.forName(Site.PORTAL_TYPE_NAME, Site.class));
-      assert Site.DASHBOARD.equals(GateInTypesResolver.forName(Site.DASHBOARD_TYPE_NAME, Site.class));
-      assert Site.GROUP.equals(GateInTypesResolver.forName(Site.GROUP_TYPE_NAME, Site.class));
+      assert Site.PORTAL.equals(TypeResolver.forName(Site.PORTAL_TYPE_NAME, Site.class));
+      assert Site.DASHBOARD.equals(TypeResolver.forName(Site.DASHBOARD_TYPE_NAME, Site.class));
+      assert Site.GROUP.equals(TypeResolver.forName(Site.GROUP_TYPE_NAME, Site.class));
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
    public void forNameShouldThrowAnExceptionOnUnknownTypeName()
    {
-      GateInTypesResolver.forName("foo", Site.class);
+      TypeResolver.forName("foo", Site.class);
    }
 
    @Test
    public void shouldProperlyReturnValueType()
    {
-      assert Portal.class.equals(Site.PORTAL.getValueType());
+      assert Site.class.equals(Site.PORTAL.getValueType());
       assert Site.class.equals(Site.GROUP.getValueType());
       assert Site.class.equals(Site.DASHBOARD.getValueType());
    }

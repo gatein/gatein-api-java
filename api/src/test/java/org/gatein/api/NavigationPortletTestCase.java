@@ -23,7 +23,6 @@
 
 package org.gatein.api;
 
-import org.gatein.api.id.Id;
 import org.gatein.api.portal.Navigation;
 import org.gatein.api.portal.Page;
 import org.gatein.api.portal.Portal;
@@ -32,6 +31,7 @@ import org.gatein.api.util.IterableIdentifiableCollection;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 /**
@@ -48,31 +48,28 @@ public abstract class NavigationPortletTestCase
    @Test
    public void shouldListSpecificGroupPages()
    {
-      Id groupId = gateIn.groupId("platform", "administrators");
-
-      Site adminSite = gateIn.getGroupSite(groupId);
+      Site adminSite = gateIn.getGroupSite("platform", "administrators");
       Navigation navigation = adminSite.getNavigation();
 
-      IterableIdentifiableCollection<Navigation> adminNodes = navigation.getAll();
+      Collection<? extends Navigation> adminNodes = navigation.getChildren();
       assert 2 == adminNodes.size();
 
-      Iterator<Navigation> iterator = adminNodes.iterator();
+      Iterator<? extends Navigation> iterator = adminNodes.iterator();
 
       Navigation administrationNode = iterator.next();
       assert "Administration".equals(administrationNode.getDisplayName());
-      assert 2 == administrationNode.size();
-      IterableIdentifiableCollection<Navigation> children = administrationNode.getAll();
+      assert 2 == administrationNode.getChildren().size();
+      Collection<? extends Navigation> children = administrationNode.getChildren();
       for (Navigation child : children)
       {
-         assert child.equals(administrationNode.get(child.getName()));
+         assert child.equals(administrationNode.getChild(child.getName()));
          Page target = child.getTargetPage();
          assert target.equals(gateIn.get(target.getId()));
-         assert target.getInboundNavigations().contains(child.getId());
       }
 
       Navigation wsrp = iterator.next();
       assert "WSRP".equals(wsrp.getDisplayName());
-      assert 1 == wsrp.size();
+      assert 1 == wsrp.getChildren().size();
 
       assert !iterator.hasNext();
    }
@@ -80,9 +77,7 @@ public abstract class NavigationPortletTestCase
    @Test(enabled = false)
    public void shouldListGroupPages()
    {
-      final Id id = gateIn.userId("root");
-
-      IterableIdentifiableCollection<Site> rootSites = gateIn.getGroupSites(id);
+      IterableIdentifiableCollection<Site> rootSites = gateIn.getGroupSites("root");
       assert 3 == rootSites.size();
 
       Iterator<Site> sites = rootSites.iterator();
@@ -98,7 +93,7 @@ public abstract class NavigationPortletTestCase
       assert priority == site.getPriority();
       assert site.getDisplayName().contains(groupName);
 
-      IterableIdentifiableCollection<Navigation> navigations = site.getNavigation().getAll();
+      Collection<? extends Navigation> navigations = site.getNavigation().getChildren();
       assert navigationsNumber == navigations.size();
       for (Navigation navigation : navigations)
       {
@@ -110,29 +105,25 @@ public abstract class NavigationPortletTestCase
    @Test(enabled = false)
    public void shouldListSitePages()
    {
-      final Id id = gateIn.userId("root");
-
-      IterableIdentifiableCollection<Portal> portalResult = gateIn.getPortalSites(id);
+      IterableIdentifiableCollection<? extends Site> portalResult = gateIn.getPortalSites("root");
       assert 1 == portalResult.size();
 
-      Iterator<Portal> portals = portalResult.iterator();
+      Iterator<? extends Site> portals = portalResult.iterator();
 
-      Portal portal = portals.next();
+      Portal portal = (Portal)portals.next();
       assert Site.PORTAL.equals(portal.getType());
       assert "classic".equals(portal.getName());
-      assert gateIn.getPortal(gateIn.siteId(Site.PORTAL, "classic")).equals(portal);
-      IterableIdentifiableCollection<Navigation> navigations = portal.getNavigation().getAll();
+      assert gateIn.getPortal(Site.Id.createPortal("classic")).equals(portal);
+      Collection<? extends Navigation> navigations = portal.getNavigation().getChildren();
       assert 2 == navigations.size();
    }
 
    @Test(enabled = false)
    public void shouldListDashboardPages()
    {
-      final Id id = gateIn.userId("root");
-
-      Site dashboard = gateIn.getDashboard(id);
+      Site dashboard = gateIn.getDashboard("root");
       assert Site.DASHBOARD.equals(dashboard.getType());
-      IterableIdentifiableCollection<Navigation> nodes = dashboard.getNavigation().getAll();
+      Collection<? extends Navigation> nodes = dashboard.getNavigation().getChildren();
       assert 1 == nodes.size();
       assert "Dashboard".equals(nodes.iterator().next().getDisplayName());
    }

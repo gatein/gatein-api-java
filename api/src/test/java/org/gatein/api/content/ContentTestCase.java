@@ -63,10 +63,10 @@ public abstract class ContentTestCase
       ContentRegistry registry = portal.getContentRegistry();
       final Category category = registry.getOrCreateCategory("category");
 
-      Id<Portlet> id = gateIn.portletId("application", "portlet");
-      final Portlet portlet = registry.get(id);
+      Portlet.Id id = gateIn.portletId("application", "portlet");
+      final Portlet portlet = (Portlet)registry.get(id);
 
-      final ManagedContent<Portlet> managedContent = category.addContent(id, portlet.getName());
+      final ManagedContent managedContent = category.addContent(id, portlet.getName());
       assert managedContent != null;
       assert portlet.equals(managedContent.getContent());
 
@@ -75,8 +75,8 @@ public abstract class ContentTestCase
       assert category.contains(name);
       assert category.getKnownManagedContentNames().contains(name);
 
-      Id<WSRP> wsrp = gateIn.wsrpPortletId("invoker", "portlet");
-      ManagedContent<WSRP> managedWSRP = category.addContent(wsrp, "foo");
+      WSRP.Id wsrp = gateIn.wsrpPortletId("invoker", "portlet");
+      ManagedContent managedWSRP = category.addContent(wsrp, "foo");
       assert managedWSRP != null;
       assert category.contains(managedWSRP.getName());
    }
@@ -87,11 +87,11 @@ public abstract class ContentTestCase
       ContentRegistry registry = portal.getContentRegistry();
       final Category category = registry.getOrCreateCategory("category");
 
-      Portlet portlet = registry.get(gateIn.portletId("application", "portlet"));
+      Portlet portlet = (Portlet)registry.get(gateIn.portletId("application", "portlet"));
       assert portlet.getName().equals(portlet.getDisplayName());
 
-      Id<Portlet> id = portlet.getId();
-      ManagedContent<Portlet> managed = category.addContent(id, portlet.getName());
+      Content.Id id = portlet.getId();
+      ManagedContent managed = category.addContent(id, portlet.getName());
       assert managed != null;
       assert portlet.equals(managed.getContent());
       assert managed.equals(category.getManagedContent(managed.getName()));
@@ -128,11 +128,11 @@ public abstract class ContentTestCase
       final Category category = registry.getOrCreateCategory("category");
 
       // from name
-      Id<Gadget> gadgetId = gateIn.gadgetId("gadgetName");
-      Gadget gadget = registry.get(gadgetId);
+      Content.Id gadgetId = gateIn.gadgetId("gadgetName");
+      Gadget gadget = (Gadget)registry.get(gadgetId);
       assert "gadgetName".equals(gadget.getName());
 
-      ManagedContent<Gadget> managedContent = category.addContent(gadgetId, gadget.getName());
+      ManagedContent managedContent = category.addContent(gadgetId, gadget.getName());
       assert managedContent != null;
       assert gadget.equals(managedContent.getContent());
       assert managedContent.equals(category.getManagedContent(managedContent.getName()));
@@ -140,7 +140,7 @@ public abstract class ContentTestCase
       // from URL
       URI uri = new URI("http://foo.bar.com/gadget.xml");
       gadgetId = gateIn.gadgetId(uri);
-      gadget = registry.get(gadgetId);
+      gadget = (Gadget)registry.get(gadgetId);
       assert !gadget.isLocal();
       assert uri.equals(gadget.getURI());
       assert uri.equals(((Gadget.RemoteData)gadget.getData()).getURI());
@@ -174,9 +174,9 @@ public abstract class ContentTestCase
       ContentRegistry registry = portal.getContentRegistry();
       Category category = registry.getOrCreateCategory("category");
 
-      Id<Portlet> id = gateIn.portletId("application", "portlet");
-      Portlet portlet = registry.get(id);
-      ManagedContent<Portlet> managed = category.addContent(id, portlet.getName());
+      Portlet.Id id = gateIn.portletId("application", "portlet");
+      Portlet portlet = (Portlet)registry.get(id);
+      ManagedContent managed = category.addContent(id, portlet.getName());
       assert category.contains(managed.getName());
 
       category.removeContent(managed.getName());
@@ -189,7 +189,7 @@ public abstract class ContentTestCase
       ContentRegistry registry = portal.getContentRegistry();
       Category category = registry.getOrCreateCategory("category");
 
-      Id<Portlet> id = gateIn.portletId("application", "portlet");
+      Portlet.Id id = gateIn.portletId("application", "portlet");
       category.addContent(id, null);
    }
 

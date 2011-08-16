@@ -23,25 +23,65 @@
 
 package org.gatein.api.portal;
 
-import org.gatein.api.id.Id;
+import org.gatein.api.id.BaseId;
 import org.gatein.api.id.Identifiable;
-import org.gatein.api.util.HierarchicalContainer;
 
 import java.net.URI;
+import java.util.Collection;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Navigation extends Identifiable<Navigation>, HierarchicalContainer<String, Navigation>
+public interface Navigation extends Identifiable<Navigation>
 {
+
+   Id getId();
+
    Page getTargetPage();
 
    void setTargetPage(Page target);
 
-   void setTargetPage(Id<Page> targetId);
+   void setTargetPageRef(Page.Id targetId);
 
    URI getURI();
 
    Site getSite();
+
+   Navigation getChild(String name);
+
+   Collection<? extends Navigation> getChildren();
+
+   class Id extends BaseId<Navigation>
+   {
+
+      /** . */
+      private final String value;
+
+      public Id(String value)
+      {
+         if (value == null)
+         {
+            throw new NullPointerException();
+         }
+         this.value = value;
+      }
+
+      public Class<Navigation> getIdentifiableType()
+      {
+         return Navigation.class;
+      }
+
+      @Override
+      public boolean equals(Object obj)
+      {
+         return obj == this || (obj instanceof Id && value.equals(((Id)obj).value));
+      }
+
+      @Override
+      public int hashCode()
+      {
+         return value.hashCode();
+      }
+   }
 }

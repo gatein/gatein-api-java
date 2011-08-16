@@ -27,13 +27,13 @@ import org.gatein.api.id.Id;
 import org.gatein.api.id.Identifiable;
 
 /** @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a> */
-public interface Container<T extends Identifiable>
+public interface Container<T extends Identifiable<T>>
 {
    IterableIdentifiableCollection<T> getAll();
 
    int size();
 
-   <U extends T> boolean contains(Id<U> id);
+   boolean contains(Id<T> id);
 
-   <U extends T> U get(Id<U> id);
+   T get(Id<T> id);
 }

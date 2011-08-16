@@ -24,7 +24,6 @@
 package org.gatein.api.portal;
 
 import org.gatein.api.GateIn;
-import org.gatein.api.id.Id;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -45,7 +44,7 @@ public abstract class NavigationTestCase
       Portal portal = gateIn.getDefaultPortal();
 
       String name = "name", title = "title";
-      Page page = portal.getPageRegistry().createAndAdd(name);
+      Page page = portal.getPage(name); // Should be create but we don't support it at the moment
       assert name.equals(page.getId().toString());
       assert name.equals(page.getTitle()) : "By default, a Page's title should be the same as its name";
       assert portal.equals(page.getSite());
@@ -57,28 +56,22 @@ public abstract class NavigationTestCase
    @Test
    public void creatingANavigationShouldLinkNavigationAndNode()
    {
-      Id<Portal> classic = gateIn.siteId(Site.PORTAL, "classic");
-      Portal portal = gateIn.get(classic);
+      Site.Id classic = Site.Id.createPortal("classic");
+      Portal portal = (Portal)gateIn.get(classic);
       assert portal.equals(gateIn.getPortal(classic));
 
-      Page page = portal.getPageRegistry().get(classic.getIdForChild("page"));
-      Id<Page> pageId = page.getId();
+      Page page = portal.getPage("page");
+      Page.Id pageId = page.getId();
       assert page.equals(gateIn.get(pageId));
 
-      Navigation nav = portal.getNavigation().get("page");
+      Navigation nav = portal.getNavigation().getChild("page");
       assert page.equals(nav.getTargetPage());
 
-      Page sub = portal.getPageRegistry().get("sub");
-      assert sub.equals(gateIn.get(pageId.getIdForChild("sub")));
+      Page sub = portal.getPage("sub");
+      assert sub.equals(gateIn.get(new Page.Id(page.getSite().getId(), "sub")));
 
-      Navigation navigation = portal.createNavigationTo(sub, portal.getNavigation());
-      assert sub.equals(navigation.getTargetPage());
-      assert sub.getInboundNavigations().contains(navigation.getId());
-      assert portal.getNavigation().contains(navigation.getName());
-
-      Navigation inboundNavigation = sub.createInboundNavigationIn(portal, portal.getNavigation());
-      assert sub.equals(inboundNavigation.getTargetPage());
-      assert sub.getInboundNavigations().contains(inboundNavigation.getId());
-      assert portal.getNavigation().contains(inboundNavigation.getName());
+//      Navigation navigation = portal.createNavigationTo(sub, portal.getNavigation());
+//      assert sub.equals(navigation.getTargetPage());
+//      assert portal.getNavigation().getChild(navigation.getName()) != null;
    }
 }

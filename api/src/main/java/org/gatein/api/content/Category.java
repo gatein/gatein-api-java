@@ -23,7 +23,7 @@
 
 package org.gatein.api.content;
 
-import org.gatein.api.id.Id;
+import org.gatein.api.id.BaseId;
 import org.gatein.api.id.Identifiable;
 import org.gatein.api.util.IterableCollection;
 
@@ -33,6 +33,9 @@ import org.gatein.api.util.IterableCollection;
  */
 public interface Category extends Identifiable<Category>
 {
+
+   Id getId();
+
    boolean contains(String managedContentName);
 
    /**
@@ -40,11 +43,10 @@ public interface Category extends Identifiable<Category>
     *
     * @param contentId the id of the Content to be managed by this Category
     * @param name      the name (if any) associated with the Content once managed by this Category
-    * @param <T>       the type of the associated Content
     * @return a new ManagedContent proxying the associated Content and that can be manipulated in the context of this
     *         Category
     */
-   <T extends Content> ManagedContent<T> addContent(Id<T> contentId, String name);
+   ManagedContent addContent(Content.Id contentId, String name);
 
    String getDescription();
 
@@ -59,4 +61,39 @@ public interface Category extends Identifiable<Category>
    IterableCollection<String> getKnownManagedContentNames();
 
    IterableCollection<ManagedContent> getManagedContents();
+
+   final class Id extends BaseId<Category>
+   {
+
+      /** . */
+      private final String name;
+
+      public Id(String name)
+      {
+         if (name == null)
+         {
+            throw new NullPointerException();
+         }
+
+         //
+         this.name = name;
+      }
+
+      public Class<Category> getIdentifiableType()
+      {
+         return Category.class;
+      }
+
+      @Override
+      public boolean equals(Object obj)
+      {
+         return obj instanceof Id && name.equals(((Id)obj).name);
+      }
+
+      @Override
+      public int hashCode()
+      {
+         return name.hashCode();
+      }
+   }
 }

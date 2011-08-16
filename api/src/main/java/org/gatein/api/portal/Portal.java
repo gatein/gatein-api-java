@@ -32,7 +32,9 @@ import org.gatein.api.id.Id;
  */
 public interface Portal extends Site
 {
+
+   // Not sure it should be here since we add application on other kind of sites (group / dashboard)
+   // perhaps we should move for now on GateIn and later provide a version on Site
    ContentRegistry getContentRegistry();
 
-   Id<Portal> getId();
 }

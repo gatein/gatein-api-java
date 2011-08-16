@@ -23,19 +23,31 @@
 
 package org.gatein.api.content;
 
+import org.gatein.api.id.BaseId;
 import org.gatein.api.id.Identifiable;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface ManagedContent<T extends Content> extends Identifiable<ManagedContent<T>>
+public interface ManagedContent extends Identifiable<ManagedContent>
 {
+
+   Id getId();
+
    public void setDisplayName(String displayName);
 
-   public T getContent();
+   public Content getContent();
 
    public String getDescription();
 
    public void setDescription(String description);
+
+   final class Id extends BaseId<ManagedContent>
+   {
+      public Class<ManagedContent> getIdentifiableType()
+      {
+         return ManagedContent.class;
+      }
+   }
 }

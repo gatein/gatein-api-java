@@ -30,7 +30,10 @@ import org.testng.annotations.Test;
 /** @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a> */
 public abstract class HierarchicalContainerTestCase
 {
-   protected HierarchicalContainer<String, Identifiable> container;
+
+   static interface Identified extends Identifiable<Identified> { }
+
+   protected HierarchicalContainer<String, Identified> container;
 
    @Test
    public void createAndAddShouldBeIdempotent()
