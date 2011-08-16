@@ -25,15 +25,15 @@ package org.gatein.api.portal;
 
 import org.gatein.api.id.BaseId;
 import org.gatein.api.id.Identifiable;
-import org.gatein.api.util.HierarchicalContainer;
 
 import java.net.URI;
+import java.util.Collection;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Navigation extends Identifiable<Navigation>, HierarchicalContainer<String, Navigation>
+public interface Navigation extends Identifiable<Navigation>
 {
 
    Id getId();
@@ -47,6 +47,10 @@ public interface Navigation extends Identifiable<Navigation>, HierarchicalContai
    URI getURI();
 
    Site getSite();
+
+   Navigation getChild(String name);
+
+   Collection<? extends Navigation> getChildren();
 
    class Id extends BaseId<Navigation>
    {
