@@ -31,7 +31,9 @@
    <version>1.0.0-Beta02-SNAPSHOT</version>
    <modules>
       <module>api</module>
+<!--
       <module>generic-id-impl</module>
+-->
    </modules>
 
    <parent>
@@ -53,11 +55,13 @@
             <artifactId>gatein-java-api</artifactId>
             <version>${project.version}</version>
          </dependency>
+<!--
          <dependency>
             <groupId>org.gatein.api</groupId>
             <artifactId>generic-id-impl</artifactId>
             <version>${project.version}</version>
          </dependency>
+-->
          <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>

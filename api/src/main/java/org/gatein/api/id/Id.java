@@ -23,28 +23,15 @@
 
 package org.gatein.api.id;
 
+import java.io.IOException;
+
 /** @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a> */
 public interface Id<T extends Identifiable<T>> extends Comparable<Id<T>>
 {
-   String toString(RenderingContext context);
-
    Class<T> getIdentifiableType();
 
    String toString();
 
-   Id getIdForChild(String childId);
+   void toString(Appendable appendable) throws IOException;
 
-   String getComponent(String component);
-
-   Context getOriginalContext();
-
-   int getComponentNumber();
-
-   String getRootComponent();
-
-   Id<?> getParent();
-
-   String[] getComponents();
-
-   boolean knowsComponent(String name);
 }

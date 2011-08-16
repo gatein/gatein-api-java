@@ -68,7 +68,7 @@ public abstract class NavigationTestCase
       assert page.equals(nav.getTargetPage());
 
       Page sub = portal.getPage("sub");
-      assert sub.equals(gateIn.get(pageId.getIdForChild("sub")));
+      assert sub.equals(gateIn.get(new Page.Id(page.getSite().getId(), "sub")));
 
 //      Navigation navigation = portal.createNavigationTo(sub, portal.getNavigation());
 //      assert sub.equals(navigation.getTargetPage());

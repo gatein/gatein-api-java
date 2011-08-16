@@ -27,6 +27,7 @@ import org.gatein.api.id.BaseId;
 import org.gatein.api.id.Identifiable;
 import org.gatein.api.util.Type;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**

@@ -1,52 +1,30 @@
 package org.gatein.api.id;
 
+import java.io.IOException;
+import java.lang.reflect.UndeclaredThrowableException;
+
 /** @author <a href="mailto:julien.viet@exoplatform.com">Julien Viet</a> */
 public abstract class BaseId<T extends Identifiable<T>> implements Id<T>
 {
 
-   public boolean knowsComponent(String name)
+   @Override
+   public String toString()
    {
-      throw new UnsupportedOperationException();
+      try
+      {
+         StringBuilder sb = new StringBuilder();
+         toString(sb);
+         return sb.toString();
+      }
+      catch (IOException e)
+      {
+         throw new UndeclaredThrowableException(e);
+      }
    }
 
-   public String[] getComponents()
+   public void toString(Appendable appendable) throws IOException
    {
-      throw new UnsupportedOperationException();
-   }
-
-   public Id<?> getParent()
-   {
-      throw new UnsupportedOperationException();
-   }
-
-   public int getComponentNumber()
-   {
-      throw new UnsupportedOperationException();
-   }
-
-   public Context getOriginalContext()
-   {
-      throw new UnsupportedOperationException();
-   }
-
-   public String getComponent(String component)
-   {
-      throw new UnsupportedOperationException();
-   }
-
-   public Id getIdForChild(String childId)
-   {
-      throw new UnsupportedOperationException();
-   }
-
-   public String toString(RenderingContext context)
-   {
-      throw new UnsupportedOperationException();
-   }
-
-   public String getRootComponent()
-   {
-      throw new UnsupportedOperationException();
+      throw new UnsupportedOperationException("todo");
    }
 
    public int compareTo(Id<T> o)
