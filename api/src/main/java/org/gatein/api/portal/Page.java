@@ -28,6 +28,8 @@ import org.gatein.api.id.Id;
 import org.gatein.api.id.Identifiable;
 import org.gatein.api.util.IterableIdentifiableCollection;
 
+import java.util.Collection;
+
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
@@ -42,10 +44,6 @@ public interface Page extends Identifiable<Page>
    String getTitle();
 
    void setTitle(String title);
-
-   IterableIdentifiableCollection<Navigation> getInboundNavigations();
-
-   Navigation createInboundNavigationIn(Site site, Navigation parent);
 
    public static class Id extends BaseId<Page>
    {

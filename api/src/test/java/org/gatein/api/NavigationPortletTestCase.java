@@ -65,7 +65,6 @@ public abstract class NavigationPortletTestCase
          assert child.equals(administrationNode.getChild(child.getName()));
          Page target = child.getTargetPage();
          assert target.equals(gateIn.get(target.getId()));
-         assert target.getInboundNavigations().contains(child.getId());
       }
 
       Navigation wsrp = iterator.next();

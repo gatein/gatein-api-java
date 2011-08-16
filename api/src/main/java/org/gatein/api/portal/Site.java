@@ -25,8 +25,9 @@ package org.gatein.api.portal;
 
 import org.gatein.api.id.BaseId;
 import org.gatein.api.id.Identifiable;
-import org.gatein.api.util.HierarchicalContainer;
 import org.gatein.api.util.Type;
+
+import java.util.Map;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -37,13 +38,11 @@ public interface Site extends Identifiable<Site>
 
    Id getId();
 
-   HierarchicalContainer<String, Page> getPageRegistry();
+   Page getPage(String pageName);
 
    Navigation getNavigation();
 
    Type<Site> getType();
-
-   Navigation createNavigationTo(Page node, Navigation parent);
 
    int getPriority();
 
