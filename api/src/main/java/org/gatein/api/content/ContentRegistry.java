@@ -27,6 +27,9 @@ import org.gatein.api.util.Container;
 import org.gatein.api.util.IterableCollection;
 import org.gatein.api.util.IterableIdentifiableCollection;
 
+import java.util.Collection;
+import java.util.Set;
+
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
@@ -39,9 +42,9 @@ public interface ContentRegistry extends Container<Content>
 
    void deleteCategory(String name);
 
-   IterableCollection<String> getCategoryNames();
+   Set<String> getCategoryNames();
 
-   IterableIdentifiableCollection<Category> getAllCategories();
+   Collection<Category> getAllCategories();
 
    Gadget createGadget(String gadget, String source);
 }
