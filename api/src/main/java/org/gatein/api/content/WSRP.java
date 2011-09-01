@@ -26,14 +26,18 @@ package org.gatein.api.content;
 import org.gatein.api.util.Type;
 
 /** @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a> */
-public interface WSRP extends Content
+public interface WSRP extends Content<WSRP>
 {
 
    // WSRP.Id getId();
 
    Type<WSRP> getType();
 
-   class Id extends Content.Id
+   class Id extends Content.Id<WSRP>
    {
+      public Class<WSRP> getIdentifiableType()
+      {
+         return WSRP.class;
+      }
    }
 }

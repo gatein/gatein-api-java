@@ -32,7 +32,7 @@ import org.gatein.api.util.Type;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Content extends Identifiable<Content>
+public interface Content<C extends Content<C>> extends Identifiable<C>
 {
 
    Id getId();
@@ -81,11 +81,7 @@ public interface Content extends Identifiable<Content>
       }
    };
 
-   abstract class Id extends BaseId<Content>
+   abstract class Id<C extends Content<C>> extends BaseId<C>
    {
-      public Class<Content> getIdentifiableType()
-      {
-         return Content.class;
-      }
    }
 }

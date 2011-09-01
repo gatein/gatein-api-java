@@ -23,15 +23,14 @@
 
 package org.gatein.api.content;
 
-import org.gatein.api.util.Container;
-import org.gatein.api.util.IterableCollection;
-import org.gatein.api.util.IterableIdentifiableCollection;
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface ContentRegistry extends Container<Content>
+public interface ContentRegistry
 {
    Category getOrCreateCategory(String name);
 
@@ -39,9 +38,23 @@ public interface ContentRegistry extends Container<Content>
 
    void deleteCategory(String name);
 
-   IterableCollection<String> getCategoryNames();
+   Set<String> getCategoryNames();
 
-   IterableIdentifiableCollection<Category> getAllCategories();
+   Collection<Category> getAllCategories();
 
    Gadget createGadget(String gadget, String source);
+
+   //
+
+   /**
+    * Locate a content from its id.
+    *
+    * @param id the id
+    * @param <C> the content generic type
+    * @return the content
+    * @throws NullPointerException if the argument is null
+    * @throws IllegalArgumentException if the argument is not valid
+    */
+   <C extends Content<C>> C getContent(Content.Id<C> id) throws NullPointerException, IllegalArgumentException;
+
 }
