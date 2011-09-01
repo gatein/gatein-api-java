@@ -31,7 +31,7 @@ import java.net.URI;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface Gadget extends Content
+public interface Gadget extends Content<Gadget>
 {
 
    // Gadget.Id getId();
@@ -64,7 +64,11 @@ public interface Gadget extends Content
       void setURI(URI uri);
    }
 
-   class Id extends Content.Id
+   class Id extends Content.Id<Gadget>
    {
+      public Class<Gadget> getIdentifiableType()
+      {
+         return Gadget.class;
+      }
    }
 }
