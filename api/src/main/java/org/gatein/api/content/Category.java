@@ -72,7 +72,7 @@ public interface Category extends Identifiable<Category>
       {
          if (name == null)
          {
-            throw new NullPointerException();
+            throw new NullPointerException("No null name accepted");
          }
 
          //
@@ -82,6 +82,11 @@ public interface Category extends Identifiable<Category>
       public Class<Category> getIdentifiableType()
       {
          return Category.class;
+      }
+
+      public String getName()
+      {
+         return name;
       }
 
       @Override
