@@ -1,7 +1,13 @@
-# IDEA files #
-##############
-*.ipr
-*.iml
-*.iws
-.idea
 target
+release.properties
+*.versionsBackup
+*.releaseBackup
+.idea
+*.iml
+*.ipr
+*.iws
+.DS_Store
+.project
+.classpath
+.settings
+.metadata
