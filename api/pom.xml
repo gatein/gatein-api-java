@@ -25,7 +25,7 @@
    <parent>
       <groupId>org.gatein.api</groupId>
       <artifactId>gatein-java-api-parent</artifactId>
-      <version>1.0.0.Beta03</version>
+      <version>1.0.0.Beta04-SNAPSHOT</version>
    </parent>
    <modelVersion>4.0.0</modelVersion>
 
