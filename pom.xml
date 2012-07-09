@@ -89,6 +89,11 @@
                <artifactId>maven-jar-plugin</artifactId>
                <version>2.3.1</version>
             </plugin>
+            <plugin>
+              <groupId>com.github.github</groupId>
+              <artifactId>site-maven-plugin</artifactId>
+              <version>0.3</version>
+            </plugin>
          </plugins>
       </pluginManagement>
    </build>
