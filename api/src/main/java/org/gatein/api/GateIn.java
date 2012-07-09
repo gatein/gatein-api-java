@@ -1,9 +1,8 @@
 /*
- * JBoss, a division of Red Hat
- * Copyright 2011, Red Hat Middleware, LLC, and individual
- * contributors as indicated by the @authors tag. See the
- * copyright.txt in the distribution for a full listing of
- * individual contributors.
+ * JBoss, Home of Professional Open Source.
+ * Copyright 2012, Red Hat, Inc., and individual contributors
+ * as indicated by the @author tags. See the copyright.txt file in the
+ * distribution for a full listing of individual contributors.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -23,93 +22,150 @@
 
 package org.gatein.api;
 
-import org.gatein.api.content.Category;
-import org.gatein.api.content.Content;
-import org.gatein.api.content.Gadget;
-import org.gatein.api.content.ManagedContent;
-import org.gatein.api.content.Portlet;
-import org.gatein.api.content.WSRP;
-import org.gatein.api.id.Id;
-import org.gatein.api.id.Identifiable;
-import org.gatein.api.portal.Page;
-import org.gatein.api.portal.Portal;
+import org.gatein.api.commons.Filter;
+import org.gatein.api.exception.EntityNotFoundException;
 import org.gatein.api.portal.Site;
-import org.gatein.api.util.IterableIdentifiableCollection;
-import org.gatein.api.util.Type;
+import org.gatein.api.portal.SiteQuery;
+import org.gatein.api.commons.Range;
+import org.gatein.api.commons.PropertyType;
 
-import java.net.URI;
+import java.util.List;
 
 /**
+ * Main entry point to GateIn Portal Public API
+ *
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
- * @version $Revision$
+ * @author <a href="mailto:bdawidow@redhat.com">Boleslaw Dawidowicz</a>
  */
 public interface GateIn
 {
    String GATEIN_API = "org.gatein.api.instance";
 
-   IterableIdentifiableCollection<Site> getPortals();
+   /**
+    * Return all sites
+    *
+    * @return List of sites
+    */
+   List<Site> getSites();
 
-   Portal getPortal(Site.Id portalId);
+   /**
+    * Return sites
+    *
+    * @param range The range that will limit returned results
+    * @return List of sites
+    */
+   List<Site> getSites(Range range);
 
-   Portal getDefaultPortal();
+   /**
+    * Return sites
+    *
+    * @param siteType type of sites to be returned
+    * @return List of sites
+    */
+   List<Site> getSites(Site.Type siteType);
 
-   IterableIdentifiableCollection<Site> getSites();
+   /**
+    * Return sites
+    *
+    * @param siteType The type of sites to be returned
+    * @param range The range that will limit returned results
+    * @return List of sites
+    */
+   List<Site> getSites(Site.Type siteType, Range range);
 
-   IterableIdentifiableCollection<Site> getGroupSites();
+   /**
+    * Return sites
+    *
+    * @param filter the filter to filter sites from returned list
+    * @return List of sites
+    */
+   List<Site> getSites(Filter<Site> filter);
 
-   Site getGroupSite(String... groupName);
+   /**
+    * Return sites
+    *
+    * @param filter the filter to filter sites from returned list
+    * @param range The range that will limit returned results
+    * @return List of sites
+    */
+   List<Site> getSites(Filter<Site> filter, Range range);
 
-   IterableIdentifiableCollection<Site> getGroupSites(String userId);
-
-   IterableIdentifiableCollection<Site> getPortalSites(String userId);
-
-   Site getDashboard(String userId);
-
-   <T extends Identifiable<T>> T get(Id<T> id);
-
+   /**
+    *
+    * @param siteId The id of site to be returned
+    * @return The site
+    */
    Site getSite(Site.Id siteId);
 
-   Portlet.Id portletId(String application, String portlet);
+   /**
+    *
+    * @param type The type of syte to be returned
+    * @param name The name of site to be returned
+    * @return The site
+    */
+   Site getSite(Site.Type type, String name);
 
-   WSRP.Id wsrpPortletId(String invoker, String portlet);
+   /**
+    *
+    * @return The default site in portal container
+    */
+   Site getDefaultSite();
 
-   Gadget.Id gadgetId(String gadgetName);
+   /**
+    * Create SiteQuery
+    *
+    * @return SiteQuery instance
+    */
+   SiteQuery<Site> createSiteQuery();
 
-   Gadget.Id gadgetId(URI uri);
+   /**
+    * Add new site to portal container
+    *
+    * @param id The id of new site to create
+    * @return Created site
+    */
+   Site addSite(Site.Id id);
 
-   Category.Id categoryId(String name);
+   /**
+    * Add new site to portal container
+    *
+    * @param siteType The type of site to be created
+    * @param name The name of site to be created
+    * @return Created site
+    */
+   Site addSite(Site.Type siteType, String name);
 
-   Page.Id pageId(Site.Id ownerSite, String pageName);
+   /**
+    * Remove site from portal container
+    *
+    * @param siteId The id of site to be removed
+    * @throws EntityNotFoundException
+    */
+   void removeSite(Site.Id siteId) throws EntityNotFoundException;
 
-   ManagedContent.Id managedContentId(Category.Id categoryId, String name, Content.Id contentId);
+   /**
+    * Remove site from portal container
+    *
+    * @param siteType The type of site to be removed
+    * @param name The name of site to be removed
+    * @throws EntityNotFoundException
+    */
+   void removeSite(Site.Type siteType, String name) throws EntityNotFoundException;
 
-   <T> T getProperty(Type<T> property);
+   /**
+    *
+    * @param property The type of property to be obtained
+    * @param <T> The value type of property to be obtained
+    * @return Property value
+    */
+   <T> T getProperty(PropertyType<T> property);
 
-   <T> void setProperty(Type<T> property, T value);
-
-   String LIFECYCLEMANAGER_TYPE_NAME = "org.gatein.api.lifecyclemanager";
-   Type<LifecycleManager> LIFECYCLE_MANAGER = new Type<LifecycleManager>(LIFECYCLEMANAGER_TYPE_NAME)
-   {
-   };
-
-   LifecycleManager NO_OP_MANAGER = new LifecycleManager()
-   {
-      public void begin()
-      {
-         // do nothing
-      }
-
-      public void end()
-      {
-         // do nothing
-      }
-   };
-
-   public interface LifecycleManager
-   {
-      void begin();
-
-      void end();
-   }
+   /**
+    *
+    * @param property The type of property to be stored
+    * @param value The property value to be stored
+    * @param <T> The value type of property to be stored
+    */
+   <T> void setProperty(PropertyType<T> property, T value);
 
 }

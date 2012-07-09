@@ -1,9 +1,8 @@
 /*
- * JBoss, a division of Red Hat
- * Copyright 2011, Red Hat Middleware, LLC, and individual
- * contributors as indicated by the @authors tag. See the
- * copyright.txt in the distribution for a full listing of
- * individual contributors.
+ * JBoss, Home of Professional Open Source.
+ * Copyright 2012, Red Hat, Inc., and individual contributors
+ * as indicated by the @author tags. See the copyright.txt file in the
+ * distribution for a full listing of individual contributors.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -23,88 +22,198 @@
 
 package org.gatein.api.portal;
 
-import org.gatein.api.id.BaseId;
-import org.gatein.api.id.Id;
-import org.gatein.api.id.Identifiable;
-import org.gatein.api.util.IterableIdentifiableCollection;
 
-import java.util.Collection;
+import org.gatein.api.security.SecurityRestriction;
+import org.gatein.api.util.ExternalizedBase64;
+
+import java.io.ByteArrayInputStream;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
- * @version $Revision$
+ * @author <a href="mailto:bdawidow@redhat.com">Boleslaw Dawidowicz</a>
  */
-public interface Page extends Identifiable<Page>
+public interface Page
 {
-
+   /**
+    * @return Page Id
+    */
    Id getId();
 
+   /**
+    * @return Site to which this page belongs
+    */
    Site getSite();
 
+   /**
+    * @return Name of the page
+    */
+   String getName();
+
+   /**
+    * @return Title of the page
+    */
    String getTitle();
 
+   /**
+    * @param title Title of the page
+    */
    void setTitle(String title);
 
-   public static class Id extends BaseId<Page>
+   //TODO: set/get showMaxWindow?
+
+
+   /**
+    * @param type Type of SecurityRestriction object to obtain
+    * @return The SecurityRestriction object. Can be null if page is public
+    */
+   SecurityRestriction getSecurityRestriction(SecurityRestriction.Type type);
+
+   /**
+    * Updates security restrictions for the page.
+    * @param securityRestriction SecurityRestriction object to update. Cannot be null
+    */
+   void updateSecurityRestriction(SecurityRestriction securityRestriction);
+
+   /**
+    * @param user Name of the user
+    * @return true if given user can access the page
+    */
+   boolean hasAccess(String user);
+
+   /**
+    * Page Id
+    */
+   class Id extends ExternalizedBase64
    {
+      private Site.Id siteId;
+      private String pageName;
 
-      /** . */
-      private final Site.Id site;
-
-      /** . */
-      private final String name;
-
-      public Id(Site.Id site, String name)
+      private Id(Site.Id siteId, String pageName)
       {
-         if (site == null)
+         super(new byte[]{(byte) 'p'});
+         this.siteId = siteId;
+         this.pageName = pageName;
+      }
+
+      private Id()
+      {
+         this(null, null);
+      }
+
+      /**
+       * Create a <code>Page.Id</code> from the <code>Site.Id</code> and page name
+       *
+       * @param siteId Id of the site
+       * @param pageName Name of the page
+       * @return The page id
+       */
+      public static Id create(Site.Id siteId, String pageName)
+      {
+         if (siteId == null) throw new IllegalArgumentException("siteId cannot be null");
+         if (pageName == null) throw new IllegalArgumentException("pageName cannot be null");
+
+         return new Id(siteId, pageName);
+      }
+
+      /**
+       * Create a <code>Page.Id</code> from the <code>Site.Type</code> site name, and page name
+       *
+       * @param type Type of the site
+       * @param siteName Name of the site
+       * @param pageName Name of the page
+       * @return The page id
+       */
+      public static Id create(Site.Type type, String siteName, String pageName)
+      {
+         return create(Site.Id.create(type, siteName), pageName);
+      }
+
+      public static Id fromBase64(InputStream stream) throws IOException
+      {
+         Id id = new Id();
+         id.readExternalBase64(stream);
+         return id;
+      }
+
+      public static Id fromBase64String(String base64)
+      {
+         try
          {
-            throw new NullPointerException();
+            return fromBase64(new ByteArrayInputStream(base64.getBytes("UTF-8")));
          }
-         if (name == null)
+         catch (IOException e)
          {
-            throw new NullPointerException();
+            final IllegalArgumentException iae = new IllegalArgumentException(e.getMessage());
+            iae.setStackTrace(e.getStackTrace());
+            throw iae;
          }
-
-         //
-         this.site = site;
-         this.name = name;
       }
 
-      public Site.Id getSite()
+      /**
+       * @return Id of the site
+       */
+      public Site.Id getSiteId()
       {
-         return site;
+         return siteId;
       }
 
-      public String getName()
+      /**
+       * @return Name of the page
+       */
+      public String getPageName()
       {
-         return name;
+         return pageName;
       }
 
-      public Class<Page> getIdentifiableType()
+      /**
+       * @return String representation of the Id
+       */
+      @Override
+      public String toString()
       {
-         return Page.class;
+         return "Page.Id[pageName="+pageName+", " + siteId+"]";
       }
 
       @Override
-      public boolean equals(Object obj)
+      protected void writeExternal(DataOutput out) throws IOException
       {
-         if (obj == this)
-         {
-            return true;
-         }
-         if (obj instanceof Id)
-         {
-            Id that = (Id)obj;
-            return site.equals(that.site) && name.equals(that.name);
-         }
-         return false;
+         siteId.writeExternal(out);
+         out.writeUTF(pageName);
+      }
+
+      @Override
+      protected void readExternal(DataInput in) throws IOException
+      {
+         Site.Id si = new Site.Id();
+         si.readExternal(in);
+         this.siteId = si;
+         this.pageName = in.readUTF();
+      }
+
+      @Override
+      public boolean equals(Object o)
+      {
+         if (this == o) return true;
+         if (o == null || getClass() != o.getClass()) return false;
+
+         Id id = (Id) o;
+
+         if (!pageName.equals(id.pageName)) return false;
+         if (!siteId.equals(id.siteId)) return false;
+
+         return true;
       }
 
       @Override
       public int hashCode()
       {
-         return site.hashCode() ^ name.hashCode();
+         int result = siteId.hashCode();
+         result = 31 * result + pageName.hashCode();
+         return result;
       }
    }
-
 }

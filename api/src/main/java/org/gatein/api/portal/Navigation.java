@@ -1,9 +1,8 @@
 /*
- * JBoss, a division of Red Hat
- * Copyright 2011, Red Hat Middleware, LLC, and individual
- * contributors as indicated by the @authors tag. See the
- * copyright.txt in the distribution for a full listing of
- * individual contributors.
+ * JBoss, Home of Professional Open Source.
+ * Copyright 2012, Red Hat, Inc., and individual contributors
+ * as indicated by the @author tags. See the copyright.txt file in the
+ * distribution for a full listing of individual contributors.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -23,65 +22,67 @@
 
 package org.gatein.api.portal;
 
-import org.gatein.api.id.BaseId;
-import org.gatein.api.id.Identifiable;
-
-import java.net.URI;
-import java.util.Collection;
+import org.gatein.api.exception.EntityAlreadyExistsException;
+import org.gatein.api.exception.EntityNotFoundException;
 
 /**
+ * Representation of Navigation. It is a tree structure of nodes with associated Pages.
+ * Each Navigation has a matching Site.
+ *
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
- * @version $Revision$
+ * @author <a href="mailto:bdawidow@redhat.com">Boleslaw Dawidowicz</a>
  */
-public interface Navigation extends Identifiable<Navigation>
+public interface Navigation extends Iterable<Node>
 {
-
-   Id getId();
-
-   Page getTargetPage();
-
-   void setTargetPage(Page target);
-
-   void setTargetPageRef(Page.Id targetId);
-
-   URI getURI();
-
+   /**
+    * Returns the site associated with the navigation.
+    *
+    * @return the site
+    */
    Site getSite();
 
-   Navigation getChild(String name);
+   /**
+    * //TODO: Not sure if this is proper description of priority and why/how it's used. Maybe we don't expose this ?
+    * Priority defines order in which navigation should be displayed in the UI.
+    *
+    * @return priority index
+    */
+   int getPriority();
 
-   Collection<? extends Navigation> getChildren();
+   /**
+    * @param priority priority index to be set.
+    */
+   void setPriority(int priority);
 
-   class Id extends BaseId<Navigation>
-   {
+   /**
+    * Returns the node at the given path.
+    *
+    * @param path of a specific navigation node
+    * @return Node associated with specified path
+    */
+   Node getNode(String... path);
 
-      /** . */
-      private final String value;
+   /**
+    * Removes the node specified by the path
+    *
+    * @param path Path of node to be removed
+    * @return true if the node was removed, false otherwise
+    * @throws EntityNotFoundException if the node to be removed was not found
+    */
+   boolean removeNode(String... path) throws EntityNotFoundException;
 
-      public Id(String value)
-      {
-         if (value == null)
-         {
-            throw new NullPointerException();
-         }
-         this.value = value;
-      }
+   /**
+    * Adds a node specified by the path.
+    *
+    * @param path Path of the node to add
+    * @return New node.
+    */
+   Node addNode(String... path) throws EntityAlreadyExistsException;
 
-      public Class<Navigation> getIdentifiableType()
-      {
-         return Navigation.class;
-      }
-
-      @Override
-      public boolean equals(Object obj)
-      {
-         return obj == this || (obj instanceof Id && value.equals(((Id)obj).value));
-      }
-
-      @Override
-      public int hashCode()
-      {
-         return value.hashCode();
-      }
-   }
+   /**
+    * The node count representing the child nodes of the root navigation.
+    *
+    * @return the node count
+    */
+   int getNodeCount();
 }
