@@ -27,7 +27,7 @@
    <groupId>org.gatein.api</groupId>
    <artifactId>gatein-java-api-parent</artifactId>
    <packaging>pom</packaging>
-   <version>1.0.0.Beta03-SNAPSHOT</version>
+   <version>1.0.0.Beta03</version>
    <modules>
       <module>api</module>
    </modules>
