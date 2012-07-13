@@ -24,39 +24,33 @@ package org.gatein.api.security;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
- * Access restriction. Represent type of restriction (edit or just access) and list of groups with matching
+ * Security restriction. Represent type of restriction (edit or just access) and list of groups with matching
  * membership type based on which access will be granted
  *
  * @author <a href="mailto:bdawidow@redhat.com">Boleslaw Dawidowicz</a>
  */
 public class SecurityRestriction
 {
-
    private final List<Entry> entries;
-
    private final Type type;
-
-   private SecurityRestriction(Type type)
-   {
-      this.type = type;
-      this.entries = new ArrayList<Entry>();
-   }
 
    private SecurityRestriction(Type type, Entry entry)
    {
       this.type = type;
-      this.entries = Arrays.asList(entry);
+      this.entries = new ArrayList<Entry>();
+      entries.add(entry);
    }
 
    /**
-    * @return New AccessRestriction object with Type.ACCESS
+    * @return New AccessRestriction object with Type.ACCESS and default permission set to public.
     */
    public static SecurityRestriction access()
    {
-      return new SecurityRestriction(Type.ACCESS);
+      return new SecurityRestriction(Type.ACCESS, PUBLIC);
    }
 
    /**
@@ -83,15 +77,23 @@ public class SecurityRestriction
     */
    public List<Entry> getEntries()
    {
-      return entries;
+      return new ArrayList<Entry>(entries);
    }
 
    /**
-    * @param entry The entry to add to the restriction
+    * @param entry The entry to add to the restriction. If the restriction is public, it will remove the
+    *              public entry and add the new one.
     * @return SecurityRestriction object with added entry
     */
    public SecurityRestriction addEntry(Entry entry)
    {
+      if (isPublic())
+      {
+         if (entry == PUBLIC) return this; // do nothing as it's already 'public'
+
+         entries.clear();
+      }
+
       entries.add(entry);
       return this;
    }
@@ -101,7 +103,7 @@ public class SecurityRestriction
     */
    public boolean isPublic()
    {
-      return entries.isEmpty() && type != Type.EDIT;
+      return entries.size() == 1 && entries.get(0) == PUBLIC;
    }
 
    /**
@@ -115,6 +117,8 @@ public class SecurityRestriction
       if (type == Type.EDIT) throw new IllegalStateException("Cannot set restriction type " + Type.EDIT + " public.");
 
       entries.clear();
+      entries.add(PUBLIC);
+
       return this;
    }
 
@@ -126,6 +130,9 @@ public class SecurityRestriction
       ACCESS, EDIT
    }
 
+   private static final String ANY = "*";
+   private static final Entry PUBLIC = new Entry(ANY, null);
+
    /**
     * Represents pair of Group Id and MembershipType name.
     */
@@ -136,15 +143,6 @@ public class SecurityRestriction
 
       private Entry(String membership, String groupId)
       {
-         if (membership == null)
-         {
-            throw new IllegalArgumentException("membership cannot be null");
-         }
-         if (groupId == null)
-         {
-            throw new IllegalArgumentException("groupId cannot be null");
-         }
-
          this.groupId = groupId;
          this.membershipType = membership;
       }
@@ -157,11 +155,13 @@ public class SecurityRestriction
             sb.append("/").append(s);
          }
 
-         return new Entry(membershipType, sb.toString());
+         return create(membershipType, sb.toString());
       }
 
       public static Entry create(String membershipType, String groupId)
       {
+         if (membershipType == null) throw new IllegalArgumentException("membershipType cannot be null");
+         if (groupId == null) throw new IllegalArgumentException("groupId cannot be null");
 
          return new Entry(membershipType, groupId);
       }
@@ -174,7 +174,7 @@ public class SecurityRestriction
        */
       public static Entry any(String... group)
       {
-         return create("*", group);
+         return create(ANY, group);
       }
 
       /**
@@ -185,15 +185,20 @@ public class SecurityRestriction
        */
       public static Entry any(String groupId)
       {
-         return create("*", groupId);
+         return create(ANY, groupId);
+      }
+
+      public static Entry publicEntry()
+      {
+         return PUBLIC;
       }
 
       /**
-       * @return true if membership type is equals to "*" (ANY membership"
+       * @return true if membership type is any
        */
       public boolean isAny()
       {
-         return membershipType.equals("*");
+         return membershipType.equals(ANY);
       }
 
       public String toString()
