@@ -20,7 +20,7 @@
 * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
 */
 
-package org.gatein.api.portal;
+package org.gatein.api;
 
 import org.gatein.api.commons.PropertyType;
 

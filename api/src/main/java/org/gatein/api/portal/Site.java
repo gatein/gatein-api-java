@@ -152,8 +152,6 @@ public interface Site
 
    //TODO: Attributes
 
-   Properties getKnownProperties();
-
    <T> T getProperty(PropertyType<T> property);
 
    <T> void setProperty(PropertyType<T> property, T value);
