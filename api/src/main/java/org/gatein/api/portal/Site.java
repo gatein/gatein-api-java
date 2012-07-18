@@ -45,40 +45,29 @@ import java.util.Locale;
  */
 public interface Site
 {
-   /**
-    * @return Id of the site
-    */
+   /** @return Id of the site */
    Id getId();
 
-   /**
-    * @return Name of the site
-    */
+   /** @return Name of the site */
    String getName();
 
-   /**
-    * @return Type of the site
-    */
+   /** @return Type of the site */
    Type getType();
 
-   /**
-    * @return Label of the site
-    */
+   /** @return Label of the site */
    Label getLabel();
 
-   /**
-    * @return Description of the site
-    */
+   /** @return Description of the site */
    String getDescription();
 
    /**
     * Set description of the site
+    *
     * @param description Description of the site
     */
    void setDescription(String description);
 
-   /**
-    * @return the locale of the site
-    */
+   /** @return the locale of the site */
    Locale getLocale();
 
    /**
@@ -88,9 +77,17 @@ public interface Site
     */
    void setLocale(Locale locale);
 
+   /** @return the currently set skin */
+   String getSkin();
+
    /**
-    * @return List of pages related to this site
+    * Sets the skin for this site
+    *
+    * @param skin the skin for this site
     */
+   void setSkin(String skin);
+
+   /** @return List of pages related to this site */
    List<Page> getPages();
 
    /**
@@ -100,16 +97,14 @@ public interface Site
    List<Page> getPages(Range range);
 
    /**
-    *
     * @param filter the filter to filter pages from returned list
     * @return List of pages related to this site
     */
    List<Page> getPages(Filter<Page> filter);
 
    /**
-    *
     * @param filter the filter to filter pages from returned list
-    * @param range Range of pages to return
+    * @param range  Range of pages to return
     * @return List of pages related to this site
     */
    List<Page> getPages(Filter<Page> filter, Range range);
@@ -122,6 +117,7 @@ public interface Site
 
    /**
     * Create new page
+    *
     * @param pageName Name of the page
     * @return New page
     * @throws EntityAlreadyExistsException
@@ -130,6 +126,7 @@ public interface Site
 
    /**
     * Remove page
+    *
     * @param pageName Name of the page
     * @throws EntityNotFoundException
     */
@@ -140,7 +137,7 @@ public interface Site
     *
     * @param create if navigation doesn't exist, create it.
     * @return the navigation associated with the site. Can return null if navigation doesn't exist and the parameter
-    * create is false.
+    *         create is false.
     */
    Navigation getNavigation(boolean create);
 
@@ -152,6 +149,7 @@ public interface Site
 
    /**
     * Updates security restrictions for the site.
+    *
     * @param securirtyRestriction SecurityRestriction object to update. Cannot be null
     */
    void updateSecurityRestriction(SecurityRestriction securirtyRestriction);
@@ -176,7 +174,7 @@ public interface Site
 
       private Id(Type type, String name)
       {
-         super(new byte[]{(byte) 's'});
+         super(new byte[]{(byte)'s'});
          this.type = type;
          this.name = name;
       }
@@ -188,8 +186,14 @@ public interface Site
 
       public static Id create(Type type, String name)
       {
-         if (type == null) throw new IllegalArgumentException("type cannot be null");
-         if (name == null) throw new IllegalArgumentException("name cannot be null");
+         if (type == null)
+         {
+            throw new IllegalArgumentException("type cannot be null");
+         }
+         if (name == null)
+         {
+            throw new IllegalArgumentException("name cannot be null");
+         }
 
          return new Id(type, name);
       }
@@ -274,13 +278,25 @@ public interface Site
       @Override
       public boolean equals(Object o)
       {
-         if (this == o) return true;
-         if (o == null || getClass() != o.getClass()) return false;
+         if (this == o)
+         {
+            return true;
+         }
+         if (o == null || getClass() != o.getClass())
+         {
+            return false;
+         }
 
-         Id id = (Id) o;
+         Id id = (Id)o;
 
-         if (!name.equals(id.name)) return false;
-         if (type != id.type) return false;
+         if (!name.equals(id.name))
+         {
+            return false;
+         }
+         if (type != id.type)
+         {
+            return false;
+         }
 
          return true;
       }
@@ -307,11 +323,11 @@ public interface Site
 
       static Type fromString(String typeAsString)
       {
-         if(typeAsString != null)
+         if (typeAsString != null)
          {
             for (Type type : Type.values())
             {
-               if(type.name.equalsIgnoreCase(typeAsString))
+               if (type.name.equalsIgnoreCase(typeAsString))
                {
                   return type;
                }

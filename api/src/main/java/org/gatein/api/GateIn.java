@@ -23,11 +23,11 @@
 package org.gatein.api;
 
 import org.gatein.api.commons.Filter;
+import org.gatein.api.commons.PropertyType;
+import org.gatein.api.commons.Range;
 import org.gatein.api.exception.EntityNotFoundException;
 import org.gatein.api.portal.Site;
 import org.gatein.api.portal.SiteQuery;
-import org.gatein.api.commons.Range;
-import org.gatein.api.commons.PropertyType;
 
 import java.util.List;
 
@@ -68,7 +68,7 @@ public interface GateIn
     * Return sites
     *
     * @param siteType The type of sites to be returned
-    * @param range The range that will limit returned results
+    * @param range    The range that will limit returned results
     * @return List of sites
     */
    List<Site> getSites(Site.Type siteType, Range range);
@@ -85,30 +85,25 @@ public interface GateIn
     * Return sites
     *
     * @param filter the filter to filter sites from returned list
-    * @param range The range that will limit returned results
+    * @param range  The range that will limit returned results
     * @return List of sites
     */
    List<Site> getSites(Filter<Site> filter, Range range);
 
    /**
-    *
     * @param siteId The id of site to be returned
     * @return The site
     */
    Site getSite(Site.Id siteId);
 
    /**
-    *
     * @param type The type of syte to be returned
     * @param name The name of site to be returned
     * @return The site
     */
    Site getSite(Site.Type type, String name);
 
-   /**
-    *
-    * @return The default site in portal container
-    */
+   /** @return The default site in portal container */
    Site getDefaultSite();
 
    /**
@@ -130,7 +125,7 @@ public interface GateIn
     * Add new site to portal container
     *
     * @param siteType The type of site to be created
-    * @param name The name of site to be created
+    * @param name     The name of site to be created
     * @return Created site
     */
    Site addSite(Site.Type siteType, String name);
@@ -147,25 +142,29 @@ public interface GateIn
     * Remove site from portal container
     *
     * @param siteType The type of site to be removed
-    * @param name The name of site to be removed
+    * @param name     The name of site to be removed
     * @throws EntityNotFoundException
     */
    void removeSite(Site.Type siteType, String name) throws EntityNotFoundException;
 
    /**
-    *
     * @param property The type of property to be obtained
-    * @param <T> The value type of property to be obtained
+    * @param <T>      The value type of property to be obtained
     * @return Property value
     */
    <T> T getProperty(PropertyType<T> property);
 
    /**
-    *
     * @param property The type of property to be stored
-    * @param value The property value to be stored
-    * @param <T> The value type of property to be stored
+    * @param value    The property value to be stored
+    * @param <T>      The value type of property to be stored
     */
    <T> void setProperty(PropertyType<T> property, T value);
 
+   /**
+    * Retrieves the known properties.
+    *
+    * @return the known properties.
+    */
+   Properties getKnownProperties();
 }
