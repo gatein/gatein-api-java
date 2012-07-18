@@ -77,6 +77,16 @@ public interface Site
     */
    void setLocale(Locale locale);
 
+   /** @return the currently set skin */
+   String getSkin();
+
+   /**
+    * Sets the skin for this site
+    *
+    * @param skin the skin for this site
+    */
+   void setSkin(String skin);
+
    /** @return List of pages related to this site */
    List<Page> getPages();
 
