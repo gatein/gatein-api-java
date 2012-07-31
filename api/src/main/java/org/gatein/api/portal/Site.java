@@ -29,15 +29,11 @@ import org.gatein.api.commons.Range;
 import org.gatein.api.exception.EntityAlreadyExistsException;
 import org.gatein.api.exception.EntityNotFoundException;
 import org.gatein.api.security.SecurityRestriction;
-import org.gatein.api.util.ExternalizedBase64;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -168,22 +164,15 @@ public interface Site
 
    <T> void setProperty(PropertyType<T> property, T value);
 
-   class Id extends ExternalizedBase64
+   class Id
    {
-      private Type type;
-
-      private String name;
+      private final Type type;
+      private final String name;
 
       private Id(Type type, String name)
       {
-         super(new byte[]{(byte) 's'});
          this.type = type;
          this.name = name;
-      }
-
-      Id()
-      {
-         this(null, null);
       }
 
       public static Id create(Type type, String name)
@@ -209,7 +198,7 @@ public interface Site
          StringBuilder groupId = new StringBuilder();
          for (String s : groupName)
          {
-            groupId.append("/").append(s);
+            groupId.append(GROUP_SEP).append(s);
          }
 
          return create(Type.SPACE, groupId.toString());
@@ -218,27 +207,6 @@ public interface Site
       public static Id dashboard(String userName)
       {
          return create(Type.DASHBOARD, userName);
-      }
-
-      public static Id fromBase64(InputStream stream) throws IOException
-      {
-         Id id = new Id();
-         id.readExternalBase64(stream);
-         return id;
-      }
-
-      public static Id fromBase64String(String base64)
-      {
-         try
-         {
-            return fromBase64(new ByteArrayInputStream(base64.getBytes("UTF-8")));
-         }
-         catch (IOException e)
-         {
-            final IllegalArgumentException iae = new IllegalArgumentException(e.getMessage());
-            iae.setStackTrace(e.getStackTrace());
-            throw iae;
-         }
       }
 
       public Type getType()
@@ -254,21 +222,40 @@ public interface Site
       @Override
       public String toString()
       {
-         return "Site.Id=[type=" + type + ", name=" + name + "]";
+         return format("Site.Id[type=%s, name=%s]", false);
       }
 
-      @Override
-      protected void writeExternal(DataOutput out) throws IOException
+      public String format(String format, boolean urlSafe)
       {
-         out.writeUTF(type.name);
-         out.writeUTF(name);
+         if (format == null) throw new IllegalArgumentException("format cannot be null.");
+
+         String typeName = type.name;
+         String siteName = name;
+         if (urlSafe) siteName = fixSiteName(siteName);
+
+         return new Formatter().format(format, typeName, siteName).toString();
       }
 
-      @Override
-      protected void readExternal(DataInput in) throws IOException
+      public String format()
       {
-         type = Type.fromString(in.readUTF());
-         name = in.readUTF();
+         return format(FORMAT, true);
+      }
+
+      public static Id fromString(String idAsString)
+      {
+         if (idAsString == null) throw new IllegalArgumentException("idAsString cannot be null.");
+
+         String[] parts = idAsString.split(Pattern.quote(""+SEP));
+         if (parts.length != 2) throw new IllegalArgumentException("Invalid id format '" + idAsString +"'");
+
+         String typeName = parts[0];
+         String siteName = parts[1];
+         siteName = siteName.replaceAll(GROUP_SEP_URL_SAFE, GROUP_SEP);
+
+         Type type = Type.fromString(typeName);
+         if (type == null) throw new IllegalArgumentException("Invalid site type '" + typeName +"'" + " for id format '" + idAsString +"'");
+
+         return create(type, siteName);
       }
 
       @Override
@@ -292,13 +279,23 @@ public interface Site
          result = 31 * result + name.hashCode();
          return result;
       }
+
+      static String fixSiteName(String siteName)
+      {
+         return siteName.replaceAll(GROUP_SEP, GROUP_SEP_URL_SAFE);
+      }
+
+      static final char SEP = '.';
+      static final String GROUP_SEP = "/";
+      static final String GROUP_SEP_URL_SAFE = "~";
+      static final String FORMAT = "%s" + SEP + "%s";
    }
 
    public static enum Type
    {
       SITE("site"), SPACE("space"), DASHBOARD("dashboard");
 
-      private final String name;
+      final String name;
 
       private Type(String name)
       {

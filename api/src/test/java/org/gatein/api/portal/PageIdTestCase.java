@@ -49,18 +49,38 @@ public class PageIdTestCase
    }
 
    @Test
-   public void pageId_Base64()
+   public void testFormat()
    {
       Site.Id siteId = Site.Id.site("foo");
-      Page.Id pageId = Page.Id.create(siteId, "bar");
-      String base64 = pageId.toBase64String();
+      Page.Id id = Page.Id.create(siteId, "bar");
+      assertEquals("site || foo || bar", id.format("%s || %s || %s", false));
 
-      assertEquals(Page.Id.fromBase64String(base64), pageId);
+      siteId = Site.Id.space("foo", "bar");
+      id = Page.Id.create(siteId, "bar");
+      assertEquals("space || /foo/bar || bar", id.format("%s || %s || %s", false));
+
+      siteId = Site.Id.dashboard("foo");
+      id = Page.Id.create(siteId, "bar");
+      assertEquals(id.format("%s || %s || %s", false), "dashboard || foo || bar");
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
-   public void pageId_InvalidBase64()
+   public void testFormat_Null()
    {
-      Page.Id.fromBase64String(Site.Id.site("foo").toBase64String());
+      Page.Id.create(Site.Id.site("foo"), "bar").format(null, true);
+   }
+
+   @Test
+   public void testFromString()
+   {
+      Site.Id siteId = Site.Id.site("foo");
+      Page.Id id = Page.Id.create(siteId, "bar");
+      assertEquals(id, Page.Id.fromString(id.format()));
+
+      id = Page.Id.create(siteId, "bar_baz");
+      assertEquals(id, Page.Id.fromString(id.format()));
+
+      id = Page.Id.create(siteId, "bar-baz");
+      assertEquals(id, Page.Id.fromString(id.format()));
    }
 }

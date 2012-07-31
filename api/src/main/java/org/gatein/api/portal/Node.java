@@ -23,16 +23,14 @@
 package org.gatein.api.portal;
 
 import org.gatein.api.exception.EntityNotFoundException;
-import org.gatein.api.util.ExternalizedBase64;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Formatter;
+import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
@@ -190,21 +188,16 @@ public interface Node extends Iterable<Node>
       SYSTEM
    }
 
-   class Id extends ExternalizedBase64
+   class Id
    {
-      private Site.Id siteId;
-      private String[] path;
+      private static final String[] EMPTY = new String[0];
+      private final Site.Id siteId;
+      private final String[] path;
 
       private Id(Site.Id siteId, String[] path)
       {
-         super(new byte[]{(byte) 'n'});
          this.siteId = siteId;
-         this.path = path;
-      }
-
-      private Id()
-      {
-         this(null, null);
+         this.path = (path == null) ? EMPTY : path;
       }
 
       public static Id create(Site.Id siteId, String...path)
@@ -212,27 +205,6 @@ public interface Node extends Iterable<Node>
          if (siteId == null) throw new IllegalArgumentException("siteId cannot be null");
 
          return new Id(siteId, path);
-      }
-
-      public static Id fromBase64(InputStream stream) throws IOException
-      {
-         Id id = new Id();
-         id.readExternalBase64(stream);
-         return id;
-      }
-
-      public static Id fromBase64String(String base64)
-      {
-         try
-         {
-            return fromBase64(new ByteArrayInputStream(base64.getBytes("UTF-8")));
-         }
-         catch (IOException e)
-         {
-            final IllegalArgumentException iae = new IllegalArgumentException(e.getMessage());
-            iae.setStackTrace(e.getStackTrace());
-            throw iae;
-         }
       }
 
       public Site.Id getSiteId()
@@ -247,14 +219,14 @@ public interface Node extends Iterable<Node>
 
       public String getPathAsString()
       {
-         if (path == null) return null;
+         if (path.length == 0) return PATH_SEP;
 
          StringBuilder sb = new StringBuilder();
          for (int i=0; i<path.length; i++)
          {
-            if (i > 0)
+            if (i < path.length)
             {
-               sb.append('/');
+               sb.append(PATH_SEP);
             }
             sb.append(path[i]);
          }
@@ -265,23 +237,50 @@ public interface Node extends Iterable<Node>
       @Override
       public String toString()
       {
-         return "Node.Id[path=" + getPathAsString() + ", " + siteId + "]";
+         return format("Node.Id[siteType=%s, siteName=%s, path=%s]", false);
       }
 
-      @Override
-      protected void writeExternal(DataOutput out) throws IOException
+      public String format(String format, boolean urlSafe)
       {
-         siteId.writeExternal(out);
-         out.writeUTF(getPathAsString());
+         if (format == null) throw new IllegalArgumentException("format cannot be null.");
+
+         String typeName = siteId.getType().name;
+         String siteName = siteId.getName();
+         String nodePath = getPathAsString();
+
+         if (urlSafe) siteName = Site.Id.fixSiteName(siteName);
+         if (urlSafe) nodePath = fixNodePath(nodePath);
+
+         return new Formatter().format(format, typeName, siteName, nodePath).toString();
       }
 
-      @Override
-      protected void readExternal(DataInput in) throws IOException
+      public String format()
       {
-         Site.Id si = new Site.Id();
-         si.readExternal(in);
-         this.siteId = si;
-         this.path = in.readUTF().split("/");
+         return format(FORMAT, true);
+      }
+
+      public static Id fromString(String idAsString)
+      {
+         if (idAsString == null) throw new IllegalArgumentException("idAsString cannot be null.");
+
+         String[] parts = idAsString.split(Pattern.quote("" + SEP));
+         if (parts.length != 3) throw new IllegalArgumentException("Invalid id format '" + idAsString + "'");
+
+         Site.Id siteId = Site.Id.fromString(parts[0] + SEP + parts[1]);
+
+         // Parse node path and fix
+         String nodePath = parts[2];
+         nodePath = nodePath.replaceAll(PATH_SEP_URL_SAFE, PATH_SEP);
+
+         // Strip any empty paths
+         String[] path = nodePath.split(PATH_SEP);
+         List<String> list = new ArrayList<String>();
+         for (String s : path)
+         {
+            if (s != null && s.length() > 0) list.add(s.trim());
+         }
+
+         return create(siteId, list.toArray(new String[list.size()]));
       }
 
       @Override
@@ -302,8 +301,18 @@ public interface Node extends Iterable<Node>
       public int hashCode()
       {
          int result = siteId.hashCode();
-         result = 31 * result + (path != null ? Arrays.hashCode(path) : 0);
+         result = 31 * result + Arrays.hashCode(path);
          return result;
       }
+
+      private static String fixNodePath(String path)
+      {
+         return path.replaceAll(PATH_SEP, PATH_SEP_URL_SAFE);
+      }
+
+      static final char SEP = Site.Id.SEP;
+      private static final String PATH_SEP = Site.Id.GROUP_SEP;
+      private static final String PATH_SEP_URL_SAFE = Site.Id.GROUP_SEP_URL_SAFE;
+      private static final String FORMAT = Site.Id.FORMAT + SEP + "%s";
    }
 }

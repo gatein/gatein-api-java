@@ -32,7 +32,7 @@ import static org.testng.Assert.*;
 public class SiteIdTestCase
 {
    @Test
-   public void siteId_Equals()
+   public void testEquals()
    {
       //site
       Site.Id id1 = Site.Id.site("foo");
@@ -72,19 +72,34 @@ public class SiteIdTestCase
    }
 
    @Test
-   public void siteId_Base64()
+   public void testFormat()
    {
-      Site.Id id1 = Site.Id.site("foo");
-      String base64 = id1.toBase64String();
-      Site.Id id2 = Site.Id.fromBase64String(base64);
-      assertTrue(id1.equals(id2));
-      assertTrue(id2.equals(id1));
-      assertNotSame(id1, id2);
+      Site.Id id = Site.Id.site("foo");
+      assertEquals("site || foo", id.format("%s || %s", false));
+
+      id = Site.Id.space("foo", "bar");
+      assertEquals("space || /foo/bar", id.format("%s || %s", false));
+
+      id = Site.Id.dashboard("foo");
+      assertEquals("dashboard || foo", id.format("%s || %s", false));
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
-   public void siteId_InvalidBase64()
+   public void testFormat_Null()
    {
-      Site.Id.fromBase64String(Node.Id.create(Site.Id.site("foo"), "some", "path").toBase64String());
+      Site.Id.site("foo").format(null, true);
+   }
+
+   @Test
+   public void testFromString()
+   {
+      Site.Id id = Site.Id.site("foo");
+      assertEquals(id, Site.Id.fromString(id.format()));
+
+      id = Site.Id.space("foo", "bar");
+      assertEquals(id, Site.Id.fromString(id.format()));
+
+      id = Site.Id.dashboard("foo");
+      assertEquals(id, Site.Id.fromString(id.format()));
    }
 }

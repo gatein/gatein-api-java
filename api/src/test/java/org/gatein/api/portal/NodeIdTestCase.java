@@ -32,7 +32,7 @@ import static org.testng.Assert.*;
 public class NodeIdTestCase
 {
    @Test
-   public void nodeId_Equals()
+   public void testEquals()
    {
       Site.Id siteId = Site.Id.site("foo");
       Node.Id nodeId1 = Node.Id.create(siteId, "foo", "bar", "baz");
@@ -49,18 +49,40 @@ public class NodeIdTestCase
    }
 
    @Test
-   public void nodeId_Base64()
+   public void testFormat()
    {
       Site.Id siteId = Site.Id.site("foo");
-      Node.Id nodeId = Node.Id.create(siteId, "bar", "blah", "boo");
-      String base64 = nodeId.toBase64String();
+      Node.Id id = Node.Id.create(siteId, "bar", "baz");
+      assertEquals("site || foo || /bar/baz", id.format("%s || %s || %s", false));
 
-      assertEquals(Node.Id.fromBase64String(base64), nodeId);
+      siteId = Site.Id.space("foo", "bar");
+      id = Node.Id.create(siteId, "bar", "baz");
+      assertEquals("space || /foo/bar || /bar/baz", id.format("%s || %s || %s", false));
+
+      siteId = Site.Id.dashboard("foo");
+      id = Node.Id.create(siteId);
+      assertEquals(id.format("%s || %s || %s", false), "dashboard || foo || /");
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
-   public void nodeId_InvalidBase64()
+   public void testFormat_Null()
    {
-      Node.Id.fromBase64String(Site.Id.site("foo").toBase64String());
+      Node.Id.create(Site.Id.site("foo")).format(null, true);
+   }
+
+   @Test
+   public void testFromString()
+   {
+      Site.Id siteId = Site.Id.site("foo");
+      Node.Id id = Node.Id.create(siteId, "bar");
+      assertEquals(id, Node.Id.fromString(id.format()));
+
+      siteId = Site.Id.space("foo", "bar");
+      id = Node.Id.create(siteId, "bar", "baz");
+      assertEquals(id, Node.Id.fromString(id.format()));
+
+      siteId = Site.Id.dashboard("foo");
+      id = Node.Id.create(siteId);
+      assertEquals(id, Node.Id.fromString(id.format()));
    }
 }

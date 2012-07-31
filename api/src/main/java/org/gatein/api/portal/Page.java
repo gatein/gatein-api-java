@@ -24,13 +24,9 @@ package org.gatein.api.portal;
 
 
 import org.gatein.api.security.SecurityRestriction;
-import org.gatein.api.util.ExternalizedBase64;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.Formatter;
+import java.util.regex.Pattern;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -87,21 +83,15 @@ public interface Page
    /**
     * Page Id
     */
-   class Id extends ExternalizedBase64
+   class Id
    {
-      private Site.Id siteId;
-      private String pageName;
+      private final Site.Id siteId;
+      private final String pageName;
 
       private Id(Site.Id siteId, String pageName)
       {
-         super(new byte[]{(byte) 'p'});
          this.siteId = siteId;
          this.pageName = pageName;
-      }
-
-      private Id()
-      {
-         this(null, null);
       }
 
       /**
@@ -132,27 +122,6 @@ public interface Page
          return create(Site.Id.create(type, siteName), pageName);
       }
 
-      public static Id fromBase64(InputStream stream) throws IOException
-      {
-         Id id = new Id();
-         id.readExternalBase64(stream);
-         return id;
-      }
-
-      public static Id fromBase64String(String base64)
-      {
-         try
-         {
-            return fromBase64(new ByteArrayInputStream(base64.getBytes("UTF-8")));
-         }
-         catch (IOException e)
-         {
-            final IllegalArgumentException iae = new IllegalArgumentException(e.getMessage());
-            iae.setStackTrace(e.getStackTrace());
-            throw iae;
-         }
-      }
-
       /**
        * @return Id of the site
        */
@@ -175,23 +144,37 @@ public interface Page
       @Override
       public String toString()
       {
-         return "Page.Id[pageName="+pageName+", " + siteId+"]";
+         return format("Page.Id[siteType=%s, siteName=%s, pageName=%s]", false);
       }
 
-      @Override
-      protected void writeExternal(DataOutput out) throws IOException
+      public String format(String format, boolean urlSafe)
       {
-         siteId.writeExternal(out);
-         out.writeUTF(pageName);
+         if (format == null) throw new IllegalArgumentException("format cannot be null.");
+
+         String typeName = siteId.getType().name;
+         String siteName = siteId.getName();
+         if (urlSafe) siteName = Site.Id.fixSiteName(siteName);
+
+         return new Formatter().format(format, typeName, siteName, pageName).toString();
       }
 
-      @Override
-      protected void readExternal(DataInput in) throws IOException
+      public String format()
       {
-         Site.Id si = new Site.Id();
-         si.readExternal(in);
-         this.siteId = si;
-         this.pageName = in.readUTF();
+         return format(FORMAT, true);
+      }
+
+      public static Id fromString(String idAsString)
+      {
+         if (idAsString == null) throw new IllegalArgumentException("idAsString cannot be null.");
+         String[] parts = idAsString.split(Pattern.quote("" + SEP));
+         if (parts.length != 3) throw new IllegalArgumentException("Invalid id format '" + idAsString + "'");
+
+         Site.Id siteId = Site.Id.fromString(parts[0] + SEP + parts[1]);
+
+         // Parse node path and fix
+         String pageName = parts[2];
+
+         return create(siteId, pageName);
       }
 
       @Override
@@ -215,5 +198,8 @@ public interface Page
          result = 31 * result + pageName.hashCode();
          return result;
       }
+
+      private static final char SEP = Site.Id.SEP;
+      private static final String FORMAT = Site.Id.FORMAT + SEP + "%s";
    }
 }
