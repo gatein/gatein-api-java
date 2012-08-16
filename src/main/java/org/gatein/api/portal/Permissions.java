@@ -22,47 +22,46 @@
 
 package org.gatein.api.portal;
 
-import org.gatein.api.portal.page.Page;
-import org.gatein.api.portal.site.Site;
-import org.testng.annotations.Test;
+import org.gatein.api.annotation.NotNull;
+import org.gatein.api.portal.Group;
+import org.gatein.api.portal.Permission;
 
-import static org.testng.Assert.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class PageIdTestCase
+public class Permissions
 {
-   @Test
-   public void pageId_Equals()
+   private static final Permission EVERYONE = new Permission();
+
+   public static Permission any(@NotNull String... group)
    {
-      Site.Id siteId = Site.Id.site("foo");
-      Page.Id pageId1 = Page.Id.create(siteId, "bar");
-      Page.Id pageId2 = Page.Id.create(siteId, "bar");
-
-      assertTrue(pageId1.equals(pageId2));
-      assertTrue(pageId2.equals(pageId1));
-      assertNotSame(pageId1, pageId2);
-
-      pageId1 = Page.Id.create(Site.Id.site("bar"), "bar");
-      assertFalse(pageId1.equals(pageId2));
-      pageId2 = Page.Id.create(Site.Id.site("bar"), "baz");
-      assertFalse(pageId1.equals(pageId2));
+      return new Permission(new Group.Membership(Group.Membership.ANY, new Group(group)));
    }
 
-   @Test
-   public void pageId_Base64()
+   public static Permission everyone()
    {
-      Site.Id siteId = Site.Id.site("foo");
-      Page.Id pageId = Page.Id.create(siteId, "bar");
-      String base64 = pageId.toBase64String();
-
-      assertEquals(Page.Id.fromBase64String(base64), pageId);
+      return EVERYONE;
    }
 
-   @Test(expectedExceptions = IllegalArgumentException.class)
-   public void pageId_InvalidBase64()
+   public static Permission membership(String membershipType, String... group)
    {
-      Page.Id.fromBase64String(Site.Id.site("foo").toBase64String());
+      return new Permission(new Group.Membership(membershipType, new Group(group)));
+   }
+
+   public static Permission memberships(@NotNull String...memberships)
+   {
+      if (memberships == null) throw new IllegalArgumentException("memberships cannot be null");
+
+      Set<Group.Membership> groupMemberships = new LinkedHashSet<Group.Membership>(memberships.length);
+      for (String membership : memberships)
+      {
+         groupMemberships.add(Group.Membership.fromString(membership));
+      }
+
+      return new Permission(groupMemberships);
    }
 }

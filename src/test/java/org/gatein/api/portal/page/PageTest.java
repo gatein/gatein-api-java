@@ -20,49 +20,31 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.portal;
+package org.gatein.api.portal.page;
 
-import org.gatein.api.portal.page.Page;
-import org.gatein.api.portal.site.Site;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
-import static org.testng.Assert.*;
+import static org.gatein.api.portal.Ids.*;
+import static org.junit.Assert.*;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class PageIdTestCase
+public class PageTest
 {
    @Test
-   public void pageId_Equals()
+   public void testPageId_Equals()
    {
-      Site.Id siteId = Site.Id.site("foo");
-      Page.Id pageId1 = Page.Id.create(siteId, "bar");
-      Page.Id pageId2 = Page.Id.create(siteId, "bar");
+      Page.Id pageId1 = pageId("foo", "bar");
+      Page.Id pageId2 = pageId("foo", "bar");
 
       assertTrue(pageId1.equals(pageId2));
       assertTrue(pageId2.equals(pageId1));
       assertNotSame(pageId1, pageId2);
 
-      pageId1 = Page.Id.create(Site.Id.site("bar"), "bar");
+      pageId1 = new Page.Id(siteId("bar"), "bar");
       assertFalse(pageId1.equals(pageId2));
-      pageId2 = Page.Id.create(Site.Id.site("bar"), "baz");
+      pageId2 = new Page.Id(siteId("bar"), "baz");
       assertFalse(pageId1.equals(pageId2));
-   }
-
-   @Test
-   public void pageId_Base64()
-   {
-      Site.Id siteId = Site.Id.site("foo");
-      Page.Id pageId = Page.Id.create(siteId, "bar");
-      String base64 = pageId.toBase64String();
-
-      assertEquals(Page.Id.fromBase64String(base64), pageId);
-   }
-
-   @Test(expectedExceptions = IllegalArgumentException.class)
-   public void pageId_InvalidBase64()
-   {
-      Page.Id.fromBase64String(Site.Id.site("foo").toBase64String());
    }
 }

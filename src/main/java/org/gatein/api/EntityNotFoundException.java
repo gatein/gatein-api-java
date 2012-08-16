@@ -20,23 +20,21 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.exception;
-
-import org.gatein.api.ApiException;
+package org.gatein.api;
 
 /**
- * Exception thrown when entity already exists and cannot be created.
+ * Exception thrown when entity cannot be found.
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class EntityAlreadyExistsException extends ApiException
+public class EntityNotFoundException extends ApiException
 {
-   public EntityAlreadyExistsException(final String message)
+   public EntityNotFoundException(final String message)
    {
       super(message);
    }
 
-   public EntityAlreadyExistsException(final String message, final Throwable t)
+   public EntityNotFoundException(final String message, final Throwable t)
    {
       super(message, t);
    }

@@ -20,73 +20,57 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.portal;
+package org.gatein.api.portal.site;
 
-import org.gatein.api.portal.navigation.Node;
-import org.gatein.api.portal.site.Site;
-import org.testng.annotations.Test;
+import org.gatein.api.portal.Group;
+import org.gatein.api.portal.User;
+import org.junit.Test;
 
-import static org.testng.Assert.*;
+import static org.gatein.api.portal.Ids.*;
+import static org.junit.Assert.*;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class SiteIdTestCase
+public class SiteTest
 {
    @Test
-   public void siteId_Equals()
+   public void testSiteId_Equals()
    {
       //site
-      Site.Id id1 = Site.Id.site("foo");
-      Site.Id id2 = Site.Id.site("foo");
+      Site.Id id1 = siteId("foo");
+      Site.Id id2 = siteId("foo");
       assertTrue(id1.equals(id2));
       assertTrue(id2.equals(id1));
       assertNotSame(id1, id2);
-      id2 = Site.Id.site("bar");
+      id2 = siteId("bar");
       assertFalse(id1.equals(id2));
 
       //space
-      id1 = Site.Id.space("foo", "bar");
-      id2 = Site.Id.space("foo", "bar");
+      id1 = siteId(new Group("foo", "bar"));
+      id2 = siteId(new Group("foo", "bar"));
       assertTrue(id1.equals(id2));
       assertTrue(id2.equals(id1));
       assertNotSame(id1, id2);
-      id2 = Site.Id.space("foo", "baz");
+      id2 = siteId(new Group("foo", "baz"));
       assertFalse(id1.equals(id2));
 
       // dashboard
-      id1 = Site.Id.dashboard("foo");
-      id2 = Site.Id.dashboard("foo");
+      id1 = siteId(new User("foo"));
+      id2 = siteId(new User("foo"));
       assertTrue(id1.equals(id2));
       assertTrue(id2.equals(id1));
       assertNotSame(id1, id2);
-      id2 = Site.Id.dashboard("bar");
+      id2 = siteId(new User("bar"));
       assertFalse(id1.equals(id2));
 
       // mix site types
-      id1 = Site.Id.site("foo");
-      id2 = Site.Id.space("foo");
+      id1 = siteId("foo");
+      id2 = siteId(new Group("foo"));
       assertFalse(id1.equals(id2));
-      id2 = Site.Id.dashboard("foo");
+      id2 = siteId(new User("foo"));
       assertFalse(id1.equals(id2));
-      id1 = Site.Id.space("foo");
+      id1 = siteId("foo");
       assertFalse(id1.equals(id2));
-   }
-
-   @Test
-   public void siteId_Base64()
-   {
-      Site.Id id1 = Site.Id.site("foo");
-      String base64 = id1.toBase64String();
-      Site.Id id2 = Site.Id.fromBase64String(base64);
-      assertTrue(id1.equals(id2));
-      assertTrue(id2.equals(id1));
-      assertNotSame(id1, id2);
-   }
-
-   @Test(expectedExceptions = IllegalArgumentException.class)
-   public void siteId_InvalidBase64()
-   {
-      Site.Id.fromBase64String(Node.Id.create(Site.Id.site("foo"), "some", "path").toBase64String());
    }
 }

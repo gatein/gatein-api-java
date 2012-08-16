@@ -22,7 +22,9 @@
 
 package org.gatein.api.portal;
 
-import org.gatein.api.exception.EntityNotFoundException;
+import org.gatein.api.EntityNotFoundException;
+import org.gatein.api.portal.page.Page;
+import org.gatein.api.portal.site.Site;
 import org.gatein.api.util.ExternalizedBase64;
 
 import java.io.ByteArrayInputStream;
@@ -70,7 +72,7 @@ public interface Node extends Iterable<Node>
     * Remove child node with given name
     * @param name Name of the node to remove
     * @return true if the child was removed, false otherwise
-    * @throws EntityNotFoundException if the child does not exist
+    * @throws org.gatein.api.EntityNotFoundException if the child does not exist
     */
    boolean removeChild(String name) throws EntityNotFoundException;
 

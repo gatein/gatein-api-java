@@ -25,7 +25,7 @@ package org.gatein.api.commons;
 import java.util.List;
 
 /**
- * Query
+ * Builder
  *
  * @author <a href="mailto:bdawidow@redhat.com">Boleslaw Dawidowicz</a>
  */

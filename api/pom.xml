@@ -61,7 +61,7 @@
               <message>Deploy javadoc for ${project.version}</message>
               <repositoryOwner>gatein</repositoryOwner>
               <repositoryName>gatein-api-java</repositoryName>
-              <outputDirectory>${project.build.directory}/site/apidocs/</outputDirectory>
+              <outputDirectory>${project.build.directory}/service/apidocs/</outputDirectory>
             </configuration>
             <executions>
               <execution>

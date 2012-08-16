@@ -22,6 +22,8 @@
 
 package org.gatein.api.portal;
 
+import org.gatein.api.portal.navigation.Node;
+import org.gatein.api.portal.site.Site;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.*;

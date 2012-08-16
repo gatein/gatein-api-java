@@ -20,24 +20,22 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.exception;
+package org.gatein.api.annotation;
 
-import org.gatein.api.ApiException;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Exception thrown when entity already exists and cannot be created.
+ * Annotation indicating that the method, parameter, or field CANNOT be null.
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class EntityAlreadyExistsException extends ApiException
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD})
+public @interface NotNull
 {
-   public EntityAlreadyExistsException(final String message)
-   {
-      super(message);
-   }
-
-   public EntityAlreadyExistsException(final String message, final Throwable t)
-   {
-      super(message, t);
-   }
 }

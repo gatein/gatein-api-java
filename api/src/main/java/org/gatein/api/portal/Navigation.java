@@ -22,8 +22,10 @@
 
 package org.gatein.api.portal;
 
-import org.gatein.api.exception.EntityAlreadyExistsException;
-import org.gatein.api.exception.EntityNotFoundException;
+import org.gatein.api.EntityNotFoundException;
+import org.gatein.api.EntityAlreadyExistsException;
+import org.gatein.api.portal.navigation.Node;
+import org.gatein.api.portal.site.Site;
 
 /**
  * Representation of Navigation. It is a tree structure of nodes with associated Pages.
@@ -65,7 +67,7 @@ public interface Navigation extends Iterable<Node>
    /**
     * Removes the node specified by the path
     *
-    * @param path Path of node to be removed
+    * @param path NodePath of node to be removed
     * @return true if the node was removed, false otherwise
     * @throws EntityNotFoundException if the node to be removed was not found
     */
@@ -74,7 +76,7 @@ public interface Navigation extends Iterable<Node>
    /**
     * Adds a node specified by the path.
     *
-    * @param path Path of the node to add
+    * @param path NodePath of the node to add
     * @return New node.
     */
    Node addNode(String... path) throws EntityAlreadyExistsException;

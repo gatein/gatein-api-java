@@ -20,24 +20,49 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.exception;
+package org.gatein.api.portal.navigation;
 
-import org.gatein.api.ApiException;
+import org.gatein.api.portal.navigation.Node;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+
 
 /**
- * Exception thrown when entity already exists and cannot be created.
- *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class EntityAlreadyExistsException extends ApiException
+public class NodeTest
 {
-   public EntityAlreadyExistsException(final String message)
+   //TODO: More tests
+
+   @Test(expected = IllegalArgumentException.class)
+   public void testnewNode_NullName()
    {
-      super(message);
+      new Node((String) null);
    }
 
-   public EntityAlreadyExistsException(final String message, final Throwable t)
+   @Test(expected = NullPointerException.class)
+   public void testNewNode_NullNode()
    {
-      super(message, t);
+      new Node((Node) null);
+   }
+
+   @Test
+   public void testNode_Equals()
+   {
+      Node foo = new Node("foo");
+      Node foo2 = new Node("foo");
+      Node bar = new Node("bar");
+
+      assertFalse(foo.equals(bar));
+      assertTrue(foo.equals(foo2));
+   }
+
+   @Test
+   public void testNode_Copy()
+   {
+      Node original = new Node("foo");
+      Node copy = new Node(original);
+      assertEquals(original, copy);
    }
 }

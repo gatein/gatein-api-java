@@ -20,24 +20,22 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.exception;
+package org.gatein.api.util;
 
-import org.gatein.api.ApiException;
+import org.gatein.api.annotation.NotNull;
 
 /**
- * Exception thrown when entity already exists and cannot be created.
+ * A filter to be used to "filter" the results of a query.
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class EntityAlreadyExistsException extends ApiException
+public interface Filter<T>
 {
-   public EntityAlreadyExistsException(final String message)
-   {
-      super(message);
-   }
-
-   public EntityAlreadyExistsException(final String message, final Throwable t)
-   {
-      super(message, t);
-   }
+   /**
+    * The accept method used to filter results of a query.
+    *
+    * @param object the object containing the information needed to determine the filter. This object cannot be null.
+    * @return true if the filter should include the object, false to exclude from results.
+    */
+   boolean accept(@NotNull T object);
 }

@@ -23,6 +23,7 @@
 package org.gatein.api.portal;
 
 
+import org.gatein.api.portal.site.Site;
 import org.gatein.api.security.SecurityRestriction;
 import org.gatein.api.util.ExternalizedBase64;
 

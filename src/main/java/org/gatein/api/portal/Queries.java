@@ -22,47 +22,21 @@
 
 package org.gatein.api.portal;
 
-import org.gatein.api.portal.page.Page;
-import org.gatein.api.portal.site.Site;
-import org.testng.annotations.Test;
-
-import static org.testng.Assert.*;
+import org.gatein.api.portal.page.PageQuery;
+import org.gatein.api.portal.site.SiteQuery;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class PageIdTestCase
+public class Queries
 {
-   @Test
-   public void pageId_Equals()
+   public static SiteQuery.Builder siteQuery()
    {
-      Site.Id siteId = Site.Id.site("foo");
-      Page.Id pageId1 = Page.Id.create(siteId, "bar");
-      Page.Id pageId2 = Page.Id.create(siteId, "bar");
-
-      assertTrue(pageId1.equals(pageId2));
-      assertTrue(pageId2.equals(pageId1));
-      assertNotSame(pageId1, pageId2);
-
-      pageId1 = Page.Id.create(Site.Id.site("bar"), "bar");
-      assertFalse(pageId1.equals(pageId2));
-      pageId2 = Page.Id.create(Site.Id.site("bar"), "baz");
-      assertFalse(pageId1.equals(pageId2));
+      return new SiteQuery.Builder();
    }
 
-   @Test
-   public void pageId_Base64()
+   public static PageQuery.Builder pageQuery()
    {
-      Site.Id siteId = Site.Id.site("foo");
-      Page.Id pageId = Page.Id.create(siteId, "bar");
-      String base64 = pageId.toBase64String();
-
-      assertEquals(Page.Id.fromBase64String(base64), pageId);
-   }
-
-   @Test(expectedExceptions = IllegalArgumentException.class)
-   public void pageId_InvalidBase64()
-   {
-      Page.Id.fromBase64String(Site.Id.site("foo").toBase64String());
+      return new PageQuery.Builder();
    }
 }

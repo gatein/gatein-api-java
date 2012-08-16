@@ -20,24 +20,37 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.exception;
+package org.gatein.api.internal;
 
-import org.gatein.api.ApiException;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
- * Exception thrown when entity already exists and cannot be created.
- *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class EntityAlreadyExistsException extends ApiException
+public class ArraysExt
 {
-   public EntityAlreadyExistsException(final String message)
+   private ArraysExt(){}
+
+   public static <T> List<T> asList(T...elements)
    {
-      super(message);
+      if (elements == null) return null;
+
+      return Arrays.asList(elements);
    }
 
-   public EntityAlreadyExistsException(final String message, final Throwable t)
+   public static <T> T[] concat(T[] src, T...elements)
    {
-      super(message, t);
+      if (src == null) return null;
+
+      T[] newArray = Arrays.copyOf(src, src.length + elements.length);
+      int index = newArray.length-elements.length;
+      for (T element : elements)
+      {
+         newArray[index++] = element;
+      }
+
+      return newArray;
    }
 }

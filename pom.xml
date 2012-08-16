@@ -25,12 +25,9 @@
    <modelVersion>4.0.0</modelVersion>
 
    <groupId>org.gatein.api</groupId>
-   <artifactId>gatein-java-api-parent</artifactId>
-   <packaging>pom</packaging>
-   <version>1.0.0.Beta04-SNAPSHOT</version>
-   <modules>
-      <module>api</module>
-   </modules>
+   <artifactId>gatein-api</artifactId>
+   <packaging>jar</packaging>
+   <version>1.0.0.Alpha01-SNAPSHOT</version>
 
    <parent>
       <groupId>org.gatein</groupId>
@@ -48,32 +45,29 @@
       <pushChanges>false</pushChanges>
    </properties>
 
-   <dependencyManagement>
-      <dependencies>
-         <dependency>
-            <groupId>org.gatein.api</groupId>
-            <artifactId>gatein-java-api</artifactId>
-            <version>${project.version}</version>
-         </dependency>
-         <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>5.14.10</version>
-         </dependency>
-      </dependencies>
-   </dependencyManagement>
-
    <dependencies>
       <dependency>
-         <groupId>org.testng</groupId>
-         <artifactId>testng</artifactId>
+         <groupId>junit</groupId>
+         <artifactId>junit</artifactId>
          <scope>test</scope>
+         <version>4.8.2</version>
       </dependency>
    </dependencies>
 
    <build>
       <pluginManagement>
          <plugins>
+            <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-javadoc-plugin</artifactId>
+               <version>2.6.1</version>
+               <configuration>
+                  <excludePackageNames>org.gatein.api.internal.*</excludePackageNames>
+                  <!--<excludes>-->
+                     <!--org.gatein.api.util.Objectsts-->
+                  <!--</excludes>-->
+               </configuration>
+            </plugin>
             <plugin>
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-release-plugin</artifactId>

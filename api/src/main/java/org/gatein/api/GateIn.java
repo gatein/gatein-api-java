@@ -23,9 +23,8 @@
 package org.gatein.api;
 
 import org.gatein.api.commons.Filter;
-import org.gatein.api.exception.EntityNotFoundException;
-import org.gatein.api.portal.Site;
-import org.gatein.api.portal.SiteQuery;
+import org.gatein.api.portal.site.Site;
+import org.gatein.api.portal.site.SiteQuery;
 import org.gatein.api.commons.Range;
 import org.gatein.api.commons.PropertyType;
 

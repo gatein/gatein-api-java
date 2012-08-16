@@ -22,6 +22,8 @@
 
 package org.gatein.api.exception;
 
+import org.gatein.api.ApiException;
+
 /**
  * Exception thrown when entity cannot be found.
  *

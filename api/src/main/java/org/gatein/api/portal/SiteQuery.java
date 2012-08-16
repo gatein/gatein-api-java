@@ -25,8 +25,7 @@ package org.gatein.api.portal;
 
 import org.gatein.api.commons.Query;
 import org.gatein.api.commons.Range;
-
-import java.util.List;
+import org.gatein.api.portal.site.Site;
 
 /**
  * Enables performing more complex queries for sites.

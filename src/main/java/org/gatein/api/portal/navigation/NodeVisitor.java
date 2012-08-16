@@ -20,24 +20,23 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.exception;
-
-import org.gatein.api.ApiException;
+package org.gatein.api.portal.navigation;
 
 /**
- * Exception thrown when entity already exists and cannot be created.
+ * A node visitor is used to walk the node tree. Some node visitor's are available in the <code>Nodes</code> utility
+ * class, i.e. {@link org.gatein.api.portal.Nodes.visitNodes()}
  *
+ * @see org.gatein.api.portal.Nodes
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class EntityAlreadyExistsException extends ApiException
+public interface NodeVisitor
 {
-   public EntityAlreadyExistsException(final String message)
-   {
-      super(message);
-   }
-
-   public EntityAlreadyExistsException(final String message, final Throwable t)
-   {
-      super(message, t);
-   }
+   /**
+    * Determines if more nodes should be visited.
+    *
+    * @param depth the current depth in the node hierarchy. This can be relative depending on where the visitor begins.
+    * @param node the node with just it's data, i.e. no child nodes.
+    * @return true to continue visiting children nodes
+    */
+   boolean visit(int depth, Node node);
 }

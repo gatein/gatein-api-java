@@ -20,49 +20,39 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.portal;
+package org.gatein.api.portal.page;
 
-import org.gatein.api.portal.page.Page;
 import org.gatein.api.portal.site.Site;
-import org.testng.annotations.Test;
-
-import static org.testng.Assert.*;
+import org.gatein.api.util.Filter;
+import org.gatein.api.util.Pagination;
+import org.gatein.api.util.Query;
+import org.gatein.api.util.QueryBuilder;
+import org.gatein.api.util.Sorting;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class PageIdTestCase
+public class PageQuery extends Query<Page>
 {
-   @Test
-   public void pageId_Equals()
+   public PageQuery(Pagination pagination, Filter<Page> filter, Sorting sorting)
    {
-      Site.Id siteId = Site.Id.site("foo");
-      Page.Id pageId1 = Page.Id.create(siteId, "bar");
-      Page.Id pageId2 = Page.Id.create(siteId, "bar");
-
-      assertTrue(pageId1.equals(pageId2));
-      assertTrue(pageId2.equals(pageId1));
-      assertNotSame(pageId1, pageId2);
-
-      pageId1 = Page.Id.create(Site.Id.site("bar"), "bar");
-      assertFalse(pageId1.equals(pageId2));
-      pageId2 = Page.Id.create(Site.Id.site("bar"), "baz");
-      assertFalse(pageId1.equals(pageId2));
+      super(pagination, filter, sorting);
    }
 
-   @Test
-   public void pageId_Base64()
+   public static class Builder extends QueryBuilder<Page, PageQuery, Builder>
    {
-      Site.Id siteId = Site.Id.site("foo");
-      Page.Id pageId = Page.Id.create(siteId, "bar");
-      String base64 = pageId.toBase64String();
+      private Site.Id siteId;
 
-      assertEquals(Page.Id.fromBase64String(base64), pageId);
-   }
+      @Override
+      public PageQuery build()
+      {
+         return new PageQuery(pagination, filter, sorting);
+      }
 
-   @Test(expectedExceptions = IllegalArgumentException.class)
-   public void pageId_InvalidBase64()
-   {
-      Page.Id.fromBase64String(Site.Id.site("foo").toBase64String());
+      public Builder withSiteId(Site.Id siteId)
+      {
+         this.siteId = siteId;
+         return this;
+      }
    }
 }

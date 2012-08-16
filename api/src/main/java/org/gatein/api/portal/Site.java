@@ -23,11 +23,13 @@
 package org.gatein.api.portal;
 
 
+import org.gatein.api.EntityAlreadyExistsException;
 import org.gatein.api.commons.Filter;
 import org.gatein.api.commons.PropertyType;
 import org.gatein.api.commons.Range;
-import org.gatein.api.exception.EntityAlreadyExistsException;
-import org.gatein.api.exception.EntityNotFoundException;
+import org.gatein.api.EntityNotFoundException;
+import org.gatein.api.portal.navigation.Navigation;
+import org.gatein.api.portal.page.Page;
 import org.gatein.api.security.SecurityRestriction;
 import org.gatein.api.util.ExternalizedBase64;
 
@@ -124,7 +126,7 @@ public interface Site
     * Create new page
     * @param pageName Name of the page
     * @return New page
-    * @throws EntityAlreadyExistsException
+    * @throws org.gatein.api.EntityAlreadyExistsException
     */
    Page createPage(String pageName) throws EntityAlreadyExistsException;
 
