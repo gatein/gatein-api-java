@@ -26,7 +26,7 @@ import org.gatein.api.annotation.Immutable;
 import org.gatein.api.annotation.NotNull;
 import org.gatein.api.internal.Objects;
 import org.gatein.api.portal.Attributes;
-import org.gatein.api.portal.Formatting;
+import org.gatein.api.portal.Formatted;
 import org.gatein.api.portal.Group;
 import org.gatein.api.portal.Ids;
 import org.gatein.api.portal.Permission;
@@ -52,14 +52,6 @@ public class Site implements Comparable<Site>, Serializable
    private Permission accessPermission;
    private Permission editPermission;
 
-   public Site(@NotNull Id id)
-   {
-      if (id == null) throw new IllegalArgumentException("id cannot be null");
-
-      this.id = id;
-      this.attributes = new Attributes();
-   }
-
    public Site(String name)
    {
       this(Ids.siteId(name));
@@ -73,6 +65,14 @@ public class Site implements Comparable<Site>, Serializable
    public Site(User user)
    {
       this(Ids.siteId(user));
+   }
+
+   public Site(@NotNull Id id)
+   {
+      if (id == null) throw new IllegalArgumentException("id cannot be null");
+
+      this.id = id;
+      this.attributes = new Attributes();
    }
 
    public Id getId()
@@ -183,7 +183,7 @@ public class Site implements Comparable<Site>, Serializable
    }
 
    @Immutable
-   public static class Id implements Formatting, Serializable
+   public static class Id implements Formatted, Serializable
    {
       private final Type type;
       private final String name;
@@ -229,17 +229,28 @@ public class Site implements Comparable<Site>, Serializable
       @Override
       public String toString()
       {
-         return Ids.format(this, "Site.Id[type=%s, name=%s]", false);
+         return Ids.format(this, "Site.Id[type=%s, name=%s]");
       }
 
       @Override
-      public String[] getFormattedParts(boolean urlSafe)
+      public Object[] getFormatArguments()
       {
-         String[] parts = new String[2];
-         parts[0] = type.getName();
-         parts[1] = (urlSafe) ? name.replaceAll("/", "~") : name;
+         return getFormatArguments(null);
+      }
 
-         return parts;
+      @Override
+      public Object[] getFormatArguments(@NotNull Adapter adapter)
+      {
+         Object[] args = new Object[2];
+         args[0] = adapt(0, type.getName(), adapter);
+         args[1] = adapt(1, name, adapter);
+
+         return args;
+      }
+
+      private Object adapt(int index, Object original, Adapter adapter)
+      {
+         return (adapter == null) ? original : adapter.adapt(index, original);
       }
    }
 
@@ -280,8 +291,8 @@ public class Site implements Comparable<Site>, Serializable
 
    public static final class AttributeKeys
    {
-      public static final Attributes.Key<String> SESSION_BEHAVIOR = new Attributes.Key<String>("org.gatein.api.portal.session_behavior"){};
-      public static final Attributes.Key<Boolean> SHOW_PORTLET_INFO_BAR = new Attributes.Key<Boolean>("org.gatein.api.portal.show_info_bar"){};
+      public static final Attributes.Key<String> SESSION_BEHAVIOR = Attributes.key("org.gatein.api.portal.session_behavior", String.class);
+      public static final Attributes.Key<Boolean> SHOW_PORTLET_INFO_BAR = Attributes.key("org.gatein.api.portal.show_info_bar", Boolean.class);
 
       private AttributeKeys()
       {

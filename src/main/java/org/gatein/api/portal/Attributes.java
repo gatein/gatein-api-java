@@ -26,11 +26,6 @@ package org.gatein.api.portal;
 import org.gatein.api.annotation.NotNull;
 import org.gatein.api.internal.Objects;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -123,16 +118,23 @@ public class Attributes
       return Objects.toStringBuilder().add(values).toString();
    }
 
+   public static <T> Key<T> key(String name, Class<T> type)
+   {
+      return new Key<T>(name, type){};
+   }
+
    public static abstract class Key<T>
    {
       private final String name;
       private Class<T> type;
 
-      public Key(@NotNull String name)
+      public Key(@NotNull String name, @NotNull Class<T> type)
       {
          if (name == null) throw new IllegalArgumentException("name cannot be null");
+         if (type == null) throw new IllegalArgumentException("type cannot be null");
 
          this.name = name;
+         this.type = type;
       }
 
       public String getName()
@@ -142,58 +144,7 @@ public class Attributes
 
       public Class<T> getType()
       {
-         if (type == null)
-         {
-            Class<?> cls = getClass();
-            type = (Class<T>) resolveType(resolveGenericType(cls, Key.class));
-         }
-
          return type;
-      }
-
-      private static Type resolveGenericType(Type genericType, Class<?> targetType)
-      {
-         if (genericType == null || genericType == Object.class) return null;
-
-         Class<?> cls;
-         if (genericType instanceof ParameterizedType)
-         {
-            cls = (Class<?>) ((ParameterizedType) genericType).getRawType();
-         }
-         else
-         {
-            cls = (Class<?>) genericType;
-         }
-
-         if (cls.equals(targetType)) return genericType;
-
-         return resolveGenericType(cls.getGenericSuperclass(), targetType);
-      }
-
-      private static Class<?> resolveType(Type type)
-      {
-         if (type instanceof Class)
-         {
-            return (Class<?>) type;
-         }
-         else if (type instanceof ParameterizedType)
-         {
-            return resolveType(((ParameterizedType) type).getActualTypeArguments()[0]);
-         }
-         else if (type instanceof GenericArrayType)
-         {
-            GenericArrayType arrayType = (GenericArrayType) type;
-            Class<?> ct = resolveType(arrayType.getGenericComponentType());
-
-            // ct can be null here since we don't support TypeVariable's atm.
-            return (ct == null) ? null : Array.newInstance(ct, 0).getClass();
-         }
-         else if (type instanceof TypeVariable)
-         {
-            // Not supporting this atm
-         }
-
-         return null;
       }
 
       @Override
@@ -204,7 +155,7 @@ public class Attributes
 
          Key key = (Key) o;
 
-         return name.equals(key.name);
+         return name.equals(key.name) && type.equals(type);
       }
 
       @Override

@@ -24,12 +24,13 @@ package org.gatein.api;
 
 import org.gatein.api.annotation.NotNull;
 import org.gatein.api.annotation.Nullable;
+import org.gatein.api.portal.Nodes;
+import org.gatein.api.portal.User;
 import org.gatein.api.portal.navigation.Navigation;
 import org.gatein.api.portal.navigation.Node;
+import org.gatein.api.portal.navigation.NodePath;
 import org.gatein.api.portal.page.Page;
 import org.gatein.api.portal.site.Site;
-import org.gatein.api.portal.Nodes;
-import org.gatein.api.portal.navigation.NodePath;
 import org.gatein.api.util.Filter;
 
 import java.util.Locale;
@@ -41,14 +42,14 @@ public abstract class PortalRequest
 {
    protected final Site.Id siteId;
    protected final NodePath path;
-   protected final String userName;
+   protected final User user;
    protected final Locale locale;
 
-   protected PortalRequest(Site.Id siteId, NodePath path, String userName, Locale locale)
+   protected PortalRequest(Site.Id siteId, NodePath path, User user, Locale locale)
    {
       this.siteId = siteId;
       this.path = path;
-      this.userName = userName;
+      this.user = user;
       this.locale = locale;
    }
 
@@ -58,7 +59,7 @@ public abstract class PortalRequest
       return getPortal().getSite(siteId);
    }
 
-   public void save(Site site)
+   public void save(@NotNull Site site)
    {
       getPortal().saveSite(site);
    }
@@ -66,35 +67,39 @@ public abstract class PortalRequest
    @Nullable
    public Page getPage()
    {
-      Node node = getPortal().getNode(siteId, Nodes.visitNodes(path), null);
-      if (node == null) throw new ApiException("Could not find node for current node path " + path);
-
-      Page.Id pageId = node.getPageId();
+      Page.Id pageId = getNode().getPageId();
 
       return (pageId == null) ? null : getPortal().getPage(pageId);
    }
 
-   public void save(Page page)
+   public void save(@NotNull Page page)
    {
       getPortal().savePage(page);
    }
 
+   @NotNull
    public Navigation getNavigation()
    {
-      return getNavigation(1, null); //TODO Create default filter w/ security checks
+      return getNavigation(1, Nodes.userFilter(user, getPortal()));
    }
 
+   @NotNull
    public Navigation getNavigation(int depth, @Nullable Filter<Node> filter)
    {
       Portal portal = getPortal();
       return portal.getNavigation(siteId, Nodes.visitNodes(depth), filter);
    }
 
-   public Node getNode()
+   @NotNull
+   public Node getNode() throws EntityNotFoundException
    {
-      return getPortal().getNode(siteId,  path);
+      Node node = getPortal().getNode(siteId, path);
+      if (node == null) throw new EntityNotFoundException("Node could not be found for current request path " + path);
+
+      return node;
    }
 
+   @NotNull
    public abstract Portal getPortal();
 
    public static PortalRequest getInstance()

@@ -24,7 +24,7 @@ package org.gatein.api.portal.page;
 
 import org.gatein.api.annotation.Immutable;
 import org.gatein.api.internal.ArraysExt;
-import org.gatein.api.portal.Formatting;
+import org.gatein.api.portal.Formatted;
 import org.gatein.api.portal.Group;
 import org.gatein.api.portal.Ids;
 import org.gatein.api.portal.Permission;
@@ -122,7 +122,7 @@ public class Page implements Serializable
    }
 
    @Immutable
-   public static class Id implements Formatting, Serializable
+   public static class Id implements Formatted, Serializable
    {
       private final Site.Id siteId;
       private final String pageName;
@@ -155,13 +155,19 @@ public class Page implements Serializable
       @Override
       public String toString()
       {
-         return Ids.format(this, "Page.Id[siteType=%s, siteName=%s, pageName=%s]", false);
+         return Ids.format(this, "Page.Id[siteType=%s, siteName=%s, pageName=%s]");
       }
 
       @Override
-      public String[] getFormattedParts(boolean urlSafe)
+      public Object[] getFormatArguments()
       {
-         return ArraysExt.concat(siteId.getFormattedParts(urlSafe), pageName);
+         return ArraysExt.concat(siteId.getFormatArguments(), pageName);
+      }
+
+      @Override
+      public Object[] getFormatArguments(Adapter adapter)
+      {
+         return ArraysExt.concat(siteId.getFormatArguments(adapter), adapter.adapt(2, pageName));
       }
 
       @Override

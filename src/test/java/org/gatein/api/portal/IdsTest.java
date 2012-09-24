@@ -28,6 +28,7 @@ import org.junit.Test;
 
 import java.util.regex.Pattern;
 
+import static org.gatein.api.portal.Ids.format;
 import static org.gatein.api.portal.Ids.*;
 import static org.junit.Assert.*;
 
@@ -40,13 +41,13 @@ public class IdsTest
    public void testSiteId_Format()
    {
       Site.Id id = siteId("foo");
-      assertEquals("site || foo", Ids.format(id, "%s || %s", false));
+      assertEquals("site || foo", Ids.format(id, "%s || %s"));
 
       id = siteId(new Group("foo", "bar"));
-      assertEquals("space || /foo/bar", Ids.format(id, "%s || %s", false));
+      assertEquals("space || /foo/bar", Ids.format(id, "%s || %s"));
 
       id = siteId(new User("foo"));
-      assertEquals("dashboard || foo", Ids.format(id, "%s || %s", false));
+      assertEquals("dashboard || foo", Ids.format(id, "%s || %s"));
    }
 
    @Test
@@ -62,7 +63,7 @@ public class IdsTest
    @Test(expected = IllegalArgumentException.class)
    public void testSiteId_Format_Null()
    {
-      Ids.format(siteId("foo"), null, true);
+      Ids.format(siteId("foo"), null);
    }
 
    @Test
@@ -82,13 +83,13 @@ public class IdsTest
    public void testPageId_Format()
    {
       Page.Id id = pageId("foo", "bar");
-      assertEquals("site || foo || bar", format(id, "%s || %s || %s", false));
+      assertEquals("site || foo || bar", format(id, "%s || %s || %s"));
 
       id = pageId(new Group("foo", "bar"), "bar");
-      assertEquals("space || /foo/bar || bar", format(id, "%s || %s || %s", false));
+      assertEquals("space || /foo/bar || bar", format(id, "%s || %s || %s"));
 
       id = pageId(new User("foo"), "bar");
-      assertEquals(format(id, "%s || %s || %s", false), "dashboard || foo || bar");
+      assertEquals(format(id, "%s || %s || %s"), "dashboard || foo || bar");
    }
 
    @Test
@@ -104,7 +105,7 @@ public class IdsTest
    @Test(expected = IllegalArgumentException.class)
    public void testPageId_Format_Null()
    {
-      format(new Page.Id(siteId("foo"), "bar"), null, true);
+      format(new Page.Id(siteId("foo"), "bar"), null);
    }
 
    @Test

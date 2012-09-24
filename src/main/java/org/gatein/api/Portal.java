@@ -23,6 +23,7 @@
 package org.gatein.api;
 
 import org.gatein.api.portal.Label;
+import org.gatein.api.portal.User;
 import org.gatein.api.portal.navigation.Navigation;
 import org.gatein.api.portal.navigation.Node;
 import org.gatein.api.portal.navigation.NodePath;
@@ -71,5 +72,5 @@ public interface Portal
 
    void removePage(Page.Id pageId);
 
-   boolean hasPermission(String user, Permission permission);
+   boolean hasPermission(User user, Permission permission);
 }

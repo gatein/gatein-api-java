@@ -69,24 +69,77 @@ public class Ids
 
    //--------------------------------------- Id format utility methods -----------------------------------------------//
 
+   /**
+    * Formats a site id ensuring group names are URL safe.
+    *
+    * @param siteId the site id
+    * @return the formatted site id.
+    */
    public static String format(Site.Id siteId)
    {
-      return format(siteId, "%s.%s", true);
+      return format(siteId, "%s.%s", GROUP_ADAPTER);
    }
 
+   /**
+    * Formats a page id ensuring group names are URL safe.
+    *
+    * @param pageId the page id
+    * @return the formatted page id.
+    */
    public static String format(Page.Id pageId)
    {
-      return format(pageId, "%s.%s.%s", true);
+      return format(pageId, "%s.%s.%s", GROUP_ADAPTER);
    }
 
-   public static String format(Formatting formatting, String format, boolean urlSafe)
+   /**
+    * Utility method which will format a {@link Formatted} object, for example i.e. {@link Site.Id} using the format
+    * defined by {@link Formatter#format(String, Object...)}.
+    *
+    * @param formatted the formatted object
+    * @param format    the string format as defined by {@link Formatter#format(String, Object...)}.
+    * @return the formatted string
+    */
+   public static String format(@NotNull Formatted formatted, @NotNull String format)
    {
+      return doFormat(formatted, format, null);
+   }
+
+   /**
+    * Utility method which will format a {@link Formatted} object, for example i.e. {@link Site.Id} using the format
+    * used by {@link Formatter#format(String, Object...)}.
+    *
+    * @param formatted the formatted object
+    * @param adapter   a custom adapter which will be passed to the {@link Formatted#getFormatArguments(org.gatein.api.portal.Formatted.Adapter)}
+    *                  method.
+    * @param format    the string format as defined by {@link Formatter#format(String, Object...)}.
+    * @return the formatted string
+    */
+   public static String format(@NotNull Formatted formatted, @NotNull String format, @NotNull Formatted.Adapter adapter)
+   {
+      if (adapter == null) throw new IllegalArgumentException("adapter cannot be null");
+
+      return doFormat(formatted, format, adapter);
+   }
+
+   private static String doFormat(Formatted formatted, String format, Formatted.Adapter adapter)
+   {
+      if (formatted == null) throw new IllegalArgumentException("formatted cannot be null");
       if (format == null) throw new IllegalArgumentException("format cannot be null.");
 
-      return new Formatter().format(format, formatting.getFormattedParts(urlSafe)).toString();
+      Object[] args = (adapter == null) ? formatted.getFormatArguments() : formatted.getFormatArguments(adapter);
+      return new Formatter().format(format, args).toString();
    }
 
-   public static <T> T fromString(Class<T> type, String idAsString)
+   /**
+    * Creates an id from a string that was produced by the <code>format(id)</code> method. <i>Note</i>: This cannot
+    * be used to create an id that was generated from the {@link Ids#format(Formatted, String, org.gatein.api.portal.Formatted.Adapter)}
+    * method.
+    *
+    * @param type       the class which represents the Id you are creating, i.e. Site.Id.class or Page.Id.class
+    * @param idAsString the string that was produced by the format method.
+    * @return the id
+    */
+   public static <T extends Formatted> T fromString(Class<T> type, String idAsString)
    {
       if (type == Site.Id.class)
       {
@@ -114,7 +167,8 @@ public class Ids
       siteName = siteName.replaceAll("~", "/");
 
       Site.Type type = Site.Type.forName(typeName);
-      if (type == null) throw new IllegalArgumentException("Invalid site type '" + typeName + "'" + " for id format '" + idAsString + "'");
+      if (type == null)
+         throw new IllegalArgumentException("Invalid site type '" + typeName + "'" + " for id format '" + idAsString + "'");
 
       return new Site.Id(type, siteName);
    }
@@ -129,5 +183,42 @@ public class Ids
       String pageName = parts[2];
 
       return new Page.Id(siteId, pageName);
+   }
+
+   private static final ReplaceAllAdapter GROUP_ADAPTER = new ReplaceAllAdapter("/", "~", 1);
+
+   private static final class ReplaceAllAdapter implements Formatted.Adapter
+   {
+      private final int[] indexes;
+      private final String regex;
+      private final String replacement;
+
+      private ReplaceAllAdapter(String regex, String replacement, int... indexes)
+      {
+         this.regex = regex;
+         this.replacement = replacement;
+         this.indexes = indexes;
+      }
+
+      @Override
+      public Object adapt(int index, @NotNull Object argument)
+      {
+         if (argument instanceof String && contains(index))
+         {
+            return ((String) argument).replaceAll(regex, replacement);
+         }
+
+         return argument;
+      }
+
+      private boolean contains(int index)
+      {
+         for (int i : indexes)
+         {
+            if (i == index) return true;
+         }
+
+         return false;
+      }
    }
 }

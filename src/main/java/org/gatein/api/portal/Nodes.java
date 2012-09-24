@@ -22,11 +22,14 @@
 
 package org.gatein.api.portal;
 
+import org.gatein.api.Portal;
 import org.gatein.api.annotation.NotNull;
 import org.gatein.api.internal.Strings;
 import org.gatein.api.portal.navigation.Node;
+import org.gatein.api.portal.navigation.NodeFilter;
 import org.gatein.api.portal.navigation.NodePath;
 import org.gatein.api.portal.navigation.NodeVisitor;
+import org.gatein.api.util.Filter;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
@@ -124,6 +127,18 @@ public class Nodes
    }
 
    private static NodePath ROOT = new NodePath();
+
+   //------------------------------------ Node Filter Utility Methods ------------------------------------------------//
+
+   public static Filter<Node> userFilter(@NotNull User user, @NotNull Portal portal)
+   {
+      return new NodeFilter.Builder().withAccess(user, portal).build();
+   }
+
+   public static NodeFilter.Builder filter()
+   {
+      return new NodeFilter.Builder();
+   }
 
    //------------------------------------------ Private visitor stuff ------------------------------------------------//
 
