@@ -24,7 +24,7 @@ package org.gatein.api;
 
 import org.gatein.api.annotation.NotNull;
 import org.gatein.api.annotation.Nullable;
-import org.gatein.api.portal.Nodes;
+import org.gatein.api.portal.navigation.Nodes;
 import org.gatein.api.portal.User;
 import org.gatein.api.portal.navigation.Navigation;
 import org.gatein.api.portal.navigation.Node;

@@ -24,9 +24,9 @@ package org.gatein.api.portal.navigation;
 
 /**
  * A node visitor is used to walk the node tree. Some node visitor's are available in the <code>Nodes</code> utility
- * class, i.e. {@link org.gatein.api.portal.Nodes.visitNodes()}
+ * class, i.e. {@link Nodes#visitNodes(int)}
  *
- * @see org.gatein.api.portal.Nodes
+ * @see Nodes
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 public interface NodeVisitor
