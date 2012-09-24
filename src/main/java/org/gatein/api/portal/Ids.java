@@ -92,7 +92,7 @@ public class Ids
    }
 
    /**
-    * Utility method which will format a {@link Formatted} object, for example i.e. {@link Site.Id} using the format
+    * Utility method which will format a {@link Formatted} object, for example {@link org.gatein.api.portal.site.Site.Id} using the format
     * defined by {@link Formatter#format(String, Object...)}.
     *
     * @param formatted the formatted object
@@ -105,7 +105,7 @@ public class Ids
    }
 
    /**
-    * Utility method which will format a {@link Formatted} object, for example i.e. {@link Site.Id} using the format
+    * Utility method which will format a {@link Formatted} object, for example {@link org.gatein.api.portal.site.Site.Id} using the format
     * used by {@link Formatter#format(String, Object...)}.
     *
     * @param formatted the formatted object
