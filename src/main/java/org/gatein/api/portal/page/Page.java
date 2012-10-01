@@ -22,7 +22,6 @@
 
 package org.gatein.api.portal.page;
 
-import org.gatein.api.annotation.Immutable;
 import org.gatein.api.internal.ArraysExt;
 import org.gatein.api.portal.Formatted;
 import org.gatein.api.portal.Group;
@@ -121,7 +120,6 @@ public class Page implements Serializable
       this.editPermission = permission;
    }
 
-   @Immutable
    public static class Id implements Formatted, Serializable
    {
       private final Site.Id siteId;

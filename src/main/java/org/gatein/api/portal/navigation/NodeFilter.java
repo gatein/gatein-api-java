@@ -23,9 +23,6 @@
 package org.gatein.api.portal.navigation;
 
 import org.gatein.api.Portal;
-import org.gatein.api.annotation.Immutable;
-import org.gatein.api.annotation.NotNull;
-import org.gatein.api.annotation.Nullable;
 import org.gatein.api.portal.User;
 import org.gatein.api.portal.page.Page;
 import org.gatein.api.util.Filter;
@@ -47,7 +44,7 @@ public class NodeFilter implements Filter<Node>
    private final Portal portal;
    private final User user;
 
-   public NodeFilter(boolean showAll, @Nullable Set<Visibility> visibilities, boolean accessPermission, boolean editPermission, @Nullable Portal portal, @Nullable User user)
+   public NodeFilter(boolean showAll, Set<Visibility> visibilities, boolean accessPermission, boolean editPermission, Portal portal, User user)
    {
       this.showAll = showAll;
       this.visibilities = (visibilities == null) ? Collections.<Visibility>emptySet() : new HashSet<Visibility>(visibilities);
@@ -65,7 +62,7 @@ public class NodeFilter implements Filter<Node>
    }
 
    @Override
-   public boolean accept(@NotNull Node node)
+   public boolean accept(Node node)
    {
       if (!showAll && !node.isVisible()) return false;
 

@@ -22,7 +22,6 @@
 
 package org.gatein.api.util;
 
-import org.gatein.api.annotation.Immutable;
 import org.gatein.api.internal.Objects;
 
 import java.io.Serializable;
@@ -32,7 +31,6 @@ import java.io.Serializable;
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-@Immutable
 public class Pagination implements Serializable
 {
    private final int offset;

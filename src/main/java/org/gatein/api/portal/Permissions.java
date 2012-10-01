@@ -22,10 +22,6 @@
 
 package org.gatein.api.portal;
 
-import org.gatein.api.annotation.NotNull;
-import org.gatein.api.portal.Group;
-import org.gatein.api.portal.Permission;
-
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -37,7 +33,7 @@ public class Permissions
 {
    private static final Permission EVERYONE = new Permission();
 
-   public static Permission any(@NotNull String... group)
+   public static Permission any(String... group)
    {
       return new Permission(new Group.Membership(Group.Membership.ANY, new Group(group)));
    }
@@ -52,7 +48,7 @@ public class Permissions
       return new Permission(new Group.Membership(membershipType, new Group(group)));
    }
 
-   public static Permission memberships(@NotNull String...memberships)
+   public static Permission memberships(String... memberships)
    {
       if (memberships == null) throw new IllegalArgumentException("memberships cannot be null");
 

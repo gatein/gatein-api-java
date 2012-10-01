@@ -22,7 +22,6 @@
 
 package org.gatein.api.util;
 
-import org.gatein.api.annotation.Nullable;
 import org.gatein.api.internal.Objects;
 
 /**
@@ -39,11 +38,11 @@ public abstract class Query<T>
    /**
     * Constructor to be used by base query classes.
     *
-    * @param filter custom filter to "filter" the results. This can be null.
+    * @param filter     custom filter to "filter" the results. This can be null.
     * @param pagination pagination object controlling the pagination of the results. This can be null.
-    * @param sorting the sorting object controlling the sorting of the results. This can be null.
+    * @param sorting    the sorting object controlling the sorting of the results. This can be null.
     */
-   protected Query(@Nullable Pagination pagination, @Nullable Filter<T> filter, @Nullable Sorting<T> sorting)
+   protected Query(Pagination pagination, Filter<T> filter, Sorting<T> sorting)
    {
       this.filter = filter;
       this.pagination = pagination;
@@ -56,7 +55,6 @@ public abstract class Query<T>
     * @return the filter, which can be null.
     * @see Filter
     */
-   @Nullable
    public Filter<T> getFilter()
    {
       return filter;
@@ -68,7 +66,6 @@ public abstract class Query<T>
     * @return the pagination object, which can be null.
     * @see Pagination
     */
-   @Nullable
    public Pagination getPagination()
    {
       return pagination;
@@ -79,7 +76,6 @@ public abstract class Query<T>
     *
     * @return the sorting object, which can be null.
     */
-   @Nullable
    public Sorting<T> getSorting()
    {
       return sorting;

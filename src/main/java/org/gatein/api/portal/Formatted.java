@@ -22,7 +22,6 @@
 
 package org.gatein.api.portal;
 
-import org.gatein.api.annotation.NotNull;
 
 /**
  * Interface to represent something that supports {@link java.util.Formatter#format(String, Object...)} where
@@ -48,7 +47,7 @@ public interface Formatted
     * @param adapter an adapter which can 'adapt' the argument to be used in the format method as apposed to the original.
     * @return the formatter arguments
     */
-   Object[] getFormatArguments(@NotNull Adapter adapter);
+   Object[] getFormatArguments(Adapter adapter);
 
    /**
     * An adapter which can be used to adapt an argument which will be used in the formatting method as apposed to the
@@ -62,7 +61,6 @@ public interface Formatted
        * @param argument the original argument produced by the <code>Formatted</code> implementation.
        * @return the object to use for the formatting method {@link java.util.Formatter#format(String, Object...)}
        */
-      @NotNull
-      Object adapt(int index, @NotNull Object argument);
+      Object adapt(int index, Object argument);
    }
 }

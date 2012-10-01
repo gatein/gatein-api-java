@@ -22,8 +22,6 @@
 
 package org.gatein.api.portal.navigation;
 
-import org.gatein.api.annotation.Immutable;
-import org.gatein.api.annotation.NotNull;
 import org.gatein.api.internal.Strings;
 
 import java.util.ArrayList;
@@ -35,7 +33,6 @@ import java.util.List;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-@Immutable
 public class NodePath implements Iterable<String>
 {
    private final List<String> pathList;
@@ -45,22 +42,22 @@ public class NodePath implements Iterable<String>
       this(Collections.<String>emptyList());
    }
 
-   public NodePath(@NotNull String...pathList)
+   public NodePath(String...pathList)
    {
       this(Arrays.asList(pathList));
    }
 
-   public NodePath(@NotNull List<String> pathList)
+   public NodePath(List<String> pathList)
    {
       this.pathList = new ArrayList<String>(pathList);
    }
 
-   public NodePath append(@NotNull String...elements)
+   public NodePath append(String...elements)
    {
       return append(new NodePath(elements));
    }
 
-   public NodePath append(@NotNull NodePath path)
+   public NodePath append(NodePath path)
    {
       List<String> list = new ArrayList<String>(pathList.size() + path.pathList.size());
       list.addAll(pathList);

@@ -22,8 +22,6 @@
 
 package org.gatein.api.portal.navigation;
 
-import org.gatein.api.annotation.Immutable;
-import org.gatein.api.annotation.NotNull;
 import org.gatein.api.internal.Objects;
 
 import java.io.Serializable;
@@ -32,24 +30,23 @@ import java.util.Date;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-@Immutable
 public class PublicationDate implements Serializable
 {
-   public static PublicationDate startingOn(@NotNull Date start)
+   public static PublicationDate startingOn(Date start)
    {
       if (start == null) throw new IllegalArgumentException("start cannot be null");
 
       return new PublicationDate(start.getTime(), -1);
    }
 
-   public static PublicationDate endingOn(@NotNull Date end)
+   public static PublicationDate endingOn(Date end)
    {
       if (end == null) throw new IllegalArgumentException("End cannot be null");
 
       return new PublicationDate(-1, end.getTime());
    }
 
-   public static PublicationDate between(@NotNull Date start, @NotNull Date end)
+   public static PublicationDate between(Date start, Date end)
    {
       if (start == null) throw new IllegalArgumentException("start cannot be null");
       if (end == null) throw new IllegalArgumentException("End cannot be null");
@@ -66,7 +63,7 @@ public class PublicationDate implements Serializable
       this.end = end;
    }
 
-   public boolean within(@NotNull Date date)
+   public boolean within(Date date)
    {
       if (date == null) throw new IllegalArgumentException("date cannot be null");
 

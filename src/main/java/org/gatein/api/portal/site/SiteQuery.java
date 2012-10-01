@@ -22,9 +22,6 @@
 
 package org.gatein.api.portal.site;
 
-import org.gatein.api.annotation.Immutable;
-import org.gatein.api.annotation.NotNull;
-import org.gatein.api.annotation.Nullable;
 import org.gatein.api.util.Filter;
 import org.gatein.api.util.Pagination;
 import org.gatein.api.util.Query;
@@ -38,7 +35,6 @@ import java.util.EnumSet;
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-@Immutable
 public class SiteQuery extends Query<Site>
 {
    private final EnumSet<Site.Type> siteTypes;
@@ -53,8 +49,8 @@ public class SiteQuery extends Query<Site>
     * @see Query
     * @see SiteQuery.Builder
     */
-   public SiteQuery(@Nullable EnumSet<Site.Type> siteTypes, boolean hiddenSites,
-                    @Nullable Filter<Site> filter, @Nullable Pagination pagination, @Nullable Sorting<Site> sorting)
+   public SiteQuery(EnumSet<Site.Type> siteTypes, boolean hiddenSites,
+                    Filter<Site> filter, Pagination pagination, Sorting<Site> sorting)
    {
       super(pagination, filter, sorting);
       this.siteTypes = siteTypes;
@@ -120,7 +116,7 @@ public class SiteQuery extends Query<Site>
        * @param query the query object
        * @return this builder
        */
-      public Builder from(@NotNull SiteQuery query)
+      public Builder from(SiteQuery query)
       {
          return super.from(query).withSiteTypes(query.getSiteTypes()).withHiddenSites(query.hasHiddenSites());
       }
@@ -130,7 +126,7 @@ public class SiteQuery extends Query<Site>
        * @see SiteQuery#getSiteTypes
        * @return this builder
        */
-      public Builder withSiteTypes(@NotNull Site.Type first, @Nullable Site.Type...rest)
+      public Builder withSiteTypes(Site.Type first, Site.Type...rest)
       {
          return withSiteTypes(EnumSet.of(first, rest));
       }

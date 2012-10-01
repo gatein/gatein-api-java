@@ -22,9 +22,6 @@
 
 package org.gatein.api.portal.navigation;
 
-import org.gatein.api.annotation.Immutable;
-import org.gatein.api.annotation.NotNull;
-import org.gatein.api.annotation.Nullable;
 import org.gatein.api.internal.Objects;
 
 import java.io.Serializable;
@@ -32,7 +29,6 @@ import java.io.Serializable;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-@Immutable
 public class Visibility implements Serializable
 {
    private final Flag flag;
@@ -43,17 +39,17 @@ public class Visibility implements Serializable
       this(Flag.VISIBLE, null);
    }
 
-   public Visibility(@NotNull Flag flag)
+   public Visibility(Flag flag)
    {
       this(flag, null);
    }
 
-   public Visibility(@NotNull PublicationDate publicationDate)
+   public Visibility(PublicationDate publicationDate)
    {
       this(Flag.PUBLICATION, publicationDate);
    }
 
-   public Visibility(@NotNull Flag flag, @NotNull PublicationDate publicationDate)
+   public Visibility(Flag flag, PublicationDate publicationDate)
    {
       if (flag == null) throw new IllegalArgumentException("flag cannot be null");
       if (flag == Flag.PUBLICATION && publicationDate == null) throw new IllegalArgumentException("publicationDate cannot be null when the flag is set to " + Flag.PUBLICATION);
@@ -79,13 +75,11 @@ public class Visibility implements Serializable
       }
    }
 
-   @NotNull
    public Flag getFlag()
    {
       return flag;
    }
 
-   @Nullable
    public PublicationDate getPublicationDate()
    {
       return publicationDate;

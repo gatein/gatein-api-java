@@ -23,13 +23,8 @@
 package org.gatein.api.portal.navigation;
 
 import org.gatein.api.Portal;
-import org.gatein.api.annotation.NotNull;
 import org.gatein.api.internal.Strings;
 import org.gatein.api.portal.User;
-import org.gatein.api.portal.navigation.Node;
-import org.gatein.api.portal.navigation.NodeFilter;
-import org.gatein.api.portal.navigation.NodePath;
-import org.gatein.api.portal.navigation.NodeVisitor;
 import org.gatein.api.util.Filter;
 
 /**
@@ -122,7 +117,7 @@ public class Nodes
     * @param path the string of the path
     * @return a node path representing the path of the string
     */
-   public static NodePath path(@NotNull String path)
+   public static NodePath path(String path)
    {
       return new NodePath(Strings.splitter("/").trim().ignoreEmptyStrings().split(path));
    }
@@ -131,7 +126,7 @@ public class Nodes
 
    //------------------------------------ Node Filter Utility Methods ------------------------------------------------//
 
-   public static Filter<Node> userFilter(@NotNull User user, @NotNull Portal portal)
+   public static Filter<Node> userFilter(User user, Portal portal)
    {
       return new NodeFilter.Builder().withAccess(user, portal).build();
    }

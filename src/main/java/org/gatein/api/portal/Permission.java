@@ -22,8 +22,6 @@
 
 package org.gatein.api.portal;
 
-import org.gatein.api.annotation.Immutable;
-import org.gatein.api.annotation.NotNull;
 import org.gatein.api.internal.Objects;
 
 import java.util.Collections;
@@ -33,7 +31,6 @@ import java.util.Set;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-@Immutable
 public class Permission
 {
    private final Set<Group.Membership> memberships;
@@ -43,7 +40,7 @@ public class Permission
       memberships = Collections.emptySet();
    }
 
-   public Permission(@NotNull Group.Membership membership)
+   public Permission(Group.Membership membership)
    {
       this(Collections.singleton(membership));
    }

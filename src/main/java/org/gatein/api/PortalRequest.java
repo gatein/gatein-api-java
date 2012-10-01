@@ -22,8 +22,6 @@
 
 package org.gatein.api;
 
-import org.gatein.api.annotation.NotNull;
-import org.gatein.api.annotation.Nullable;
 import org.gatein.api.portal.navigation.Nodes;
 import org.gatein.api.portal.User;
 import org.gatein.api.portal.navigation.Navigation;
@@ -69,18 +67,16 @@ public abstract class PortalRequest
     */
    public abstract Locale getLocale();
 
-   @NotNull
    public Site getSite()
    {
       return getPortal().getSite(getSiteId());
    }
 
-   public void save(@NotNull Site site)
+   public void save(Site site)
    {
       getPortal().saveSite(site);
    }
 
-   @Nullable
    public Page getPage()
    {
       Page.Id pageId = getNode().getPageId();
@@ -88,25 +84,22 @@ public abstract class PortalRequest
       return (pageId == null) ? null : getPortal().getPage(pageId);
    }
 
-   public void save(@NotNull Page page)
+   public void save(Page page)
    {
       getPortal().savePage(page);
    }
 
-   @NotNull
    public Navigation getNavigation()
    {
       return getNavigation(1, Nodes.userFilter(getUser(), getPortal()));
    }
 
-   @NotNull
-   public Navigation getNavigation(int depth, @Nullable Filter<Node> filter)
+   public Navigation getNavigation(int depth, Filter<Node> filter)
    {
       Portal portal = getPortal();
       return portal.getNavigation(getSiteId(), Nodes.visitNodes(depth), filter);
    }
 
-   @NotNull
    public Node getNode() throws EntityNotFoundException
    {
       Node node = getPortal().getNode(getSiteId(), getNodePath());
@@ -115,7 +108,6 @@ public abstract class PortalRequest
       return node;
    }
 
-   @NotNull
    public abstract Portal getPortal();
 
    public static PortalRequest getInstance()

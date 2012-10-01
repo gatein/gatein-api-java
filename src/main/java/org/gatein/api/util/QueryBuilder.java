@@ -22,8 +22,6 @@
 
 package org.gatein.api.util;
 
-import org.gatein.api.annotation.NotNull;
-
 import java.util.Comparator;
 
 /**
@@ -42,7 +40,7 @@ public abstract class QueryBuilder<T, Q extends Query<T>, B extends QueryBuilder
    {
    }
 
-   public B from(@NotNull Query<T> query)
+   public B from(Query<T> query)
    {
       return withPagination(query.getPagination()).withFilter(query.getFilter()).withSorting(query.getSorting());
    }

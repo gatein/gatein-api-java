@@ -22,8 +22,6 @@
 
 package org.gatein.api.portal.navigation;
 
-import org.gatein.api.annotation.NotNull;
-import org.gatein.api.annotation.Nullable;
 import org.gatein.api.internal.Objects;
 import org.gatein.api.portal.Label;
 import org.gatein.api.portal.page.Page;
@@ -51,7 +49,7 @@ public class Node implements Serializable
     *
     * @param name the name of the node.
     */
-   public Node(@NotNull String name)
+   public Node(String name)
    {
       if (name == null) throw new IllegalArgumentException("name cannot be null");
 
@@ -65,7 +63,7 @@ public class Node implements Serializable
     *
     * @param node the node to copy fields from. Changing this node has no impact on the new node being created.
     */
-   public Node(@NotNull Node node)
+   public Node(Node node)
    {
       this(node.name, node, null); //dissociate the parent
    }
@@ -76,7 +74,7 @@ public class Node implements Serializable
     * @param name the new name of the node
     * @param node the node to copy fields from. Changing this node has no impact on the new node being created.
     */
-   public Node(@NotNull String name, @NotNull Node node)
+   public Node(String name, Node node)
    {
       this(name, node, null); //dissociate the parent
    }
@@ -127,13 +125,12 @@ public class Node implements Serializable
       return path;
    }
 
-   @Nullable
    public Label getLabel()
    {
       return label;
    }
 
-   public void setLabel(@Nullable Label label)
+   public void setLabel(Label label)
    {
       this.label = label;
    }
@@ -148,7 +145,7 @@ public class Node implements Serializable
       return visibility;
    }
 
-   public void setVisibility(@NotNull Visibility visibility)
+   public void setVisibility(Visibility visibility)
    {
       if (visibility == null) throw new IllegalArgumentException("visibility cannot be null");
 
@@ -161,7 +158,7 @@ public class Node implements Serializable
       this.visibility = new Visibility(flag, visibility.getPublicationDate());
    }
 
-   public void setVisibility(@Nullable PublicationDate publicationDate)
+   public void setVisibility(PublicationDate publicationDate)
    {
       Visibility.Flag flag = visibility.getFlag();
       if (publicationDate != null)
@@ -186,13 +183,12 @@ public class Node implements Serializable
       this.iconName = iconName;
    }
 
-   @Nullable
    public Page.Id getPageId()
    {
       return pageId;
    }
 
-   public void setPageId(@Nullable Page.Id pageId)
+   public void setPageId(Page.Id pageId)
    {
       this.pageId = pageId;
    }
@@ -202,8 +198,7 @@ public class Node implements Serializable
       return children.get(index);
    }
 
-   @Nullable
-   public Node getChild(@NotNull String name)
+   public Node getChild(String name)
    {
       for (Node node : children)
       {

@@ -23,7 +23,6 @@
 package org.gatein.api.portal;
 
 
-import org.gatein.api.annotation.NotNull;
 import org.gatein.api.internal.Objects;
 
 import java.util.Collection;
@@ -49,19 +48,19 @@ public class Attributes
       this.values = values;
    }
 
-   public <T> T get(@NotNull Key<T> key)
+   public <T> T get(Key<T> key)
    {
       if (key == null) throw new IllegalArgumentException("key cannot be null");
       return (T) values.get(key);
    }
 
-   public <T> T put(@NotNull Key<T> key, T value)
+   public <T> T put(Key<T> key, T value)
    {
       if (key == null) throw new IllegalArgumentException("key cannot be null");
       return (T) values.put(key, value);
    }
 
-   public <T> T remove(@NotNull Key<T> key)
+   public <T> T remove(Key<T> key)
    {
       if (key == null) throw new IllegalArgumentException("key cannot be null");
       return (T) values.remove(key);
@@ -128,7 +127,7 @@ public class Attributes
       private final String name;
       private Class<T> type;
 
-      public Key(@NotNull String name, @NotNull Class<T> type)
+      public Key(String name, Class<T> type)
       {
          if (name == null) throw new IllegalArgumentException("name cannot be null");
          if (type == null) throw new IllegalArgumentException("type cannot be null");

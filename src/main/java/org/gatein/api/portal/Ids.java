@@ -22,7 +22,6 @@
 
 package org.gatein.api.portal;
 
-import org.gatein.api.annotation.NotNull;
 import org.gatein.api.internal.Strings;
 import org.gatein.api.portal.page.Page;
 import org.gatein.api.portal.site.Site;
@@ -37,32 +36,32 @@ public class Ids
 {
    //----------------------------------- Id creation utility methods -------------------------------------------------//
 
-   public static Site.Id siteId(@NotNull String siteName)
+   public static Site.Id siteId(String siteName)
    {
       return new Site.Id(Site.Type.SITE, siteName);
    }
 
-   public static Site.Id siteId(@NotNull Group group)
+   public static Site.Id siteId(Group group)
    {
       return new Site.Id(Site.Type.SPACE, group.getId());
    }
 
-   public static Site.Id siteId(@NotNull User user)
+   public static Site.Id siteId(User user)
    {
       return new Site.Id(Site.Type.DASHBOARD, user.getId());
    }
 
-   public static Page.Id pageId(@NotNull String siteName, @NotNull String pageName)
+   public static Page.Id pageId(String siteName, String pageName)
    {
       return new Page.Id(siteId(siteName), pageName);
    }
 
-   public static Page.Id pageId(@NotNull Group group, @NotNull String pageName)
+   public static Page.Id pageId(Group group, String pageName)
    {
       return new Page.Id(siteId(group), pageName);
    }
 
-   public static Page.Id pageId(@NotNull User user, @NotNull String pageName)
+   public static Page.Id pageId(User user, String pageName)
    {
       return new Page.Id(siteId(user), pageName);
    }
@@ -99,7 +98,7 @@ public class Ids
     * @param format    the string format as defined by {@link Formatter#format(String, Object...)}.
     * @return the formatted string
     */
-   public static String format(@NotNull Formatted formatted, @NotNull String format)
+   public static String format(Formatted formatted, String format)
    {
       return doFormat(formatted, format, null);
    }
@@ -114,7 +113,7 @@ public class Ids
     * @param format    the string format as defined by {@link Formatter#format(String, Object...)}.
     * @return the formatted string
     */
-   public static String format(@NotNull Formatted formatted, @NotNull String format, @NotNull Formatted.Adapter adapter)
+   public static String format(Formatted formatted, String format, Formatted.Adapter adapter)
    {
       if (adapter == null) throw new IllegalArgumentException("adapter cannot be null");
 
@@ -155,7 +154,7 @@ public class Ids
       }
    }
 
-   private static Site.Id siteIdFromString(@NotNull String idAsString)
+   private static Site.Id siteIdFromString(String idAsString)
    {
       if (idAsString == null) throw new IllegalArgumentException("idAsString cannot be null.");
 
@@ -201,7 +200,7 @@ public class Ids
       }
 
       @Override
-      public Object adapt(int index, @NotNull Object argument)
+      public Object adapt(int index, Object argument)
       {
          if (argument instanceof String && contains(index))
          {

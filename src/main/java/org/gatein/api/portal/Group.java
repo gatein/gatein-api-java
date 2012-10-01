@@ -22,27 +22,24 @@
 
 package org.gatein.api.portal;
 
-import org.gatein.api.annotation.Immutable;
-import org.gatein.api.annotation.NotNull;
 import org.gatein.api.internal.Objects;
 import org.gatein.api.internal.Strings;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-@Immutable
 public class Group
 {
    private final String id;
 
-   public Group(@NotNull String...group)
+   public Group(String... group)
    {
       if (group == null) throw new IllegalArgumentException("group cannot be null");
 
       this.id = Strings.joiner("/").leading().trimToNull().ignoreNulls().join(group);
    }
 
-   public Group(@NotNull String id)
+   public Group(String id)
    {
       this(Strings.splitter("/").trim().ignoreEmptyStrings().split(id));
    }
@@ -60,7 +57,6 @@ public class Group
          .toString();
    }
 
-   @Immutable
    public static class Membership
    {
       public static final String ANY = "*";
@@ -68,7 +64,7 @@ public class Group
       private final String membershipType;
       private final Group group;
 
-      public Membership(@NotNull String membershipType, @NotNull Group group)
+      public Membership(String membershipType, Group group)
       {
          if (membershipType == null) throw new IllegalArgumentException("membershipType cannot be null");
          if (group == null) throw new IllegalArgumentException("group cannot be null");

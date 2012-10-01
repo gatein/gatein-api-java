@@ -22,8 +22,6 @@
 
 package org.gatein.api.util;
 
-import org.gatein.api.annotation.Immutable;
-import org.gatein.api.annotation.Nullable;
 import org.gatein.api.internal.Objects;
 
 import java.io.Serializable;
@@ -34,7 +32,6 @@ import java.util.Comparator;
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-@Immutable
 public class Sorting<T> implements Serializable
 {
    private final Order order;
@@ -72,7 +69,6 @@ public class Sorting<T> implements Serializable
     *
     * @return the order, which can be null.
     */
-   @Nullable
    public Order getOrder()
    {
       return order;
@@ -83,7 +79,6 @@ public class Sorting<T> implements Serializable
     *
     * @return the comparator, which can be null.
     */
-   @Nullable
    public Comparator<T> getComparator()
    {
       return comparator;

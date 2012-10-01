@@ -22,8 +22,6 @@
 
 package org.gatein.api.portal.navigation;
 
-import org.gatein.api.annotation.NotNull;
-import org.gatein.api.annotation.Nullable;
 import org.gatein.api.portal.site.Site;
 
 import java.io.Serializable;
@@ -41,7 +39,7 @@ public class Navigation implements Serializable
    private int priority;
    private List<Node> nodes;
 
-   public Navigation(@NotNull Site.Id siteId, int priority)
+   public Navigation(Site.Id siteId, int priority)
    {
       if (siteId == null) throw new IllegalArgumentException("siteId cannot be null");
 
@@ -70,23 +68,22 @@ public class Navigation implements Serializable
       return nodes;
    }
 
-   public void setNodes(@NotNull List<Node> nodes)
+   public void setNodes(List<Node> nodes)
    {
       this.nodes = new ArrayList<Node>(nodes);
    }
 
-   public void addNodes(@NotNull List<Node> nodes)
+   public void addNodes(List<Node> nodes)
    {
       this.nodes.addAll(nodes);
    }
 
-   public void addNode(@NotNull Node node)
+   public void addNode(Node node)
    {
       this.nodes.add(node);
    }
 
-   @Nullable
-   public Node removeNode(@NotNull String name)
+   public Node removeNode(String name)
    {
       Node found = null;
       for (Node node : nodes)

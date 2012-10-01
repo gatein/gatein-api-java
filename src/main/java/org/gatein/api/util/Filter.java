@@ -22,8 +22,6 @@
 
 package org.gatein.api.util;
 
-import org.gatein.api.annotation.NotNull;
-
 /**
  * A filter to be used to "filter" the results of a query.
  *
@@ -37,5 +35,5 @@ public interface Filter<T>
     * @param object the object containing the information needed to determine the filter. This object cannot be null.
     * @return true if the filter should include the object, false to exclude from results.
     */
-   boolean accept(@NotNull T object);
+   boolean accept(T object);
 }

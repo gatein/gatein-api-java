@@ -22,8 +22,6 @@
 
 package org.gatein.api.portal.site;
 
-import org.gatein.api.annotation.Immutable;
-import org.gatein.api.annotation.NotNull;
 import org.gatein.api.internal.Objects;
 import org.gatein.api.portal.Attributes;
 import org.gatein.api.portal.Formatted;
@@ -67,7 +65,7 @@ public class Site implements Comparable<Site>, Serializable
       this(Ids.siteId(user));
    }
 
-   public Site(@NotNull Id id)
+   public Site(Id id)
    {
       if (id == null) throw new IllegalArgumentException("id cannot be null");
 
@@ -182,13 +180,12 @@ public class Site implements Comparable<Site>, Serializable
          .toString();
    }
 
-   @Immutable
    public static class Id implements Formatted, Serializable
    {
       private final Type type;
       private final String name;
 
-      public Id(@NotNull Type type, @NotNull String name)
+      public Id(Type type, String name)
       {
          if (type == null) throw new IllegalArgumentException("type cannot be null");
          if (name == null) throw new IllegalArgumentException("name cannot be null");
@@ -239,7 +236,7 @@ public class Site implements Comparable<Site>, Serializable
       }
 
       @Override
-      public Object[] getFormatArguments(@NotNull Adapter adapter)
+      public Object[] getFormatArguments(Adapter adapter)
       {
          Object[] args = new Object[2];
          args[0] = adapt(0, type.getName(), adapter);
