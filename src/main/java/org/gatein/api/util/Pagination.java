@@ -66,6 +66,18 @@ public class Pagination implements Serializable
       return new Pagination(offset+limit, limit);
    }
 
+   public Pagination getPrevious()
+   {
+      if (limit >= offset)
+      {
+         return new Pagination(0, limit);
+      }
+      else
+      {
+         return new Pagination(offset-limit, limit);
+      }
+   }
+
    @Override
    public String toString()
    {

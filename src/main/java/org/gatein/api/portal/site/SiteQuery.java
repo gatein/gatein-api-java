@@ -95,6 +95,17 @@ public class SiteQuery extends Query<Site>
    }
 
    /**
+    * Convenience method for creating a new SiteQuery with pagination set to the previous page represented by
+    * by {@link org.gatein.api.util.Pagination#getPrevious()}
+    *
+    * @return a new SiteQuery with pagination set to the previous page.
+    */
+   public SiteQuery previousPage()
+   {
+      return new Builder().from(this).withPreviousPage().build();
+   }
+
+   /**
     * The builder class responsible for building SiteQuery objects.
     *
     * @see SiteQuery
@@ -126,7 +137,7 @@ public class SiteQuery extends Query<Site>
 
       public Builder withSiteTypes(EnumSet<Site.Type> siteTypes)
       {
-         this.siteTypes.addAll(siteTypes);
+         this.siteTypes = EnumSet.copyOf(siteTypes);
          return this;
       }
 

@@ -31,11 +31,30 @@ public class User
 
    public User(String id)
    {
+      if (id == null) throw new IllegalArgumentException("user id cannot be null. If the user is unknown, use User.anonymous() instead.");
+
       this.id = id;
+   }
+
+   private User()
+   {
+      this.id = null; //TODO: Do we want the id to be null, or set it to some strange internal string ? This may produce NPE if someone is expecting a value here.
    }
 
    public String getId()
    {
       return id;
    }
+
+   public boolean isAnonymous()
+   {
+      return this == ANONYMOUS;
+   }
+
+   public static User anonymous()
+   {
+      return ANONYMOUS;
+   }
+
+   private static final User ANONYMOUS = new User();
 }

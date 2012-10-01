@@ -40,23 +40,39 @@ import java.util.Locale;
  */
 public abstract class PortalRequest
 {
-   protected final Site.Id siteId;
-   protected final NodePath path;
-   protected final User user;
-   protected final Locale locale;
+   /**
+    * The current portal request user. If the request is for an unauthenticated user then {@link User#anonymous()}
+    * should be returned.
+    *
+    * @return the user of the current portal request. This should never return null.
+    */
+   public abstract User getUser();
 
-   protected PortalRequest(Site.Id siteId, NodePath path, User user, Locale locale)
-   {
-      this.siteId = siteId;
-      this.path = path;
-      this.user = user;
-      this.locale = locale;
-   }
+   /**
+    * The current portal request Site Id.
+    *
+    * @return the Site Id of the current portal request. This should never return null.
+    */
+   public abstract Site.Id getSiteId();
+
+   /**
+    * The current portal request node path.
+    *
+    * @return the node path of the current portal request.
+    */
+   public abstract NodePath getNodePath();
+
+   /**
+    * The current portal request locale.
+    *
+    * @return the locale of the current portal request.
+    */
+   public abstract Locale getLocale();
 
    @NotNull
    public Site getSite()
    {
-      return getPortal().getSite(siteId);
+      return getPortal().getSite(getSiteId());
    }
 
    public void save(@NotNull Site site)
@@ -80,21 +96,21 @@ public abstract class PortalRequest
    @NotNull
    public Navigation getNavigation()
    {
-      return getNavigation(1, Nodes.userFilter(user, getPortal()));
+      return getNavigation(1, Nodes.userFilter(getUser(), getPortal()));
    }
 
    @NotNull
    public Navigation getNavigation(int depth, @Nullable Filter<Node> filter)
    {
       Portal portal = getPortal();
-      return portal.getNavigation(siteId, Nodes.visitNodes(depth), filter);
+      return portal.getNavigation(getSiteId(), Nodes.visitNodes(depth), filter);
    }
 
    @NotNull
    public Node getNode() throws EntityNotFoundException
    {
-      Node node = getPortal().getNode(siteId, path);
-      if (node == null) throw new EntityNotFoundException("Node could not be found for current request path " + path);
+      Node node = getPortal().getNode(getSiteId(), getNodePath());
+      if (node == null) throw new EntityNotFoundException("Node could not be found for current request path " + getNodePath());
 
       return node;
    }

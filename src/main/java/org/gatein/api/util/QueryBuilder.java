@@ -31,12 +31,12 @@ import java.util.Comparator;
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-@SuppressWarnings("unchecked")
+//
 public abstract class QueryBuilder<T, Q extends Query<T>, B extends QueryBuilder<T, Q, B>>
 {
    protected Filter<T> filter;
    protected Pagination pagination;
-   protected Sorting sorting;
+   protected Sorting<T> sorting;
 
    protected QueryBuilder()
    {
@@ -47,6 +47,7 @@ public abstract class QueryBuilder<T, Q extends Query<T>, B extends QueryBuilder
       return withPagination(query.getPagination()).withFilter(query.getFilter()).withSorting(query.getSorting());
    }
 
+   @SuppressWarnings("unchecked")
    public B withFilter(Filter<T> filter)
    {
       this.filter = filter;
@@ -58,12 +59,14 @@ public abstract class QueryBuilder<T, Q extends Query<T>, B extends QueryBuilder
       return withPagination(new Pagination(offset, limit));
    }
 
+   @SuppressWarnings("unchecked")
    public B withPagination(Pagination pagination)
    {
       this.pagination = pagination;
       return (B) this;
    }
 
+   @SuppressWarnings("unchecked")
    public B withNextPage()
    {
       if (pagination != null)
@@ -74,41 +77,53 @@ public abstract class QueryBuilder<T, Q extends Query<T>, B extends QueryBuilder
       return (B) this;
    }
 
+   @SuppressWarnings("unchecked")
+   public B withPreviousPage()
+   {
+      if (pagination != null)
+      {
+         pagination = pagination.getPrevious();
+      }
+
+      return (B) this;
+   }
+
+   @SuppressWarnings("unchecked")
    public B withSorting(Sorting<T> sorting)
    {
       this.sorting = sorting;
       return (B) this;
    }
 
-   public SortingBuilder<T, B> withSorting()
+   public SortingBuilder<T, Q, B> withSorting()
    {
-      return new SortingBuilder();
+      return new SortingBuilder<T,Q,B>(this);
    }
 
    public abstract Q build();
 
-   public class SortingBuilder<T, B extends QueryBuilder<T, ?, ?>>
+   public static class SortingBuilder<T, Q extends Query<T>, B extends QueryBuilder<T, Q, B>>
    {
-      private SortingBuilder()
+      private final QueryBuilder<T, Q, B> queryBuilder;
+
+      private SortingBuilder(QueryBuilder<T, Q, B> queryBuilder)
       {
+         this.queryBuilder = queryBuilder;
       }
 
       public B withComparator(Comparator<T> comparator)
       {
-         QueryBuilder.this.sorting = new Sorting(comparator);
-         return (B) QueryBuilder.this;
+         return queryBuilder.withSorting(new Sorting<T>(comparator));
       }
 
       public B ascending()
       {
-         QueryBuilder.this.sorting = new Sorting(Sorting.Order.ascending);
-         return (B) QueryBuilder.this;
+         return queryBuilder.withSorting(new Sorting<T>(Sorting.Order.ascending));
       }
 
       public B descending()
       {
-         QueryBuilder.this.sorting = new Sorting(Sorting.Order.descending);
-         return (B) QueryBuilder.this;
+         return queryBuilder.withSorting(new Sorting<T>(Sorting.Order.descending));
       }
    }
 }
