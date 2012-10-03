@@ -108,7 +108,7 @@ public class SiteQuery extends Query<Site>
     */
    public static class Builder extends QueryBuilder<Site, SiteQuery, Builder>
    {
-      private EnumSet<Site.Type> siteTypes;
+      private EnumSet<Site.Type> siteTypes = EnumSet.of(Site.Type.SITE);
       private boolean hiddenSites = false;
 
       /**
@@ -134,6 +134,12 @@ public class SiteQuery extends Query<Site>
       public Builder withSiteTypes(EnumSet<Site.Type> siteTypes)
       {
          this.siteTypes = EnumSet.copyOf(siteTypes);
+         return this;
+      }
+
+      public Builder withAllSiteTypes()
+      {
+         this.siteTypes = EnumSet.allOf(Site.Type.class);
          return this;
       }
 

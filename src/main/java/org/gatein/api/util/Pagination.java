@@ -38,15 +38,17 @@ public class Pagination implements Serializable
 
    public Pagination(int offset, int limit)
    {
+      if (limit == 0) throw new IllegalArgumentException("limit cannot be 0 for pagination.");
+
       this.offset = offset;
       this.limit = limit;
    }
 
    public int getPageNumber()
    {
-      if (offset < limit || limit == 0) return 0;
+      if (offset < limit || limit == 0) return 1;
 
-      return offset / limit;
+      return (offset / limit) + 1;
    }
 
    public int getOffset()
@@ -80,8 +82,9 @@ public class Pagination implements Serializable
    public String toString()
    {
       return Objects.toStringBuilder()
-         .add("offset", offset)
-         .add("limit", limit)
+         .add("offset", getOffset())
+         .add("limit", getLimit())
+         .add("pageNumber", getPageNumber())
          .toString();
    }
 
