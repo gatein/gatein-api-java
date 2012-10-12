@@ -22,42 +22,53 @@
 
 package org.gatein.api.portal;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
+import org.gatein.api.internal.Strings;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class Permissions
+public class Membership
 {
-   private static final Permission EVERYONE = new Permission();
+   public static final String ANY = "*";
 
-   public static Permission any(String... group)
+   public static Membership any(String... group)
    {
-      return new Permission(new Group.Membership(Group.Membership.ANY, new Group(group)));
+      return new Membership(ANY, new Group(group));
    }
 
-   public static Permission everyone()
+   private final String membershipType;
+   private final Group group;
+
+   public Membership(String membershipType, Group group)
    {
-      return EVERYONE;
+      if (membershipType == null) throw new IllegalArgumentException("membershipType cannot be null");
+      if (group == null) throw new IllegalArgumentException("group cannot be null");
+
+      this.membershipType = membershipType;
+      this.group = group;
    }
 
-   public static Permission membership(String membershipType, String... group)
+   public String getMembershipType()
    {
-      return new Permission(new Group.Membership(membershipType, new Group(group)));
+      return membershipType;
    }
 
-   public static Permission memberships(String... memberships)
+   public Group getGroup()
    {
-      if (memberships == null) throw new IllegalArgumentException("memberships cannot be null");
+      return group;
+   }
 
-      Set<Group.Membership> groupMemberships = new LinkedHashSet<Group.Membership>(memberships.length);
-      for (String membership : memberships)
-      {
-         groupMemberships.add(Group.Membership.fromString(membership));
-      }
+   @Override
+   public String toString()
+   {
+      return membershipType + ":" + group.getId();
+   }
 
-      return new Permission(groupMemberships);
+   public static Membership fromString(String membership)
+   {
+      if (membership == null) throw new IllegalArgumentException("membership cannot be null");
+
+      String[] parts = Strings.splitter(":").split(membership);
+      return new Membership(parts[0], new Group(parts[1]));
    }
 }

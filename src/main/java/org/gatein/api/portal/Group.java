@@ -56,45 +56,4 @@ public class Group
          .add("groupId", id)
          .toString();
    }
-
-   public static class Membership
-   {
-      public static final String ANY = "*";
-
-      private final String membershipType;
-      private final Group group;
-
-      public Membership(String membershipType, Group group)
-      {
-         if (membershipType == null) throw new IllegalArgumentException("membershipType cannot be null");
-         if (group == null) throw new IllegalArgumentException("group cannot be null");
-
-         this.membershipType = membershipType;
-         this.group = group;
-      }
-
-      public String getMembershipType()
-      {
-         return membershipType;
-      }
-
-      public Group getGroup()
-      {
-         return group;
-      }
-
-      @Override
-      public String toString()
-      {
-         return membershipType + ":" + group.getId();
-      }
-
-      public static Membership fromString(String membership)
-      {
-         if (membership == null) throw new IllegalArgumentException("membership cannot be null");
-
-         String[] parts = Strings.splitter(":").split(membership);
-         return new Membership(parts[0], new Group(parts[1]));
-      }
-   }
 }

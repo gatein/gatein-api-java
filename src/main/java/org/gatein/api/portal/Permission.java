@@ -33,36 +33,53 @@ import java.util.Set;
  */
 public class Permission
 {
-   private final Set<Group.Membership> memberships;
+   private static final Permission EVERYONE = new Permission();
+
+   public static Permission everyone()
+   {
+      return EVERYONE;
+   }
+
+   public static Permission any(String... group)
+   {
+      return new Permission(Membership.any(group));
+   }
+
+   private final Set<Membership> memberships;
 
    public Permission()
    {
       memberships = Collections.emptySet();
    }
 
-   public Permission(Group.Membership membership)
+   public Permission(String membershipType, Group group)
+   {
+      this(new Membership(membershipType, group));
+   }
+
+   public Permission(Membership membership)
    {
       this(Collections.singleton(membership));
    }
 
-   public Permission(Set<Group.Membership> memberships)
+   public Permission(Set<Membership> memberships)
    {
-      this(new LinkedHashSet<Group.Membership>(memberships));
+      this(new LinkedHashSet<Membership>(memberships));
    }
 
-   private Permission(LinkedHashSet<Group.Membership> memberships)
+   private Permission(LinkedHashSet<Membership> memberships)
    {
       this.memberships = memberships;
    }
 
-   public Set<Group.Membership> getMemberships()
+   public Set<Membership> getMemberships()
    {
       return Collections.unmodifiableSet(memberships);
    }
 
-   public Permission addMembership(Group.Membership membership)
+   public Permission addMembership(Membership membership)
    {
-      LinkedHashSet<Group.Membership> newMemberships = new LinkedHashSet<Group.Membership>(memberships.size()+1);
+      LinkedHashSet<Membership> newMemberships = new LinkedHashSet<Membership>(memberships.size() + 1);
       newMemberships.addAll(memberships);
       newMemberships.add(membership);
 
