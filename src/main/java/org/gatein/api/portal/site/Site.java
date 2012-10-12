@@ -24,23 +24,19 @@ package org.gatein.api.portal.site;
 
 import org.gatein.api.internal.Objects;
 import org.gatein.api.portal.Attributes;
-import org.gatein.api.portal.Formatted;
 import org.gatein.api.portal.Group;
-import org.gatein.api.portal.Ids;
 import org.gatein.api.portal.Permission;
 import org.gatein.api.portal.User;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 public class Site implements Comparable<Site>, Serializable
 {
-   private final Id id;
+   private final SiteId id;
 
    private String title;
    private String description;
@@ -52,20 +48,20 @@ public class Site implements Comparable<Site>, Serializable
 
    public Site(String name)
    {
-      this(Ids.siteId(name));
+      this(new SiteId(name));
    }
 
    public Site(Group group)
    {
-      this(Ids.siteId(group));
+      this(new SiteId(group));
    }
 
    public Site(User user)
    {
-      this(Ids.siteId(user));
+      this(new SiteId(user));
    }
 
-   public Site(Id id)
+   public Site(SiteId id)
    {
       if (id == null) throw new IllegalArgumentException("id cannot be null");
 
@@ -73,12 +69,12 @@ public class Site implements Comparable<Site>, Serializable
       this.attributes = new Attributes();
    }
 
-   public Id getId()
+   public SiteId getId()
    {
       return id;
    }
 
-   public Type getType()
+   public SiteType getType()
    {
       return id.getType();
    }
@@ -178,112 +174,6 @@ public class Site implements Comparable<Site>, Serializable
          .add("editPermission", getEditPermission())
          .add("accessPermission", getAccessPermission())
          .toString();
-   }
-
-   public static class Id implements Formatted, Serializable
-   {
-      private final Type type;
-      private final String name;
-
-      public Id(Type type, String name)
-      {
-         if (type == null) throw new IllegalArgumentException("type cannot be null");
-         if (name == null) throw new IllegalArgumentException("name cannot be null");
-
-         this.type = type;
-         this.name = name;
-      }
-
-      public Type getType()
-      {
-         return type;
-      }
-
-      public String getName()
-      {
-         return name;
-      }
-
-      @Override
-      public boolean equals(Object o)
-      {
-         if (this == o) return true;
-         if (o == null || getClass() != o.getClass()) return false;
-
-         Id id = (Id) o;
-
-         return name.equals(id.name) && type == id.type;
-      }
-
-      @Override
-      public int hashCode()
-      {
-         int result = type.hashCode();
-         result = 31 * result + name.hashCode();
-         return result;
-      }
-
-      @Override
-      public String toString()
-      {
-         return Ids.format(this, "Site.Id[type=%s, name=%s]");
-      }
-
-      @Override
-      public Object[] getFormatArguments()
-      {
-         return getFormatArguments(null);
-      }
-
-      @Override
-      public Object[] getFormatArguments(Adapter adapter)
-      {
-         Object[] args = new Object[2];
-         args[0] = adapt(0, type.getName(), adapter);
-         args[1] = adapt(1, name, adapter);
-
-         return args;
-      }
-
-      private Object adapt(int index, Object original, Adapter adapter)
-      {
-         return (adapter == null) ? original : adapter.adapt(index, original);
-      }
-   }
-
-   public static enum Type
-   {
-      SITE("site"), SPACE("space"), DASHBOARD("dashboard");
-
-      private final String name;
-
-      private Type(String name)
-      {
-         this.name = name;
-      }
-
-      public String getName()
-      {
-         return name;
-      }
-
-      public static Type forName(String name)
-      {
-         return MAP.get(name);
-      }
-
-      private static final Map<String, Type> MAP;
-
-      static
-      {
-         final Map<String, Type> map = new HashMap<String, Type>();
-         for (Type type : values())
-         {
-            final String name = type.getName();
-            if (name != null) map.put(name, type);
-         }
-         MAP = map;
-      }
    }
 
    public static final class AttributeKeys

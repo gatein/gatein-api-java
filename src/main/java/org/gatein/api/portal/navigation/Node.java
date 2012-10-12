@@ -24,7 +24,7 @@ package org.gatein.api.portal.navigation;
 
 import org.gatein.api.internal.Objects;
 import org.gatein.api.portal.Label;
-import org.gatein.api.portal.page.Page;
+import org.gatein.api.portal.page.PageId;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class Node implements Serializable
    private Label label;
    private Visibility visibility;
    private String iconName;
-   private Page.Id pageId;
+   private PageId pageId;
    private List<Node> children;
 
    /**
@@ -183,12 +183,12 @@ public class Node implements Serializable
       this.iconName = iconName;
    }
 
-   public Page.Id getPageId()
+   public PageId getPageId()
    {
       return pageId;
    }
 
-   public void setPageId(Page.Id pageId)
+   public void setPageId(PageId pageId)
    {
       this.pageId = pageId;
    }

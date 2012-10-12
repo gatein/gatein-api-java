@@ -25,6 +25,7 @@ package org.gatein.api.portal.navigation;
 import org.gatein.api.Portal;
 import org.gatein.api.portal.User;
 import org.gatein.api.portal.page.Page;
+import org.gatein.api.portal.page.PageId;
 import org.gatein.api.util.Filter;
 
 import java.util.Collections;
@@ -71,7 +72,7 @@ public class NodeFilter implements Filter<Node>
          if (!visibility.equals(node.getVisibility())) return false;
       }
 
-      Page.Id pageId = node.getPageId();
+      PageId pageId = node.getPageId();
       if (editPermission || accessPermission)
       {
          if (pageId == null) return false;

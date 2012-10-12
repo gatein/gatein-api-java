@@ -28,7 +28,9 @@ import org.gatein.api.portal.navigation.Navigation;
 import org.gatein.api.portal.navigation.Node;
 import org.gatein.api.portal.navigation.NodePath;
 import org.gatein.api.portal.page.Page;
+import org.gatein.api.portal.page.PageId;
 import org.gatein.api.portal.site.Site;
+import org.gatein.api.portal.site.SiteId;
 import org.gatein.api.util.Filter;
 
 import java.util.Locale;
@@ -39,29 +41,29 @@ import java.util.Locale;
 public abstract class PortalRequest
 {
    /**
-    * The current portal request user. If the request is for an unauthenticated user then {@link User#anonymous()}
-    * should be returned.
+    * The current user of the request. If this request is for an unauthenticated user then {@link User#anonymous()}
+    * is returned.
     *
-    * @return the user of the current portal request. This should never return null.
+    * @return the user of the current portal request. This should never be null.
     */
    public abstract User getUser();
 
    /**
-    * The current portal request Site Id.
+    * The current Site Id of the request.
     *
-    * @return the Site Id of the current portal request. This should never return null.
+    * @return the Site Id of the current portal request. This should never be null.
     */
-   public abstract Site.Id getSiteId();
+   public abstract SiteId getSiteId();
 
    /**
-    * The current portal request node path.
+    * The current node path of the request.
     *
-    * @return the node path of the current portal request.
+    * @return the node path of the current portal request. This should never be null.
     */
    public abstract NodePath getNodePath();
 
    /**
-    * The current portal request locale.
+    * The current locale of the request.
     *
     * @return the locale of the current portal request.
     */
@@ -79,7 +81,7 @@ public abstract class PortalRequest
 
    public Page getPage()
    {
-      Page.Id pageId = getNode().getPageId();
+      PageId pageId = getNode().getPageId();
 
       return (pageId == null) ? null : getPortal().getPage(pageId);
    }

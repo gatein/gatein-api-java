@@ -37,7 +37,7 @@ import java.util.EnumSet;
  */
 public class SiteQuery extends Query<Site>
 {
-   private final EnumSet<Site.Type> siteTypes;
+   private final EnumSet<SiteType> siteTypes;
    private final boolean hiddenSites;
 
    /**
@@ -49,7 +49,7 @@ public class SiteQuery extends Query<Site>
     * @see Query
     * @see SiteQuery.Builder
     */
-   public SiteQuery(EnumSet<Site.Type> siteTypes, boolean hiddenSites,
+   private SiteQuery(EnumSet<SiteType> siteTypes, boolean hiddenSites,
                     Filter<Site> filter, Pagination pagination, Sorting<Site> sorting)
    {
       super(pagination, filter, sorting);
@@ -62,7 +62,7 @@ public class SiteQuery extends Query<Site>
     *
     * @return the site types associated with this query.
     */
-   public EnumSet<Site.Type> getSiteTypes()
+   public EnumSet<SiteType> getSiteTypes()
    {
       return siteTypes;
    }
@@ -108,7 +108,7 @@ public class SiteQuery extends Query<Site>
     */
    public static class Builder extends QueryBuilder<Site, SiteQuery, Builder>
    {
-      private EnumSet<Site.Type> siteTypes = EnumSet.of(Site.Type.SITE);
+      private EnumSet<SiteType> siteTypes = EnumSet.of(SiteType.SITE);
       private boolean hiddenSites = false;
 
       /**
@@ -126,12 +126,12 @@ public class SiteQuery extends Query<Site>
        * @see SiteQuery#getSiteTypes
        * @return this builder
        */
-      public Builder withSiteTypes(Site.Type first, Site.Type...rest)
+      public Builder withSiteTypes(SiteType first, SiteType...rest)
       {
          return withSiteTypes(EnumSet.of(first, rest));
       }
 
-      public Builder withSiteTypes(EnumSet<Site.Type> siteTypes)
+      public Builder withSiteTypes(EnumSet<SiteType> siteTypes)
       {
          this.siteTypes = EnumSet.copyOf(siteTypes);
          return this;
@@ -139,7 +139,7 @@ public class SiteQuery extends Query<Site>
 
       public Builder withAllSiteTypes()
       {
-         this.siteTypes = EnumSet.allOf(Site.Type.class);
+         this.siteTypes = EnumSet.allOf(SiteType.class);
          return this;
       }
 
@@ -162,7 +162,7 @@ public class SiteQuery extends Query<Site>
       @Override
       public SiteQuery build()
       {
-         if (siteTypes == null || siteTypes.isEmpty()) siteTypes = EnumSet.of(Site.Type.SITE);
+         if (siteTypes == null || siteTypes.isEmpty()) siteTypes = EnumSet.of(SiteType.SITE);
 
          return new SiteQuery(siteTypes, hiddenSites, filter, pagination, sorting);
       }

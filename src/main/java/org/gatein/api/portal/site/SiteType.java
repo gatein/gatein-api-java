@@ -20,23 +20,45 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.portal;
+package org.gatein.api.portal.site;
 
-import org.gatein.api.portal.page.PageQuery;
-import org.gatein.api.portal.site.SiteQuery;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
- */
-public class Queries
+* @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
+*/
+public enum SiteType
 {
-   public static SiteQuery.Builder siteQuery()
+   SITE("site"), SPACE("space"), DASHBOARD("dashboard");
+
+   private final String name;
+
+   SiteType(String name)
    {
-      return new SiteQuery.Builder();
+      this.name = name;
    }
 
-   public static PageQuery.Builder pageQuery()
+   public String getName()
    {
-      return new PageQuery.Builder();
+      return name;
+   }
+
+   public static SiteType forName(String name)
+   {
+      return MAP.get(name);
+   }
+
+   private static final Map<String, SiteType> MAP;
+
+   static
+   {
+      final Map<String, SiteType> map = new HashMap<String, SiteType>();
+      for (SiteType type : values())
+      {
+         final String name = type.getName();
+         if (name != null) map.put(name, type);
+      }
+      MAP = map;
    }
 }

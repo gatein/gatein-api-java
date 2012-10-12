@@ -29,9 +29,11 @@ import org.gatein.api.portal.navigation.Node;
 import org.gatein.api.portal.navigation.NodePath;
 import org.gatein.api.portal.navigation.NodeVisitor;
 import org.gatein.api.portal.page.Page;
+import org.gatein.api.portal.page.PageId;
 import org.gatein.api.portal.page.PageQuery;
 import org.gatein.api.portal.Permission;
 import org.gatein.api.portal.site.Site;
+import org.gatein.api.portal.site.SiteId;
 import org.gatein.api.portal.site.SiteQuery;
 import org.gatein.api.util.Filter;
 
@@ -42,21 +44,21 @@ import java.util.List;
  */
 public interface Portal
 {
-   Site getSite(Site.Id id);
+   Site getSite(SiteId id);
 
    List<Site> findSites(SiteQuery query);
 
    void saveSite(Site site);
 
-   void removeSite(Site.Id siteId);
+   void removeSite(SiteId siteId);
 
-   Navigation getNavigation(Site.Id siteId, NodeVisitor visitor, Filter<Node> filter);
+   Navigation getNavigation(SiteId siteId, NodeVisitor visitor, Filter<Node> filter);
 
    void saveNavigation(Navigation navigation);
 
-   public Node getNode(Site.Id siteId, NodePath nodePath);
+   public Node getNode(SiteId siteId, NodePath nodePath);
 
-   Node getNode(Site.Id siteId, NodeVisitor visitor, Filter<Node> filter);
+   Node getNode(SiteId siteId, NodeVisitor visitor, Filter<Node> filter);
 
    void loadNodes(Node parent, NodeVisitor visitor);
 
@@ -64,13 +66,13 @@ public interface Portal
 
    Label resolveLabel(Label label);
 
-   Page getPage(Page.Id pageId);
+   Page getPage(PageId pageId);
 
    List<Page> findPages(PageQuery query);
 
    void savePage(Page page);
 
-   void removePage(Page.Id pageId);
+   void removePage(PageId pageId);
 
    boolean hasPermission(User user, Permission permission);
 }

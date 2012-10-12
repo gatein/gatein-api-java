@@ -22,29 +22,10 @@
 
 package org.gatein.api.portal.page;
 
-import org.junit.Test;
-
-import static org.gatein.api.portal.Ids.*;
-import static org.junit.Assert.*;
-
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 public class PageTest
 {
-   @Test
-   public void testPageId_Equals()
-   {
-      Page.Id pageId1 = pageId("foo", "bar");
-      Page.Id pageId2 = pageId("foo", "bar");
-
-      assertTrue(pageId1.equals(pageId2));
-      assertTrue(pageId2.equals(pageId1));
-      assertNotSame(pageId1, pageId2);
-
-      pageId1 = new Page.Id(siteId("bar"), "bar");
-      assertFalse(pageId1.equals(pageId2));
-      pageId2 = new Page.Id(siteId("bar"), "baz");
-      assertFalse(pageId1.equals(pageId2));
-   }
+   //TODO: Add tests
 }

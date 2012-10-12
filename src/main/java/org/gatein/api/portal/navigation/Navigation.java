@@ -22,7 +22,7 @@
 
 package org.gatein.api.portal.navigation;
 
-import org.gatein.api.portal.site.Site;
+import org.gatein.api.portal.site.SiteId;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,11 +35,11 @@ import java.util.List;
  */
 public class Navigation implements Serializable
 {
-   private final Site.Id siteId;
+   private final SiteId siteId;
    private int priority;
    private List<Node> nodes;
 
-   public Navigation(Site.Id siteId, int priority)
+   public Navigation(SiteId siteId, int priority)
    {
       if (siteId == null) throw new IllegalArgumentException("siteId cannot be null");
 
@@ -48,7 +48,7 @@ public class Navigation implements Serializable
       this.nodes = new ArrayList<Node>();
    }
 
-   public Site.Id getSiteId()
+   public SiteId getSiteId()
    {
       return siteId;
    }

@@ -22,7 +22,7 @@
 
 package org.gatein.api.portal.page;
 
-import org.gatein.api.portal.site.Site;
+import org.gatein.api.portal.site.SiteId;
 import org.gatein.api.util.Filter;
 import org.gatein.api.util.Pagination;
 import org.gatein.api.util.Query;
@@ -34,14 +34,14 @@ import org.gatein.api.util.Sorting;
  */
 public class PageQuery extends Query<Page>
 {
-   public PageQuery(Pagination pagination, Filter<Page> filter, Sorting sorting)
+   private PageQuery(Pagination pagination, Filter<Page> filter, Sorting<Page> sorting)
    {
       super(pagination, filter, sorting);
    }
 
    public static class Builder extends QueryBuilder<Page, PageQuery, Builder>
    {
-      private Site.Id siteId;
+      private SiteId siteId;
 
       @Override
       public PageQuery build()
@@ -49,7 +49,7 @@ public class PageQuery extends Query<Page>
          return new PageQuery(pagination, filter, sorting);
       }
 
-      public Builder withSiteId(Site.Id siteId)
+      public Builder withSiteId(SiteId siteId)
       {
          this.siteId = siteId;
          return this;
