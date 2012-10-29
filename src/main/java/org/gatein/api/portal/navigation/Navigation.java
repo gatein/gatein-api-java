@@ -22,10 +22,12 @@
 
 package org.gatein.api.portal.navigation;
 
+import org.gatein.api.ApiException;
+import org.gatein.api.portal.Label;
+import org.gatein.api.portal.page.PageId;
 import org.gatein.api.portal.site.SiteId;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,7 +39,7 @@ public class Navigation implements Serializable
 {
    private final SiteId siteId;
    private int priority;
-   private List<Node> nodes;
+   private Node rootNode;
 
    public Navigation(SiteId siteId, int priority)
    {
@@ -45,7 +47,7 @@ public class Navigation implements Serializable
 
       this.siteId = siteId;
       this.priority = priority;
-      this.nodes = new ArrayList<Node>();
+      this.rootNode = new RootNode();
    }
 
    public SiteId getSiteId()
@@ -63,38 +65,72 @@ public class Navigation implements Serializable
       this.priority = priority;
    }
 
-   public List<Node> getNodes()
+   public Node getRootNode()
    {
-      return nodes;
+      return rootNode;
    }
 
-   public void setNodes(List<Node> nodes)
+   public List<Node> getNodes()
    {
-      this.nodes = new ArrayList<Node>(nodes);
+      return rootNode.getChildren();
    }
 
    public void addNodes(List<Node> nodes)
    {
-      this.nodes.addAll(nodes);
+      rootNode.addChildren(nodes);
    }
 
    public void addNode(Node node)
    {
-      this.nodes.add(node);
+      rootNode.addChild(node);
    }
 
    public Node removeNode(String name)
    {
-      Node found = null;
-      for (Node node : nodes)
+      return rootNode.removeNode(name);
+   }
+
+   private static class RootNode extends Node
+   {
+      public RootNode()
       {
-         if (node.getName().equals(name))
-         {
-            found = node;
-         }
+         super(ROOT_NODE_NAME);
       }
 
-      nodes.remove(found);
-      return found;
+      @Override
+      public void setIconName(String iconName)
+      {
+         throw new ApiException("Can't set icon name on root node");
+      }
+
+      @Override
+      public void setLabel(Label label)
+      {
+         throw new ApiException("Can't set icon name on root node");
+      }
+
+      @Override
+      public void setPageId(PageId pageId)
+      {
+         throw new ApiException("Can't set icon name on root node");
+      }
+
+      @Override
+      public void setVisibility(boolean visible)
+      {
+         throw new ApiException("Can't set visibility on root node");
+      }
+
+      @Override
+      public void setVisibility(PublicationDate publicationDate)
+      {
+         throw new ApiException("Can't set visibility on root node");
+      }
+
+      @Override
+      public void setVisibility(Visibility visibility)
+      {
+         throw new ApiException("Can't set visibility on root node");
+      }
    }
 }

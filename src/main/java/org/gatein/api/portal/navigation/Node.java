@@ -22,11 +22,13 @@
 
 package org.gatein.api.portal.navigation;
 
+import org.gatein.api.internal.URLFactory;
 import org.gatein.api.internal.Objects;
 import org.gatein.api.portal.Label;
 import org.gatein.api.portal.page.PageId;
 
 import java.io.Serializable;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,6 +38,8 @@ import java.util.List;
  */
 public class Node implements Serializable
 {
+   public static final String ROOT_NODE_NAME = "root";
+
    private final String name;
    private Node parent;
    private Label label;
@@ -43,6 +47,8 @@ public class Node implements Serializable
    private String iconName;
    private PageId pageId;
    private List<Node> children;
+   private boolean childrenLoaded;
+   private URLFactory urlFactory;
 
    /**
     * Creates a new node with the specified name.
@@ -193,6 +199,16 @@ public class Node implements Serializable
       this.pageId = pageId;
    }
 
+   public URI getURI()
+   {
+      return urlFactory.createURL(this);
+   }
+
+   public void setUrlFactory(URLFactory urlFactory)
+   {
+      this.urlFactory = urlFactory;
+   }
+
    public Node getChild(int index)
    {
       return children.get(index);
@@ -211,6 +227,16 @@ public class Node implements Serializable
    public int getChildCount()
    {
       return children.size();
+   }
+
+   public boolean isChildrenLoaded()
+   {
+      return childrenLoaded;
+   }
+   
+   public void setChildrenLoaded(boolean childrenLoaded)
+   {
+      this.childrenLoaded = childrenLoaded;
    }
 
    public List<Node> getChildren()
