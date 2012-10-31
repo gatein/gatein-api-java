@@ -35,7 +35,7 @@ import java.util.List;
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class Navigation implements Serializable
+public class Navigation implements NodeContainer, Serializable
 {
    private final SiteId siteId;
    private int priority;
@@ -65,36 +65,46 @@ public class Navigation implements Serializable
       this.priority = priority;
    }
 
+   @Override
+   public boolean isNodesLoaded()
+   {
+      return rootNode.isNodesLoaded();
+   }
+
+   @Override
+   public void addNode(Node node)
+   {
+      rootNode.addNode(node);
+   }
+
+   @Override
+   public Node getNode(String name)
+   {
+      return rootNode.getNode(name);
+   }
+
+   @Override
+   public boolean removeNode(String name)
+   {
+      return rootNode.removeNode(name);
+   }
+
+   @Override
+   public List<Node> getNodes()
+   {
+      return rootNode.getNodes();
+   }
+
    public Node getRootNode()
    {
       return rootNode;
-   }
-
-   public List<Node> getNodes()
-   {
-      return rootNode.getChildren();
-   }
-
-   public void addNodes(List<Node> nodes)
-   {
-      rootNode.addChildren(nodes);
-   }
-
-   public void addNode(Node node)
-   {
-      rootNode.addChild(node);
-   }
-
-   public Node removeNode(String name)
-   {
-      return rootNode.removeNode(name);
    }
 
    private static class RootNode extends Node
    {
       public RootNode()
       {
-         super(ROOT_NODE_NAME);
+         super(ROOT_NAME);
       }
 
       @Override
