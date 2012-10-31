@@ -22,7 +22,6 @@
 
 package org.gatein.api.portal.navigation;
 
-import org.gatein.api.internal.URLFactory;
 import org.gatein.api.internal.Objects;
 import org.gatein.api.portal.Label;
 import org.gatein.api.portal.page.PageId;
@@ -45,7 +44,7 @@ public class Node implements NodeContainer, Serializable
    private String iconName;
    private PageId pageId;
    private NodeList children;
-   private URLFactory urlFactory;
+   private URI uri;
 
    /**
     * Creates a new node with the specified name.
@@ -198,12 +197,17 @@ public class Node implements NodeContainer, Serializable
 
    public URI getURI()
    {
-      return urlFactory.createURL(this);
+      if (uri == null && parent != null && parent.getURI() != null)
+      {
+         uri = parent.getURI().resolve(name);
+      }
+
+      return uri;
    }
 
-   public void setUrlFactory(URLFactory urlFactory)
+   public void setUri(URI uri)
    {
-      this.urlFactory = urlFactory;
+      this.uri = uri;
    }
 
    void setParent(Node parent)
