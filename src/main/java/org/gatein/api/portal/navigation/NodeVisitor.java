@@ -22,6 +22,8 @@
 
 package org.gatein.api.portal.navigation;
 
+import org.gatein.api.portal.page.PageId;
+
 /**
  * A node visitor is used to walk the node tree. Some node visitor's are available in the <code>Nodes</code> utility
  * class, i.e. {@link Nodes#visitNodes(int)}
@@ -38,5 +40,33 @@ public interface NodeVisitor
     * @param node the node with just it's data, i.e. no child nodes.
     * @return true to continue visiting children nodes
     */
-   boolean visit(int depth, Node node);
+   boolean visit(int depth, String name, NodeDetails details);
+
+   public static class NodeDetails
+   {
+      private String iconName;
+      private Visibility visibility;
+      private PageId pageId;
+      private NodePath nodePath;
+
+      public Visibility getVisibility()
+      {
+         return visibility;
+      }
+
+      public String getIconName()
+      {
+         return iconName;
+      }
+
+      public PageId getPageId()
+      {
+         return pageId;
+      }
+
+      public NodePath getNodePath()
+      {
+         return nodePath;
+      }
+   }
 }

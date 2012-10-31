@@ -155,7 +155,7 @@ public class Nodes
       }
 
       @Override
-      public boolean visit(int depth, Node node)
+      public boolean visit(int depth, String name, NodeDetails details)
       {
          return (height < 0 || depth < height);
       }
@@ -174,10 +174,8 @@ public class Nodes
       }
 
       @Override
-      public boolean visit(int depth, Node node)
+      public boolean visit(int depth, String name, NodeDetails details)
       {
-         String name = node.getName();
-
          if (depth < path.size())
          {
             return depth == 0 || path.getSegment(depth - 1).equals(name);
@@ -186,7 +184,7 @@ public class Nodes
          {
             if (depth == 0 || path.getSegment(depth - 1).equals(name))
             {
-               return visitor.visit(0, node);
+               return visitor.visit(0, name, details);
             }
             else
             {
@@ -195,7 +193,7 @@ public class Nodes
          }
          else
          {
-            return visitor.visit(depth - path.size(), node);
+            return visitor.visit(depth - path.size(), name, details);
          }
       }
    }
