@@ -37,19 +37,19 @@ public interface NodeVisitor
     * Determines if more nodes should be visited.
     *
     * @param depth the current depth in the node hierarchy. This can be relative depending on where the visitor begins.
-    * @param node the node with just it's data, i.e. no child nodes.
+    * @param details the node details that are available while visiting
     * @return true to continue visiting children nodes
     */
    boolean visit(int depth, String name, NodeDetails details);
 
    public static interface NodeDetails
    {
-      public Visibility getVisibility();
+      Visibility getVisibility();
 
-      public String getIconName();
+      String getIconName();
 
-      public PageId getPageId();
+      PageId getPageId();
 
-      public NodePath getNodePath();
+      NodePath getNodePath();
    }
 }

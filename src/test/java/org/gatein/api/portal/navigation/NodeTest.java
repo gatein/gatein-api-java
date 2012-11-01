@@ -22,8 +22,10 @@
 
 package org.gatein.api.portal.navigation;
 
-import org.gatein.api.portal.navigation.Node;
 import org.junit.Test;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import static org.junit.Assert.*;
 
@@ -36,7 +38,7 @@ public class NodeTest
    //TODO: More tests
 
    @Test(expected = IllegalArgumentException.class)
-   public void testnewNode_NullName()
+   public void test_NullName()
    {
       new Node((String) null);
    }
@@ -48,7 +50,7 @@ public class NodeTest
    }
 
    @Test
-   public void testNode_Equals()
+   public void testEquals()
    {
       Node foo = new Node("foo");
       Node foo2 = new Node("foo");
@@ -59,10 +61,122 @@ public class NodeTest
    }
 
    @Test
-   public void testNode_Copy()
+   public void testCopy()
    {
       Node original = new Node("foo");
       Node copy = new Node(original);
       assertEquals(original, copy);
+   }
+
+   @Test
+   public void testCopy_Rename()
+   {
+      Node original = new Node("foo");
+      original.addNode(new Node("1"));
+      original.addNode(new Node("2"));
+
+      Node copy = new Node("bar", original);
+      assertEquals("bar", copy.getName());
+      assertEquals(copy.getNodes(), original.getNodes());
+   }
+
+   @Test
+   public void testAdd()
+   {
+      Node parent = new Node("root");
+      Node child = new Node("child");
+      parent.addNode(child);
+
+      assertEquals(1, parent.getNodes().size());
+      assertTrue(parent == child.getParent());
+   }
+
+   @Test(expected = NullPointerException.class)
+   public void testAdd_NullChild()
+   {
+      Node parent = new Node("parent");
+      parent.addNode(null);
+   }
+
+   @Test(expected = IllegalArgumentException.class)
+   public void testAdd_SameChild()
+   {
+      Node parent = new Node("parent");
+      parent.addNode(new Node("child"));
+      parent.addNode(new Node("child"));
+   }
+
+   @Test(expected = IllegalArgumentException.class)
+   public void testAdd_ChildWithParent()
+   {
+      Node parent = new Node("parent");
+      Node parent2 = new Node("parent2");
+      Node child = new Node("child");
+      parent2.addNode(child);
+
+      parent.addNode(child);
+   }
+
+   @Test(expected = IllegalArgumentException.class)
+   public void testAdd_Self()
+   {
+      Node node = new Node("node");
+      node.addNode(node);
+   }
+
+   @Test(expected = IllegalArgumentException.class)
+   public void testAdd_Cyclic()
+   {
+      Node parent = new Node("parent");
+      Node child1 = new Node("child1");
+      parent.addNode(child1);
+      child1.addNode(parent);
+   }
+
+   @Test
+   public void testUri() throws Exception
+   {
+      Node parent = new Node("parent");
+      parent.setBaseURI(uri("/portal/classic/"));
+      parent.addNode(new Node("child"));
+
+      assertEquals(uri("/portal/classic/parent/child/"), parent.getNode("child").getURI());
+   }
+
+   @Test
+   public void testUri_NoTrailingSlash() throws Exception
+   {
+      Node parent = new Node("parent");
+      parent.setBaseURI(uri("/portal/classic"));
+      parent.addNode(new Node("child"));
+
+      assertEquals(uri("/portal/classic/parent/child/"), parent.getNode("child").getURI());
+   }
+
+   @Test
+   public void testUri_Copy() throws Exception
+   {
+      Node parent = new Node("parent");
+      parent.setBaseURI(uri("/portal/classic/"));
+      parent.addNode(new Node("child"));
+
+      parent = new Node(parent);
+      assertEquals(uri("/portal/classic/parent/child/"), parent.getNode("child").getURI());
+   }
+
+   @Test
+   public void testUri_Copy_Rename() throws Exception
+   {
+      Node parent = new Node("parent");
+      parent.setBaseURI(uri("/portal/classic"));
+      parent.addNode(new Node("child"));
+
+      parent = new Node("foo", parent);
+      assertEquals(uri("/portal/classic/foo/child/"), parent.getNode("child").getURI());
+   }
+
+   private static URI uri(String path) throws URISyntaxException
+   {
+      return new URI("http", null, "localhost", 8080, path, null, null);
    }
 }

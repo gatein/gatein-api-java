@@ -1,8 +1,8 @@
 /*
- * JBoss, a division of Red Hat
- * Copyright 2012, Red Hat Middleware, LLC, and individual contributors as indicated
- * by the @authors tag. See the copyright.txt in the distribution for a
- * full listing of individual contributors.
+ * JBoss, Home of Professional Open Source.
+ * Copyright 2012, Red Hat, Inc., and individual contributors
+ * as indicated by the @author tags. See the copyright.txt file in the
+ * distribution for a full listing of individual contributors.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -23,7 +23,6 @@ package org.gatein.api.portal.navigation;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.ListIterator;
 
 /**
@@ -37,126 +36,72 @@ class NodeList extends ArrayList<Node>
 
    public NodeList(Node parent)
    {
+      // Parent should never be null for a NodeList
+      if (parent == null) throw new IllegalArgumentException("parent cannot be null");
       this.parent = parent;
    }
 
-   public NodeList(Node parent, int initialSize)
+   public NodeList(Node parent, NodeList original)
    {
-      super(initialSize);
+      super(original.size());
+
+      // Parent should never be null for a NodeList
+      if (parent == null) throw new IllegalArgumentException("parent cannot be null");
       this.parent = parent;
-   }
 
-   @Override
-   public void add(int index, Node n)
-   {
-      checkAdd(n, true);
-      super.add(index, n);
-      n.setParent(parent);
-   }
-
-   @Override
-   public boolean add(Node n)
-   {
-      checkAdd(n, true);
-
-      if (super.add(n))
+      // Copying NodeList by copying all nodes recursively
+      for (Node node : original)
       {
-         n.setParent(parent);
-         return true;
-      }
-      else
-      {
-         return false;
-      }
-   }
-
-   @Override
-   public boolean addAll(Collection<? extends Node> c)
-   {
-      for (Node n : c)
-      {
-         checkAdd(n, true);
-      }
-
-      if (super.addAll(c))
-      {
-         for (Node n : c)
+         if (add(new Node(node)))
          {
-            n.setParent(parent);
-         }
-         return true;
-      }
-      else
-      {
-         return false;
-      }
-   }
-
-   @Override
-   public boolean addAll(int index, Collection<? extends Node> c)
-   {
-      for (Node n : c)
-      {
-         checkAdd(n, true);
-      }
-
-      if (super.addAll(index, c))
-      {
-         for (Node n : c)
-         {
-            n.setParent(parent);
-         }
-         return true;
-      }
-      else
-      {
-         return false;
-      }
-   }
-
-   private void checkAdd(Node n, boolean checkExists)
-   {
-      if (n == parent) throw new IllegalArgumentException("Cannot add itself as a child.");
-      if (n.getParent() != null)
-         throw new IllegalArgumentException(
-               "Node being added is already associated with a parent. You can copy the node by passing it to the constructor which will remove the parent association.");
-
-      if (checkExists && get(n.getName()) != null)
-         throw new IllegalArgumentException("Child with name " + n.getName() + " already exists.");
-
-      checkCyclic();
-   }
-
-   private void checkCyclic()
-   {
-      if (parent instanceof Node)
-      {
-         Node c = (Node) parent;
-         Node current = (Node) c;
-         while ((current = current.getParent()) != null)
-         {
-            if (c == current.getParent()) throw new RuntimeException("Circular reference detected for node " + c.getName());
+            node.setParent(parent);
          }
       }
    }
 
    public Node get(String name)
    {
-      Iterator<Node> itr = iterator();
-      while (itr.hasNext())
-      {
-         Node n = itr.next();
-         if (n.getName().equals(name))
-         {
-            return n;
-         }
-      }
-      return null;
+      return findNode(name);
+   }
+
+   public boolean remove(String name)
+   {
+      Node node = findNode(name);
+      return (node != null) && super.remove(node);
    }
 
    public boolean isLoaded()
    {
       return loaded;
+   }
+
+   public void setLoaded(boolean loaded)
+   {
+      this.loaded = loaded;
+   }
+
+   @Override
+   public void add(int index, Node node)
+   {
+      _add(index, node);
+   }
+
+   @Override
+   public boolean add(Node node)
+   {
+      return _add(null, node);
+   }
+
+   @Override
+   public boolean addAll(Collection<? extends Node> nodes)
+   {
+      return _addAll(null, nodes);
+   }
+
+   @Override
+   public boolean addAll(int index, Collection<? extends Node> nodes)
+   {
+      return _addAll(index, nodes);
    }
 
    @Override
@@ -171,24 +116,87 @@ class NodeList extends ArrayList<Node>
       return new ListItr(super.listIterator(index));
    }
 
-   public boolean remove(String name)
+   private Node findNode(String name)
    {
-      Iterator<Node> itr = iterator();
-      while (itr.hasNext())
+      for (Node node : this)
       {
-         Node n = itr.next();
-         if (n.getName().equals(name))
-         {
-            itr.remove();
-            return true;
-         }
+         if (node.getName().equals(name)) return node;
       }
-      return false;
+
+      return null;
    }
 
-   public void setLoaded(boolean loaded)
+   private boolean _add(Integer index, Node node)
    {
-      this.loaded = loaded;
+      checkAdd(node, true);
+
+      boolean added;
+      if (index == null)
+      {
+         added = super.add(node);
+      }
+      else
+      {
+         super.add(index, node);
+         added = true;
+      }
+
+      if (added)
+      {
+         node.setParent(parent);
+      }
+
+      return added;
+   }
+
+   private boolean _addAll(Integer index, Collection<? extends Node> nodes)
+   {
+      for (Node node : nodes)
+      {
+         checkAdd(node, true);
+      }
+
+      boolean added;
+      if (index == null)
+      {
+         added = super.addAll(nodes);
+      }
+      else
+      {
+         added = super.addAll(index, nodes);
+      }
+
+      if (added)
+      {
+         for (Node node : nodes)
+         {
+            node.setParent(parent);
+         }
+      }
+
+      return added;
+   }
+
+   private void checkAdd(Node node, boolean checkExists)
+   {
+      if (node == parent) throw new IllegalArgumentException("Cannot add itself as a child.");
+      if (node.getParent() != null)
+         throw new IllegalArgumentException(
+            "Node being added is already associated with a parent. You can copy the node by passing it to the constructor which will remove the parent association.");
+
+      if (checkExists && get(node.getName()) != null)
+         throw new IllegalArgumentException("Child with name " + node.getName() + " already exists.");
+
+      checkCyclic(node);
+   }
+
+   private void checkCyclic(Node node)
+   {
+      Node current = parent;
+      while ((current = current.getParent()) != null)
+      {
+         if (node == current) throw new IllegalArgumentException("Cannot add '" + node.getName() +"' to '" + parent.getName() + "', circular reference detected.");
+      }
    }
 
    private class ListItr implements ListIterator<Node>
@@ -201,10 +209,10 @@ class NodeList extends ArrayList<Node>
       }
 
       @Override
-      public void add(Node e)
+      public void add(Node node)
       {
-         checkAdd(e, true);
-         itr.add(e);
+         checkAdd(node, true);
+         itr.add(node);
       }
 
       @Override
@@ -250,12 +258,12 @@ class NodeList extends ArrayList<Node>
       }
 
       @Override
-      public void set(Node e)
+      public void set(Node node)
       {
          int lastRet = itr.nextIndex() - 1;
-         boolean checkExists = !get(lastRet).getName().equals(e.getName());
-         checkAdd(e, checkExists);
-         itr.set(e);
+         boolean checkExists = !get(lastRet).getName().equals(node.getName());
+         checkAdd(node, checkExists);
+         itr.set(node);
       }
    }
 }

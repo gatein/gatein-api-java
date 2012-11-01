@@ -22,9 +22,6 @@
 
 package org.gatein.api.portal.navigation;
 
-import org.gatein.api.ApiException;
-import org.gatein.api.portal.Label;
-import org.gatein.api.portal.page.PageId;
 import org.gatein.api.portal.site.SiteId;
 
 import java.io.Serializable;
@@ -47,7 +44,7 @@ public class Navigation implements NodeContainer, Serializable
 
       this.siteId = siteId;
       this.priority = priority;
-      this.rootNode = new RootNode();
+      this.rootNode = Node.rootNode();
    }
 
    public SiteId getSiteId()
@@ -93,54 +90,5 @@ public class Navigation implements NodeContainer, Serializable
    public List<Node> getNodes()
    {
       return rootNode.getNodes();
-   }
-
-   public Node getRootNode()
-   {
-      return rootNode;
-   }
-
-   private static class RootNode extends Node
-   {
-      public RootNode()
-      {
-         super(ROOT_NAME);
-      }
-
-      @Override
-      public void setIconName(String iconName)
-      {
-         throw new ApiException("Can't set icon name on root node");
-      }
-
-      @Override
-      public void setLabel(Label label)
-      {
-         throw new ApiException("Can't set icon name on root node");
-      }
-
-      @Override
-      public void setPageId(PageId pageId)
-      {
-         throw new ApiException("Can't set icon name on root node");
-      }
-
-      @Override
-      public void setVisibility(boolean visible)
-      {
-         throw new ApiException("Can't set visibility on root node");
-      }
-
-      @Override
-      public void setVisibility(PublicationDate publicationDate)
-      {
-         throw new ApiException("Can't set visibility on root node");
-      }
-
-      @Override
-      public void setVisibility(Visibility visibility)
-      {
-         throw new ApiException("Can't set visibility on root node");
-      }
    }
 }
