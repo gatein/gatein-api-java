@@ -197,12 +197,18 @@ public class Node implements NodeContainer, Serializable
 
    public URI getURI()
    {
-      if (uri == null && parent != null && parent.getURI() != null)
+      if (uri != null)
       {
-         uri = parent.getURI().resolve(name);
+         return uri;
       }
-
-      return uri;
+      else if (parent != null && parent.getURI() != null)
+      {
+         return parent.getURI().resolve(name);
+      }
+      else
+      {
+         return uri;
+      }
    }
 
    public void setUri(URI uri)
