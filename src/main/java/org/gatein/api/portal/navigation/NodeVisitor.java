@@ -42,31 +42,14 @@ public interface NodeVisitor
     */
    boolean visit(int depth, String name, NodeDetails details);
 
-   public static class NodeDetails
+   public static interface NodeDetails
    {
-      private String iconName;
-      private Visibility visibility;
-      private PageId pageId;
-      private NodePath nodePath;
+      public Visibility getVisibility();
 
-      public Visibility getVisibility()
-      {
-         return visibility;
-      }
+      public String getIconName();
 
-      public String getIconName()
-      {
-         return iconName;
-      }
+      public PageId getPageId();
 
-      public PageId getPageId()
-      {
-         return pageId;
-      }
-
-      public NodePath getNodePath()
-      {
-         return nodePath;
-      }
+      public NodePath getNodePath();
    }
 }
