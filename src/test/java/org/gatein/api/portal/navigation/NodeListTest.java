@@ -21,6 +21,8 @@
  */
 package org.gatein.api.portal.navigation;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.ListIterator;
 
 import junit.framework.TestCase;
@@ -30,6 +32,23 @@ import junit.framework.TestCase;
  */
 public class NodeListTest extends TestCase
 {
+   public void testSort()
+   {
+      NodeList nodeList = new NodeList(new Node("parent"));
+      nodeList.add(new Node("3"));
+      nodeList.add(new Node("2"));
+      nodeList.add(new Node("1"));
+
+      Collections.sort(nodeList, new Comparator<Node>()
+      {
+         @Override
+         public int compare(Node o1, Node o2)
+         {
+            return o1.getName().compareTo(o2.getName());
+         }
+      });
+   }
+
    public void testListIterator()
    {
       NodeList nodeList = new NodeList(new Node("parent"));
