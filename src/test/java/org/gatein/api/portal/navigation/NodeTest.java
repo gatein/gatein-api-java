@@ -91,7 +91,7 @@ public class NodeTest
       assertTrue(parent == child.getParent());
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test(expected = IllegalArgumentException.class)
    public void testAdd_NullChild()
    {
       Node parent = new Node("parent");

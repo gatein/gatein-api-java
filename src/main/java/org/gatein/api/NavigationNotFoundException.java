@@ -31,8 +31,6 @@ import org.gatein.api.portal.site.SiteId;
  */
 public class NavigationNotFoundException extends ApiException
 {
-   private static final long serialVersionUID = 1L;
-
    public NavigationNotFoundException(final SiteId siteId)
    {
       super("Navigation for site '" + siteId + "' not found");

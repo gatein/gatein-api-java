@@ -23,7 +23,8 @@ package org.gatein.api.portal.navigation;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.ListIterator;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
@@ -105,15 +106,64 @@ class NodeList extends ArrayList<Node>
    }
 
    @Override
-   public ListIterator<Node> listIterator()
+   public Node set(int index, Node node)
    {
-      return new ListItr(super.listIterator());
+      if (node == null) throw new IllegalArgumentException("node cannot be null");
+
+      //TODO: Would we rather do this hack job, or just implement our own List like data structure and have a Nodes.sort() or something.
+      StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+      for (StackTraceElement ste : stackTrace)
+      {
+         if (ste.getClassName().equals(Collections.class.getName()) && ste.getMethodName().equals("sort"))
+         {
+            return super.set(index, node);
+         }
+      }
+      boolean checkExists = !get(index).getName().equals(node.getName());
+      checkAdd(node, checkExists);
+      return super.set(index, node);
    }
 
    @Override
-   public ListIterator<Node> listIterator(int index)
+   public Node remove(int index)
    {
-      return new ListItr(super.listIterator(index));
+      Node removed = super.remove(index);
+      removed.setParent(null);
+
+      return removed;
+   }
+
+   @Override
+   public boolean remove(Object o)
+   {
+      boolean removed = super.remove(o);
+      if (removed && o instanceof Node)
+      {
+         ((Node) o).setParent(null);
+      }
+
+      return removed;
+   }
+
+   @Override
+   protected void removeRange(int fromIndex, int toIndex)
+   {
+      List<Node> removed = new ArrayList<Node>(subList(fromIndex, toIndex));
+      super.removeRange(fromIndex, toIndex);
+      for (Node node : removed)
+      {
+         node.setParent(null);
+      }
+   }
+
+   @Override
+   public void clear()
+   {
+      for (Node node : this)
+      {
+         node.setParent(null);
+      }
+      super.clear();
    }
 
    private Node findNode(String name)
@@ -179,8 +229,9 @@ class NodeList extends ArrayList<Node>
 
    private void checkAdd(Node node, boolean checkExists)
    {
+      if (node == null) throw new IllegalArgumentException("Node cannot be null");
       if (node == parent) throw new IllegalArgumentException("Cannot add itself as a child.");
-      if (node.getParent() != null)
+      if (node.getParent() != null && parent != node.getParent())
          throw new IllegalArgumentException(
             "Node being added is already associated with a parent. You can copy the node by passing it to the constructor which will remove the parent association.");
 
@@ -196,74 +247,6 @@ class NodeList extends ArrayList<Node>
       while ((current = current.getParent()) != null)
       {
          if (node == current) throw new IllegalArgumentException("Cannot add '" + node.getName() +"' to '" + parent.getName() + "', circular reference detected.");
-      }
-   }
-
-   private class ListItr implements ListIterator<Node>
-   {
-      private ListIterator<Node> itr;
-
-      public ListItr(ListIterator<Node> itr)
-      {
-         this.itr = itr;
-      }
-
-      @Override
-      public void add(Node node)
-      {
-         checkAdd(node, true);
-         itr.add(node);
-      }
-
-      @Override
-      public boolean hasNext()
-      {
-         return itr.hasNext();
-      }
-
-      @Override
-      public boolean hasPrevious()
-      {
-         return itr.hasPrevious();
-      }
-
-      @Override
-      public Node next()
-      {
-         return itr.next();
-      }
-
-      @Override
-      public int nextIndex()
-      {
-         return itr.nextIndex();
-      }
-
-      @Override
-      public Node previous()
-      {
-         return itr.previous();
-      }
-
-      @Override
-      public int previousIndex()
-      {
-         return itr.previousIndex();
-      }
-
-      @Override
-      public void remove()
-      {
-         itr.remove();
-      }
-
-      @Override
-      public void set(Node node)
-      {
-         int lastRet = itr.nextIndex() - 1;
-         boolean checkExists = !get(lastRet).getName().equals(node.getName());
-         checkAdd(node, checkExists);
-         itr.set(node);
       }
    }
 }
