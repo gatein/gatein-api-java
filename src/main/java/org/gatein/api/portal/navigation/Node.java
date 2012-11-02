@@ -122,7 +122,7 @@ public class Node implements NodeContainer, Serializable
 
    public NodePath getNodePath()
    {
-      NodePath path = new NodePath(name);
+      NodePath path = name != null ? new NodePath(name) : new NodePath();
       if (parent != null)
       {
          path = parent.getNodePath().append(path);
