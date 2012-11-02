@@ -91,4 +91,9 @@ public class Navigation implements NodeContainer, Serializable
    {
       return rootNode.getNodes();
    }
+
+   Node getRootNode()
+   {
+      return rootNode;
+   }
 }

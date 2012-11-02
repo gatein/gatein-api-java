@@ -37,11 +37,9 @@ import java.util.List;
  */
 public class Node implements NodeContainer, Serializable
 {
-   private static final Node ROOT_NODE = new RootNode();
-
    public static Node rootNode()
    {
-      return ROOT_NODE;
+      return new RootNode();
    }
 
    private final String name;
