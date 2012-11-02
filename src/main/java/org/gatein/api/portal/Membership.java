@@ -69,6 +69,8 @@ public class Membership
       if (membership == null) throw new IllegalArgumentException("membership cannot be null");
 
       String[] parts = Strings.splitter(":").split(membership);
+      if (parts.length != 2) throw new IllegalArgumentException("Invalid membership string " + membership);
+
       return new Membership(parts[0], new Group(parts[1]));
    }
 }

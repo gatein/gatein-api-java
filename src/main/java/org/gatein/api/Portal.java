@@ -56,7 +56,7 @@ public interface Portal
 
    void saveNavigation(Navigation navigation);
 
-   public Node getNode(SiteId siteId, NodePath nodePath);
+   Node getNode(SiteId siteId, NodePath nodePath);
 
    Node getNode(SiteId siteId, NodeVisitor visitor, Filter<Node> filter);
 
