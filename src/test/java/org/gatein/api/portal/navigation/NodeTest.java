@@ -72,12 +72,12 @@ public class NodeTest
    public void testCopy_Rename()
    {
       Node original = new Node("foo");
-      original.addNode(new Node("1"));
-      original.addNode(new Node("2"));
+      original.addChild(new Node("1"));
+      original.addChild(new Node("2"));
 
       Node copy = new Node("bar", original);
       assertEquals("bar", copy.getName());
-      assertEquals(copy.getNodes(), original.getNodes());
+      assertEquals(copy.getChildren(), original.getChildren());
    }
 
    @Test
@@ -85,9 +85,9 @@ public class NodeTest
    {
       Node parent = new Node("root");
       Node child = new Node("child");
-      parent.addNode(child);
+      parent.addChild(child);
 
-      assertEquals(1, parent.getNodes().size());
+      assertEquals(1, parent.getChildren().size());
       assertTrue(parent == child.getParent());
    }
 
@@ -95,15 +95,15 @@ public class NodeTest
    public void testAdd_NullChild()
    {
       Node parent = new Node("parent");
-      parent.addNode(null);
+      parent.addChild(null);
    }
 
    @Test(expected = IllegalArgumentException.class)
    public void testAdd_SameChild()
    {
       Node parent = new Node("parent");
-      parent.addNode(new Node("child"));
-      parent.addNode(new Node("child"));
+      parent.addChild(new Node("child"));
+      parent.addChild(new Node("child"));
    }
 
    @Test(expected = IllegalArgumentException.class)
@@ -112,16 +112,16 @@ public class NodeTest
       Node parent = new Node("parent");
       Node parent2 = new Node("parent2");
       Node child = new Node("child");
-      parent2.addNode(child);
+      parent2.addChild(child);
 
-      parent.addNode(child);
+      parent.addChild(child);
    }
 
    @Test(expected = IllegalArgumentException.class)
    public void testAdd_Self()
    {
       Node node = new Node("node");
-      node.addNode(node);
+      node.addChild(node);
    }
 
    @Test(expected = IllegalArgumentException.class)
@@ -129,8 +129,8 @@ public class NodeTest
    {
       Node parent = new Node("parent");
       Node child1 = new Node("child1");
-      parent.addNode(child1);
-      child1.addNode(parent);
+      parent.addChild(child1);
+      child1.addChild(parent);
    }
 
    @Test
@@ -138,9 +138,9 @@ public class NodeTest
    {
       Node parent = new Node("parent");
       parent.setBaseURI(uri("/portal/classic/"));
-      parent.addNode(new Node("child"));
+      parent.addChild(new Node("child"));
 
-      assertEquals(uri("/portal/classic/parent/child/"), parent.getNode("child").getURI());
+      assertEquals(uri("/portal/classic/parent/child/"), parent.getChild("child").getURI());
    }
 
    @Test
@@ -148,9 +148,9 @@ public class NodeTest
    {
       Node parent = new Node("parent");
       parent.setBaseURI(uri("/portal/classic"));
-      parent.addNode(new Node("child"));
+      parent.addChild(new Node("child"));
 
-      assertEquals(uri("/portal/classic/parent/child/"), parent.getNode("child").getURI());
+      assertEquals(uri("/portal/classic/parent/child/"), parent.getChild("child").getURI());
    }
 
    @Test
@@ -158,10 +158,10 @@ public class NodeTest
    {
       Node parent = new Node("parent");
       parent.setBaseURI(uri("/portal/classic/"));
-      parent.addNode(new Node("child"));
+      parent.addChild(new Node("child"));
 
       parent = new Node(parent);
-      assertEquals(uri("/portal/classic/parent/child/"), parent.getNode("child").getURI());
+      assertEquals(uri("/portal/classic/parent/child/"), parent.getChild("child").getURI());
    }
 
    @Test
@@ -169,10 +169,10 @@ public class NodeTest
    {
       Node parent = new Node("parent");
       parent.setBaseURI(uri("/portal/classic"));
-      parent.addNode(new Node("child"));
+      parent.addChild(new Node("child"));
 
       parent = new Node("foo", parent);
-      assertEquals(uri("/portal/classic/foo/child/"), parent.getNode("child").getURI());
+      assertEquals(uri("/portal/classic/foo/child/"), parent.getChild("child").getURI());
    }
 
    private static URI uri(String path) throws URISyntaxException

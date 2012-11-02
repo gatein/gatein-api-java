@@ -25,13 +25,15 @@ import java.util.List;
 
 interface NodeContainer
 {
-   public boolean isNodesLoaded();
+   boolean isChildrenLoaded();
 
-   public void addNode(Node node);
+   void addChild(Node node);
 
-   public Node getNode(String name);
+   Node getChild(String name);
 
-   public boolean removeNode(String name);
+   boolean removeChild(Node node);
 
-   public List<Node> getNodes();
+   boolean removeChild(String name);
+
+   List<Node> getChildren();
 }

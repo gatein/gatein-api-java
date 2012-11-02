@@ -235,31 +235,37 @@ public class Node implements NodeContainer, Serializable
    }
 
    @Override
-   public boolean isNodesLoaded()
+   public boolean isChildrenLoaded()
    {
       return children.isLoaded();
    }
 
    @Override
-   public void addNode(Node node)
+   public void addChild(Node node)
    {
       children.add(node);
    }
 
    @Override
-   public Node getNode(String name)
+   public Node getChild(String name)
    {
       return children.get(name);
    }
 
    @Override
-   public boolean removeNode(String name)
+   public boolean removeChild(Node node)
+   {
+      return children.remove(node);
+   }
+
+   @Override
+   public boolean removeChild(String name)
    {
       return children.remove(name);
    }
 
    @Override
-   public List<Node> getNodes()
+   public List<Node> getChildren()
    {
       return children;
    }

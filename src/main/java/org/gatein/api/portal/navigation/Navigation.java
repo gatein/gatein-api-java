@@ -63,33 +63,39 @@ public class Navigation implements NodeContainer, Serializable
    }
 
    @Override
-   public boolean isNodesLoaded()
+   public boolean isChildrenLoaded()
    {
-      return rootNode.isNodesLoaded();
+      return rootNode.isChildrenLoaded();
    }
 
    @Override
-   public void addNode(Node node)
+   public void addChild(Node node)
    {
-      rootNode.addNode(node);
+      rootNode.addChild(node);
    }
 
    @Override
-   public Node getNode(String name)
+   public Node getChild(String name)
    {
-      return rootNode.getNode(name);
+      return rootNode.getChild(name);
    }
 
    @Override
-   public boolean removeNode(String name)
+   public boolean removeChild(String name)
    {
-      return rootNode.removeNode(name);
+      return rootNode.removeChild(name);
    }
 
    @Override
-   public List<Node> getNodes()
+   public boolean removeChild(Node node)
    {
-      return rootNode.getNodes();
+      return rootNode.removeChild(node);
+   }
+
+   @Override
+   public List<Node> getChildren()
+   {
+      return rootNode.getChildren();
    }
 
    Node getRootNode()
