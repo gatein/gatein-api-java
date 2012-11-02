@@ -44,7 +44,7 @@ public class Navigation implements NodeContainer, Serializable
 
       this.siteId = siteId;
       this.priority = priority;
-      this.rootNode = Node.rootNode();
+      this.rootNode = Node.rootNode(siteId);
    }
 
    public SiteId getSiteId()
