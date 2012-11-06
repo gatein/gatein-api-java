@@ -22,79 +22,34 @@
 
 package org.gatein.api.portal.navigation;
 
+import org.gatein.api.portal.Label;
 import org.gatein.api.portal.site.SiteId;
+import org.gatein.api.util.Filter;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Navigation for a site.
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class Navigation implements NodeContainer, Serializable
+public interface Navigation
 {
-   private final SiteId siteId;
-   private int priority;
-   private Node rootNode;
+   SiteId getSiteId();
 
-   public Navigation(SiteId siteId, int priority)
-   {
-      if (siteId == null) throw new IllegalArgumentException("siteId cannot be null");
+   Integer getPriority();
 
-      this.siteId = siteId;
-      this.priority = priority;
-      this.rootNode = Node.rootNode(siteId);
-   }
+   void setPriority(Integer integer);
 
-   public SiteId getSiteId()
-   {
-      return siteId;
-   }
+   Node getNode(NodePath nodePath);
 
-   public int getPriority()
-   {
-      return priority;
-   }
+   Node getNode(NodeVisitor visitor, Filter<Node> filter);
 
-   public void setPriority(int priority)
-   {
-      this.priority = priority;
-   }
+   void loadNodes(Node parent, NodeVisitor visitor);
 
-   @Override
-   public boolean isChildrenLoaded()
-   {
-      return rootNode.isChildrenLoaded();
-   }
+   void saveNode(Node node);
 
-   @Override
-   public void addChild(Node node)
-   {
-      rootNode.addChild(node);
-   }
-
-   @Override
-   public Node getChild(String name)
-   {
-      return rootNode.getChild(name);
-   }
-
-   @Override
-   public boolean removeChild(String name)
-   {
-      return rootNode.removeChild(name);
-   }
-
-   @Override
-   public boolean removeChild(Node node)
-   {
-      return rootNode.removeChild(node);
-   }
-
-   @Override
-   public List<Node> getChildren()
-   {
-      return rootNode.getChildren();
-   }
+   String resolveLabel(Node node, Locale locale);
 }

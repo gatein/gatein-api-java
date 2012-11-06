@@ -52,19 +52,7 @@ public interface Portal
 
    void removeSite(SiteId siteId);
 
-   Navigation getNavigation(SiteId siteId, NodeVisitor visitor, Filter<Node> filter);
-
-   void saveNavigation(Navigation navigation);
-
-   Node getNode(SiteId siteId, NodePath nodePath);
-
-   Node getNode(SiteId siteId, NodeVisitor visitor, Filter<Node> filter);
-
-   void loadNodes(Node parent, NodeVisitor visitor);
-
-   void saveNode(Node node);
-
-   Label resolveLabel(Label label);
+   Navigation getNavigation(SiteId siteId);
 
    Page getPage(PageId pageId);
 

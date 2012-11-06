@@ -31,8 +31,8 @@ import org.gatein.api.portal.page.Page;
 import org.gatein.api.portal.page.PageId;
 import org.gatein.api.portal.site.Site;
 import org.gatein.api.portal.site.SiteId;
-import org.gatein.api.util.Filter;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -81,7 +81,7 @@ public abstract class PortalRequest
 
    public Page getPage()
    {
-      PageId pageId = getNode().getPageId();
+      PageId pageId = getCurrentNode().getPageId();
 
       return (pageId == null) ? null : getPortal().getPage(pageId);
    }
@@ -93,21 +93,25 @@ public abstract class PortalRequest
 
    public Navigation getNavigation()
    {
-      return getNavigation(1, Nodes.userFilter(getUser(), getPortal()));
+      return getPortal().getNavigation(getSiteId());
    }
 
-   public Navigation getNavigation(int depth, Filter<Node> filter)
+   public Node getRootNode()
    {
-      Portal portal = getPortal();
-      return portal.getNavigation(getSiteId(), Nodes.visitNodes(depth), filter);
+      return getNavigation().getNode(Nodes.rootPath());
    }
 
-   public Node getNode() throws EntityNotFoundException
+   public Node getCurrentNode() throws EntityNotFoundException
    {
-      Node node = getPortal().getNode(getSiteId(), getNodePath());
+      Node node = getNavigation().getNode(getNodePath());
       if (node == null) throw new EntityNotFoundException("Node could not be found for current request path " + getNodePath());
 
       return node;
+   }
+
+   public void saveNode(Node node)
+   {
+      getNavigation().saveNode(node);
    }
 
    public abstract Portal getPortal();
