@@ -26,21 +26,21 @@ import org.gatein.api.ApiException;
 import org.gatein.api.internal.Objects;
 import org.gatein.api.portal.Label;
 import org.gatein.api.portal.page.PageId;
-import org.gatein.api.portal.site.SiteId;
 
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
+import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 public class Node implements NodeContainer, Serializable
 {
-   public static Node rootNode(SiteId siteId)
+   public static Node rootNode()
    {
-      return new RootNode(siteId);
+      return new RootNode();
    }
 
    private final String name;
@@ -123,17 +123,12 @@ public class Node implements NodeContainer, Serializable
 
    public NodePath getNodePath()
    {
-      NodePath path = name != null ? new NodePath(name) : new NodePath();
+      NodePath path = (name == null) ? NodePath.root() : NodePath.path(name);
       if (parent != null)
       {
          path = parent.getNodePath().append(path);
       }
       return path;
-   }
-
-   public SiteId getSiteId()
-   {
-      return parent != null ? parent.getSiteId() : null;
    }
 
    public URI getURI()
@@ -234,22 +229,73 @@ public class Node implements NodeContainer, Serializable
       this.parent = parent;
    }
 
-   @Override
-   public boolean isChildrenLoaded()
+   public boolean isRoot()
    {
-      return children.isLoaded();
+      return parent == null;
    }
 
    @Override
-   public void addChild(Node node)
+   public boolean hasChild(String childName)
    {
-      children.add(node);
+      return getChild(childName) != null;
    }
 
    @Override
-   public Node getChild(String name)
+   public boolean hasDescendant(NodePath path)
    {
-      return children.get(name);
+      return getDescendant(path) != null;
+   }
+
+   @Override
+   public Node getChild(int index)
+   {
+      return children.get(index);
+   }
+
+   @Override
+   public Node getChild(String childName)
+   {
+      return children.get(childName);
+   }
+
+   @Override
+   public Node getDescendant(NodePath path)
+   {
+      Node node = this;
+      for (String name : path)
+      {
+         node = node.getChild(name);
+         if (node == null) break;
+      }
+
+      return node;
+   }
+
+   @Override
+   public Node addChild(String childName)
+   {
+      Node child = new Node(childName);
+
+      return addChild(child) ? child : null;
+   }
+
+   @Override
+   public boolean addChild(Node node)
+   {
+      return children.add(node);
+   }
+
+   @Override
+   public boolean addDescendant(NodePath path, Node node)
+   {
+      Node parent = getDescendant(path);
+      return parent != null && parent.addChild(node);
+   }
+
+   @Override
+   public boolean removeChild(String childName)
+   {
+      return children.remove(childName);
    }
 
    @Override
@@ -259,17 +305,35 @@ public class Node implements NodeContainer, Serializable
    }
 
    @Override
-   public boolean removeChild(String name)
+   public boolean removeDescendant(NodePath path)
    {
-      return children.remove(name);
+      Node node = getDescendant(path);
+      return node != null && node.getParent() != null && node.getParent().removeChild(node.name);
    }
 
    @Override
-   public List<Node> getChildren()
+   public int size()
+   {
+      return children.size();
+   }
+
+   @Override
+   public Iterator<Node> iterator()
+   {
+      return children.iterator();
+   }
+
+   @Override
+   public boolean isChildrenLoaded()
+   {
+      return children.isLoaded();
+   }
+
+   NodeList nodeList()
    {
       return children;
    }
-   
+
    @Override
    public String toString()
    {
@@ -315,17 +379,8 @@ public class Node implements NodeContainer, Serializable
 
    private static final class RootNode extends Node
    {
-      private SiteId siteId;
-
-      public RootNode(SiteId siteId)
+      public RootNode()
       {
-         this.siteId = siteId;
-      }
-
-      @Override
-      public SiteId getSiteId()
-      {
-         return siteId;
       }
 
       @Override

@@ -22,12 +22,8 @@
 
 package org.gatein.api.portal.navigation;
 
-import org.gatein.api.portal.Label;
 import org.gatein.api.portal.site.SiteId;
-import org.gatein.api.util.Filter;
 
-import java.io.Serializable;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -43,11 +39,15 @@ public interface Navigation
 
    void setPriority(Integer integer);
 
-   Node getNode(NodePath nodePath);
+   Node getNode(NodePath path, NodeVisitor visitor);
 
-   Node getNode(NodeVisitor visitor, Filter<Node> filter);
+   Node loadNodes(NodeVisitor visitor);
 
-   void loadNodes(Node parent, NodeVisitor visitor);
+   void loadChildren(Node parent);
+
+   void moveNode(NodePath from, NodePath to);
+
+   boolean removeNode(NodePath path);
 
    void saveNode(Node node);
 

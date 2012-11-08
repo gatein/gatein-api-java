@@ -23,16 +23,17 @@
 package org.gatein.api.portal.navigation;
 
 import org.gatein.api.Portal;
-import org.gatein.api.internal.Strings;
 import org.gatein.api.portal.User;
 import org.gatein.api.util.Filter;
+
+import java.util.Comparator;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 public class Nodes
 {
-   //----------------------------------- Node Visitor Utility Methods ------------------------------------------------//
+   //----------------- Node Visitor Utility Methods
 
    public static NodeVisitor visitNone()
    {
@@ -98,45 +99,29 @@ public class Nodes
       return new DelegatingPathVisitor(path, visitor);
    }
 
-   //------------------------------------ Node Path Utility Methods --------------------------------------------------//
+   //----------------- Node Children Utility Methods
 
-   /**
-    * Root path of a node tree. Use this instead of <code>new NodePath()</code> to avoid creating multiple objects for
-    * the same thing.
-    *
-    * @return <code>NodePath</code> representing the root of a node tree
-    */
-   public static NodePath rootPath()
+   public static Iterable<Node> filter(Node node, User user, Portal portal)
    {
-      return ROOT;
+      return filter(node, new NodeFilter.Builder().withAccess(user, portal).build());
+   }
+
+   public static Iterable<Node> filter(Node node, Filter<Node> filter)
+   {
+      return node.nodeList().filter(filter);
    }
 
    /**
-    * Creates a node path based off strings such as '/foo/bar'
+    * Sorts the children of a node.
     *
-    * @param path the string of the path
-    * @return a node path representing the path of the string
+    * @param node the node which has children to sort
     */
-   public static NodePath path(String path)
+   public static void sort(Node node, Comparator<Node> comparator)
    {
-      return new NodePath(Strings.splitter("/").trim().ignoreEmptyStrings().split(path));
+      node.nodeList().sort(comparator);
    }
 
-   private static NodePath ROOT = new NodePath();
-
-   //------------------------------------ Node Filter Utility Methods ------------------------------------------------//
-
-   public static Filter<Node> userFilter(User user, Portal portal)
-   {
-      return new NodeFilter.Builder().withAccess(user, portal).build();
-   }
-
-   public static NodeFilter.Builder filter()
-   {
-      return new NodeFilter.Builder();
-   }
-
-   //------------------------------------------ Private visitor stuff ------------------------------------------------//
+   //----------------- Private visitor stuff
 
    private static final NodeVisitor SINGLE = new DepthVisitor(0);
 

@@ -97,7 +97,7 @@ public class NodeListTest
       nodeList.add(new Node("2"));
       nodeList.add(new Node("1"));
 
-      Collections.sort(nodeList, new Comparator<Node>()
+      nodeList.sort(new Comparator<Node>()
       {
          @Override
          public int compare(Node o1, Node o2)

@@ -77,7 +77,10 @@ public class NodeTest
 
       Node copy = new Node("bar", original);
       assertEquals("bar", copy.getName());
-      assertEquals(copy.getChildren(), original.getChildren());
+      for (int i=0; i<copy.size(); i++)
+      {
+         assertEquals(original.getChild(i), copy.getChild(i));
+      }
    }
 
    @Test
@@ -87,7 +90,7 @@ public class NodeTest
       Node child = new Node("child");
       parent.addChild(child);
 
-      assertEquals(1, parent.getChildren().size());
+      assertEquals(1, parent.size());
       assertTrue(parent == child.getParent());
    }
 
@@ -95,7 +98,14 @@ public class NodeTest
    public void testAdd_NullChild()
    {
       Node parent = new Node("parent");
-      parent.addChild(null);
+      parent.addChild((Node) null);
+   }
+
+   @Test(expected = IllegalArgumentException.class)
+   public void testAdd_NullChildName()
+   {
+      Node parent = new Node("parent");
+      parent.addChild((String) null);
    }
 
    @Test(expected = IllegalArgumentException.class)

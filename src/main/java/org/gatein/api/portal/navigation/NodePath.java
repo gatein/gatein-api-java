@@ -35,25 +35,51 @@ import java.util.List;
  */
 public class NodePath implements Iterable<String>
 {
+   private static final NodePath ROOT_PATH = new NodePath();
+
+   public static NodePath path(String first, String...elements)
+   {
+      if (first == null) throw new IllegalArgumentException("first part of path cannot be null");
+      NodePath path = new NodePath(first);
+      if (elements != null)
+      {
+         path = path.append(elements);
+      }
+
+      return path;
+   }
+
+   public static NodePath root()
+   {
+      return ROOT_PATH;
+   }
+
+   public static NodePath fromString(String path)
+   {
+      return new NodePath(Strings.splitter("/").trim().ignoreEmptyStrings().split(path));
+   }
+
    private final List<String> pathList;
 
-   public NodePath()
+   private NodePath()
    {
       this(Collections.<String>emptyList());
    }
 
-   public NodePath(String...pathList)
+   private NodePath(String...pathList)
    {
       this(Arrays.asList(pathList));
    }
 
-   public NodePath(List<String> pathList)
+   private NodePath(List<String> pathList)
    {
       this.pathList = new ArrayList<String>(pathList);
    }
 
    public NodePath append(String...elements)
    {
+      if (elements == null) throw new IllegalArgumentException("elements cannot be null");
+
       return append(new NodePath(elements));
    }
 

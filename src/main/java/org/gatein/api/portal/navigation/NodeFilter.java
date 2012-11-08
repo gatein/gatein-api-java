@@ -45,7 +45,7 @@ public class NodeFilter implements Filter<Node>
    private final Portal portal;
    private final User user;
 
-   public NodeFilter(boolean showAll, Set<Visibility> visibilities, boolean accessPermission, boolean editPermission, Portal portal, User user)
+   private NodeFilter(boolean showAll, Set<Visibility> visibilities, boolean accessPermission, boolean editPermission, Portal portal, User user)
    {
       this.showAll = showAll;
       this.visibilities = (visibilities == null) ? Collections.<Visibility>emptySet() : new HashSet<Visibility>(visibilities);
@@ -128,13 +128,13 @@ public class NodeFilter implements Filter<Node>
       public Builder withAccess(User user, Portal portal)
       {
          this.accessPermission = true;
-         return withUserAndPortal(user, portal);
+         return set(user, portal);
       }
 
       public Builder withEdit(User user, Portal portal)
       {
          this.editPermission = true;
-         return withUserAndPortal(user, portal);
+         return set(user, portal);
       }
 
       public Builder withNoEdit()
@@ -143,7 +143,7 @@ public class NodeFilter implements Filter<Node>
          return this;
       }
 
-      private Builder withUserAndPortal(User user, Portal portal)
+      private Builder set(User user, Portal portal)
       {
          this.user = user;
          this.portal = portal;

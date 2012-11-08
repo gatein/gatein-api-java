@@ -22,17 +22,16 @@
 
 package org.gatein.api;
 
-import org.gatein.api.portal.navigation.Nodes;
 import org.gatein.api.portal.User;
 import org.gatein.api.portal.navigation.Navigation;
 import org.gatein.api.portal.navigation.Node;
 import org.gatein.api.portal.navigation.NodePath;
+import org.gatein.api.portal.navigation.Nodes;
 import org.gatein.api.portal.page.Page;
 import org.gatein.api.portal.page.PageId;
 import org.gatein.api.portal.site.Site;
 import org.gatein.api.portal.site.SiteId;
 
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -96,15 +95,16 @@ public abstract class PortalRequest
       return getPortal().getNavigation(getSiteId());
    }
 
-   public Node getRootNode()
+   public Node getNode(NodePath path)
    {
-      return getNavigation().getNode(Nodes.rootPath());
+      return getNavigation().getNode(path, Nodes.visitChildren());
    }
 
    public Node getCurrentNode() throws EntityNotFoundException
    {
-      Node node = getNavigation().getNode(getNodePath());
-      if (node == null) throw new EntityNotFoundException("Node could not be found for current request path " + getNodePath());
+      Node node = getNavigation().getNode(getNodePath(), Nodes.visitNone());
+      if (node == null)
+         throw new EntityNotFoundException("Node could not be found for current request path " + getNodePath());
 
       return node;
    }

@@ -21,10 +21,15 @@
  */
 package org.gatein.api.portal.navigation;
 
+import org.gatein.api.util.Filter;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
@@ -33,7 +38,7 @@ class NodeList extends ArrayList<Node>
 {
    private boolean loaded;
 
-   private final Node parent;
+   final Node parent;
 
    public NodeList(Node parent)
    {
@@ -110,15 +115,15 @@ class NodeList extends ArrayList<Node>
    {
       if (node == null) throw new IllegalArgumentException("node cannot be null");
 
-      //TODO: Would we rather do this hack job, or just implement our own List like data structure and have a Nodes.sort() or something.
-      StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-      for (StackTraceElement ste : stackTrace)
-      {
-         if (ste.getClassName().equals(Collections.class.getName()) && ste.getMethodName().equals("sort"))
-         {
-            return super.set(index, node);
-         }
-      }
+//      //TODO: Would we rather do this hack job, or just implement our own List like data structure and have a Nodes.sort() or something.
+//      StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+//      for (StackTraceElement ste : stackTrace)
+//      {
+//         if (ste.getClassName().equals(Collections.class.getName()) && ste.getMethodName().equals("sort"))
+//         {
+//            return super.set(index, node);
+//         }
+//      }
       boolean checkExists = !get(index).getName().equals(node.getName());
       checkAdd(node, checkExists);
       return super.set(index, node);
@@ -164,6 +169,21 @@ class NodeList extends ArrayList<Node>
          node.setParent(null);
       }
       super.clear();
+   }
+
+   public void sort(Comparator<Node> comparator)
+   {
+      Node[] nodes = toArray(new Node[size()]);
+      Arrays.sort(nodes, comparator);
+      for (int i=0; i<nodes.length; i++)
+      {
+         super.set(i, nodes[i]);
+      }
+   }
+
+   public Iterable<Node> filter(Filter<Node> filter)
+   {
+      return new FilteredNodeList(filter, this);
    }
 
    private Node findNode(String name)

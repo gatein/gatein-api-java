@@ -19,21 +19,37 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
+
 package org.gatein.api.portal.navigation;
 
-import java.util.List;
-
-interface NodeContainer
+/**
+ * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
+ */
+interface NodeContainer extends Iterable<Node>
 {
    boolean isChildrenLoaded();
 
-   void addChild(Node node);
+   boolean hasChild(String childName);
 
-   Node getChild(String name);
+   boolean hasDescendant(NodePath path);
+
+   Node getChild(int index);
+
+   Node getChild(String childName);
+
+   Node getDescendant(NodePath path);
+
+   Node addChild(String childName);
+
+   boolean addChild(Node node);
+
+   boolean addDescendant(NodePath path, Node node);
+
+   boolean removeChild(String childName);
 
    boolean removeChild(Node node);
 
-   boolean removeChild(String name);
+   boolean removeDescendant(NodePath path);
 
-   List<Node> getChildren();
+   int size();
 }
