@@ -24,7 +24,7 @@ package org.gatein.api.portal.navigation;
 
 import org.gatein.api.util.Filter;
 
-import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
@@ -32,13 +32,34 @@ import java.util.Iterator;
 class FilteredNode extends DelegateNode
 {
    private final Filter<Node> filter;
-   private final Node node;
+   private final List<Node> children;
 
    public FilteredNode(Filter<Node> filter, Node node)
    {
       super(node);
       this.filter = filter;
-      this.node = node;
+      this.children = new FilteredNodeList(filter, node.nodeList());
+   }
+
+   @Override
+   public Node getChild(String childName)
+   {
+      return findChild(childName);
+   }
+
+   @Override
+   public Node getChild(int index)
+   {
+      for (int i=index; i<delegate.size(); i++)
+      {
+         Node child = delegate.getChild(i);
+         if (filter.accept(child))
+         {
+            return child;
+         }
+      }
+
+      return null;
    }
 
    @Override
@@ -48,47 +69,40 @@ class FilteredNode extends DelegateNode
    }
 
    @Override
-   public boolean hasDescendant(NodePath path)
+   public int indexOf(String childName)
    {
-      return getDescendant(path) != null;
+      Node child = getChild(childName);
+
+      return (child != null) ? getChildren().indexOf(child) : -1;
    }
 
    @Override
-   public Node getChild(int index)
+   public boolean removeChild(String childName)
    {
-      Node child = node.getChild(index);
-      return (filter.accept(child)) ? child : null;
+      Node child = findChild(childName);
+
+      return child != null && getChildren().remove(child);
    }
 
    @Override
-   public Node getChild(String childName)
+   public List<Node> getChildren()
    {
-      Node child = node.getChild(childName);
-      return (filter.accept(child)) ? child : null;
-   }
-
-   @Override
-   public Node getDescendant(NodePath path)
-   {
-      Node descendant = node.getDescendant(path);
-      return (filter.accept(descendant)) ? descendant : null;
+      return children;
    }
 
    @Override
    public int size()
    {
-      int size = 0;
-      for (Node node : this)
-      {
-         if (filter.accept(node)) size++;
-      }
-
-      return size;
+      return getChildren().size();
    }
 
-   @Override
-   public Iterator<Node> iterator()
+   private Node findChild(String childName)
    {
-      return new FilteredNodeList(filter, node.nodeList()).iterator();
+      for (Node child : getChildren())
+      {
+         if (childName.equals(child.getName())) return child;
+      }
+
+      return null;
    }
 }

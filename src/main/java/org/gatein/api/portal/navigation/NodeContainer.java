@@ -22,34 +22,38 @@
 
 package org.gatein.api.portal.navigation;
 
+import org.gatein.api.util.Filter;
+
+import java.util.List;
+
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-interface NodeContainer extends Iterable<Node>
+interface NodeContainer
 {
-   boolean isChildrenLoaded();
-
-   boolean hasChild(String childName);
-
-   boolean hasDescendant(NodePath path);
-
-   Node getChild(int index);
-
-   Node getChild(String childName);
-
-   Node getDescendant(NodePath path);
+   boolean addChild(Node child);
 
    Node addChild(String childName);
 
-   boolean addChild(Node node);
+   Node getChild(String childName);
 
-   boolean addDescendant(NodePath path, Node node);
+   Node getChild(int index);
+
+   List<Node> getChildren();
+
+   NodePath getNodePath();
+
+   Node getParent();
+
+   boolean hasChild(String childName);
+
+   boolean isDetached();
+
+   int indexOf(String childName);
 
    boolean removeChild(String childName);
 
-   boolean removeChild(Node node);
-
-   boolean removeDescendant(NodePath path);
-
    int size();
+
+   Node filter(Filter<Node> node);
 }

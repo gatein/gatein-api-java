@@ -101,14 +101,14 @@ public class Nodes
 
    //----------------- Node Children Utility Methods
 
-   public static Iterable<Node> filter(Node node, User user, Portal portal)
+   public static Filter<Node> userFilter(User user, Portal portal)
    {
-      return filter(node, new NodeFilter.Builder().withAccess(user, portal).build());
+      return new NodeFilter.Builder().withAccess(user, portal).build();
    }
 
-   public static Iterable<Node> filter(Node node, Filter<Node> filter)
+   public static NodeFilter.Builder filter()
    {
-      return node.nodeList().filter(filter);
+      return new NodeFilter.Builder();
    }
 
    /**

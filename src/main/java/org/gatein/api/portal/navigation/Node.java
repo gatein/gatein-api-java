@@ -26,12 +26,12 @@ import org.gatein.api.ApiException;
 import org.gatein.api.internal.Objects;
 import org.gatein.api.portal.Label;
 import org.gatein.api.portal.page.PageId;
+import org.gatein.api.util.Filter;
 
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collections;
-import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
@@ -81,7 +81,7 @@ public class Node implements NodeContainer, Serializable
     * Creates a new node with a new name, copying from the original node object. This is a deep copy, meaning it
     * will copy all children, grandchildren, etc.
     *
-    * @param name the new name of the node
+    * @param name     the new name of the node
     * @param original the node to copy from. Changing this node has no impact on the original node.
     */
    public Node(String name, Node original)
@@ -100,8 +100,8 @@ public class Node implements NodeContainer, Serializable
       this.visibility = node.visibility;
       this.iconName = node.iconName;
       this.pageId = node.pageId;
-      this.children = new NodeList(this, node.children);
       this.baseURI = node.baseURI;
+      this.children = new NodeList(this, node.children);
    }
 
    // Used for root node
@@ -235,98 +235,76 @@ public class Node implements NodeContainer, Serializable
    }
 
    @Override
-   public boolean hasChild(String childName)
+   public boolean addChild(Node child)
    {
-      return getChild(childName) != null;
-   }
-
-   @Override
-   public boolean hasDescendant(NodePath path)
-   {
-      return getDescendant(path) != null;
-   }
-
-   @Override
-   public Node getChild(int index)
-   {
-      return children.get(index);
-   }
-
-   @Override
-   public Node getChild(String childName)
-   {
-      return children.get(childName);
-   }
-
-   @Override
-   public Node getDescendant(NodePath path)
-   {
-      Node node = this;
-      for (String name : path)
-      {
-         node = node.getChild(name);
-         if (node == null) break;
-      }
-
-      return node;
+      return getChildren().add(child);
    }
 
    @Override
    public Node addChild(String childName)
    {
       Node child = new Node(childName);
+      if (!children.add(child)) throw new ApiException("Could not add child " + childName + " to node " + this);
 
-      return addChild(child) ? child : null;
+      return child;
    }
 
    @Override
-   public boolean addChild(Node node)
+   public Node getChild(String childName)
    {
-      return children.add(node);
+      return findChild(childName);
    }
 
    @Override
-   public boolean addDescendant(NodePath path, Node node)
+   public Node getChild(int index)
    {
-      Node parent = getDescendant(path);
-      return parent != null && parent.addChild(node);
+      return getChildren().get(index);
+   }
+
+   @Override
+   public List<Node> getChildren()
+   {
+      return children;
+   }
+
+   @Override
+   public boolean hasChild(String childName)
+   {
+      return getChild(childName) != null;
+   }
+
+   @Override
+   public boolean isDetached()
+   {
+      return children.isLoaded();
+   }
+
+   @Override
+   public int indexOf(String childName)
+   {
+      Node child = getChild(childName);
+
+      return getChildren().indexOf(child);
    }
 
    @Override
    public boolean removeChild(String childName)
    {
-      return children.remove(childName);
+      Node child = findChild(childName);
+
+      return child != null && getChildren().remove(child);
    }
 
    @Override
-   public boolean removeChild(Node node)
+   public Node filter(Filter<Node> filter)
    {
-      return children.remove(node);
-   }
-
-   @Override
-   public boolean removeDescendant(NodePath path)
-   {
-      Node node = getDescendant(path);
-      return node != null && node.getParent() != null && node.getParent().removeChild(node.name);
+      return new FilteredNode(filter, this);
    }
 
    @Override
    public int size()
    {
-      return children.size();
-   }
-
-   @Override
-   public Iterator<Node> iterator()
-   {
-      return children.iterator();
-   }
-
-   @Override
-   public boolean isChildrenLoaded()
-   {
-      return children.isLoaded();
+      return getChildren().size();
    }
 
    NodeList nodeList()
@@ -375,6 +353,16 @@ public class Node implements NodeContainer, Serializable
       result = 31 * result + (pageId != null ? pageId.hashCode() : 0);
       result = 31 * result + (children != null ? children.hashCode() : 0);
       return result;
+   }
+
+   private Node findChild(String name)
+   {
+      for (Node node : getChildren())
+      {
+         if (node.getName().equals(name)) return node;
+      }
+
+      return null;
    }
 
    private static final class RootNode extends Node

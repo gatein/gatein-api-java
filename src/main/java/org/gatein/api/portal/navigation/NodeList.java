@@ -21,15 +21,11 @@
  */
 package org.gatein.api.portal.navigation;
 
-import org.gatein.api.util.Filter;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
@@ -63,17 +59,6 @@ class NodeList extends ArrayList<Node>
             node.setParent(parent);
          }
       }
-   }
-
-   public Node get(String name)
-   {
-      return findNode(name);
-   }
-
-   public boolean remove(String name)
-   {
-      Node node = findNode(name);
-      return (node != null) && super.remove(node);
    }
 
    public boolean isLoaded()
@@ -115,17 +100,10 @@ class NodeList extends ArrayList<Node>
    {
       if (node == null) throw new IllegalArgumentException("node cannot be null");
 
-//      //TODO: Would we rather do this hack job, or just implement our own List like data structure and have a Nodes.sort() or something.
-//      StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-//      for (StackTraceElement ste : stackTrace)
-//      {
-//         if (ste.getClassName().equals(Collections.class.getName()) && ste.getMethodName().equals("sort"))
-//         {
-//            return super.set(index, node);
-//         }
-//      }
-      boolean checkExists = !get(index).getName().equals(node.getName());
-      checkAdd(node, checkExists);
+      // Don't check if this is a replace operation, meaning child at given index matches name of node being set.
+      boolean checkChild = !get(index).getName().equals(node.getName());
+
+      checkAdd(node, checkChild);
       return super.set(index, node);
    }
 
@@ -181,21 +159,6 @@ class NodeList extends ArrayList<Node>
       }
    }
 
-   public Iterable<Node> filter(Filter<Node> filter)
-   {
-      return new FilteredNodeList(filter, this);
-   }
-
-   private Node findNode(String name)
-   {
-      for (Node node : this)
-      {
-         if (node.getName().equals(name)) return node;
-      }
-
-      return null;
-   }
-
    private boolean _add(Integer index, Node node)
    {
       checkAdd(node, true);
@@ -247,7 +210,7 @@ class NodeList extends ArrayList<Node>
       return added;
    }
 
-   private void checkAdd(Node node, boolean checkExists)
+   private void checkAdd(Node node, boolean checkChild)
    {
       if (node == null) throw new IllegalArgumentException("Node cannot be null");
       if (node == parent) throw new IllegalArgumentException("Cannot add itself as a child.");
@@ -255,7 +218,7 @@ class NodeList extends ArrayList<Node>
          throw new IllegalArgumentException(
             "Node being added is already associated with a parent. You can copy the node by passing it to the constructor which will remove the parent association.");
 
-      if (checkExists && get(node.getName()) != null)
+      if (checkChild && hasChild(node.getName()))
          throw new IllegalArgumentException("Child with name " + node.getName() + " already exists.");
 
       checkCyclic(node);
@@ -268,5 +231,15 @@ class NodeList extends ArrayList<Node>
       {
          if (node == current) throw new IllegalArgumentException("Cannot add '" + node.getName() +"' to '" + parent.getName() + "', circular reference detected.");
       }
+   }
+
+   private boolean hasChild(String name)
+   {
+      for (Node node : this)
+      {
+         if (name.equals(node.getName())) return true;
+      }
+
+      return false;
    }
 }

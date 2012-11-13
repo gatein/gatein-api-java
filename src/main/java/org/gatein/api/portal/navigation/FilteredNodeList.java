@@ -22,38 +22,110 @@
 
 package org.gatein.api.portal.navigation;
 
+import org.gatein.api.internal.DelegateList;
 import org.gatein.api.util.Filter;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-class FilteredNodeList implements Iterable<Node>
+class FilteredNodeList extends DelegateList<Node> implements List<Node>
 {
    private final Filter<Node> filter;
-   private final NodeList list;
 
    public FilteredNodeList(Filter<Node> filter, NodeList list)
    {
+      super(list);
       this.filter = filter;
-      this.list = list;
+   }
+
+   @Override
+   public Node get(int index)
+   {
+      int size = delegate.size();
+      for (int i=index; i<size; i++)
+      {
+         Node child = delegate.get(i);
+         if (filter.accept(child)) return new FilteredNode(filter, child);
+      }
+
+      return null;
+   }
+
+   @Override
+   public int indexOf(Object o)
+   {
+      int index = -1;
+      for (Node node : delegate)
+      {
+         if (filter.accept(node))
+         {
+            index++;
+            if (o instanceof FilteredNode)
+            {
+               o = ((FilteredNode) o).delegate;
+            }
+            if (node == o)
+            {
+               return index;
+            }
+         }
+      }
+
+      return -1;
+   }
+
+   @Override
+   public int lastIndexOf(Object o)
+   {
+      return indexOf(o);
+   }
+
+   @Override
+   public int size()
+   {
+      int size = 0;
+      for (Node node : delegate)
+      {
+         if (filter.accept(node))
+         {
+            size++;
+         }
+      }
+
+      return size;
+   }
+
+   @Override
+   public ListIterator<Node> listIterator()
+   {
+      return new ListItr(super.listIterator());
+   }
+
+   @Override
+   public ListIterator<Node> listIterator(int index)
+   {
+      return new ListItr(super.listIterator(index));
    }
 
    @Override
    public Iterator<Node> iterator()
    {
-      return new FilteredNodeListIterator();
+      return new Itr(super.iterator());
    }
 
-   private class FilteredNodeListIterator implements Iterator<Node>
+   private class Itr implements Iterator<Node>
    {
-      private Node next;
-      private int cursor;
-      private boolean findNext;
+      final Iterator<Node> iterator;
+      Node next;
+      boolean findNext;
 
-      private FilteredNodeListIterator()
+      private Itr(Iterator<Node> iterator)
       {
+         this.iterator = iterator;
          findNext = true;
       }
 
@@ -83,14 +155,122 @@ class FilteredNodeList implements Iterable<Node>
       @Override
       public void remove()
       {
-         throw new UnsupportedOperationException();
+         iterator.remove();
       }
 
-      private Node findNext()
+      Node findNext()
       {
-         while (cursor < list.size())
+         while (iterator.hasNext())
          {
-            Node node = list.get(cursor++);
+            Node node = iterator.next();
+            if (filter.accept(node))
+            {
+               return new FilteredNode(filter, node);
+            }
+         }
+
+         return null;
+      }
+   }
+
+   private class ListItr extends Itr implements ListIterator<Node>
+   {
+      ListIterator<Node> listIterator;
+      Node previous;
+      boolean findPrevious;
+
+      private ListItr(ListIterator<Node> iterator)
+      {
+         super(iterator);
+         this.listIterator = iterator;
+         findPrevious = true;
+      }
+
+      @Override
+      public boolean hasNext()
+      {
+         boolean hasNext = super.hasNext();
+         if (hasNext)
+         {
+            findPrevious = false;
+         }
+
+         return hasNext;
+      }
+
+      @Override
+      public boolean hasPrevious()
+      {
+         if (findPrevious)
+         {
+            previous = findPrevious();
+            findPrevious = false;
+         }
+
+         return previous != null;
+      }
+
+      @Override
+      public Node next()
+      {
+         findPrevious = true;
+         return super.next();
+      }
+
+      @Override
+      public Node previous()
+      {
+         if (findPrevious)
+         {
+            previous = findPrevious();
+         }
+
+         findPrevious = true;
+         return previous;
+      }
+
+      @Override
+      public int nextIndex()
+      {
+         if (findNext)
+         {
+            next = findNext();
+            findNext = false;
+         }
+
+         return (next == null) ? size() : indexOf(next);
+      }
+
+      @Override
+      public int previousIndex()
+      {
+         if (findPrevious)
+         {
+            previous = findPrevious();
+            findPrevious = false;
+         }
+
+         return indexOf(previous);
+      }
+
+      @Override
+      public void set(Node node)
+      {
+         listIterator.set(node);
+      }
+
+      @Override
+      public void add(Node node)
+      {
+         findPrevious = true;
+         listIterator.add(node);
+      }
+
+      private Node findPrevious()
+      {
+         while (listIterator.hasPrevious())
+         {
+            Node node = listIterator.previous();
             if (filter.accept(node))
             {
                return new FilteredNode(filter, node);

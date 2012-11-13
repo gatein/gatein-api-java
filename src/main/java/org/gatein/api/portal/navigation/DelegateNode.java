@@ -24,16 +24,17 @@ package org.gatein.api.portal.navigation;
 
 import org.gatein.api.portal.Label;
 import org.gatein.api.portal.page.PageId;
+import org.gatein.api.util.Filter;
 
 import java.net.URI;
-import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 class DelegateNode extends Node
 {
-   private final Node delegate;
+   final Node delegate;
 
    public DelegateNode(Node delegate)
    {
@@ -150,33 +151,9 @@ class DelegateNode extends Node
    }
 
    @Override
-   public boolean hasChild(String childName)
+   public boolean addChild(Node child)
    {
-      return delegate.hasChild(childName);
-   }
-
-   @Override
-   public boolean hasDescendant(NodePath path)
-   {
-      return delegate.hasDescendant(path);
-   }
-
-   @Override
-   public Node getChild(int index)
-   {
-      return delegate.getChild(index);
-   }
-
-   @Override
-   public Node getChild(String childName)
-   {
-      return delegate.getChild(childName);
-   }
-
-   @Override
-   public Node getDescendant(NodePath path)
-   {
-      return delegate.getDescendant(path);
+      return delegate.addChild(child);
    }
 
    @Override
@@ -186,15 +163,39 @@ class DelegateNode extends Node
    }
 
    @Override
-   public boolean addChild(Node node)
+   public Node getChild(String childName)
    {
-      return delegate.addChild(node);
+      return delegate.getChild(childName);
    }
 
    @Override
-   public boolean addDescendant(NodePath path, Node node)
+   public Node getChild(int index)
    {
-      return delegate.addDescendant(path, node);
+      return delegate.getChild(index);
+   }
+
+   @Override
+   public List<Node> getChildren()
+   {
+      return delegate.getChildren();
+   }
+
+   @Override
+   public boolean hasChild(String childName)
+   {
+      return delegate.hasChild(childName);
+   }
+
+   @Override
+   public boolean isDetached()
+   {
+      return delegate.isDetached();
+   }
+
+   @Override
+   public int indexOf(String childName)
+   {
+      return delegate.indexOf(childName);
    }
 
    @Override
@@ -204,33 +205,15 @@ class DelegateNode extends Node
    }
 
    @Override
-   public boolean removeChild(Node node)
+   public Node filter(Filter<Node> filter)
    {
-      return delegate.removeChild(node);
-   }
-
-   @Override
-   public boolean removeDescendant(NodePath path)
-   {
-      return delegate.removeDescendant(path);
+      return delegate.filter(filter);
    }
 
    @Override
    public int size()
    {
       return delegate.size();
-   }
-
-   @Override
-   public Iterator<Node> iterator()
-   {
-      return delegate.iterator();
-   }
-
-   @Override
-   public boolean isChildrenLoaded()
-   {
-      return delegate.isChildrenLoaded();
    }
 
    @Override

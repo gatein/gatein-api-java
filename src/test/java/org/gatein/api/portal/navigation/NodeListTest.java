@@ -21,15 +21,11 @@
  */
 package org.gatein.api.portal.navigation;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import org.junit.Test;
+
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
-
-import junit.framework.TestCase;
-import org.junit.Test;
 
 import static org.junit.Assert.*;
 
@@ -38,7 +34,6 @@ import static org.junit.Assert.*;
  */
 public class NodeListTest
 {
-
    @Test
    public void testAdd()
    {

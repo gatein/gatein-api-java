@@ -113,7 +113,7 @@ public class NodePath implements Iterable<String>
       return (size == 0) ? null : getSegment(size-1);
    }
 
-   public NodePath getParent()
+   public NodePath parent()
    {
       if (pathList.isEmpty()) return null;
 

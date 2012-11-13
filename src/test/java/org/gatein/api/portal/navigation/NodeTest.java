@@ -22,10 +22,13 @@
 
 package org.gatein.api.portal.navigation;
 
+import org.gatein.api.util.Filter;
 import org.junit.Test;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 import static org.junit.Assert.*;
 
