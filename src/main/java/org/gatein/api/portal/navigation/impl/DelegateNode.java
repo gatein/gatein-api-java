@@ -20,25 +20,29 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.portal.navigation;
+package org.gatein.api.portal.navigation.impl;
 
 import org.gatein.api.portal.Label;
+import org.gatein.api.portal.navigation.Node;
+import org.gatein.api.portal.navigation.NodePath;
+import org.gatein.api.portal.navigation.PublicationDate;
+import org.gatein.api.portal.navigation.Visibility;
 import org.gatein.api.portal.page.PageId;
 import org.gatein.api.util.Filter;
 
 import java.net.URI;
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-class DelegateNode extends Node
+class DelegateNode implements Node
 {
    final Node delegate;
 
    public DelegateNode(Node delegate)
    {
-      super(delegate.getName());
       this.delegate = delegate;
    }
 
@@ -61,15 +65,9 @@ class DelegateNode extends Node
    }
 
    @Override
-   public URI getURI()
+   public URI getResolvedURI()
    {
-      return delegate.getURI();
-   }
-
-   @Override
-   public void setBaseURI(URI baseURI)
-   {
-      delegate.setBaseURI(baseURI);
+      return delegate.getResolvedURI();
    }
 
    @Override
@@ -82,6 +80,12 @@ class DelegateNode extends Node
    public void setLabel(Label label)
    {
       delegate.setLabel(label);
+   }
+
+   @Override
+   public String getResolvedLabel()
+   {
+      return delegate.getResolvedLabel();
    }
 
    @Override
@@ -136,12 +140,6 @@ class DelegateNode extends Node
    public void setPageId(PageId pageId)
    {
       delegate.setPageId(pageId);
-   }
-
-   @Override
-   public void setParent(Node parent)
-   {
-      delegate.setParent(parent);
    }
 
    @Override
@@ -211,15 +209,15 @@ class DelegateNode extends Node
    }
 
    @Override
-   public int size()
+   public void sort(Comparator<Node> comparator)
    {
-      return delegate.size();
+      delegate.sort(comparator);
    }
 
    @Override
-   public NodeList nodeList()
+   public int size()
    {
-      return delegate.nodeList();
+      return delegate.size();
    }
 
    @Override

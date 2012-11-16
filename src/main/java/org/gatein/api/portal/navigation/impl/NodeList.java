@@ -19,13 +19,15 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.gatein.api.portal.navigation;
+package org.gatein.api.portal.navigation.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+
+import org.gatein.api.portal.navigation.Node;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
@@ -43,7 +45,7 @@ class NodeList extends ArrayList<Node>
       this.parent = parent;
    }
 
-   public NodeList(Node parent, NodeList original)
+   public NodeList(Node parent, List<Node> original)
    {
       super(original.size());
 
@@ -54,9 +56,9 @@ class NodeList extends ArrayList<Node>
       // Copying NodeList by copying all nodes recursively
       for (Node node : original)
       {
-         if (add(new Node(node)))
+         if (add(new NodeImpl(node)))
          {
-            node.setParent(parent);
+            ((NodeImpl) node).setParent(parent);
          }
       }
    }
@@ -111,7 +113,7 @@ class NodeList extends ArrayList<Node>
    public Node remove(int index)
    {
       Node removed = super.remove(index);
-      removed.setParent(null);
+      ((NodeImpl) removed).setParent(null);
 
       return removed;
    }
@@ -122,7 +124,7 @@ class NodeList extends ArrayList<Node>
       boolean removed = super.remove(o);
       if (removed && o instanceof Node)
       {
-         ((Node) o).setParent(null);
+         ((NodeImpl) o).setParent(null);
       }
 
       return removed;
@@ -135,7 +137,7 @@ class NodeList extends ArrayList<Node>
       super.removeRange(fromIndex, toIndex);
       for (Node node : removed)
       {
-         node.setParent(null);
+         ((NodeImpl) node).setParent(null);
       }
    }
 
@@ -144,7 +146,7 @@ class NodeList extends ArrayList<Node>
    {
       for (Node node : this)
       {
-         node.setParent(null);
+         ((NodeImpl) node).setParent(null);
       }
       super.clear();
    }
@@ -153,7 +155,7 @@ class NodeList extends ArrayList<Node>
    {
       Node[] nodes = toArray(new Node[size()]);
       Arrays.sort(nodes, comparator);
-      for (int i=0; i<nodes.length; i++)
+      for (int i = 0; i < nodes.length; i++)
       {
          super.set(i, nodes[i]);
       }
@@ -176,7 +178,7 @@ class NodeList extends ArrayList<Node>
 
       if (added)
       {
-         node.setParent(parent);
+         ((NodeImpl) node).setParent(parent);
       }
 
       return added;
@@ -203,7 +205,7 @@ class NodeList extends ArrayList<Node>
       {
          for (Node node : nodes)
          {
-            node.setParent(parent);
+            ((NodeImpl) node).setParent(parent);
          }
       }
 
@@ -213,6 +215,7 @@ class NodeList extends ArrayList<Node>
    private void checkAdd(Node node, boolean checkChild)
    {
       if (node == null) throw new IllegalArgumentException("Node cannot be null");
+      if (!(node instanceof NodeImpl)) throw new IllegalArgumentException("Invalid implementation");
       if (node == parent) throw new IllegalArgumentException("Cannot add itself as a child.");
       if (node.getParent() != null && parent != node.getParent())
          throw new IllegalArgumentException(

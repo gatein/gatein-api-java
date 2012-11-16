@@ -5,14 +5,14 @@
  * distribution for a full listing of individual contributors.
  *
  * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
+ * under the terms of the GNU Lesser General License as
  * published by the Free Software Foundation; either version 2.1 of
  * the License, or (at your option) any later version.
  *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
+ * Lesser General License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this software; if not, write to the Free
@@ -22,401 +22,75 @@
 
 package org.gatein.api.portal.navigation;
 
-import org.gatein.api.ApiException;
-import org.gatein.api.internal.Objects;
 import org.gatein.api.portal.Label;
 import org.gatein.api.portal.page.PageId;
 import org.gatein.api.util.Filter;
 
 import java.io.Serializable;
 import java.net.URI;
-import java.net.URISyntaxException;
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class Node implements NodeContainer, Serializable
+public interface Node extends Serializable
 {
-   public static Node rootNode()
-   {
-      return new RootNode();
-   }
+   String getName();
 
-   private final String name;
-   private Node parent;
-   private Label label;
-   private Visibility visibility;
-   private String iconName;
-   private PageId pageId;
-   private NodeList children;
-   private URI baseURI;
+   Node getParent();
 
-   /**
-    * Creates a new node with the specified name.
-    *
-    * @param name the name of the node.
-    */
-   public Node(String name)
-   {
-      if (name == null) throw new IllegalArgumentException("name cannot be null");
+   NodePath getNodePath();
 
-      this.name = name;
-      this.visibility = new Visibility();
-      this.children = new NodeList(this);
-   }
+   URI getResolvedURI();
 
-   /**
-    * Creates a new node from the original node object. This is a deep copy, meaning it will copy all
-    * children, grandchildren, etc.
-    *
-    * @param original the node to copy from. Changing this node has no impact on the original node.
-    */
-   public Node(Node original)
-   {
-      this(original.name, original, null); //dissociate the parent
-   }
+   Label getLabel();
 
-   /**
-    * Creates a new node with a new name, copying from the original node object. This is a deep copy, meaning it
-    * will copy all children, grandchildren, etc.
-    *
-    * @param name     the new name of the node
-    * @param original the node to copy from. Changing this node has no impact on the original node.
-    */
-   public Node(String name, Node original)
-   {
-      this(name, original, null); //dissociate the parent
-   }
+   void setLabel(Label label);
 
-   private Node(String name, Node node, Node parent)
-   {
-      if (name == null) throw new IllegalArgumentException("name cannot be null");
-      if (node == null) throw new IllegalArgumentException("node cannot be null");
+   String getResolvedLabel();
 
-      this.name = name;
-      this.parent = parent;
-      this.label = (node.label == null) ? null : new Label(node.label);
-      this.visibility = node.visibility;
-      this.iconName = node.iconName;
-      this.pageId = node.pageId;
-      this.baseURI = node.baseURI;
-      this.children = new NodeList(this, node.children);
-   }
+   boolean isVisible();
 
-   // Used for root node
-   private Node()
-   {
-      this.name = null;
-      this.children = new NodeList(this);
-   }
+   Visibility getVisibility();
 
-   public String getName()
-   {
-      return name;
-   }
+   void setVisibility(Visibility visibility);
 
-   public Node getParent()
-   {
-      return parent;
-   }
+   void setVisibility(boolean visible);
 
-   public NodePath getNodePath()
-   {
-      NodePath path = (name == null) ? NodePath.root() : NodePath.path(name);
-      if (parent != null)
-      {
-         path = parent.getNodePath().append(path);
-      }
-      return path;
-   }
+   void setVisibility(PublicationDate publicationDate);
 
-   public URI getURI()
-   {
-      URI uri = (baseURI == null) ? parent.getURI() : baseURI;
+   String getIconName();
 
-      return (uri == null) ? null : uri.resolve(name + "/");
-   }
+   void setIconName(String iconName);
 
-   //TODO: Revisit this whole URI stuff.
-   public void setBaseURI(URI baseURI)
-   {
-      String uriString = baseURI.toString();
-      if (uriString.charAt(uriString.length() - 1) != '/')
-      {
-         uriString = uriString + "/";
-      }
-      try
-      {
-         this.baseURI = new URI(uriString);
-      }
-      catch (URISyntaxException e)
-      {
-         throw new IllegalArgumentException("Cannot add '/' to URI " + baseURI, e);
-      }
-   }
+   PageId getPageId();
 
-   public Label getLabel()
-   {
-      return label;
-   }
+   void setPageId(PageId pageId);
 
-   public void setLabel(Label label)
-   {
-      this.label = label;
-   }
+   boolean isRoot();
 
-   public boolean isVisible()
-   {
-      return visibility.isVisible();
-   }
+   boolean addChild(Node child);
 
-   public Visibility getVisibility()
-   {
-      return visibility;
-   }
+   Node addChild(String childName);
 
-   public void setVisibility(Visibility visibility)
-   {
-      if (visibility == null) throw new IllegalArgumentException("visibility cannot be null");
+   Node getChild(String childName);
 
-      this.visibility = visibility;
-   }
+   Node getChild(int index);
 
-   public void setVisibility(boolean visible)
-   {
-      Visibility.Flag flag = (visible) ? Visibility.Flag.VISIBLE : Visibility.Flag.HIDDEN;
-      this.visibility = new Visibility(flag, visibility.getPublicationDate());
-   }
+   List<Node> getChildren();
 
-   public void setVisibility(PublicationDate publicationDate)
-   {
-      Visibility.Flag flag = visibility.getFlag();
-      if (publicationDate != null)
-      {
-         flag = Visibility.Flag.PUBLICATION;
-      }
-      else if (flag == Visibility.Flag.PUBLICATION)
-      {
-         flag = Visibility.Flag.VISIBLE;
-      }
+   boolean hasChild(String childName);
 
-      this.visibility = new Visibility(flag, publicationDate);
-   }
+   boolean isDetached();
 
-   public String getIconName()
-   {
-      return iconName;
-   }
+   int indexOf(String childName);
 
-   public void setIconName(String iconName)
-   {
-      this.iconName = iconName;
-   }
+   boolean removeChild(String childName);
 
-   public PageId getPageId()
-   {
-      return pageId;
-   }
+   int size();
 
-   public void setPageId(PageId pageId)
-   {
-      this.pageId = pageId;
-   }
+   Node filter(Filter<Node> node);
 
-   void setParent(Node parent)
-   {
-      this.parent = parent;
-   }
-
-   public boolean isRoot()
-   {
-      return parent == null;
-   }
-
-   @Override
-   public boolean addChild(Node child)
-   {
-      return getChildren().add(child);
-   }
-
-   @Override
-   public Node addChild(String childName)
-   {
-      Node child = new Node(childName);
-      if (!children.add(child)) throw new ApiException("Could not add child " + childName + " to node " + this);
-
-      return child;
-   }
-
-   @Override
-   public Node getChild(String childName)
-   {
-      return findChild(childName);
-   }
-
-   @Override
-   public Node getChild(int index)
-   {
-      return getChildren().get(index);
-   }
-
-   @Override
-   public List<Node> getChildren()
-   {
-      return children;
-   }
-
-   @Override
-   public boolean hasChild(String childName)
-   {
-      return getChild(childName) != null;
-   }
-
-   @Override
-   public boolean isDetached()
-   {
-      return children.isLoaded();
-   }
-
-   @Override
-   public int indexOf(String childName)
-   {
-      Node child = getChild(childName);
-
-      return getChildren().indexOf(child);
-   }
-
-   @Override
-   public boolean removeChild(String childName)
-   {
-      Node child = findChild(childName);
-
-      return child != null && getChildren().remove(child);
-   }
-
-   @Override
-   public Node filter(Filter<Node> filter)
-   {
-      return new FilteredNode(filter, this);
-   }
-
-   @Override
-   public int size()
-   {
-      return getChildren().size();
-   }
-
-   NodeList nodeList()
-   {
-      return children;
-   }
-
-   @Override
-   public String toString()
-   {
-      return Objects.toStringBuilder(getClass())
-         .add("name", getName())
-         .add("path", getNodePath())
-         .add("label", getLabel())
-         .add("visibility", getVisibility())
-         .add("iconName", getIconName())
-         .add("pageId", getPageId())
-         .toString();
-   }
-
-   @Override
-   public boolean equals(Object o)
-   {
-      if (this == o) return true;
-      if (!(o instanceof Node)) return false;
-
-      Node node = (Node) o;
-
-      if (!Objects.equals(name, node.name)) return false;
-      if (!Objects.equals(label, node.label)) return false;
-      if (!Objects.equals(visibility, node.visibility)) return false;
-      if (!Objects.equals(iconName, node.iconName)) return false;
-      if (!Objects.equals(pageId, node.pageId)) return false;
-      if (!Objects.equals(children, node.children)) return false;
-
-      return true;
-   }
-
-   @Override
-   public int hashCode()
-   {
-      int result = 31 + (name != null ? name.hashCode() : 0);
-      result = 31 * result + (label != null ? label.hashCode() : 0);
-      result = 31 * result + (visibility != null ? visibility.hashCode() : 0);
-      result = 31 * result + (iconName != null ? iconName.hashCode() : 0);
-      result = 31 * result + (pageId != null ? pageId.hashCode() : 0);
-      result = 31 * result + (children != null ? children.hashCode() : 0);
-      return result;
-   }
-
-   private Node findChild(String name)
-   {
-      for (Node node : getChildren())
-      {
-         if (node.getName().equals(name)) return node;
-      }
-
-      return null;
-   }
-
-   private static final class RootNode extends Node
-   {
-      public RootNode()
-      {
-      }
-
-      @Override
-      public void setLabel(Label label)
-      {
-         throw new ApiException("Cannot set label on root node");
-      }
-
-      @Override
-      public void setVisibility(Visibility visibility)
-      {
-         throw new ApiException("Cannot set visibility on root node");
-      }
-
-      @Override
-      public void setVisibility(boolean visible)
-      {
-         throw new ApiException("Cannot set visibility on root node");
-      }
-
-      @Override
-      public void setVisibility(PublicationDate publicationDate)
-      {
-         throw new ApiException("Cannot set visibility on root node");
-      }
-
-      @Override
-      public void setIconName(String iconName)
-      {
-         throw new ApiException("Cannot set iconName on root node");
-      }
-
-      @Override
-      public void setPageId(PageId pageId)
-      {
-         throw new ApiException("Cannot set pageId on root node");
-      }
-
-      @Override
-      public void setBaseURI(URI baseURI)
-      {
-         throw new ApiException("Cannot set uri on root node");
-      }
-
-      @Override
-      void setParent(Node parent)
-      {
-         throw new ApiException("Cannot set parent on root node");
-      }
-   }
+   void sort(Comparator<Node> comparator);
 }

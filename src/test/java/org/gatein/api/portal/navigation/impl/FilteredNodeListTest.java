@@ -20,8 +20,10 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.portal.navigation;
+package org.gatein.api.portal.navigation.impl;
 
+import org.gatein.api.portal.navigation.Node;
+import org.gatein.api.portal.navigation.impl.FilteredNodeList;
 import org.gatein.api.util.Filter;
 import org.junit.Test;
 
@@ -38,7 +40,7 @@ public class FilteredNodeListTest
    @Test
    public void testFilter_Iterator()
    {
-      Node parent = new Node("parent");
+      Node parent = new NodeImpl("parent");
       parent.addChild("child1").setVisibility(false);
       parent.addChild("child2");
       parent.addChild("child3").setVisibility(false);
@@ -52,7 +54,7 @@ public class FilteredNodeListTest
          {
             return object.isVisible();
          }
-      }, parent.nodeList());
+      }, parent.getChildren());
 
       Iterator<Node> itr = list.iterator();
 
@@ -85,7 +87,7 @@ public class FilteredNodeListTest
    @Test
    public void testFilter_ListIterator()
    {
-      Node parent = new Node("parent");
+      Node parent = new NodeImpl("parent");
       parent.addChild("child1").setVisibility(false);
       parent.addChild("child2");
       parent.addChild("child3");
@@ -101,7 +103,7 @@ public class FilteredNodeListTest
          {
             return object.isVisible();
          }
-      }, parent.nodeList());
+      }, parent.getChildren());
 
       ListIterator<Node> itr = list.listIterator();
       int index = 0;

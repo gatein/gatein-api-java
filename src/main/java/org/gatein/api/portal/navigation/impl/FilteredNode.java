@@ -20,8 +20,9 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.portal.navigation;
+package org.gatein.api.portal.navigation.impl;
 
+import org.gatein.api.portal.navigation.Node;
 import org.gatein.api.util.Filter;
 
 import java.util.List;
@@ -38,7 +39,7 @@ class FilteredNode extends DelegateNode
    {
       super(node);
       this.filter = filter;
-      this.children = new FilteredNodeList(filter, node.nodeList());
+      this.children = new FilteredNodeList(filter, node.getChildren());
    }
 
    @Override

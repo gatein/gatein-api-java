@@ -26,8 +26,6 @@ import org.gatein.api.Portal;
 import org.gatein.api.portal.User;
 import org.gatein.api.util.Filter;
 
-import java.util.Comparator;
-
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
@@ -109,16 +107,6 @@ public class Nodes
    public static NodeFilter.Builder filter()
    {
       return new NodeFilter.Builder();
-   }
-
-   /**
-    * Sorts the children of a node.
-    *
-    * @param node the node which has children to sort
-    */
-   public static void sort(Node node, Comparator<Node> comparator)
-   {
-      node.nodeList().sort(comparator);
    }
 
    //----------------- Private visitor stuff

@@ -20,9 +20,10 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.portal.navigation;
+package org.gatein.api.portal.navigation.impl;
 
 import org.gatein.api.internal.DelegateList;
+import org.gatein.api.portal.navigation.Node;
 import org.gatein.api.util.Filter;
 
 import java.util.Iterator;
@@ -36,7 +37,7 @@ class FilteredNodeList extends DelegateList<Node> implements List<Node>
 {
    private final Filter<Node> filter;
 
-   public FilteredNodeList(Filter<Node> filter, NodeList list)
+   public FilteredNodeList(Filter<Node> filter, List<Node> list)
    {
       super(list);
       this.filter = filter;

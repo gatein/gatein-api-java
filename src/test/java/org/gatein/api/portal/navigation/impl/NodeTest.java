@@ -20,17 +20,16 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.portal.navigation;
+package org.gatein.api.portal.navigation.impl;
 
-import org.gatein.api.util.Filter;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Comparator;
+
+import org.gatein.api.portal.navigation.Node;
 import org.junit.Test;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Iterator;
-import java.util.ListIterator;
-
-import static org.junit.Assert.*;
 
 
 /**
@@ -43,21 +42,21 @@ public class NodeTest
    @Test(expected = IllegalArgumentException.class)
    public void test_NullName()
    {
-      new Node((String) null);
+      new NodeImpl((String) null);
    }
 
    @Test(expected = NullPointerException.class)
    public void testNewNode_NullNode()
    {
-      new Node((Node) null);
+      new NodeImpl((Node) null);
    }
 
    @Test
    public void testEquals()
    {
-      Node foo = new Node("foo");
-      Node foo2 = new Node("foo");
-      Node bar = new Node("bar");
+      Node foo = new NodeImpl("foo");
+      Node foo2 = new NodeImpl("foo");
+      Node bar = new NodeImpl("bar");
 
       assertFalse(foo.equals(bar));
       assertTrue(foo.equals(foo2));
@@ -66,19 +65,19 @@ public class NodeTest
    @Test
    public void testCopy()
    {
-      Node original = new Node("foo");
-      Node copy = new Node(original);
+      Node original = new NodeImpl("foo");
+      Node copy = new NodeImpl(original);
       assertEquals(original, copy);
    }
 
    @Test
    public void testCopy_Rename()
    {
-      Node original = new Node("foo");
-      original.addChild(new Node("1"));
-      original.addChild(new Node("2"));
+      Node original = new NodeImpl("foo");
+      original.addChild(new NodeImpl("1"));
+      original.addChild(new NodeImpl("2"));
 
-      Node copy = new Node("bar", original);
+      Node copy = new NodeImpl("bar", original);
       assertEquals("bar", copy.getName());
       for (int i=0; i<copy.size(); i++)
       {
@@ -89,8 +88,8 @@ public class NodeTest
    @Test
    public void testAdd()
    {
-      Node parent = new Node("root");
-      Node child = new Node("child");
+      Node parent = new NodeImpl("root");
+      Node child = new NodeImpl("child");
       parent.addChild(child);
 
       assertEquals(1, parent.size());
@@ -100,31 +99,31 @@ public class NodeTest
    @Test(expected = IllegalArgumentException.class)
    public void testAdd_NullChild()
    {
-      Node parent = new Node("parent");
+      Node parent = new NodeImpl("parent");
       parent.addChild((Node) null);
    }
 
    @Test(expected = IllegalArgumentException.class)
    public void testAdd_NullChildName()
    {
-      Node parent = new Node("parent");
+      Node parent = new NodeImpl("parent");
       parent.addChild((String) null);
    }
 
    @Test(expected = IllegalArgumentException.class)
    public void testAdd_SameChild()
    {
-      Node parent = new Node("parent");
-      parent.addChild(new Node("child"));
-      parent.addChild(new Node("child"));
+      Node parent = new NodeImpl("parent");
+      parent.addChild(new NodeImpl("child"));
+      parent.addChild(new NodeImpl("child"));
    }
 
    @Test(expected = IllegalArgumentException.class)
    public void testAdd_ChildWithParent()
    {
-      Node parent = new Node("parent");
-      Node parent2 = new Node("parent2");
-      Node child = new Node("child");
+      Node parent = new NodeImpl("parent");
+      Node parent2 = new NodeImpl("parent2");
+      Node child = new NodeImpl("child");
       parent2.addChild(child);
 
       parent.addChild(child);
@@ -133,63 +132,39 @@ public class NodeTest
    @Test(expected = IllegalArgumentException.class)
    public void testAdd_Self()
    {
-      Node node = new Node("node");
+      Node node = new NodeImpl("node");
       node.addChild(node);
    }
 
    @Test(expected = IllegalArgumentException.class)
    public void testAdd_Cyclic()
    {
-      Node parent = new Node("parent");
-      Node child1 = new Node("child1");
+      Node parent = new NodeImpl("parent");
+      Node child1 = new NodeImpl("child1");
       parent.addChild(child1);
       child1.addChild(parent);
    }
 
    @Test
-   public void testUri() throws Exception
+   public void testSort()
    {
-      Node parent = new Node("parent");
-      parent.setBaseURI(uri("/portal/classic/"));
-      parent.addChild(new Node("child"));
+      Node node = new NodeImpl("parent");
+      node.addChild(new NodeImpl("3"));
+      node.addChild(new NodeImpl("2"));
+      node.addChild(new NodeImpl("1"));
 
-      assertEquals(uri("/portal/classic/parent/child/"), parent.getChild("child").getURI());
-   }
+      node.sort(new Comparator<Node>()
+      {
+         @Override
+         public int compare(Node o1, Node o2)
+         {
+            return o1.getName().compareTo(o2.getName());
+         }
+      });
 
-   @Test
-   public void testUri_NoTrailingSlash() throws Exception
-   {
-      Node parent = new Node("parent");
-      parent.setBaseURI(uri("/portal/classic"));
-      parent.addChild(new Node("child"));
-
-      assertEquals(uri("/portal/classic/parent/child/"), parent.getChild("child").getURI());
-   }
-
-   @Test
-   public void testUri_Copy() throws Exception
-   {
-      Node parent = new Node("parent");
-      parent.setBaseURI(uri("/portal/classic/"));
-      parent.addChild(new Node("child"));
-
-      parent = new Node(parent);
-      assertEquals(uri("/portal/classic/parent/child/"), parent.getChild("child").getURI());
-   }
-
-   @Test
-   public void testUri_Copy_Rename() throws Exception
-   {
-      Node parent = new Node("parent");
-      parent.setBaseURI(uri("/portal/classic"));
-      parent.addChild(new Node("child"));
-
-      parent = new Node("foo", parent);
-      assertEquals(uri("/portal/classic/foo/child/"), parent.getChild("child").getURI());
-   }
-
-   private static URI uri(String path) throws URISyntaxException
-   {
-      return new URI("http", null, "localhost", 8080, path, null, null);
+      assertEquals(3, node.getChildren().size());
+      assertEquals("1", node.getChildren().get(0).getName());
+      assertEquals("2", node.getChildren().get(1).getName());
+      assertEquals("3", node.getChildren().get(2).getName());
    }
 }
