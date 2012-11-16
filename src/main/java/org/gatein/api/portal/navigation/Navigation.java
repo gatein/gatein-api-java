@@ -50,6 +50,4 @@ public interface Navigation
    boolean removeNode(NodePath path);
 
    void saveNode(Node node);
-
-   String resolveLabel(Node node, Locale locale);
 }
