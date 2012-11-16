@@ -82,7 +82,7 @@ public interface Node extends Serializable
 
    boolean hasChild(String childName);
 
-   boolean isDetached();
+   boolean isChildrenLoaded();
 
    int indexOf(String childName);
 

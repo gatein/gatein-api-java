@@ -185,9 +185,9 @@ class DelegateNode implements Node
    }
 
    @Override
-   public boolean isDetached()
+   public boolean isChildrenLoaded()
    {
-      return delegate.isDetached();
+      return delegate.isChildrenLoaded();
    }
 
    @Override

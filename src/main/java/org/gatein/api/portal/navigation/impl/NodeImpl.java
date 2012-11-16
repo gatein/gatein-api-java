@@ -280,7 +280,7 @@ public class NodeImpl implements Node
    }
 
    @Override
-   public boolean isDetached()
+   public boolean isChildrenLoaded()
    {
       return children.isLoaded();
    }
