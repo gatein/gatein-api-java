@@ -32,11 +32,13 @@ import org.gatein.api.portal.navigation.Node;
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-class NodeList extends ArrayList<Node>
+public class NodeList extends ArrayList<Node>
 {
    private boolean loaded;
 
-   final Node parent;
+   private final Node parent;
+
+   private NodeList original;
 
    public NodeList(Node parent)
    {
@@ -97,6 +99,18 @@ class NodeList extends ArrayList<Node>
       return _addAll(index, nodes);
    }
 
+   public Node get(String name)
+   {
+      for (Node n : this)
+      {
+         if (n.getName().equals(name))
+         {
+            return n;
+         }
+      }
+      return null;
+   }
+
    @Override
    public Node set(int index, Node node)
    {
@@ -106,21 +120,34 @@ class NodeList extends ArrayList<Node>
       boolean checkChild = !get(index).getName().equals(node.getName());
 
       checkAdd(node, checkChild);
+
+      setOriginal();
+
       return super.set(index, node);
    }
 
    @Override
    public Node remove(int index)
    {
+      setOriginal();
+
       Node removed = super.remove(index);
       ((NodeImpl) removed).setParent(null);
 
       return removed;
    }
 
+   public boolean remove(String name)
+   {
+      Node child = get(name);
+      return child != null && remove(child);
+   }
+
    @Override
    public boolean remove(Object o)
    {
+      setOriginal();
+
       boolean removed = super.remove(o);
       if (removed && o instanceof Node)
       {
@@ -133,6 +160,8 @@ class NodeList extends ArrayList<Node>
    @Override
    protected void removeRange(int fromIndex, int toIndex)
    {
+      setOriginal();
+
       List<Node> removed = new ArrayList<Node>(subList(fromIndex, toIndex));
       super.removeRange(fromIndex, toIndex);
       for (Node node : removed)
@@ -141,9 +170,17 @@ class NodeList extends ArrayList<Node>
       }
    }
 
+   public int indexOf(String name)
+   {
+      Node node = get(name);
+      return node != null ? indexOf(node) : -1;
+   }
+
    @Override
    public void clear()
    {
+      setOriginal();
+
       for (Node node : this)
       {
          ((NodeImpl) node).setParent(null);
@@ -153,6 +190,8 @@ class NodeList extends ArrayList<Node>
 
    public void sort(Comparator<Node> comparator)
    {
+      setOriginal();
+
       Node[] nodes = toArray(new Node[size()]);
       Arrays.sort(nodes, comparator);
       for (int i = 0; i < nodes.length; i++)
@@ -161,9 +200,16 @@ class NodeList extends ArrayList<Node>
       }
    }
 
+   public NodeList getOriginal()
+   {
+      return original;
+   }
+
    private boolean _add(Integer index, Node node)
    {
       checkAdd(node, true);
+
+      setOriginal();
 
       boolean added;
       if (index == null)
@@ -190,6 +236,8 @@ class NodeList extends ArrayList<Node>
       {
          checkAdd(node, true);
       }
+
+      setOriginal();
 
       boolean added;
       if (index == null)
@@ -244,5 +292,13 @@ class NodeList extends ArrayList<Node>
       }
 
       return false;
+   }
+
+   private void setOriginal()
+   {
+      if (original == null)
+      {
+         original = new NodeList(parent, this);
+      }
    }
 }

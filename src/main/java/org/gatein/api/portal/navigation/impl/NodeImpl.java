@@ -42,11 +42,6 @@ import org.gatein.api.util.Filter;
  */
 public class NodeImpl implements Node
 {
-   public static NodeImpl rootNode()
-   {
-      return new RootNode();
-   }
-
    private final String name;
    private Node parent;
    private Label label;
@@ -54,7 +49,7 @@ public class NodeImpl implements Node
    private String iconName;
    private PageId pageId;
    private NodeList children;
-
+   
    /**
     * Creates a new node with the specified name.
     *
@@ -107,7 +102,7 @@ public class NodeImpl implements Node
    }
 
    // Used for root node
-   private NodeImpl()
+   NodeImpl()
    {
       this.name = null;
       this.children = new NodeList(this);
@@ -238,7 +233,7 @@ public class NodeImpl implements Node
    @Override
    public boolean addChild(Node child)
    {
-      return getChildren().add(child);
+      return children.add(child);
    }
 
    @Override
@@ -253,13 +248,13 @@ public class NodeImpl implements Node
    @Override
    public Node getChild(String childName)
    {
-      return findChild(childName);
+      return children.get(childName);
    }
 
    @Override
    public Node getChild(int index)
    {
-      return getChildren().get(index);
+      return children.get(index);
    }
 
    @Override
@@ -288,17 +283,13 @@ public class NodeImpl implements Node
    @Override
    public int indexOf(String childName)
    {
-      Node child = getChild(childName);
-
-      return getChildren().indexOf(child);
+      return children.indexOf(childName);
    }
 
    @Override
    public boolean removeChild(String childName)
    {
-      Node child = findChild(childName);
-
-      return child != null && getChildren().remove(child);
+      return children.remove(childName);
    }
 
    @Override
@@ -321,7 +312,7 @@ public class NodeImpl implements Node
    @Override
    public int size()
    {
-      return getChildren().size();
+      return children.size();
    }
 
    @Override
@@ -365,58 +356,5 @@ public class NodeImpl implements Node
       result = 31 * result + (pageId != null ? pageId.hashCode() : 0);
       result = 31 * result + (children != null ? children.hashCode() : 0);
       return result;
-   }
-
-   private Node findChild(String name)
-   {
-      for (Node node : getChildren())
-      {
-         if (node.getName().equals(name)) return node;
-      }
-
-      return null;
-   }
-
-   private static final class RootNode extends NodeImpl
-   {
-      public RootNode()
-      {
-      }
-
-      @Override
-      public void setLabel(Label label)
-      {
-         throw new ApiException("Cannot set label on root node");
-      }
-
-      @Override
-      public void setVisibility(Visibility visibility)
-      {
-         throw new ApiException("Cannot set visibility on root node");
-      }
-
-      @Override
-      public void setVisibility(boolean visible)
-      {
-         throw new ApiException("Cannot set visibility on root node");
-      }
-
-      @Override
-      public void setVisibility(PublicationDate publicationDate)
-      {
-         throw new ApiException("Cannot set visibility on root node");
-      }
-
-      @Override
-      public void setIconName(String iconName)
-      {
-         throw new ApiException("Cannot set iconName on root node");
-      }
-
-      @Override
-      public void setPageId(PageId pageId)
-      {
-         throw new ApiException("Cannot set pageId on root node");
-      }
    }
 }
