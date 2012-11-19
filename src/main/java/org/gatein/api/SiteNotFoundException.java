@@ -29,10 +29,10 @@ import org.gatein.api.portal.site.SiteId;
  * 
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-public class NavigationNotFoundException extends ApiException
+public class SiteNotFoundException extends ApiException
 {
-   public NavigationNotFoundException(final SiteId siteId)
+   public SiteNotFoundException(final SiteId siteId)
    {
-      super("Navigation for site '" + siteId + "' not found");
+      super("Site " + siteId + " not found");
    }
 }
