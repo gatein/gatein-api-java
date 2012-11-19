@@ -37,6 +37,7 @@ public interface NodeVisitor
     * Determines if more nodes should be visited.
     *
     * @param depth the current depth in the node hierarchy. This can be relative depending on where the visitor begins.
+    * @param name the name of the node
     * @param details the node details that are available while visiting
     * @return true to continue visiting children nodes
     */
@@ -44,12 +45,32 @@ public interface NodeVisitor
 
    public static interface NodeDetails
    {
+      /**
+       * The <code>Visibility</code> of the node being visited.
+       *
+       * @return the visibility
+       */
       Visibility getVisibility();
 
+      /**
+       * The icon name of the node being visited.
+       *
+       * @return the icon name
+       */
       String getIconName();
 
+      /**
+       * The <code>PageId</code> of the node being visited.
+       *
+       * @return the page id
+       */
       PageId getPageId();
 
+      /**
+       * The <code>NodePath</code> of the node being visited.
+       *
+       * @return the node path
+       */
       NodePath getNodePath();
    }
 }
