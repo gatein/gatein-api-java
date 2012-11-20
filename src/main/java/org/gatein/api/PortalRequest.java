@@ -97,12 +97,12 @@ public abstract class PortalRequest
 
    public Node getNode(NodePath path)
    {
-      return getNavigation().getNode(path, Nodes.visitChildren());
+      return getNavigation().getNode(Nodes.visitNodes(path, Nodes.visitChildren()));
    }
 
    public Node getCurrentNode() throws EntityNotFoundException
    {
-      Node node = getNavigation().getNode(getNodePath(), Nodes.visitNone());
+      Node node = getNavigation().getNode(Nodes.visitNodes(getNodePath(), Nodes.visitNone()));
       if (node == null)
          throw new EntityNotFoundException("Node could not be found for current request path " + getNodePath());
 

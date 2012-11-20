@@ -39,15 +39,13 @@ public interface Navigation
 
    void setPriority(Integer integer);
 
-   Node getNode(NodePath path, NodeVisitor visitor);
-
-   Node loadNodes(NodeVisitor visitor);
+   Node getNode(NodeVisitor visitor);
 
    void loadChildren(Node parent);
 
-   void moveNode(NodePath from, NodePath to);
+   void moveNode(NodePath from, NodePath toParent);
 
-   boolean removeNode(NodePath path);
+   boolean deleteNode(NodePath path);
 
    void saveNode(Node node);
 }

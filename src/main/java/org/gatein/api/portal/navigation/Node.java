@@ -22,6 +22,7 @@
 
 package org.gatein.api.portal.navigation;
 
+import org.gatein.api.EntityAlreadyExistsException;
 import org.gatein.api.portal.Label;
 import org.gatein.api.portal.page.PageId;
 import org.gatein.api.util.Filter;
@@ -70,8 +71,6 @@ public interface Node extends Serializable
 
    boolean isRoot();
 
-   boolean addChild(Node child);
-
    Node addChild(String childName);
 
    Node getChild(String childName);
@@ -88,9 +87,11 @@ public interface Node extends Serializable
 
    boolean removeChild(String childName);
 
-   int size();
-
    Node filter(Filter<Node> node);
 
    void sort(Comparator<Node> comparator);
+
+   Node copy();
+
+   Node copy(String newName);
 }
