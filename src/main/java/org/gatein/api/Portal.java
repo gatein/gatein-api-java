@@ -22,20 +22,15 @@
 
 package org.gatein.api;
 
-import org.gatein.api.portal.Label;
+import org.gatein.api.portal.Permission;
 import org.gatein.api.portal.User;
 import org.gatein.api.portal.navigation.Navigation;
-import org.gatein.api.portal.navigation.Node;
-import org.gatein.api.portal.navigation.NodePath;
-import org.gatein.api.portal.navigation.NodeVisitor;
 import org.gatein.api.portal.page.Page;
 import org.gatein.api.portal.page.PageId;
 import org.gatein.api.portal.page.PageQuery;
-import org.gatein.api.portal.Permission;
 import org.gatein.api.portal.site.Site;
 import org.gatein.api.portal.site.SiteId;
 import org.gatein.api.portal.site.SiteQuery;
-import org.gatein.api.util.Filter;
 
 import java.util.List;
 
@@ -55,6 +50,8 @@ public interface Portal
    Navigation getNavigation(SiteId siteId);
 
    Page getPage(PageId pageId);
+
+   Page createPage(PageId pageId) throws EntityAlreadyExistsException;
 
    List<Page> findPages(PageQuery query);
 

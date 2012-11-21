@@ -23,6 +23,7 @@
 package org.gatein.api.portal.page;
 
 import org.gatein.api.portal.site.SiteId;
+import org.gatein.api.portal.site.SiteType;
 import org.gatein.api.util.Filter;
 import org.gatein.api.util.Pagination;
 import org.gatein.api.util.Query;
@@ -34,24 +35,109 @@ import org.gatein.api.util.Sorting;
  */
 public class PageQuery extends Query<Page>
 {
-   private PageQuery(Pagination pagination, Filter<Page> filter, Sorting<Page> sorting)
+   private final SiteType siteType;
+   private final String siteName;
+   private final String pageName;
+   private final String pageTitle;
+
+   private PageQuery(SiteType siteType, String siteName, String pageName, String pageTitle, Pagination pagination, Filter<Page> filter, Sorting<Page> sorting)
    {
       super(pagination, filter, sorting);
+      this.siteType = siteType;
+      this.siteName = siteName;
+      this.pageName = pageName;
+      this.pageTitle = pageTitle;
+   }
+
+   public SiteType getSiteType()
+   {
+      return siteType;
+   }
+
+   public String getSiteName()
+   {
+      return siteName;
+   }
+
+   public String getPageName()
+   {
+      return pageName;
+   }
+
+   public String getPageTitle()
+   {
+      return pageTitle;
+   }
+
+   /**
+    * Convenience method for creating a new PageQuery with pagination set to the next page represented by
+    * by {@link org.gatein.api.util.Pagination#getNext()}
+    *
+    * @return a new PageQuery with pagination set to the next page.
+    */
+   public PageQuery nextPage()
+   {
+      return new Builder().from(this).withNextPage().build();
+   }
+
+   /**
+    * Convenience method for creating a new PageQuery with pagination set to the previous page represented by
+    * by {@link org.gatein.api.util.Pagination#getPrevious()}
+    *
+    * @return a new PageQuery with pagination set to the previous page.
+    */
+   public PageQuery previousPage()
+   {
+      return new Builder().from(this).withPreviousPage().build();
    }
 
    public static class Builder extends QueryBuilder<Page, PageQuery, Builder>
    {
-      private SiteId siteId;
+      private SiteType siteType;
+      private String siteName;
+      private String pageName;
+      private String pageTitle;
 
       @Override
       public PageQuery build()
       {
-         return new PageQuery(pagination, filter, sorting);
+         return new PageQuery(siteType, siteName, pageName, pageTitle, pagination, filter, sorting);
+      }
+
+      public Builder from(PageQuery query)
+      {
+         return super.from(query).withSiteType(query.getSiteType()).withSiteName(query.getSiteName())
+            .withPageName(query.getPageName()).withPageTitle(query.getPageTitle());
       }
 
       public Builder withSiteId(SiteId siteId)
       {
-         this.siteId = siteId;
+         this.siteType = siteId.getType();
+         this.siteName = siteId.getName();
+         return this;
+      }
+
+      public Builder withSiteType(SiteType siteType)
+      {
+         this.siteType = siteType;
+         return this;
+      }
+
+      public Builder withSiteName(String siteName)
+      {
+         this.siteName = siteName;
+         return this;
+      }
+
+      public Builder withPageName(String pageName)
+      {
+         this.pageName = pageName;
+         return this;
+      }
+
+      public Builder withPageTitle(String pageTitle)
+      {
+         this.pageTitle = pageTitle;
          return this;
       }
    }

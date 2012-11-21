@@ -38,6 +38,7 @@ public abstract class QueryBuilder<T, Q extends Query<T>, B extends QueryBuilder
 
    protected QueryBuilder()
    {
+      pagination = new Pagination(0, 20); // Default all queries to use pagination
    }
 
    public B from(Query<T> query)

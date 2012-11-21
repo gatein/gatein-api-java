@@ -35,8 +35,14 @@ public class Group
    public Group(String... group)
    {
       if (group == null) throw new IllegalArgumentException("group cannot be null");
-
-      this.id = Strings.joiner("/").leading().trimToNull().ignoreNulls().join(group);
+      if (group.length == 1)
+      {
+         this.id = group[0];
+      }
+      else
+      {
+         this.id = Strings.joiner("/").leading().trimToNull().ignoreNulls().join(group);
+      }
    }
 
    public Group(String id)

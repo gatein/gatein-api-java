@@ -22,11 +22,8 @@
 
 package org.gatein.api.portal.site;
 
-import org.gatein.api.internal.Objects;
 import org.gatein.api.portal.Attributes;
-import org.gatein.api.portal.Group;
 import org.gatein.api.portal.Permission;
-import org.gatein.api.portal.User;
 
 import java.io.Serializable;
 import java.util.Locale;
@@ -34,147 +31,39 @@ import java.util.Locale;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class Site implements Comparable<Site>, Serializable
+public interface Site extends Comparable<Site>, Serializable
 {
-   private final SiteId id;
+   SiteId getId();
 
-   private String title;
-   private String description;
-   private Locale locale;
-   private String skin;
-   private Attributes attributes;
-   private Permission accessPermission;
-   private Permission editPermission;
+   SiteType getType();
 
-   public Site(String name)
-   {
-      this(new SiteId(name));
-   }
+   String getName();
 
-   public Site(Group group)
-   {
-      this(new SiteId(group));
-   }
+   String getTitle();
 
-   public Site(User user)
-   {
-      this(new SiteId(user));
-   }
+   void setTitle(String title);
 
-   public Site(SiteId id)
-   {
-      if (id == null) throw new IllegalArgumentException("id cannot be null");
+   String getDescription();
 
-      this.id = id;
-      this.attributes = new Attributes();
-   }
+   void setDescription(String description);
 
-   public SiteId getId()
-   {
-      return id;
-   }
+   Locale getLocale();
 
-   public SiteType getType()
-   {
-      return id.getType();
-   }
+   public void setLocale(Locale locale);
 
-   public String getName()
-   {
-      return id.getName();
-   }
+   public String getSkin();
 
-   public String getTitle()
-   {
-      return title;
-   }
+   public void setSkin(String skin);
 
-   public void setTitle(String title)
-   {
-      this.title = title;
-   }
+   public Attributes getAttributes();
 
-   public String getDescription()
-   {
-      return description;
-   }
+   public Permission getAccessPermission();
 
-   public void setDescription(String description)
-   {
-      this.description = description;
-   }
+   public void setAccessPermission(Permission permission);
 
-   public Locale getLocale()
-   {
-      return locale;
-   }
+   public Permission getEditPermission();
 
-   public void setLocale(Locale locale)
-   {
-      this.locale = locale;
-   }
-
-   public String getSkin()
-   {
-      return skin;
-   }
-
-   public void setSkin(String skin)
-   {
-      this.skin = skin;
-   }
-
-   public Attributes getAttributes()
-   {
-      return attributes;
-   }
-
-   public void setAttributes(Attributes attributes)
-   {
-      this.attributes = attributes;
-   }
-
-   public Permission getAccessPermission()
-   {
-      return accessPermission;
-   }
-
-   public void setAccessPermission(Permission permission)
-   {
-      this.accessPermission = permission;
-   }
-
-   public Permission getEditPermission()
-   {
-      return editPermission;
-   }
-
-   public void setEditPermission(Permission permission)
-   {
-      this.editPermission = permission;
-   }
-
-   @Override
-   public int compareTo(Site other)
-   {
-      return getName().compareTo(other.getName());
-   }
-
-   @Override
-   public String toString()
-   {
-      return Objects.toStringBuilder(getClass())
-         .add("type", getType().getName())
-         .add("name", getName())
-         .add("title", getTitle())
-         .add("description", getDescription())
-         .add("locale", getLocale())
-         .add("skin", getSkin())
-         .add("attributes", getAttributes())
-         .add("editPermission", getEditPermission())
-         .add("accessPermission", getAccessPermission())
-         .toString();
-   }
+   public void setEditPermission(Permission permission);
 
    public static final class AttributeKeys
    {
