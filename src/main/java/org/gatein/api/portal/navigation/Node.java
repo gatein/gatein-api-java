@@ -22,7 +22,6 @@
 
 package org.gatein.api.portal.navigation;
 
-import org.gatein.api.EntityAlreadyExistsException;
 import org.gatein.api.portal.Label;
 import org.gatein.api.portal.page.PageId;
 import org.gatein.api.util.Filter;
@@ -30,12 +29,11 @@ import org.gatein.api.util.Filter;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.Comparator;
-import java.util.List;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public interface Node extends Serializable
+public interface Node extends Iterable<Node>, Serializable
 {
    String getName();
 
@@ -77,21 +75,25 @@ public interface Node extends Serializable
 
    Node getChild(int index);
 
-   List<Node> getChildren();
+   int getChildCount();
 
    boolean hasChild(String childName);
 
    boolean isChildrenLoaded();
 
+   Node getDescendant(NodePath nodePath);
+
    int indexOf(String childName);
 
    boolean removeChild(String childName);
 
-   Node filter(Filter<Node> node);
+   void filter(Filter<Node> filter);
 
    void sort(Comparator<Node> comparator);
 
-   Node copy();
+   void moveTo(int index);
 
-   Node copy(String newName);
+   void moveTo(Node parent);
+
+   void moveTo(int index, Node parent);
 }

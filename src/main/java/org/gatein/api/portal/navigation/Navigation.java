@@ -24,8 +24,6 @@ package org.gatein.api.portal.navigation;
 
 import org.gatein.api.portal.site.SiteId;
 
-import java.util.Locale;
-
 /**
  * Navigation for a site.
  *
@@ -42,8 +40,6 @@ public interface Navigation
    Node getNode(NodeVisitor visitor);
 
    void loadChildren(Node parent);
-
-   void moveNode(NodePath from, NodePath toParent);
 
    boolean deleteNode(NodePath path);
 
