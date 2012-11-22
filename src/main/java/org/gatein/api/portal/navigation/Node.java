@@ -26,14 +26,13 @@ import org.gatein.api.portal.Label;
 import org.gatein.api.portal.page.PageId;
 import org.gatein.api.util.Filter;
 
-import java.io.Serializable;
 import java.net.URI;
 import java.util.Comparator;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public interface Node extends Iterable<Node>, Serializable
+public interface Node extends Iterable<Node>
 {
    String getName();
 
