@@ -41,6 +41,8 @@ public interface Navigation
 
    void loadChildren(Node parent);
 
+   void refreshNode(Node node);
+
    boolean deleteNode(NodePath path);
 
    void saveNode(Node node);
