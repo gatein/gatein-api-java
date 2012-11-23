@@ -70,6 +70,8 @@ public interface Node extends Iterable<Node>
 
    Node addChild(String childName);
 
+   Node addChild(int index, String childName);
+
    Node getChild(String childName);
 
    Node getChild(int index);
@@ -86,7 +88,7 @@ public interface Node extends Iterable<Node>
 
    boolean removeChild(String childName);
 
-   void filter(Filter<Node> filter);
+   Node filter(Filter<Node> filter);
 
    void sort(Comparator<Node> comparator);
 
