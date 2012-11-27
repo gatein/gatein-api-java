@@ -169,7 +169,7 @@ public abstract class Localized<T extends Serializable> implements Iterable<T>, 
     *
     * @param <T> the value type
     */
-   public static final class Value<T> implements Serializable
+   public static final class Value<T extends Serializable> implements Serializable
    {
       private final Locale locale;
       private final T value;
