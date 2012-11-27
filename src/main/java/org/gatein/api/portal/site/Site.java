@@ -23,6 +23,9 @@
 package org.gatein.api.portal.site;
 
 import org.gatein.api.portal.Attributes;
+import org.gatein.api.portal.Describable;
+import org.gatein.api.portal.Displayable;
+import org.gatein.api.portal.LocalizedString;
 import org.gatein.api.portal.Permission;
 
 import java.io.Serializable;
@@ -31,21 +34,13 @@ import java.util.Locale;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public interface Site extends Comparable<Site>, Serializable
+public interface Site extends Displayable, Describable, Comparable<Site>, Serializable
 {
    SiteId getId();
 
    SiteType getType();
 
    String getName();
-
-   String getTitle();
-
-   void setTitle(String title);
-
-   String getDescription();
-
-   void setDescription(String description);
 
    Locale getLocale();
 

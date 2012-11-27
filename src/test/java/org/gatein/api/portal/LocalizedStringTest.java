@@ -36,12 +36,12 @@ import static org.junit.Assert.*;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class LabelTest
+public class LocalizedStringTest
 {
    @Test
-   public void testSimpleLabel()
+   public void testSimple()
    {
-      Label simple = new Label("simple");
+      LocalizedString simple = new LocalizedString("simple");
       assertFalse(simple.isLocalized());
       assertEquals("simple", simple.getValue());
       assertEquals(1, simple.getLocalizedValues().size());
@@ -55,11 +55,11 @@ public class LabelTest
    }
 
    @Test
-   public void testLocalizedLabel()
+   public void testLocalized()
    {
       List<String> values = Arrays.asList("Hello", "Ciao", "Bonjour");
 
-      Label hello = new Label(Locale.ENGLISH, values.get(0));
+      LocalizedString hello = new LocalizedString(Locale.ENGLISH, values.get(0));
       hello.setLocalizedValue(Locale.ITALIAN, values.get(1)).setLocalizedValue(Locale.FRENCH, values.get(2));
 
       assertTrue(hello.isLocalized());
@@ -97,14 +97,14 @@ public class LabelTest
    {
       List<String> values = Arrays.asList("Hello", "Ciao", "Bonjour");
 
-      Label one = new Label(Locale.ENGLISH, values.get(0));
+      LocalizedString one = new LocalizedString(Locale.ENGLISH, values.get(0));
       one.setLocalizedValue(Locale.ITALIAN, values.get(1)).setLocalizedValue(Locale.FRENCH, values.get(2));
 
       Map<Locale, String> valueMap = new HashMap<Locale, String>(3);
       valueMap.put(Locale.ENGLISH, values.get(0));
       valueMap.put(Locale.ITALIAN, values.get(1));
       valueMap.put(Locale.FRENCH, values.get(2));
-      Label two = new Label(valueMap);
+      LocalizedString two = new LocalizedString(valueMap);
 
       assertEquals(one, two);
    }
@@ -112,15 +112,15 @@ public class LabelTest
    @Test
    public void testLocalized_Unlocalized()
    {
-      Label label = new Label("simple");
-      assertFalse(label.isLocalized());
-      label.setLocalizedValue(Locale.ENGLISH, "Hello");
-      assertTrue(label.isLocalized());
-      assertNull(label.getValue());
-      assertEquals("Hello", label.getLocalizedValue(Locale.ENGLISH).getValue());
+      LocalizedString localizedString = new LocalizedString("simple");
+      assertFalse(localizedString.isLocalized());
+      localizedString.setLocalizedValue(Locale.ENGLISH, "Hello");
+      assertTrue(localizedString.isLocalized());
+      assertNull(localizedString.getValue());
+      assertEquals("Hello", localizedString.getLocalizedValue(Locale.ENGLISH).getValue());
 
-      label.setValue("non localized");
-      assertFalse(label.isLocalized());
-      assertEquals("non localized", label.getValue());
+      localizedString.setValue("non localized");
+      assertFalse(localizedString.isLocalized());
+      assertEquals("non localized", localizedString.getValue());
    }
 }

@@ -26,53 +26,53 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * A Label can represent a single value (non localized) or many values each mapping to a specific {@link Locale}
+ * A <code>LocalizedString</code> can represent a single value (non localized) or many values each mapping to a specific {@link Locale}
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class Label extends Localized<String>
+public class LocalizedString extends Localized<String>
 {
-   public Label(Label label)
+   public LocalizedString(LocalizedString localizedString)
    {
-      super(label);
+      super(localizedString);
    }
 
    /**
-    * Constructor to create a non localized label. The result will include a <code>Value</code> with a null <code>Locale</code>.
+    * Constructor to create a non localized string. The result will include a <code>Value</code> with a null <code>Locale</code>.
     *
-    * @param value the value to represent the non localized label
+    * @param value the value to represent the non localized string
     */
-   public Label(String value)
+   public LocalizedString(String value)
    {
       this(null, value);
    }
 
    /**
-    * Constructor to create a localized label.
+    * Constructor to create a localized string.
     *
     * @param locale the locale of the value
     * @param value the value
     */
-   public Label(Locale locale, String value)
+   public LocalizedString(Locale locale, String value)
    {
       super(locale, value);
    }
 
    /**
-    * Constructor to create a localized label with multiple values.
+    * Constructor to create a localized string with multiple values.
     *
     * @param valueMap the map containing the Locale->String mapping.
     */
-   public Label(Map<Locale, String> valueMap)
+   public LocalizedString(Map<Locale, String> valueMap)
    {
       super(valueMap);
    }
 
    /**
-    * Convenience method for calling {@link #getValue(Locale)} and passing in a null for the Locale. This method will
-    * return null if the label is localized.
+    * This method returns the value for a non localized string. If the string is localized this will return
+    * null. This is equivalent to calling {@link #getValue(java.util.Locale)} and passing in null for the <code>Locale</code>
     *
-    * @return the value or null if the label is not localized.
+    * @return the value or null if the string is localized.
     */
    public String getValue()
    {
@@ -80,12 +80,12 @@ public class Label extends Localized<String>
    }
 
    /**
-    * This will clear any localized values, and convert the label to a non localized label.
+    * This will clear any localized values, and convert the string to a non localized string.
     *
     * @param value the value
-    * @return the label
+    * @return the localized string
     */
-   public Label setValue(String value)
+   public LocalizedString setValue(String value)
    {
       for (Value<String> v : getLocalizedValues())
       {
@@ -101,10 +101,10 @@ public class Label extends Localized<String>
     *
     * @param locale the locale
     * @param value the value
-    * @return the label
+    * @return the localized string
     */
    @Override
-   public Label setLocalizedValue(Locale locale, String value)
+   public LocalizedString setLocalizedValue(Locale locale, String value)
    {
       if (!isLocalized()) removeLocalizedValue(null);
 
@@ -113,9 +113,9 @@ public class Label extends Localized<String>
    }
 
    /**
-    * Indicates if the label is localized or not.
+    * Indicates if the string is localized or not.
     *
-    * @return true if the label is localized, false otherwise.
+    * @return true if the string is localized, false otherwise.
     */
    public boolean isLocalized()
    {

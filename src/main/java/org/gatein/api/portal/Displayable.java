@@ -5,14 +5,14 @@
  * distribution for a full listing of individual contributors.
  *
  * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General License as
+ * under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation; either version 2.1 of
  * the License, or (at your option) any later version.
  *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General License for more details.
+ * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this software; if not, write to the Free
@@ -20,32 +20,16 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.portal.page;
-
-import org.gatein.api.portal.Describable;
-import org.gatein.api.portal.Displayable;
-import org.gatein.api.portal.LocalizedString;
-import org.gatein.api.portal.Permission;
-import org.gatein.api.portal.site.SiteId;
-
-import java.io.Serializable;
+package org.gatein.api.portal;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public interface Page extends Displayable, Describable, Comparable<Page>, Serializable
+public interface Displayable
 {
-   PageId getId();
+   LocalizedString getDisplayName();
 
-   SiteId getSiteId();
+   void setDisplayName(LocalizedString displayName);
 
-   String getName();
-
-   Permission getAccessPermission();
-
-   void setAccessPermission(Permission permission);
-
-   Permission getEditPermission();
-
-   void setEditPermission(Permission permission);
+   String resolveDisplayName();
 }
