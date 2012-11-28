@@ -48,6 +48,12 @@ public class Membership
       this.group = group;
    }
 
+   public Membership(User user)
+   {
+      this.membershipType = user.getId();
+      this.group = null;
+   }
+
    public String getMembershipType()
    {
       return membershipType;
@@ -61,7 +67,14 @@ public class Membership
    @Override
    public String toString()
    {
-      return membershipType + ":" + group.getId();
+      if (group == null)
+      {
+         return membershipType;
+      }
+      else
+      {
+         return membershipType + ":" + group.getId();
+      }
    }
 
    public static Membership fromString(String membership)
@@ -69,8 +82,17 @@ public class Membership
       if (membership == null) throw new IllegalArgumentException("membership cannot be null");
 
       String[] parts = Strings.splitter(":").split(membership);
-      if (parts.length != 2) throw new IllegalArgumentException("Invalid membership string " + membership);
-
-      return new Membership(parts[0], new Group(parts[1]));
+      if (parts.length == 1)
+      {
+         return new Membership(new User(parts[0]));
+      }
+      else if (parts.length == 2)
+      {
+         return new Membership(parts[0], new Group(parts[1]));
+      }
+      else
+      {
+         throw new IllegalArgumentException("Invalid membership string " + membership);
+      }
    }
 }

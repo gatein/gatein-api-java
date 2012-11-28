@@ -57,6 +57,11 @@ public class Permission
       this(new Membership(membershipType, group));
    }
 
+   public Permission(User user)
+   {
+      this(new Membership(user));
+   }
+
    public Permission(Membership membership)
    {
       this(Collections.singleton(membership));
