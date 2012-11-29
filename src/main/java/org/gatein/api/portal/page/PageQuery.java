@@ -38,15 +38,15 @@ public class PageQuery extends Query<Page>
    private final SiteType siteType;
    private final String siteName;
    private final String pageName;
-   private final String pageTitle;
+   private final String displayName;
 
-   private PageQuery(SiteType siteType, String siteName, String pageName, String pageTitle, Pagination pagination, Filter<Page> filter, Sorting<Page> sorting)
+   private PageQuery(SiteType siteType, String siteName, String pageName, String displayName, Pagination pagination, Filter<Page> filter, Sorting<Page> sorting)
    {
       super(pagination, filter, sorting);
       this.siteType = siteType;
       this.siteName = siteName;
       this.pageName = pageName;
-      this.pageTitle = pageTitle;
+      this.displayName = displayName;
    }
 
    public SiteType getSiteType()
@@ -64,9 +64,9 @@ public class PageQuery extends Query<Page>
       return pageName;
    }
 
-   public String getPageTitle()
+   public String getDisplayName()
    {
-      return pageTitle;
+      return displayName;
    }
 
    /**
@@ -107,7 +107,7 @@ public class PageQuery extends Query<Page>
       public Builder from(PageQuery query)
       {
          return super.from(query).withSiteType(query.getSiteType()).withSiteName(query.getSiteName())
-            .withPageName(query.getPageName()).withPageTitle(query.getPageTitle());
+            .withPageName(query.getPageName()).withDisplayName(query.getDisplayName());
       }
 
       public Builder withSiteId(SiteId siteId)
@@ -135,9 +135,9 @@ public class PageQuery extends Query<Page>
          return this;
       }
 
-      public Builder withPageTitle(String pageTitle)
+      public Builder withDisplayName(String displayName)
       {
-         this.pageTitle = pageTitle;
+         this.pageTitle = displayName;
          return this;
       }
    }
