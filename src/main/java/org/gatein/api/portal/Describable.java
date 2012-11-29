@@ -29,6 +29,8 @@ public interface Describable
 {
    LocalizedString getDescription();
 
+   void setDescription(String description);
+
    void setDescription(LocalizedString description);
 
    String resolveDescription();

@@ -29,6 +29,8 @@ public interface Displayable
 {
    LocalizedString getDisplayName();
 
+   void setDisplayName(String displayName);
+
    void setDisplayName(LocalizedString displayName);
 
    String resolveDisplayName();
