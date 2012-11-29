@@ -38,23 +38,23 @@ import java.util.EnumSet;
 public class SiteQuery extends Query<Site>
 {
    private final EnumSet<SiteType> siteTypes;
-   private final boolean hiddenSites;
+   private final boolean includeEmptySites;
 
    /**
     * Creates a site query object for all parameters which make up the query. The {@link SiteQuery.Builder} object
     * should be used instead to create this object.
     *
     * @param siteTypes the site types to return for this query
-    * @param hiddenSites flag if true will include sites that are hidden (i.e. has no navigation associated with them).
+    * @param includeEmptySites flag if true will include sites that are empty (i.e. no navigation associated with it).
     * @see Query
     * @see SiteQuery.Builder
     */
-   private SiteQuery(EnumSet<SiteType> siteTypes, boolean hiddenSites,
+   private SiteQuery(EnumSet<SiteType> siteTypes, boolean includeEmptySites,
                     Filter<Site> filter, Pagination pagination, Sorting<Site> sorting)
    {
       super(pagination, filter, sorting);
       this.siteTypes = siteTypes;
-      this.hiddenSites = hiddenSites;
+      this.includeEmptySites = includeEmptySites;
    }
 
    /**
@@ -68,15 +68,16 @@ public class SiteQuery extends Query<Site>
    }
 
    /**
-    * The hasHiddenSites flag for this query. This flag indicates if the query should include/exclude sites that
-    * are hidden (i.e. have no navigation associated with them). This is set to false by default by the builder and
-    * most of the time is not needed to be specified.
+    * The flag indicates if the query should include/exclude sites that are empty. Empty sites generally have no
+    * navigation associated with them (hence cannot be viewed) which typically happens for spaces of a parent group.
+    * For example the space <code>/platform</code> is the parent group of <code>/platform/administrators</code>, however
+    * the /platform space should never be returned as a site in most cases.
     *
-    * @return whether the query should return sites that have navigation or not.
+    * @return true if the query should return sites that are empty, false otherwise (default)
     */
-   public boolean hasHiddenSites()
+   public boolean isIncludeEmptySites()
    {
-      return hiddenSites;
+      return includeEmptySites;
    }
 
    /**
@@ -109,7 +110,7 @@ public class SiteQuery extends Query<Site>
    public static class Builder extends QueryBuilder<Site, SiteQuery, Builder>
    {
       private EnumSet<SiteType> siteTypes = EnumSet.of(SiteType.SITE);
-      private boolean hiddenSites = false;
+      private boolean emptySites = false;
 
       /**
        *
@@ -118,11 +119,10 @@ public class SiteQuery extends Query<Site>
        */
       public Builder from(SiteQuery query)
       {
-         return super.from(query).withSiteTypes(query.getSiteTypes()).withHiddenSites(query.hasHiddenSites());
+         return super.from(query).withSiteTypes(query.getSiteTypes()).includeEmptySites(query.isIncludeEmptySites());
       }
 
       /**
-       *
        * @see SiteQuery#getSiteTypes
        * @return this builder
        */
@@ -144,13 +144,12 @@ public class SiteQuery extends Query<Site>
       }
 
       /**
-       * @param hiddenSites default value is false, which means that only "visible" sites will be returned in the query.
-       * @see SiteQuery#hasHiddenSites()
+       * @see SiteQuery#isIncludeEmptySites
        * @return this builder
        */
-      public Builder withHiddenSites(boolean hiddenSites)
+      public Builder includeEmptySites(boolean emptySites)
       {
-         this.hiddenSites = hiddenSites;
+         this.emptySites = emptySites;
          return this;
       }
 
@@ -164,7 +163,7 @@ public class SiteQuery extends Query<Site>
       {
          if (siteTypes == null || siteTypes.isEmpty()) siteTypes = EnumSet.of(SiteType.SITE);
 
-         return new SiteQuery(siteTypes, hiddenSites, filter, pagination, sorting);
+         return new SiteQuery(siteTypes, emptySites, filter, pagination, sorting);
       }
    }
 }
