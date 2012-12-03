@@ -77,6 +77,8 @@ public interface Node extends Displayable, Iterable<Node>, Serializable
 
    boolean isChildrenLoaded();
 
+   Node getDescendant(String... nodePath);
+
    Node getDescendant(NodePath nodePath);
 
    int indexOf(String childName);

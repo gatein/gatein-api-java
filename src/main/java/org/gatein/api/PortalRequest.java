@@ -80,7 +80,7 @@ public abstract class PortalRequest
 
    public Page getPage()
    {
-      PageId pageId = getCurrentNode().getPageId();
+      PageId pageId = getNode().getPageId();
 
       return (pageId == null) ? null : getPortal().getPage(pageId);
    }
@@ -95,14 +95,9 @@ public abstract class PortalRequest
       return getPortal().getNavigation(getSiteId());
    }
 
-   public Node getNode(NodePath path)
+   public Node getNode() throws EntityNotFoundException
    {
-      return getNavigation().getNode(Nodes.visitNodes(path, Nodes.visitChildren()));
-   }
-
-   public Node getCurrentNode() throws EntityNotFoundException
-   {
-      Node node = getNavigation().getNode(Nodes.visitNodes(getNodePath(), Nodes.visitNone()));
+      Node node = getNavigation().getNode(getNodePath());
       if (node == null)
          throw new EntityNotFoundException("Node could not be found for current request path " + getNodePath());
 

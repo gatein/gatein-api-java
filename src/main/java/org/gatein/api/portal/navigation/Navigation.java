@@ -37,11 +37,19 @@ public interface Navigation
 
    void setPriority(Integer integer);
 
-   Node getNode(NodeVisitor visitor);
+   Node getNode(String... nodePath);
+
+   Node getNode(NodePath nodePath);
+
+   Node getNode(NodePath nodePath, NodeVisitor visitor);
+
+   Node loadNodes(NodeVisitor visitor);
 
    void loadChildren(Node parent);
 
    void refreshNode(Node node);
+
+   void refreshNode(Node node, NodeVisitor visitor);
 
    boolean deleteNode(NodePath path);
 

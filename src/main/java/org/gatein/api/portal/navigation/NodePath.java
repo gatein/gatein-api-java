@@ -132,6 +132,16 @@ public class NodePath implements Iterable<String>, Serializable
       return Collections.unmodifiableList(pathList);
    }
 
+   /**
+    * Returns the path as an array of strings
+    *
+    * @return the path as an array of strings
+    */
+   public String[] asArray()
+   {
+      return pathList.toArray(new String[pathList.size()]);
+   }
+
    @Override
    public Iterator<String> iterator()
    {

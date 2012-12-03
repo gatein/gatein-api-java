@@ -132,7 +132,7 @@ public class Strings
    public static class Joiner
    {
       private final String separator;
-      private int trimFlag;
+      private final int trimFlag;
       private final boolean ignoreNulls;
       private final boolean leading;
       private final boolean trailing;

@@ -58,7 +58,7 @@ public class Nodes
     */
    public static NodeVisitor visitNodes(int depth)
    {
-      if (depth == 0) return SINGLE;
+      if (depth == 0) return NONE;
       if (depth == 1) return CHILDREN;
       if (depth < 0) return ALL;
 
@@ -111,7 +111,7 @@ public class Nodes
 
    //----------------- Private visitor stuff
 
-   private static final NodeVisitor SINGLE = new DepthVisitor(0);
+   private static final NodeVisitor NONE = new DepthVisitor(0);
 
    private static final NodeVisitor CHILDREN = new DepthVisitor(1);
 
