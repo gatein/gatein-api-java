@@ -38,16 +38,12 @@ public class NodePath implements Iterable<String>, Serializable
 {
    private static final NodePath ROOT_PATH = new NodePath();
 
-   public static NodePath path(String first, String...elements)
+   public static NodePath path(String...elements)
    {
-      if (first == null) throw new IllegalArgumentException("first part of path cannot be null");
-      NodePath path = new NodePath(first);
-      if (elements != null)
-      {
-         path = path.append(elements);
-      }
+      if (elements == null) throw new IllegalArgumentException("elements cannot be null");
+      if (elements.length == 0) throw new IllegalArgumentException("elements cannot be empty");
 
-      return path;
+      return new NodePath(elements);
    }
 
    public static NodePath root()
@@ -124,6 +120,16 @@ public class NodePath implements Iterable<String>, Serializable
    public int size()
    {
       return pathList.size();
+   }
+
+   /**
+    * Returns the path as an unmodifiable list of strings.
+    *
+    * @return the path as an unmodifiable list of strings
+    */
+   public List<String> asList()
+   {
+      return Collections.unmodifiableList(pathList);
    }
 
    @Override
