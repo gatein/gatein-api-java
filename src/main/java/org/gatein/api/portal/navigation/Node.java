@@ -23,17 +23,17 @@
 package org.gatein.api.portal.navigation;
 
 import org.gatein.api.portal.Displayable;
-import org.gatein.api.portal.LocalizedString;
 import org.gatein.api.portal.page.PageId;
 import org.gatein.api.util.Filter;
 
+import java.io.Serializable;
 import java.net.URI;
 import java.util.Comparator;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public interface Node extends Displayable, Iterable<Node>
+public interface Node extends Displayable, Iterable<Node>, Serializable
 {
    String getName();
 

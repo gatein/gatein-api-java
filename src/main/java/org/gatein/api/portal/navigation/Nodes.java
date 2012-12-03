@@ -84,7 +84,7 @@ public class Nodes
     * <p/>
     * <p>
     * Common use is to load the children once the path is met, so calling
-    * <pre><code>visitNodes(NodePath.create("some", "path"), visitChildren())</code></pre>
+    * <pre><code>visitNodes(NodePath.path("some", "path"), visitChildren())</code></pre>
     * would load the node for the given path and it's children.
     * </p>
     *

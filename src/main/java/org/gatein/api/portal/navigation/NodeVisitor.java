@@ -37,8 +37,8 @@ public interface NodeVisitor
     * Determines if more nodes should be visited.
     *
     * @param depth the current depth in the node hierarchy. This can be relative depending on where the visitor begins.
-    * @param name the name of the node
-    * @param details the node details that are available while visiting
+    * @param name the name of the node. This will be null if visiting the root node.
+    * @param details the node details that are available while visiting. This will be null if visiting the root node.
     * @return true to continue visiting children nodes
     */
    boolean visit(int depth, String name, NodeDetails details);

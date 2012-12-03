@@ -24,6 +24,7 @@ package org.gatein.api.portal.navigation;
 
 import org.gatein.api.internal.Strings;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -33,7 +34,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class NodePath implements Iterable<String>
+public class NodePath implements Iterable<String>, Serializable
 {
    private static final NodePath ROOT_PATH = new NodePath();
 
