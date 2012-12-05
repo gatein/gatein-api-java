@@ -34,7 +34,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class NodePath implements Iterable<String>, Serializable
+public class NodePath implements Iterable<String>, Comparable<NodePath>, Serializable
 {
    private static final NodePath ROOT_PATH = new NodePath();
 
@@ -117,6 +117,22 @@ public class NodePath implements Iterable<String>, Serializable
       return subPath(0, size()-1);
    }
 
+   public boolean isParent(NodePath path)
+   {
+      if (size() >= path.size()) return false;
+
+      for (int i=0; i<size(); i++)
+      {
+         String name = getSegment(i);
+         if (!name.equals(path.getSegment(i)))
+         {
+            return false;
+         }
+      }
+
+      return true;
+   }
+
    public int size()
    {
       return pathList.size();
@@ -140,6 +156,23 @@ public class NodePath implements Iterable<String>, Serializable
    public String[] asArray()
    {
       return pathList.toArray(new String[pathList.size()]);
+   }
+
+   @Override
+   public int compareTo(NodePath other)
+   {
+      int size = size();
+      int otherSize = other.size();
+
+      for (int i=0; i<otherSize; i++)
+      {
+         if (i >= size) break;
+
+         int result = getSegment(i).compareTo(other.getSegment(i));
+         if (result != 0) return result;
+      }
+
+      return (size < otherSize ? -1 : (size==otherSize ? 0 : 1));
    }
 
    @Override
