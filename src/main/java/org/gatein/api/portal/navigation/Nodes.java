@@ -33,16 +33,31 @@ public class Nodes
 {
    //----------------- Node Visitor Utility Methods
 
+   /**
+    * A visitor that will not visit any nodes.
+    *
+    * @return a visitor object
+    */
    public static NodeVisitor visitNone()
    {
       return visitNodes(0);
    }
 
+   /**
+    * A visitor that will visit only children nodes.
+    *
+    * @return a visitor object
+    */
    public static NodeVisitor visitChildren()
    {
       return visitNodes(1);
    }
 
+   /**
+    * A visitor that will visit all nodes. Using this may impact performance.
+    *
+    * @return a visitor object
+    */
    public static NodeVisitor visitAll()
    {
       return visitNodes(-1);
@@ -54,7 +69,7 @@ public class Nodes
     * respectively.
     *
     * @param depth the depth. A value less then 0 will visit all, i.e. <code>visitAll</code>
-    * @return the visitor object
+    * @return a visitor object
     */
    public static NodeVisitor visitNodes(int depth)
    {
@@ -70,7 +85,7 @@ public class Nodes
     * load all children until the end of the path is met, in which nothing else is loaded.
     *
     * @param path the path to the node
-    * @return the visitor object
+    * @return a visitor object
     */
    public static NodeVisitor visitNodes(NodePath path)
    {
@@ -81,16 +96,15 @@ public class Nodes
     * Creates a <code>NodeVisitor</code> which will visit nodes matching the path. Each matching segment will
     * load all children until the end of the path is met, in which the visitor parameter is used to determine further
     * visiting.
-    * <p/>
     * <p>
     * Common use is to load the children once the path is met, so calling
-    * <pre><code>visitNodes(NodePath.path("some", "path"), visitChildren())</code></pre>
+    * <code>visitNodes(NodePath.path("foo", "bar"), visitChildren())</code>
     * would load the node for the given path and it's children.
     * </p>
     *
     * @param visitor the visitor object used once the path is met.
     * @param path    the path to the node
-    * @return the visitor object
+    * @return a visitor object
     */
    public static NodeVisitor visitNodes(NodePath path, NodeVisitor visitor)
    {

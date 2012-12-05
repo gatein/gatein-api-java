@@ -20,19 +20,18 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api;
+package org.gatein.api.portal.page;
 
-import org.gatein.api.portal.site.SiteId;
+import org.gatein.api.EntityNotFoundException;
+import org.gatein.api.portal.page.PageId;
 
 /**
- * Exception thrown when a site cannot be found.
- * 
- * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
+ * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class SiteNotFoundException extends ApiException
+public class PageNotFoundException extends EntityNotFoundException
 {
-   public SiteNotFoundException(final SiteId siteId)
+   public PageNotFoundException(PageId pageId)
    {
-      super("Site " + siteId + " not found");
+      super("Page " + pageId + " not found");
    }
 }

@@ -22,7 +22,9 @@
 
 package org.gatein.api;
 
+import org.gatein.api.portal.page.PageNotFoundException;
 import org.gatein.api.portal.Permission;
+import org.gatein.api.portal.site.SiteNotFoundException;
 import org.gatein.api.portal.User;
 import org.gatein.api.portal.navigation.Navigation;
 import org.gatein.api.portal.page.Page;
@@ -35,29 +37,116 @@ import org.gatein.api.portal.site.SiteQuery;
 import java.util.List;
 
 /**
+ * The main interface of the portal public API. This is available from the <code>PortalRequest</code> object which
+ * can be obtained from {@link PortalRequest#getInstance()}.
+ *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 public interface Portal
 {
-   Site getSite(SiteId id);
+   /**
+    * Returns a site given the <code>SiteId</code>. Can return null if the site does not exist.
+    *
+    * @param siteId the siteId is null
+    * @return the site or null if the site does not exist
+    * @throws IllegalArgumentException if id is null
+    */
+   Site getSite(SiteId siteId) throws IllegalArgumentException;
 
-   List<Site> findSites(SiteQuery query);
+   /**
+    * Finds sites given the <code>SiteQuery</code>
+    *
+    * @param query the site query
+    * @return list of sites found. The list will be empty if no sites were found.
+    * @throws IllegalArgumentException if query is null
+    */
+   List<Site> findSites(SiteQuery query) throws IllegalArgumentException;
 
-   void saveSite(Site site);
+   /**
+    * Saves a site
+    *
+    * @param site the site to save
+    * @throws IllegalArgumentException if site is null
+    * @throws ApiException             if an exception occurred trying to save the site
+    */
+   void saveSite(Site site) throws IllegalArgumentException, ApiException;
 
-   void removeSite(SiteId siteId);
+   /**
+    * Removes a site
+    *
+    * @param siteId the id of the site to remove
+    * @return true if the site was removed, false otherwise
+    * @throws IllegalArgumentException if siteId is null
+    * @throws org.gatein.api.portal.site.SiteNotFoundException
+    *                                  if the site could not be found
+    */
+   boolean removeSite(SiteId siteId) throws IllegalArgumentException, SiteNotFoundException;
 
-   Navigation getNavigation(SiteId siteId);
+   /**
+    * Returns the navigation of a site given the <code>SiteId</code>. Can return null if the navigation does not exist.
+    *
+    * @param siteId the site id
+    * @return navigation for a site, or null if the navigation does not exist
+    * @throws IllegalArgumentException if siteId is null
+    * @throws SiteNotFoundException    if the site does not exist for the given site id.
+    */
+   Navigation getNavigation(SiteId siteId) throws IllegalArgumentException, SiteNotFoundException;
 
-   Page getPage(PageId pageId);
+   /**
+    * Returns the page of a site given the <code>PageId</code>. Can return null the page does not exist.
+    *
+    * @param pageId the page id
+    * @return the page or null if the page does not exist
+    * @throws IllegalArgumentException if pageId is null
+    * @throws SiteNotFoundException    if the site does not exist
+    */
+   Page getPage(PageId pageId) throws IllegalArgumentException, SiteNotFoundException;
 
-   Page createPage(PageId pageId) throws EntityAlreadyExistsException;
+   /**
+    * Creates a page for a site given the <code>PageId</code>. This page is not saved until {@link Portal#savePage(org.gatein.api.portal.page.Page)} is called.
+    *
+    * @param pageId the page id
+    * @return the new page which has not been saved yet.
+    * @throws IllegalArgumentException     if pageId is null
+    * @throws EntityAlreadyExistsException if the page already exists
+    * @throws SiteNotFoundException        if the site does not exist
+    */
+   Page createPage(PageId pageId) throws IllegalArgumentException, EntityAlreadyExistsException, SiteNotFoundException;
 
-   List<Page> findPages(PageQuery query);
+   /**
+    * Finds pages given the <code>PageQuery</code>
+    *
+    * @param query the page query
+    * @return list of pages found. List is empty if no pages were found.
+    * @throws IllegalArgumentException if query is null
+    */
+   List<Page> findPages(PageQuery query) throws IllegalArgumentException;
 
-   void savePage(Page page);
+   /**
+    * Saves a page
+    *
+    * @param page the page to save
+    * @throws IllegalArgumentException if page is null
+    * @throws ApiException             if an exception occurred trying to save the page
+    */
+   void savePage(Page page) throws IllegalArgumentException, ApiException;
 
-   void removePage(PageId pageId);
+   /**
+    * Removes a page
+    *
+    * @param pageId the id of the page to remove
+    * @return true if the page was removed, false otherwise
+    * @throws SiteNotFoundException if the site was not found
+    * @throws PageNotFoundException if the page was not found
+    */
+   boolean removePage(PageId pageId) throws SiteNotFoundException, PageNotFoundException;
 
+   /**
+    * Returns true if the given user has the rights represented by the permission
+    *
+    * @param user       the user
+    * @param permission the permission
+    * @return true if the user has rights represented by the permission
+    */
    boolean hasPermission(User user, Permission permission);
 }

@@ -31,16 +31,20 @@ import org.gatein.api.portal.page.Page;
 import org.gatein.api.portal.page.PageId;
 import org.gatein.api.portal.site.Site;
 import org.gatein.api.portal.site.SiteId;
+import org.gatein.api.util.Filter;
 
 import java.util.Locale;
 
 /**
+ * The PortalRequest object represents the current request of the portal. This object is available in the portal simply
+ * by invoking the static {@link org.gatein.api.PortalRequest#getInstance()} method.
+ *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 public abstract class PortalRequest
 {
    /**
-    * The current user of the request. If this request is for an unauthenticated user then {@link User#anonymous()}
+    * The user of the request. If this request is for an unauthenticated user then {@link User#anonymous()}
     * is returned.
     *
     * @return the user of the current portal request. This should never be null.
@@ -48,36 +52,41 @@ public abstract class PortalRequest
    public abstract User getUser();
 
    /**
-    * The current Site Id of the request.
+    * The <code>SiteId</code> of the request.
     *
-    * @return the Site Id of the current portal request. This should never be null.
+    * @return the site id of the current portal request. This should never be null.
     */
    public abstract SiteId getSiteId();
 
    /**
-    * The current node path of the request.
+    * The <code>NodePath</code> of the request.
     *
     * @return the node path of the current portal request. This should never be null.
     */
    public abstract NodePath getNodePath();
 
    /**
-    * The current locale of the request.
+    * The <code>Locale</code> of the request.
     *
     * @return the locale of the current portal request.
     */
    public abstract Locale getLocale();
 
+   /**
+    * The site represented by the <code>SiteId</code> of the request.
+    *
+    * @return the site of the current portal request
+    */
    public Site getSite()
    {
       return getPortal().getSite(getSiteId());
    }
 
-   public void save(Site site)
-   {
-      getPortal().saveSite(site);
-   }
-
+   /**
+    * The page currently being accessed by the current portal request.
+    *
+    * @return the page of the current portal request.
+    */
    public Page getPage()
    {
       PageId pageId = getNode().getPageId();
@@ -85,32 +94,53 @@ public abstract class PortalRequest
       return (pageId == null) ? null : getPortal().getPage(pageId);
    }
 
-   public void save(Page page)
-   {
-      getPortal().savePage(page);
-   }
-
+   /**
+    * The navigation of the current portal request.
+    *
+    * @return the navigation represented by the current portal request.
+    */
    public Navigation getNavigation()
    {
       return getPortal().getNavigation(getSiteId());
    }
 
-   public Node getNode() throws EntityNotFoundException
+   /**
+    * The node of the current portal request, filtered based on the current user's access rights.
+    *
+    * @return the node of the current portal request
+    */
+   public Node getNode()
    {
       Node node = getNavigation().getNode(getNodePath());
       if (node == null)
-         throw new EntityNotFoundException("Node could not be found for current request path " + getNodePath());
+         throw new ApiException("Node could not be found for current request path " + getNodePath());
 
-      return node;
+      return node.filter(getUserFilter());
    }
 
-   public void saveNode(Node node)
+   /**
+    * Returns the filter that can be used to filter based on the current user's access rights.
+    *
+    * @return the user filter
+    * @see Nodes#userFilter(org.gatein.api.portal.User, Portal)
+    */
+   public Filter<Node> getUserFilter()
    {
-      getNavigation().saveNode(node);
+      return Nodes.userFilter(getUser(), getPortal());
    }
 
+   /**
+    * Access to the portal interface
+    *
+    * @return the portal interface
+    */
    public abstract Portal getPortal();
 
+   /**
+    * Obtain the current instance of a <code>PortalRequest</code>
+    *
+    * @return the portal request
+    */
    public static PortalRequest getInstance()
    {
       return instance.get();
