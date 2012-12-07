@@ -27,7 +27,7 @@ import org.gatein.api.internal.Objects;
 import java.io.Serializable;
 
 /**
- * A pagination object to be used for queries.
+ * A pagination object to be used to describe pagination (offset, limit) which can be used in queries.
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
@@ -44,6 +44,11 @@ public class Pagination implements Serializable
       this.limit = limit;
    }
 
+   /**
+    * The current page number this pagination object represents
+    *
+    * @return the page number
+    */
    public int getPageNumber()
    {
       if (offset < limit || limit == 0) return 1;
@@ -51,21 +56,41 @@ public class Pagination implements Serializable
       return (offset / limit) + 1;
    }
 
+   /**
+    * The offset for this pagination object. The offset determines what index (0 index) to start retrieving results from.
+    *
+    * @return the offset
+    */
    public int getOffset()
    {
       return offset;
    }
 
+   /**
+    * The limit for this pagination object. The limit determines the maximum amount of results to return.
+    *
+    * @return the limit
+    */
    public int getLimit()
    {
       return limit;
    }
 
+   /**
+    * Creates a new pagination object representing the next page
+    *
+    * @return new pagination object with offset shifted by offset+limit
+    */
    public Pagination getNext()
    {
       return new Pagination(offset+limit, limit);
    }
 
+   /**
+    * Creates a new pagination object representing the previous page
+    *
+    * @return new pagination object with offset shifted by offset-limit
+    */
    public Pagination getPrevious()
    {
       if (limit >= offset)

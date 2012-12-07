@@ -25,7 +25,8 @@ package org.gatein.api.util;
 import org.gatein.api.internal.Objects;
 
 /**
- * Base class for all query objects.
+ * Base class for query objects. If a base query class does not support pagination, sorting, or filter they should set
+ * them to null.
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */

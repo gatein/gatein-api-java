@@ -28,7 +28,7 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 /**
- * A sorting object to be used for queries.
+ * A sorting object defining order (ASC, DESC) or a custom comparator, but not both.
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
@@ -38,7 +38,7 @@ public class Sorting<T> implements Serializable
    private final Comparator<T> comparator;
 
    /**
-    * A sorting object with an order, i.e. ascending or descending. Object must be comparable.
+    * A sorting object with an order, i.e. ascending or descending. T must be comparable.
     *
     * @param order the order to sort.
     */

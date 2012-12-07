@@ -23,17 +23,17 @@
 package org.gatein.api.util;
 
 /**
- * A filter to be used to "filter" the results of a query.
+ * A filter to be used to "filter" a list of elements
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 public interface Filter<T>
 {
    /**
-    * The accept method used to filter results of a query.
+    * The accept method used to filter an element of a list
     *
-    * @param object the object containing the information needed to determine the filter. This object cannot be null.
-    * @return true if the filter should include the object, false to exclude from results.
+    * @param element the element containing the information needed to determine the filter. This object should not be null.
+    * @return true if the filter should include the element
     */
-   boolean accept(T object);
+   boolean accept(T element);
 }
