@@ -37,15 +37,13 @@ public class PageQuery extends Query<Page>
 {
    private final SiteType siteType;
    private final String siteName;
-   private final String pageName;
    private final String displayName;
 
-   private PageQuery(SiteType siteType, String siteName, String pageName, String displayName, Pagination pagination, Filter<Page> filter, Sorting<Page> sorting)
+   private PageQuery(SiteType siteType, String siteName, String displayName, Pagination pagination, Filter<Page> filter)
    {
-      super(pagination, filter, sorting);
+      super(pagination, filter, null);
       this.siteType = siteType;
       this.siteName = siteName;
-      this.pageName = pageName;
       this.displayName = displayName;
    }
 
@@ -57,11 +55,6 @@ public class PageQuery extends Query<Page>
    public String getSiteName()
    {
       return siteName;
-   }
-
-   public String getPageName()
-   {
-      return pageName;
    }
 
    public String getDisplayName()
@@ -95,21 +88,26 @@ public class PageQuery extends Query<Page>
    {
       private SiteType siteType;
       private String siteName;
-      private String pageName;
       private String pageTitle;
 
       @Override
       public PageQuery build()
       {
-         return new PageQuery(siteType, siteName, pageName, pageTitle, pagination, filter, sorting);
+         return new PageQuery(siteType, siteName, pageTitle, pagination, filter);
       }
 
       public Builder from(PageQuery query)
       {
          return super.from(query).withSiteType(query.getSiteType()).withSiteName(query.getSiteName())
-            .withPageName(query.getPageName()).withDisplayName(query.getDisplayName());
+            .withDisplayName(query.getDisplayName());
       }
 
+      /**
+       * Convenience method for setting both the site type and site name.
+       *
+       * @param siteId the site id corresponding to the site this query will be scoped to
+       * @return the builder
+       */
       public Builder withSiteId(SiteId siteId)
       {
          this.siteType = siteId.getType();
@@ -126,12 +124,6 @@ public class PageQuery extends Query<Page>
       public Builder withSiteName(String siteName)
       {
          this.siteName = siteName;
-         return this;
-      }
-
-      public Builder withPageName(String pageName)
-      {
-         this.pageName = pageName;
          return this;
       }
 
