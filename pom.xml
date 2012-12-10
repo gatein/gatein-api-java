@@ -55,6 +55,20 @@
    </dependencies>
 
    <build>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+               <execution>
+                  <goals>
+                     <goal>javadoc</goal>
+                  </goals>
+                  <phase>package</phase>
+               </execution>
+            </executions>
+         </plugin>
+      </plugins>
       <pluginManagement>
          <plugins>
             <plugin>
@@ -89,4 +103,31 @@
       </pluginManagement>
    </build>
 
+   <profiles>
+      <profile>
+         <id>github</id>
+         <build>
+            <plugins>
+               <plugin>
+                  <groupId>com.github.github</groupId>
+                  <artifactId>site-maven-plugin</artifactId>
+                  <configuration>
+                     <message>Deploy javadoc for ${project.version}</message>
+                     <repositoryOwner>gatein</repositoryOwner>
+                     <repositoryName>gatein-api-java</repositoryName>
+                     <outputDirectory>${project.build.directory}/site/apidocs/</outputDirectory>
+                  </configuration>
+                  <executions>
+                     <execution>
+                        <goals>
+                           <goal>site</goal>
+                        </goals>
+                        <phase>install</phase>
+                     </execution>
+                  </executions>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+   </profiles>
 </project>
