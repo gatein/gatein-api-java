@@ -93,7 +93,7 @@ public interface Portal
    Navigation getNavigation(SiteId siteId) throws IllegalArgumentException, SiteNotFoundException;
 
    /**
-    * Returns the page of a site given the <code>PageId</code>. Can return null the page does not exist.
+    * Returns the page of a site given the <code>PageId</code>. Can return null if the page does not exist.
     *
     * @param pageId the page id
     * @return the page or null if the page does not exist
