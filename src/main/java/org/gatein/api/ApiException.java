@@ -29,9 +29,6 @@ package org.gatein.api;
  */
 public class ApiException extends RuntimeException
 {
-   //Message should be required
-   private ApiException(){}
-
    public ApiException(final String message)
    {
       super(message);
