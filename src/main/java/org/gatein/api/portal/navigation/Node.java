@@ -73,7 +73,7 @@ public interface Node extends Displayable, Iterable<Node>, Serializable
     *
     * @return the resolved URI for this navigation node.
     */
-   URI getResolvedURI();
+   URI resolveURI();
 
    /**
     * If the node is visible. Convenience method for doing <code>Node.getVisibility().isVisible()</code>
@@ -250,6 +250,7 @@ public interface Node extends Displayable, Iterable<Node>, Serializable
     * @param childName the name of the child
     * @return the index of the child or -1 if the child does not exist.
     * @throws IllegalArgumentException if childName is null
+    * @throws IllegalStateException if this node's children have not been loaded
     */
    int indexOf(String childName) throws IllegalArgumentException;
 
@@ -259,6 +260,7 @@ public interface Node extends Displayable, Iterable<Node>, Serializable
     * @param childName the name of the child
     * @return true if the child was removed, false otherwise
     * @throws IllegalArgumentException if childName was null
+    * @throws IllegalStateException if this node's children have not been loaded
     */
    boolean removeChild(String childName) throws IllegalArgumentException;
 
@@ -295,8 +297,9 @@ public interface Node extends Displayable, Iterable<Node>, Serializable
     * Moves this node to another parent.
     *
     * @param parent the parent to move this node to.
-    * @throws IllegalArgumentException if parent is null
+    * @throws IllegalArgumentException if parent is on a different branch, is a child of the current node, or if it is null
     * @throws EntityAlreadyExistsException if a node with the same name already exists at the parent location
+    * @throws IllegalStateException if the children of the parent to move to have not been loaded
     */
    void moveTo(Node parent) throws IllegalArgumentException, EntityAlreadyExistsException;
 
@@ -308,6 +311,7 @@ public interface Node extends Displayable, Iterable<Node>, Serializable
     * @throws IndexOutOfBoundsException if the index is out of range
     * @throws IllegalArgumentException if parent is null
     * @throws EntityAlreadyExistsException if a node with the same name already exists at the parent location
+    * @throws IllegalStateException if the children of the parent to move to have not been loaded
     */
    void moveTo(int index, Node parent) throws IndexOutOfBoundsException, IllegalArgumentException, EntityAlreadyExistsException;
 }

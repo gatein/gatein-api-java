@@ -59,14 +59,16 @@ public interface Navigation
     *
     * @param nodePath the path to the node
     * @return the node or null if the node was not found
+    * @throws IllegalArgumentException if nodePath is null or empty
     */
-   Node getNode(String... nodePath) throws IllegalArgumentException;
+   Node getNode(String... nodePath);
 
    /**
     * Returns a node represented by the node path or null if the node was not found.
     *
     * @param nodePath the path to the node
     * @return the node or null if the node was not found
+    * @throws IllegalArgumentException if nodePath is null
     */
    Node getNode(NodePath nodePath);
 
@@ -80,6 +82,7 @@ public interface Navigation
     *
     * @param nodePath the path to the node
     * @param visitor  the visitor used to determine further loading of nodes. The visitor is relative to the node represented by the node path.
+    * @throws IllegalArgumentException if nodePath or visitor is null
     * @return the node or null if the node was not found
     */
    Node getNode(NodePath nodePath, NodeVisitor visitor);
@@ -89,6 +92,7 @@ public interface Navigation
     *
     * @param visitor the visitor to determine how many nodes to load.
     * @return the root node of the navigation
+    * @throws IllegalArgumentException if visitor is null
     */
    Node loadNodes(NodeVisitor visitor);
 
@@ -96,6 +100,7 @@ public interface Navigation
     * Will load the children for a given node.
     *
     * @param parent the node which will have it's children loaded.
+    * @throws IllegalArgumentException if parent is null
     */
    void loadChildren(Node parent);
 
@@ -105,6 +110,7 @@ public interface Navigation
     * non resolvable situation.
     *
     * @param node the node to refresh
+    * @throws IllegalArgumentException if node is null
     */
    void refreshNode(Node node);
 
@@ -115,6 +121,7 @@ public interface Navigation
     *
     * @param node    the node to refresh
     * @param visitor the visitor which can load more nodes.
+    * @throws IllegalArgumentException if node or visitor is null
     */
    void refreshNode(Node node, NodeVisitor visitor);
 
