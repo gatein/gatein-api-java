@@ -22,6 +22,10 @@
 
 package org.gatein.api.portal.navigation;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.gatein.api.Portal;
 import org.gatein.api.portal.User;
 import org.gatein.api.util.Filter;
@@ -31,6 +35,22 @@ import org.gatein.api.util.Filter;
  */
 public class Nodes
 {
+   /**
+    * Returns an unmodifiable list with the children of the specified node
+    * 
+    * @param node the parent node
+    * @return an unmodifiable list
+    */
+   public static List<Node> asList(Node node)
+   {
+      List<Node> l = new ArrayList<Node>(node.getChildCount());
+      for (Node c : node)
+      {
+         l.add(c);
+      }
+      return Collections.unmodifiableList(l);
+   }
+   
    //----------------- Node Visitor Utility Methods
 
    /**
