@@ -39,9 +39,9 @@ public class PageQuery extends Query<Page>
    private final String siteName;
    private final String displayName;
 
-   private PageQuery(SiteType siteType, String siteName, String displayName, Pagination pagination, Filter<Page> filter)
+   private PageQuery(SiteType siteType, String siteName, String displayName, Pagination pagination, Filter<Page> filter, Sorting<Page> sorting)
    {
-      super(pagination, filter, null);
+      super(pagination, filter, sorting);
       this.siteType = siteType;
       this.siteName = siteName;
       this.displayName = displayName;
@@ -93,7 +93,7 @@ public class PageQuery extends Query<Page>
       @Override
       public PageQuery build()
       {
-         return new PageQuery(siteType, siteName, pageTitle, pagination, filter);
+         return new PageQuery(siteType, siteName, pageTitle, pagination, filter, sorting);
       }
 
       public Builder from(PageQuery query)
