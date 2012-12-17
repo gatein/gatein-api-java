@@ -23,14 +23,14 @@
 package org.gatein.api.common;
 
 /**
- * A filter to be used to "filter" a list of elements
+ * A filter to be used to "filter" a collection of elements
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 public interface Filter<T>
 {
    /**
-    * The accept method used to filter an element of a list
+    * The accept method used to filter an element
     *
     * @param element the element containing the information needed to determine the filter. This object should not be null.
     * @return true if the filter should include the element
