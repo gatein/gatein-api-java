@@ -20,20 +20,46 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.util;
+package org.gatein.api.security;
+
+import org.gatein.api.internal.Objects;
+import org.gatein.api.internal.Strings;
 
 /**
- * A filter to be used to "filter" a list of elements
- *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public interface Filter<T>
+public class Group
 {
-   /**
-    * The accept method used to filter an element of a list
-    *
-    * @param element the element containing the information needed to determine the filter. This object should not be null.
-    * @return true if the filter should include the element
-    */
-   boolean accept(T element);
+   private final String id;
+
+   public Group(String... group)
+   {
+      if (group == null) throw new IllegalArgumentException("group cannot be null");
+      if (group.length == 1)
+      {
+         this.id = group[0];
+      }
+      else
+      {
+         this.id = Strings.joiner("/").leading().trimToNull().ignoreNulls().join(group);
+      }
+   }
+
+   public Group(String id)
+   {
+      this(Strings.splitter("/").trim().ignoreEmptyStrings().split(id));
+   }
+
+   public String getId()
+   {
+      return id;
+   }
+
+   @Override
+   public String toString()
+   {
+      return Objects.toStringBuilder(getClass())
+         .add("groupId", id)
+         .toString();
+   }
 }

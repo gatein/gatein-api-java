@@ -22,8 +22,8 @@
 
 package org.gatein.api.portal.site;
 
-import org.gatein.api.portal.Group;
-import org.gatein.api.portal.User;
+import org.gatein.api.security.Group;
+import org.gatein.api.security.User;
 import org.junit.Test;
 
 import java.util.regex.Pattern;

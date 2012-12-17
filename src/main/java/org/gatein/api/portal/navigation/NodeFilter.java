@@ -23,10 +23,10 @@
 package org.gatein.api.portal.navigation;
 
 import org.gatein.api.Portal;
-import org.gatein.api.portal.User;
+import org.gatein.api.security.User;
 import org.gatein.api.portal.page.Page;
 import org.gatein.api.portal.page.PageId;
-import org.gatein.api.util.Filter;
+import org.gatein.api.common.Filter;
 
 import java.util.Collections;
 import java.util.HashSet;

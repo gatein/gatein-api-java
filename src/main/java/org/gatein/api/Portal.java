@@ -23,9 +23,9 @@
 package org.gatein.api;
 
 import org.gatein.api.portal.page.PageNotFoundException;
-import org.gatein.api.portal.Permission;
+import org.gatein.api.security.Permission;
 import org.gatein.api.portal.site.SiteNotFoundException;
-import org.gatein.api.portal.User;
+import org.gatein.api.security.User;
 import org.gatein.api.portal.navigation.Navigation;
 import org.gatein.api.portal.page.Page;
 import org.gatein.api.portal.page.PageId;

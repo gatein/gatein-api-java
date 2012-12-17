@@ -22,11 +22,11 @@
 
 package org.gatein.api.portal.site;
 
-import org.gatein.api.util.Filter;
-import org.gatein.api.util.Pagination;
+import org.gatein.api.common.Filter;
+import org.gatein.api.common.Pagination;
 import org.gatein.api.util.Query;
 import org.gatein.api.util.QueryBuilder;
-import org.gatein.api.util.Sorting;
+import org.gatein.api.common.Sorting;
 
 import java.util.EnumSet;
 
@@ -82,7 +82,7 @@ public class SiteQuery extends Query<Site>
 
    /**
     * Convenience method for creating a new SiteQuery with pagination set to the next page represented by
-    * by {@link org.gatein.api.util.Pagination#getNext()}
+    * by {@link org.gatein.api.common.Pagination#getNext()}
     *
     * @return a new SiteQuery with pagination set to the next page.
     */
@@ -93,7 +93,7 @@ public class SiteQuery extends Query<Site>
 
    /**
     * Convenience method for creating a new SiteQuery with pagination set to the previous page represented by
-    * by {@link org.gatein.api.util.Pagination#getPrevious()}
+    * by {@link org.gatein.api.common.Pagination#getPrevious()}
     *
     * @return a new SiteQuery with pagination set to the previous page.
     */

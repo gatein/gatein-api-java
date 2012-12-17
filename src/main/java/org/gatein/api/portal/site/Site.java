@@ -22,11 +22,10 @@
 
 package org.gatein.api.portal.site;
 
-import org.gatein.api.portal.Attributes;
-import org.gatein.api.portal.Describable;
-import org.gatein.api.portal.Displayable;
-import org.gatein.api.portal.LocalizedString;
-import org.gatein.api.portal.Permission;
+import org.gatein.api.common.Attributes;
+import org.gatein.api.common.Describable;
+import org.gatein.api.common.Displayable;
+import org.gatein.api.security.Permission;
 
 import java.io.Serializable;
 import java.util.Locale;

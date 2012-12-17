@@ -20,18 +20,20 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.portal;
+package org.gatein.api.common;
 
 /**
+ * A filter to be used to "filter" a list of elements
+ *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public interface Displayable
+public interface Filter<T>
 {
-   LocalizedString getDisplayName();
-
-   void setDisplayName(String displayName);
-
-   void setDisplayName(LocalizedString displayName);
-
-   String resolveDisplayName();
+   /**
+    * The accept method used to filter an element of a list
+    *
+    * @param element the element containing the information needed to determine the filter. This object should not be null.
+    * @return true if the filter should include the element
+    */
+   boolean accept(T element);
 }

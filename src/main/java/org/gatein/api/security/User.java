@@ -20,34 +20,25 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.portal;
-
-import org.gatein.api.internal.Objects;
-import org.gatein.api.internal.Strings;
+package org.gatein.api.security;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class Group
+public class User
 {
    private final String id;
 
-   public Group(String... group)
+   public User(String id)
    {
-      if (group == null) throw new IllegalArgumentException("group cannot be null");
-      if (group.length == 1)
-      {
-         this.id = group[0];
-      }
-      else
-      {
-         this.id = Strings.joiner("/").leading().trimToNull().ignoreNulls().join(group);
-      }
+      if (id == null) throw new IllegalArgumentException("user id cannot be null. If the user is unknown, use User.anonymous() instead.");
+
+      this.id = id;
    }
 
-   public Group(String id)
+   private User()
    {
-      this(Strings.splitter("/").trim().ignoreEmptyStrings().split(id));
+      this.id = null; //TODO: Do we want the id to be null, or set it to some strange internal string ? This may produce NPE if someone is expecting a value here.
    }
 
    public String getId()
@@ -55,11 +46,15 @@ public class Group
       return id;
    }
 
-   @Override
-   public String toString()
+   public boolean isAnonymous()
    {
-      return Objects.toStringBuilder(getClass())
-         .add("groupId", id)
-         .toString();
+      return this == ANONYMOUS;
    }
+
+   public static User anonymous()
+   {
+      return ANONYMOUS;
+   }
+
+   private static final User ANONYMOUS = new User();
 }

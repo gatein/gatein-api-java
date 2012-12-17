@@ -20,18 +20,20 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.portal;
+package org.gatein.api.common;
+
+import org.gatein.api.common.i18n.LocalizedString;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public interface Describable
+public interface Displayable
 {
-   LocalizedString getDescription();
+   LocalizedString getDisplayName();
 
-   void setDescription(String description);
+   void setDisplayName(String displayName);
 
-   void setDescription(LocalizedString description);
+   void setDisplayName(LocalizedString displayName);
 
-   String resolveDescription();
+   String resolveDisplayName();
 }

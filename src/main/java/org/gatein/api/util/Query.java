@@ -22,6 +22,9 @@
 
 package org.gatein.api.util;
 
+import org.gatein.api.common.Filter;
+import org.gatein.api.common.Pagination;
+import org.gatein.api.common.Sorting;
 import org.gatein.api.internal.Objects;
 
 /**

@@ -23,6 +23,8 @@
 package org.gatein.api.portal;
 
 
+import org.gatein.api.common.i18n.Localized;
+import org.gatein.api.common.i18n.LocalizedString;
 import org.junit.Test;
 
 import java.util.Arrays;

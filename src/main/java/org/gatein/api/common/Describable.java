@@ -20,41 +20,20 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.portal;
+package org.gatein.api.common;
+
+import org.gatein.api.common.i18n.LocalizedString;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class User
+public interface Describable
 {
-   private final String id;
+   LocalizedString getDescription();
 
-   public User(String id)
-   {
-      if (id == null) throw new IllegalArgumentException("user id cannot be null. If the user is unknown, use User.anonymous() instead.");
+   void setDescription(String description);
 
-      this.id = id;
-   }
+   void setDescription(LocalizedString description);
 
-   private User()
-   {
-      this.id = null; //TODO: Do we want the id to be null, or set it to some strange internal string ? This may produce NPE if someone is expecting a value here.
-   }
-
-   public String getId()
-   {
-      return id;
-   }
-
-   public boolean isAnonymous()
-   {
-      return this == ANONYMOUS;
-   }
-
-   public static User anonymous()
-   {
-      return ANONYMOUS;
-   }
-
-   private static final User ANONYMOUS = new User();
+   String resolveDescription();
 }

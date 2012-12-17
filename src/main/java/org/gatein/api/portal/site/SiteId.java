@@ -23,8 +23,8 @@
 package org.gatein.api.portal.site;
 
 import org.gatein.api.portal.BaseId;
-import org.gatein.api.portal.Group;
-import org.gatein.api.portal.User;
+import org.gatein.api.security.Group;
+import org.gatein.api.security.User;
 import org.gatein.api.portal.page.PageId;
 
 import java.util.regex.Pattern;

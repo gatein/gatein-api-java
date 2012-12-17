@@ -23,9 +23,9 @@
 package org.gatein.api.portal.navigation;
 
 import org.gatein.api.EntityAlreadyExistsException;
-import org.gatein.api.portal.Displayable;
+import org.gatein.api.common.Displayable;
 import org.gatein.api.portal.page.PageId;
-import org.gatein.api.util.Filter;
+import org.gatein.api.common.Filter;
 
 import java.io.Serializable;
 import java.net.URI;

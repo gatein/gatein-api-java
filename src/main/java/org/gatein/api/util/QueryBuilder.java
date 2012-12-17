@@ -22,10 +22,14 @@
 
 package org.gatein.api.util;
 
+import org.gatein.api.common.Filter;
+import org.gatein.api.common.Pagination;
+import org.gatein.api.common.Sorting;
+
 import java.util.Comparator;
 
 /**
- * Abstract query builder to handle common query properties like {@link Pagination}, {@link Filter}, and {@link Sorting}
+ * Abstract query builder to handle common query properties like {@link org.gatein.api.common.Pagination}, {@link org.gatein.api.common.Filter}, and {@link org.gatein.api.common.Sorting}
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */

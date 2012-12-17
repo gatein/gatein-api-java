@@ -27,8 +27,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.gatein.api.Portal;
-import org.gatein.api.portal.User;
-import org.gatein.api.util.Filter;
+import org.gatein.api.security.User;
+import org.gatein.api.common.Filter;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
