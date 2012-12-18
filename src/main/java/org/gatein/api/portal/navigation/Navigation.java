@@ -23,6 +23,7 @@
 package org.gatein.api.portal.navigation;
 
 import org.gatein.api.ApiException;
+import org.gatein.api.EntityNotFoundException;
 import org.gatein.api.portal.site.SiteId;
 
 /**
@@ -131,9 +132,9 @@ public interface Navigation
     * @param nodePath the path to the node
     * @return true if the node was removed, false otherwise
     * @throws IllegalArgumentException if nodePath is null
-    * @throws NodeNotFoundException    if the node could not be found.
+    * @throws EntityNotFoundException if the node could not be found.
     */
-   boolean removeNode(NodePath nodePath) throws IllegalArgumentException, NodeNotFoundException;
+   boolean removeNode(NodePath nodePath) throws IllegalArgumentException, EntityNotFoundException;
 
    /**
     * Saves a node. All changes from this node and below (all children, grandchildren) are also saved.
