@@ -98,29 +98,21 @@ public interface Navigation
    Node loadNodes(NodeVisitor visitor);
 
    /**
-    * Will load the children for a given node.
-    *
-    * @param parent the node which will have it's children loaded.
-    * @throws IllegalArgumentException if parent is null
-    */
-   void loadChildren(Node parent);
-
-   /**
-    * Will refresh the node with latest from storage. For example if nodes were added/removed, etc you can refresh/sync
-    * those changes.  When conflicting changes exist, a merge will be attempted, however it could fail and lead to a
-    * non resolvable situation.
-    *
+    * Will refresh the node with latest from storage. For example if nodes were added/removed, etc you can refresh/sync those
+    * changes. The refresh will affect the entire tree even if the the node is not the root of the tree. When conflicting
+    * changes exist, a merge will be attempted, however it could fail and lead to a non resolvable situation.
+    * 
     * @param node the node to refresh
     * @throws IllegalArgumentException if node is null
     */
    void refreshNode(Node node);
 
    /**
-    * Will refresh the node with latest from storage. When conflicting changes exist, a merge will be attempted,
-    * however it could fail and lead to a non resolvable situation. The visitor can be used to control new nodes
-    * to load.
-    *
-    * @param node    the node to refresh
+    * Will refresh the node with latest from storage. The refresh will affect the entire tree even if the the node is not the
+    * root of the tree. When conflicting changes exist, a merge will be attempted, however it could fail and lead to a non
+    * resolvable situation. The visitor can be used to control new nodes to load.
+    * 
+    * @param node the node to refresh
     * @param visitor the visitor which can load more nodes.
     * @throws IllegalArgumentException if node or visitor is null
     */
