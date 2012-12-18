@@ -46,14 +46,14 @@ public interface Navigation
     *
     * @return the priority or null if one is not specified.
     */
-   Integer getPriority();
+   int getPriority();
 
    /**
     * Saves the priority for this navigation.
     *
     * @param integer the priority to save, can be null.
     */
-   void setPriority(Integer integer);
+   void setPriority(int integer);
 
    /**
     * Returns a node represented by the node path or null if the node was not found.
