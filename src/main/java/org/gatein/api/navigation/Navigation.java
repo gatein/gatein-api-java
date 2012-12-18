@@ -99,8 +99,8 @@ public interface Navigation
 
    /**
     * Will refresh the node with latest from storage. For example if nodes were added/removed, etc you can refresh/sync those
-    * changes. The refresh will affect the entire tree even if the the node is not the root of the tree. When conflicting
-    * changes exist, a merge will be attempted, however it could fail and lead to a non resolvable situation.
+    * changes. The refresh will affect the entire tree even if the node is not the root of the tree. When conflicting changes
+    * exist, a merge will be attempted, however it could fail and lead to a non resolvable situation.
     * 
     * @param node the node to refresh
     * @throws IllegalArgumentException if node is null
@@ -108,9 +108,9 @@ public interface Navigation
    void refreshNode(Node node);
 
    /**
-    * Will refresh the node with latest from storage. The refresh will affect the entire tree even if the the node is not the
-    * root of the tree. When conflicting changes exist, a merge will be attempted, however it could fail and lead to a non
-    * resolvable situation. The visitor can be used to control new nodes to load.
+    * Will refresh the node with latest from storage. The refresh will affect the entire tree even if the node is not the root
+    * of the tree. When conflicting changes exist, a merge will be attempted, however it could fail and lead to a non resolvable
+    * situation. The visitor can be used to control new nodes to load.
     * 
     * @param node the node to refresh
     * @param visitor the visitor which can load more nodes.
@@ -129,11 +129,11 @@ public interface Navigation
    boolean removeNode(NodePath nodePath) throws IllegalArgumentException, EntityNotFoundException;
 
    /**
-    * Saves a node. All changes from this node and below (all children, grandchildren) are also saved.
-    *
+    * Saves a node. All changes to the entire tree will be saved even if the node is not the root of the tree.
+    * 
     * @param node the node to save
     * @throws IllegalArgumentException if node is null
-    * @throws ApiException             if an exception occurred trying save the node
+    * @throws ApiException if an exception occurred trying save the node
     */
    void saveNode(Node node) throws IllegalArgumentException, ApiException;
 }
