@@ -152,7 +152,7 @@ public class Attributes
          if (this == o) return true;
          if (!(o instanceof Key)) return false;
 
-         Key key = (Key) o;
+         Key<?> key = (Key<?>) o;
 
          return name.equals(key.name) && type.equals(type);
       }

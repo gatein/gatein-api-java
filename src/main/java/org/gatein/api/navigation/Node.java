@@ -98,15 +98,15 @@ public interface Node extends Displayable, Iterable<Node>, Serializable
    void setVisibility(Visibility visibility) throws IllegalArgumentException;
 
    /**
-    * Sets the visibility of this navigation node either {@link Visibility.Flag#VISIBLE}
-    * or {@link Visibility.Flag#HIDDEN}. This does not remove any publication information, just sets the flag.
+    * Sets the visibility of this navigation node either {@link Visibility.Status#VISIBLE}
+    * or {@link Visibility.Status#HIDDEN}. This does not remove any publication information, just sets the flag.
     *
     * @param visible if this node should be visible or not
     */
    void setVisibility(boolean visible);
 
    /**
-    * Sets the visibility of this navigation node to be {@link Visibility.Flag#PUBLICATION}, in which the dates of the
+    * Sets the visibility of this navigation node to be {@link Visibility.Status#PUBLICATION}, in which the dates of the
     * <code>PublicationDate</code> are used to calculate the visibility.
     *
     * @param publicationDate the publication date

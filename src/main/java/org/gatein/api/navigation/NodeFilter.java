@@ -108,7 +108,7 @@ public class NodeFilter implements Filter<Node>
          return this;
       }
 
-      public Builder withVisibilityFlag(Visibility.Flag flag)
+      public Builder withVisibilityFlag(Visibility.Status flag)
       {
          return withVisibility(new Visibility(flag));
       }

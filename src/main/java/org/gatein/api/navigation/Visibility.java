@@ -31,28 +31,28 @@ import java.io.Serializable;
  */
 public class Visibility implements Serializable
 {
-   private final Flag flag;
+   private final Status flag;
    private final PublicationDate publicationDate;
 
    public Visibility()
    {
-      this(Flag.VISIBLE, null);
+      this(Status.VISIBLE, null);
    }
 
-   public Visibility(Flag flag)
+   public Visibility(Status flag)
    {
       this(flag, null);
    }
 
    public Visibility(PublicationDate publicationDate)
    {
-      this(Flag.PUBLICATION, publicationDate);
+      this(Status.PUBLICATION, publicationDate);
    }
 
-   public Visibility(Flag flag, PublicationDate publicationDate)
+   public Visibility(Status flag, PublicationDate publicationDate)
    {
       if (flag == null) throw new IllegalArgumentException("flag cannot be null");
-      if (flag == Flag.PUBLICATION && publicationDate == null) throw new IllegalArgumentException("publicationDate cannot be null when the flag is set to " + Flag.PUBLICATION);
+      if (flag == Status.PUBLICATION && publicationDate == null) throw new IllegalArgumentException("publicationDate cannot be null when the flag is set to " + Status.PUBLICATION);
 
       this.flag = flag;
       this.publicationDate = publicationDate;
@@ -75,7 +75,7 @@ public class Visibility implements Serializable
       }
    }
 
-   public Flag getFlag()
+   public Status getStatus()
    {
       return flag;
    }
@@ -114,7 +114,7 @@ public class Visibility implements Serializable
       return result;
    }
 
-   public static enum Flag
+   public static enum Status
    {
       VISIBLE,
       SYSTEM,

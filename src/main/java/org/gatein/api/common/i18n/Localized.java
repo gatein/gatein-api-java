@@ -153,7 +153,7 @@ public abstract class Localized<T extends Serializable> implements Iterable<T>, 
       if (this == o) return true;
       if (!(o instanceof Localized)) return false;
 
-      Localized localized = (Localized) o;
+      Localized<?> localized = (Localized<?>) o;
 
       return values.equals(localized.values);
    }
@@ -206,7 +206,7 @@ public abstract class Localized<T extends Serializable> implements Iterable<T>, 
          if (this == o) return true;
          if (o == null || getClass() != o.getClass()) return false;
 
-         Value v = (Value) o;
+         Value<?> v = (Value<?>) o;
 
          return (locale == null) ? v.locale == null : locale.equals(v.locale) &&
             (value == null) ? v.value == null : value.equals(v.value);
