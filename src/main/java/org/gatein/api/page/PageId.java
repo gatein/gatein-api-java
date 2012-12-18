@@ -26,6 +26,7 @@ import org.gatein.api.security.Group;
 import org.gatein.api.security.User;
 import org.gatein.api.site.SiteId;
 
+import java.io.Serializable;
 import java.util.Formattable;
 import java.util.FormattableFlags;
 import java.util.Formatter;
@@ -33,7 +34,7 @@ import java.util.Formatter;
 /**
 * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
 */
-public class PageId implements Formattable
+public class PageId implements Formattable, Serializable
 {
    private final SiteId siteId;
    private final String pageName;
