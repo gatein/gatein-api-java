@@ -23,14 +23,14 @@
 package org.gatein.api;
 
 import org.gatein.api.security.User;
-import org.gatein.api.portal.navigation.Navigation;
-import org.gatein.api.portal.navigation.Node;
-import org.gatein.api.portal.navigation.NodePath;
-import org.gatein.api.portal.navigation.Nodes;
-import org.gatein.api.portal.page.Page;
-import org.gatein.api.portal.page.PageId;
-import org.gatein.api.portal.site.Site;
-import org.gatein.api.portal.site.SiteId;
+import org.gatein.api.navigation.Navigation;
+import org.gatein.api.navigation.Node;
+import org.gatein.api.navigation.NodePath;
+import org.gatein.api.navigation.Nodes;
+import org.gatein.api.page.Page;
+import org.gatein.api.page.PageId;
+import org.gatein.api.site.Site;
+import org.gatein.api.site.SiteId;
 import org.gatein.api.common.Filter;
 
 import java.util.Locale;

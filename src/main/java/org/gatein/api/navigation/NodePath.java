@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.portal.navigation;
+package org.gatein.api.navigation;
 
 import org.gatein.api.internal.Strings;
 

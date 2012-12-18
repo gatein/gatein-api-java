@@ -22,13 +22,13 @@
 
 package org.gatein.api;
 
-import org.gatein.api.portal.navigation.Navigation;
-import org.gatein.api.portal.page.Page;
-import org.gatein.api.portal.page.PageId;
-import org.gatein.api.portal.page.PageQuery;
-import org.gatein.api.portal.site.Site;
-import org.gatein.api.portal.site.SiteId;
-import org.gatein.api.portal.site.SiteQuery;
+import org.gatein.api.navigation.Navigation;
+import org.gatein.api.page.Page;
+import org.gatein.api.page.PageId;
+import org.gatein.api.page.PageQuery;
+import org.gatein.api.site.Site;
+import org.gatein.api.site.SiteId;
+import org.gatein.api.site.SiteQuery;
 import org.gatein.api.security.Permission;
 import org.gatein.api.security.User;
 
@@ -100,7 +100,7 @@ public interface Portal
    Page getPage(PageId pageId) throws IllegalArgumentException, EntityNotFoundException;
 
    /**
-    * Creates a page for a site given the <code>PageId</code>. This page is not saved until {@link Portal#savePage(org.gatein.api.portal.page.Page)} is called.
+    * Creates a page for a site given the <code>PageId</code>. This page is not saved until {@link Portal#savePage(org.gatein.api.page.Page)} is called.
     *
     * @param pageId the page id
     * @return the new page which has not been saved yet.

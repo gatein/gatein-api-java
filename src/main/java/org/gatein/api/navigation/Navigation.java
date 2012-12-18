@@ -20,11 +20,11 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.portal.navigation;
+package org.gatein.api.navigation;
 
 import org.gatein.api.ApiException;
 import org.gatein.api.EntityNotFoundException;
-import org.gatein.api.portal.site.SiteId;
+import org.gatein.api.site.SiteId;
 
 /**
  * Navigation for a site responsible for the retrieval, saving, and removal of navigation nodes.

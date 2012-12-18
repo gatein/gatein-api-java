@@ -20,11 +20,11 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.portal.site;
+package org.gatein.api.site;
 
 import org.gatein.api.security.Group;
 import org.gatein.api.security.User;
-import org.gatein.api.portal.page.PageId;
+import org.gatein.api.page.PageId;
 
 import java.util.Formattable;
 import java.util.FormattableFlags;

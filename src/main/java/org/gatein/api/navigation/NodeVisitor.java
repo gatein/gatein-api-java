@@ -20,9 +20,9 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.portal.navigation;
+package org.gatein.api.navigation;
 
-import org.gatein.api.portal.page.PageId;
+import org.gatein.api.page.PageId;
 
 /**
  * A node visitor is used to walk the node tree. Some node visitor's are available in the <code>Nodes</code> utility

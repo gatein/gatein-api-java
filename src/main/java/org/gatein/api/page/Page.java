@@ -5,14 +5,14 @@
  * distribution for a full listing of individual contributors.
  *
  * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
+ * under the terms of the GNU Lesser General License as
  * published by the Free Software Foundation; either version 2.1 of
  * the License, or (at your option) any later version.
  *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
+ * Lesser General License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this software; if not, write to the Free
@@ -20,45 +20,31 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.api.portal.site;
+package org.gatein.api.page;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.gatein.api.common.Describable;
+import org.gatein.api.common.Displayable;
+import org.gatein.api.security.Permission;
+import org.gatein.api.site.SiteId;
+
+import java.io.Serializable;
 
 /**
-* @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
-*/
-public enum SiteType
+ * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
+ */
+public interface Page extends Displayable, Describable, Comparable<Page>, Serializable
 {
-   SITE("site"), SPACE("space"), DASHBOARD("dashboard");
+   PageId getId();
 
-   private final String name;
+   SiteId getSiteId();
 
-   SiteType(String name)
-   {
-      this.name = name;
-   }
+   String getName();
 
-   public String getName()
-   {
-      return name;
-   }
+   Permission getAccessPermission();
 
-   public static SiteType forName(String name)
-   {
-      return MAP.get(name);
-   }
+   void setAccessPermission(Permission permission);
 
-   private static final Map<String, SiteType> MAP;
+   Permission getEditPermission();
 
-   static
-   {
-      final Map<String, SiteType> map = new HashMap<String, SiteType>();
-      for (SiteType type : values())
-      {
-         final String name = type.getName();
-         if (name != null) map.put(name, type);
-      }
-      MAP = map;
-   }
+   void setEditPermission(Permission permission);
 }
