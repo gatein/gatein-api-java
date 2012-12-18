@@ -26,6 +26,7 @@ import org.gatein.api.security.Group;
 import org.gatein.api.security.User;
 import org.junit.Test;
 
+import java.util.Formatter;
 import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
@@ -59,45 +60,33 @@ public class PageIdTest
       pageId2 = new PageId(new User("foo"), "baz");
       assertTrue(pageId1.equals(pageId2));
    }
-   @Test
-   public void testFormat()
-   {
-      PageId id = new PageId("foo", "bar");
-      assertEquals("site || foo || bar", id.format("%s || %s || %s"));
-
-      id = new PageId(new Group("foo", "bar"), "bar");
-      assertEquals("space || /foo/bar || bar", id.format("%s || %s || %s"));
-
-      id = new PageId(new User("foo"), "bar");
-      assertEquals(id.format("%s || %s || %s"), "dashboard || foo || bar");
-   }
 
    @Test
-   public void testFormat_UrlSafe()
+   public void testFormat_Alternative()
    {
       // unreserved  = ALPHA / DIGIT / "-" / "." / "_" / "~"
       Pattern urlUnreserved = Pattern.compile("[0-9A-Za-z-\\._~]*");
-      String format = new PageId(new Group("platform", "administrators"), "pageManagement").format();
+      PageId pageId = new PageId(new Group("platform", "administrators"), "pageManagement");
 
-      assertTrue(urlUnreserved.matcher(format).matches());
-   }
-
-   @Test(expected = IllegalArgumentException.class)
-   public void testFormat_Null()
-   {
-      new PageId("foo", "bar").format(null);
+      assertTrue(urlUnreserved.matcher(new Formatter().format("%#s", pageId).toString()).matches());
    }
 
    @Test
    public void testFromString()
    {
-      PageId id = new PageId("foo", "bar");
-      assertEquals(id, PageId.fromString(id.format()));
+      PageId id = new PageId("foo-_site0", "bar");
+      assertEquals(id, PageId.fromString(id.toString()));
+      assertEquals(id, PageId.fromString(new Formatter().format("%s", id).toString()));
+      assertEquals(id, PageId.fromString(new Formatter().format("%#s", id).toString()));
 
       id = new PageId(new Group("foo", "bar"), "bar_baz");
-      assertEquals(id, PageId.fromString(id.format()));
+      assertEquals(id, PageId.fromString(id.toString()));
+      assertEquals(id, PageId.fromString(new Formatter().format("%s", id).toString()));
+      assertEquals(id, PageId.fromString(new Formatter().format("%#s", id).toString()));
 
       id = new PageId(new User("foo"), "bar_baz");
-      assertEquals(id, PageId.fromString(id.format()));
+      assertEquals(id, PageId.fromString(id.toString()));
+      assertEquals(id, PageId.fromString(new Formatter().format("%s", id).toString()));
+      assertEquals(id, PageId.fromString(new Formatter().format("%#s", id).toString()));
    }
 }

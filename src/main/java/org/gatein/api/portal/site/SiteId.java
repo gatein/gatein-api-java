@@ -22,17 +22,20 @@
 
 package org.gatein.api.portal.site;
 
-import org.gatein.api.portal.BaseId;
 import org.gatein.api.security.Group;
 import org.gatein.api.security.User;
 import org.gatein.api.portal.page.PageId;
 
+import java.util.Formattable;
+import java.util.FormattableFlags;
+import java.util.Formatter;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
 * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
 */
-public class SiteId extends BaseId
+public class SiteId implements Formattable
 {
    private final SiteType type;
    private final String name;
@@ -114,50 +117,68 @@ public class SiteId extends BaseId
    @Override
    public String toString()
    {
-      return format("Site.Id[type=%s, name=%s]");
+      return String.format("Site.Id[%s]", this);
    }
 
-   public String format()
+   @Override
+   public void formatTo(Formatter formatter, int flags, int width, int precision)
    {
-      return format("%s.%s", groupAdapter());
+      if ((flags & FormattableFlags.ALTERNATE) == FormattableFlags.ALTERNATE)
+      {
+         formatter.format("%s.%s", type.getName(), name.replaceAll("/", "~"));
+      }
+      else
+      {
+         formatter.format("type=%s, name=%s", type.getName(), name);
+      }
    }
+
+   private static final String NAME_REGEX = "[A-Za-z0-9-_/~]";
+   private static final String TYPE_REGEX = "\\w{4,9}";
+   private static final Pattern PATTERN1 = Pattern.compile("type=("+TYPE_REGEX+"), name=(" + NAME_REGEX + "*)");
+   private static final Pattern PATTERN2 = Pattern.compile("("+TYPE_REGEX+")\\.(" + NAME_REGEX +"*)");
 
    public static SiteId fromString(String idAsString)
    {
       if (idAsString == null) throw new IllegalArgumentException("idAsString cannot be null.");
 
-      String[] parts = idAsString.split(Pattern.quote("."));
-      if (parts.length != 2) throw new IllegalArgumentException("Invalid id format '" + idAsString + "'");
+      int len = idAsString.length();
+      if (idAsString.startsWith("Site.Id[type=")) // Handle the toString()
+      {
+         int begin = idAsString.indexOf("type=") + 5;
+         int end = idAsString.indexOf(",", begin);
+         String type = idAsString.substring(begin, end);
 
-      String typeName = parts[0];
-      String siteName = parts[1];
-      siteName = siteName.replaceAll("~", "/");
+         begin = idAsString.indexOf("name=") + 5;
+         end = len - 1;
+         String name = idAsString.substring(begin, end);
 
-      SiteType type = SiteType.forName(typeName);
-      if (type == null)
-         throw new IllegalArgumentException("Invalid site type '" + typeName + "'" + " for id format '" + idAsString + "'");
+         return new SiteId(SiteType.forName(type), name);
+      }
+      else // Handle both %s and %#s formats
+      {
+         // Match two patterns (easier then making one complicated regex)
+         Matcher matcher = PATTERN1.matcher(idAsString);
+         boolean matches = matcher.matches();
+         if (!matches)
+         {
+            matcher = PATTERN2.matcher(idAsString);
+            matches = matcher.matches();
+         }
 
-      return new SiteId(type, siteName);
-   }
+         // Parse it
+         if (matches)
+         {
+            String type = matcher.group(1);
+            String name = matcher.group(2);
+            if (name.contains("~"))
+            {
+               name = name.replaceAll("~", "/");
+            }
+            return new SiteId(SiteType.forName(type), name);
+         }
+      }
 
-   @Override
-   public Object[] getFormatArguments()
-   {
-      return getFormatArguments(null);
-   }
-
-   @Override
-   public Object[] getFormatArguments(Adapter adapter)
-   {
-      Object[] args = new Object[2];
-      args[0] = adapt(0, type.getName(), adapter);
-      args[1] = adapt(1, name, adapter);
-
-      return args;
-   }
-
-   private Object adapt(int index, Object original, Adapter adapter)
-   {
-      return (adapter == null) ? original : adapter.adapt(index, original);
+      throw new IllegalArgumentException("Unknown syntax for id string " + idAsString);
    }
 }

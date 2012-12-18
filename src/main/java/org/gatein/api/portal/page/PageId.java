@@ -22,19 +22,18 @@
 
 package org.gatein.api.portal.page;
 
-import org.gatein.api.internal.ArraysExt;
-import org.gatein.api.internal.Strings;
-import org.gatein.api.portal.BaseId;
 import org.gatein.api.security.Group;
 import org.gatein.api.security.User;
 import org.gatein.api.portal.site.SiteId;
 
-import java.util.regex.Pattern;
+import java.util.Formattable;
+import java.util.FormattableFlags;
+import java.util.Formatter;
 
 /**
 * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
 */
-public class PageId extends BaseId
+public class PageId implements Formattable
 {
    private final SiteId siteId;
    private final String pageName;
@@ -80,18 +79,6 @@ public class PageId extends BaseId
    }
 
    @Override
-   public Object[] getFormatArguments()
-   {
-      return ArraysExt.concat(siteId.getFormatArguments(), pageName);
-   }
-
-   @Override
-   public Object[] getFormatArguments(Adapter adapter)
-   {
-      return ArraysExt.concat(siteId.getFormatArguments(adapter), adapter.adapt(2, pageName));
-   }
-
-   @Override
    public boolean equals(Object o)
    {
       if (this == o) return true;
@@ -113,22 +100,54 @@ public class PageId extends BaseId
    @Override
    public String toString()
    {
-      return format("Page.Id[siteType=%s, siteName=%s, pageName=%s]");
+      return String.format("Page.Id[%s]", this);
    }
 
-   public String format()
+   @Override
+   public void formatTo(Formatter formatter, int flags, int width, int precision)
    {
-      return format("%s.%s.%s", groupAdapter());
+      if ((flags & FormattableFlags.ALTERNATE) == FormattableFlags.ALTERNATE)
+      {
+         formatter.format("%#s.%s", siteId, pageName);
+      }
+      else
+      {
+         formatter.format("siteId=[%s], pageName=%s", siteId, pageName);
+      }
    }
 
    public static PageId fromString(String idAsString)
    {
       if (idAsString == null) throw new IllegalArgumentException("idAsString cannot be null.");
-      String[] parts = Strings.splitter(Pattern.quote(".")).split(idAsString);
-      if (parts.length != 3) throw new IllegalArgumentException("Invalid id format '" + idAsString + "'");
 
-      SiteId siteId = SiteId.fromString(parts[0] + "." + parts[1]);
-      String pageName = parts[2];
+      int len;
+      if (idAsString.startsWith("Page.Id["))
+      {
+         idAsString = idAsString.substring(8, idAsString.length());
+         len = idAsString.length() - 1; // cut off trailing ]
+      }
+      else
+      {
+         len = idAsString.length();
+      }
+
+      int end;
+      int start;
+      String pageName;
+      if (idAsString.startsWith("siteId=["))
+      {
+         start = 8;
+         end = idAsString.lastIndexOf("], pageName=");
+         pageName = idAsString.substring(end+12, len);
+      }
+      else
+      {
+         start = 0;
+         end = idAsString.lastIndexOf('.');
+         pageName = idAsString.substring(end+1, len);
+      }
+
+      SiteId siteId = SiteId.fromString(idAsString.substring(start, end));
 
       return new PageId(siteId, pageName);
    }

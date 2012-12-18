@@ -26,6 +26,7 @@ import org.gatein.api.security.Group;
 import org.gatein.api.security.User;
 import org.junit.Test;
 
+import java.util.Formatter;
 import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
@@ -79,41 +80,41 @@ public class SiteIdTest
    public void testFormat()
    {
       SiteId id = new SiteId("foo");
-      assertEquals("site || foo", id.format("%s || %s"));
+      assertEquals("type=site, name=foo", new Formatter().format("%s", id).toString());
 
       id = new SiteId(new Group("foo", "bar"));
-      assertEquals("space || /foo/bar", id.format("%s || %s"));
+      assertEquals("type=space, name=/foo/bar", new Formatter().format("%s", id).toString());
 
       id = new SiteId(new User("foo"));
-      assertEquals("dashboard || foo", id.format("%s || %s"));
+      assertEquals("type=dashboard, name=foo", new Formatter().format("%s", id).toString());
    }
 
    @Test
-   public void testForm_UrlSafe()
+   public void testFormat_UrlSafe()
    {
       // unreserved  = ALPHA / DIGIT / "-" / "." / "_" / "~"
       Pattern urlUnreserved = Pattern.compile("[0-9A-Za-z-\\._~]*");
-      String format = new SiteId(new Group("foo", "bar")).format();
+      SiteId siteId = new SiteId(new Group("foo", "bar"));
 
-      assertTrue(urlUnreserved.matcher(format).matches());
-   }
-
-   @Test(expected = IllegalArgumentException.class)
-   public void testFormat_Null()
-   {
-      new SiteId("foo").format(null);
+      assertTrue(urlUnreserved.matcher(new Formatter().format("%#s", siteId).toString()).matches());
    }
 
    @Test
    public void testFromString()
    {
-      SiteId id = new SiteId("foo");
-      assertEquals(id, SiteId.fromString(id.format()));
+      SiteId id = new SiteId("foo-_site0");
+      assertEquals(id, SiteId.fromString(id.toString()));
+      assertEquals(id, SiteId.fromString(new Formatter().format("%s", id).toString()));
+      assertEquals(id, SiteId.fromString(new Formatter().format("%#s", id).toString()));
 
       id = new SiteId(new Group("foo", "bar"));
-      assertEquals(id, SiteId.fromString(id.format()));
+      assertEquals(id, SiteId.fromString(id.toString()));
+      assertEquals(id, SiteId.fromString(new Formatter().format("%s", id).toString()));
+      assertEquals(id, SiteId.fromString(new Formatter().format("%#s", id).toString()));
 
       id = new SiteId(new User("foo"));
-      assertEquals(id, SiteId.fromString(id.format()));
+      assertEquals(id, SiteId.fromString(id.toString()));
+      assertEquals(id, SiteId.fromString(new Formatter().format("%s", id).toString()));
+      assertEquals(id, SiteId.fromString(new Formatter().format("%#s", id).toString()));
    }
 }
