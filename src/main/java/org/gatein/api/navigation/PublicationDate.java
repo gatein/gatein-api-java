@@ -22,7 +22,7 @@
 
 package org.gatein.api.navigation;
 
-import org.gatein.api.internal.Objects;
+import org.gatein.api.internal.ObjectToStringBuilder;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -88,7 +88,7 @@ public class PublicationDate implements Serializable
    @Override
    public String toString()
    {
-      return Objects.toStringBuilder()
+      return ObjectToStringBuilder.toStringBuilder()
          .add("start", new Date(start))
          .add("end", new Date(end)).toString();
    }

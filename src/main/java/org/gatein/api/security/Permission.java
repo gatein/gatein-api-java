@@ -22,7 +22,7 @@
 
 package org.gatein.api.security;
 
-import org.gatein.api.internal.Objects;
+import org.gatein.api.internal.ObjectToStringBuilder;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -99,7 +99,7 @@ public class Permission
    @Override
    public String toString()
    {
-      return Objects.toStringBuilder()
+      return ObjectToStringBuilder.toStringBuilder()
          .add("memberships", memberships.isEmpty() ? "Everyone" : memberships)
          .toString();
    }

@@ -22,7 +22,7 @@
 
 package org.gatein.api.common.i18n;
 
-import org.gatein.api.internal.Objects;
+import org.gatein.api.internal.ObjectToStringBuilder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -143,7 +143,7 @@ public abstract class Localized<T extends Serializable> implements Iterable<T>, 
    @Override
    public String toString()
    {
-      return Objects.toStringBuilder(getClass())
+      return ObjectToStringBuilder.toStringBuilder(getClass())
          .add("values", values.values()).toString();
    }
 
@@ -223,7 +223,7 @@ public abstract class Localized<T extends Serializable> implements Iterable<T>, 
       @Override
       public String toString()
       {
-         return Objects.toStringBuilder(getClass())
+         return ObjectToStringBuilder.toStringBuilder(getClass())
             .add("locale", locale)
             .add("value", value).toString();
       }

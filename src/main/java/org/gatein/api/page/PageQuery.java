@@ -24,7 +24,7 @@ package org.gatein.api.page;
 
 import org.gatein.api.common.Filter;
 import org.gatein.api.common.Pagination;
-import org.gatein.api.internal.Objects;
+import org.gatein.api.internal.ObjectToStringBuilder;
 import org.gatein.api.site.SiteId;
 import org.gatein.api.site.SiteType;
 
@@ -103,7 +103,7 @@ public class PageQuery
    @Override
    public String toString()
    {
-      return Objects.toStringBuilder(PageQuery.class)
+      return ObjectToStringBuilder.toStringBuilder(PageQuery.class)
          .add("siteType", siteType)
          .add("siteName", siteName)
          .add("displayName", displayName)

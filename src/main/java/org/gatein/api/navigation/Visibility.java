@@ -22,7 +22,7 @@
 
 package org.gatein.api.navigation;
 
-import org.gatein.api.internal.Objects;
+import org.gatein.api.internal.ObjectToStringBuilder;
 
 import java.io.Serializable;
 
@@ -31,7 +31,7 @@ import java.io.Serializable;
  */
 public class Visibility implements Serializable
 {
-   private final Status flag;
+   private final Status status;
    private final PublicationDate publicationDate;
 
    public Visibility()
@@ -49,18 +49,18 @@ public class Visibility implements Serializable
       this(Status.PUBLICATION, publicationDate);
    }
 
-   public Visibility(Status flag, PublicationDate publicationDate)
+   public Visibility(Status status, PublicationDate publicationDate)
    {
-      if (flag == null) throw new IllegalArgumentException("flag cannot be null");
-      if (flag == Status.PUBLICATION && publicationDate == null) throw new IllegalArgumentException("publicationDate cannot be null when the flag is set to " + Status.PUBLICATION);
+      if (status == null) throw new IllegalArgumentException("flag cannot be null");
+      if (status == Status.PUBLICATION && publicationDate == null) throw new IllegalArgumentException("publicationDate cannot be null when the flag is set to " + Status.PUBLICATION);
 
-      this.flag = flag;
+      this.status = status;
       this.publicationDate = publicationDate;
    }
 
    public boolean isVisible()
    {
-      switch (flag)
+      switch (status)
       {
          case VISIBLE:
             return true;
@@ -77,7 +77,7 @@ public class Visibility implements Serializable
 
    public Status getStatus()
    {
-      return flag;
+      return status;
    }
 
    public PublicationDate getPublicationDate()
@@ -88,8 +88,8 @@ public class Visibility implements Serializable
    @Override
    public String toString()
    {
-      return Objects.toStringBuilder()
-         .add("flag", flag)
+      return ObjectToStringBuilder.toStringBuilder()
+         .add("flag", status)
          .add("publicationDate", publicationDate).toString();
    }
 
@@ -100,16 +100,16 @@ public class Visibility implements Serializable
       if (!(o instanceof Visibility)) return false;
 
       Visibility that = (Visibility) o;
+      if (status != that.status) return false;
 
-      return (flag == that.flag) &&
-         Objects.equals(publicationDate, that.publicationDate);
-
+      if (publicationDate == null) return that.publicationDate == null;
+      return that.publicationDate != null && publicationDate.equals(that.publicationDate);
    }
 
    @Override
    public int hashCode()
    {
-      int result = flag.hashCode();
+      int result = status.hashCode();
       result = 31 * result + (publicationDate != null ? publicationDate.hashCode() : 0);
       return result;
    }

@@ -23,7 +23,7 @@
 package org.gatein.api.common;
 
 
-import org.gatein.api.internal.Objects;
+import org.gatein.api.internal.ObjectToStringBuilder;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -114,7 +114,7 @@ public class Attributes
    @Override
    public String toString()
    {
-      return Objects.toStringBuilder().add(values).toString();
+      return ObjectToStringBuilder.toStringBuilder().add(values).toString();
    }
 
    public static <T> Key<T> key(String name, Class<T> type)

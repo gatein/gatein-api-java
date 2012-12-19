@@ -22,7 +22,7 @@
 
 package org.gatein.api.common;
 
-import org.gatein.api.internal.Objects;
+import org.gatein.api.internal.ObjectToStringBuilder;
 
 import java.io.Serializable;
 
@@ -106,7 +106,7 @@ public class Pagination implements Serializable
    @Override
    public String toString()
    {
-      return Objects.toStringBuilder()
+      return ObjectToStringBuilder.toStringBuilder()
          .add("offset", getOffset())
          .add("limit", getLimit())
          .add("pageNumber", getPageNumber())

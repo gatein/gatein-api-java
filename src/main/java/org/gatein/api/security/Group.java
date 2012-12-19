@@ -22,8 +22,9 @@
 
 package org.gatein.api.security;
 
-import org.gatein.api.internal.Objects;
-import org.gatein.api.internal.Strings;
+import org.gatein.api.internal.StringJoiner;
+import org.gatein.api.internal.ObjectToStringBuilder;
+import org.gatein.api.internal.StringSplitter;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
@@ -41,13 +42,13 @@ public class Group
       }
       else
       {
-         this.id = Strings.joiner("/").leading().trimToNull().ignoreNulls().join(group);
+         this.id = StringJoiner.joiner("/").leading().trimToNull().ignoreNulls().join(group);
       }
    }
 
    public Group(String id)
    {
-      this(Strings.splitter("/").trim().ignoreEmptyStrings().split(id));
+      this(StringSplitter.splitter("/").trim().ignoreEmptyStrings().split(id));
    }
 
    public String getId()
@@ -58,7 +59,7 @@ public class Group
    @Override
    public String toString()
    {
-      return Objects.toStringBuilder(getClass())
+      return ObjectToStringBuilder.toStringBuilder(getClass())
          .add("groupId", id)
          .toString();
    }

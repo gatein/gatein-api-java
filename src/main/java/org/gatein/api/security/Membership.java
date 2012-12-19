@@ -22,7 +22,7 @@
 
 package org.gatein.api.security;
 
-import org.gatein.api.internal.Strings;
+import org.gatein.api.internal.StringSplitter;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
@@ -81,7 +81,7 @@ public class Membership
    {
       if (membership == null) throw new IllegalArgumentException("membership cannot be null");
 
-      String[] parts = Strings.splitter(":").split(membership);
+      String[] parts = StringSplitter.splitter(":").split(membership);
       if (parts.length == 1)
       {
          return new Membership(new User(parts[0]));

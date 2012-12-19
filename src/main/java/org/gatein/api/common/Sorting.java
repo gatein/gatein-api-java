@@ -22,7 +22,7 @@
 
 package org.gatein.api.common;
 
-import org.gatein.api.internal.Objects;
+import org.gatein.api.internal.ObjectToStringBuilder;
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -87,7 +87,7 @@ public class Sorting<T> implements Serializable
    @Override
    public String toString()
    {
-      return Objects.toStringBuilder()
+      return ObjectToStringBuilder.toStringBuilder()
          .add("order", order)
          .add("comparator", comparator)
          .toString();

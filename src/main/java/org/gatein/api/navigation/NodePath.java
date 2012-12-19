@@ -22,7 +22,8 @@
 
 package org.gatein.api.navigation;
 
-import org.gatein.api.internal.Strings;
+import org.gatein.api.internal.StringJoiner;
+import org.gatein.api.internal.StringSplitter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class NodePath implements Iterable<String>, Comparable<NodePath>, Seriali
 
    public static NodePath fromString(String path)
    {
-      return new NodePath(Strings.splitter("/").trim().ignoreEmptyStrings().split(path));
+      return new NodePath(StringSplitter.splitter("/").trim().ignoreEmptyStrings().split(path));
    }
 
    private final List<String> pathList;
@@ -221,6 +222,6 @@ public class NodePath implements Iterable<String>, Comparable<NodePath>, Seriali
    @Override
    public String toString()
    {
-      return Strings.joiner("/").leading().join(pathList);
+      return StringJoiner.joiner("/").leading().join(pathList);
    }
 }
