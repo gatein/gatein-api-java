@@ -23,6 +23,7 @@
 package org.gatein.api.internal;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -212,7 +213,7 @@ public class Strings
 
       public String join(String...parts)
       {
-         return join(ArraysExt.asList(parts));
+         return join(Arrays.asList(parts));
       }
    }
 }
