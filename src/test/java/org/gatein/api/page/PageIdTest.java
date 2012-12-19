@@ -22,15 +22,16 @@
 
 package org.gatein.api.page;
 
-import org.gatein.api.page.PageId;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+
+import java.util.regex.Pattern;
+
 import org.gatein.api.security.Group;
 import org.gatein.api.security.User;
 import org.junit.Test;
-
-import java.util.Formatter;
-import java.util.regex.Pattern;
-
-import static org.junit.Assert.*;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
@@ -69,7 +70,7 @@ public class PageIdTest
       Pattern urlUnreserved = Pattern.compile("[0-9A-Za-z-\\._~]*");
       PageId pageId = new PageId(new Group("platform", "administrators"), "pageManagement");
 
-      assertTrue(urlUnreserved.matcher(new Formatter().format("%#s", pageId).toString()).matches());
+      assertTrue(urlUnreserved.matcher(String.format("%#s", pageId).toString()).matches());
    }
 
    @Test
@@ -77,17 +78,17 @@ public class PageIdTest
    {
       PageId id = new PageId("foo-_site0", "bar");
       assertEquals(id, PageId.fromString(id.toString()));
-      assertEquals(id, PageId.fromString(new Formatter().format("%s", id).toString()));
-      assertEquals(id, PageId.fromString(new Formatter().format("%#s", id).toString()));
+      assertEquals(id, PageId.fromString(String.format("%s", id).toString()));
+      assertEquals(id, PageId.fromString(String.format("%#s", id).toString()));
 
       id = new PageId(new Group("foo", "bar"), "bar_baz");
       assertEquals(id, PageId.fromString(id.toString()));
-      assertEquals(id, PageId.fromString(new Formatter().format("%s", id).toString()));
-      assertEquals(id, PageId.fromString(new Formatter().format("%#s", id).toString()));
+      assertEquals(id, PageId.fromString(String.format("%s", id).toString()));
+      assertEquals(id, PageId.fromString(String.format("%#s", id).toString()));
 
       id = new PageId(new User("foo"), "bar_baz");
       assertEquals(id, PageId.fromString(id.toString()));
-      assertEquals(id, PageId.fromString(new Formatter().format("%s", id).toString()));
-      assertEquals(id, PageId.fromString(new Formatter().format("%#s", id).toString()));
+      assertEquals(id, PageId.fromString(String.format("%s", id).toString()));
+      assertEquals(id, PageId.fromString(String.format("%#s", id).toString()));
    }
 }
