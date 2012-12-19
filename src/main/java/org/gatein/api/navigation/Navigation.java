@@ -44,14 +44,14 @@ public interface Navigation
     * The priority of the navigation. This can be used to determine the order in which navigations of the same <code>SiteType</code>
     * appear in a navigation menu.
     *
-    * @return the priority or null if one is not specified.
+    * @return the priority
     */
    int getPriority();
 
    /**
     * Saves the priority for this navigation.
-    *
-    * @param integer the priority to save, can be null.
+    * 
+    * @param integer the priority to save
     */
    void setPriority(int integer);
 
