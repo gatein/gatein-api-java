@@ -29,11 +29,11 @@ import org.gatein.api.common.i18n.LocalizedString;
  */
 public interface Displayable
 {
-   LocalizedString getDisplayName();
+   String getDisplayName();
+
+   LocalizedString getDisplayNames();
 
    void setDisplayName(String displayName);
 
-   void setDisplayName(LocalizedString displayName);
-
-   String resolveDisplayName();
+   void setDisplayNames(LocalizedString displayName);
 }

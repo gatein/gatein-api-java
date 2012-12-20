@@ -73,7 +73,7 @@ public interface Node extends Displayable, Iterable<Node>, Serializable
     *
     * @return the resolved URI for this navigation node.
     */
-   URI resolveURI();
+   URI getURI();
 
    /**
     * If the node is visible. Convenience method for doing <code>Node.getVisibility().isVisible()</code>
