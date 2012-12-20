@@ -89,8 +89,8 @@ public abstract class PortalRequest
     */
    public Page getPage()
    {
-      PageId pageId = getNode().getPageId();
-
+      Node node = getNavigation().getNode(getNodePath());
+      PageId pageId = node != null ? node.getPageId() : null;
       return (pageId == null) ? null : getPortal().getPage(pageId);
    }
 
@@ -105,22 +105,8 @@ public abstract class PortalRequest
    }
 
    /**
-    * The node of the current portal request, filtered based on the current user's access rights.
-    *
-    * @return the node of the current portal request
-    */
-   public Node getNode()
-   {
-      Node node = getNavigation().getNode(getNodePath());
-      if (node == null)
-         throw new ApiException("Node could not be found for current request path " + getNodePath());
-
-      return node.filter(getUserFilter());
-   }
-
-   /**
     * Returns the filter that can be used to filter based on the current user's access rights.
-    *
+    * 
     * @return the user filter
     * @see Nodes#userFilter(org.gatein.api.security.User, Portal)
     */

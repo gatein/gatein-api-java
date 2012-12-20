@@ -95,7 +95,7 @@ public interface Navigation
     * @return the root node of the navigation
     * @throws IllegalArgumentException if visitor is null
     */
-   Node loadNodes(NodeVisitor visitor);
+   Node getRootNode(NodeVisitor visitor);
 
    /**
     * Will refresh the node with latest from storage. For example if nodes were added/removed, etc you can refresh/sync those
