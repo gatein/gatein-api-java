@@ -135,7 +135,8 @@ public class Nodes
 
    public static Filter<Node> userFilter(User user, Portal portal)
    {
-      return new NodeFilter.Builder().withAccess(user, portal).build();
+      return new NodeFilter.Builder().withoutVisibility(new Visibility(Visibility.Status.SYSTEM))
+         .withAccess(user, portal).build();
    }
 
    public static NodeFilter.Builder filter()

@@ -41,14 +41,16 @@ public class NodeFilter implements Filter<Node>
    private final boolean editPermission;
    private final boolean showAll;
    private final Set<Visibility> visibilities;
+   private final Set<Visibility> excludeVisibilities;
 
    private final Portal portal;
    private final User user;
 
-   private NodeFilter(boolean showAll, Set<Visibility> visibilities, boolean accessPermission, boolean editPermission, Portal portal, User user)
+   private NodeFilter(boolean showAll, Set<Visibility> visibilities, Set<Visibility> excludeVisibilities, boolean accessPermission, boolean editPermission, Portal portal, User user)
    {
       this.showAll = showAll;
       this.visibilities = (visibilities == null) ? Collections.<Visibility>emptySet() : new HashSet<Visibility>(visibilities);
+      this.excludeVisibilities = (excludeVisibilities == null) ? Collections.<Visibility>emptySet() : new HashSet<Visibility>(excludeVisibilities);
 
       this.accessPermission = accessPermission;
       this.editPermission = editPermission;
@@ -66,6 +68,11 @@ public class NodeFilter implements Filter<Node>
    public boolean accept(Node node)
    {
       if (!showAll && !node.isVisible()) return false;
+
+      for (Visibility visibility : excludeVisibilities)
+      {
+         if (visibility.equals(node.getVisibility())) return false;
+      }
 
       for (Visibility visibility : visibilities)
       {
@@ -95,6 +102,7 @@ public class NodeFilter implements Filter<Node>
    {
       private boolean showAll;
       private Set<Visibility> visibilities = new HashSet<Visibility>();
+      private Set<Visibility> excludeVisibilities = new HashSet<Visibility>();
 
       private boolean accessPermission;
       private boolean editPermission;
@@ -116,6 +124,12 @@ public class NodeFilter implements Filter<Node>
       public Builder withVisibility(Visibility visibility)
       {
          visibilities.add(visibility);
+         return this;
+      }
+
+      public Builder withoutVisibility(Visibility visibility)
+      {
+         excludeVisibilities.add(visibility);
          return this;
       }
 
@@ -153,7 +167,7 @@ public class NodeFilter implements Filter<Node>
 
       public Filter<Node> build() throws IllegalStateException
       {
-         return new NodeFilter(showAll, visibilities, accessPermission, editPermission, portal, user);
+         return new NodeFilter(showAll, visibilities, excludeVisibilities, accessPermission, editPermission, portal, user);
       }
    }
 }
