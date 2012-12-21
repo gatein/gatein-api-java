@@ -110,7 +110,7 @@ public abstract class PortalRequest
     * @return the user filter
     * @see Nodes#userFilter(org.gatein.api.security.User, Portal)
     */
-   public Filter<Node> getUserFilter()
+   public Filter<Node> getNodeFilter()
    {
       return Nodes.userFilter(getUser(), getPortal());
    }
