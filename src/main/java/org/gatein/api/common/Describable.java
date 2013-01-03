@@ -27,13 +27,12 @@ import org.gatein.api.common.i18n.LocalizedString;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public interface Describable
-{
-   LocalizedString getDescription();
+public interface Describable {
+    LocalizedString getDescription();
 
-   void setDescription(String description);
+    void setDescription(String description);
 
-   void setDescription(LocalizedString description);
+    void setDescription(LocalizedString description);
 
-   String resolveDescription();
+    String resolveDescription();
 }

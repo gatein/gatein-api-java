@@ -35,193 +35,172 @@ import java.util.List;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class NodePath implements Iterable<String>, Comparable<NodePath>, Serializable
-{
-   private static final NodePath ROOT_PATH = new NodePath();
+public class NodePath implements Iterable<String>, Comparable<NodePath>, Serializable {
+    private static final NodePath ROOT_PATH = new NodePath();
 
-   public static NodePath path(String...elements)
-   {
-      if (elements == null) throw new IllegalArgumentException("elements cannot be null");
-      if (elements.length == 0) throw new IllegalArgumentException("elements cannot be empty");
+    public static NodePath path(String... elements) {
+        if (elements == null)
+            throw new IllegalArgumentException("elements cannot be null");
+        if (elements.length == 0)
+            throw new IllegalArgumentException("elements cannot be empty");
 
-      return new NodePath(elements);
-   }
+        return new NodePath(elements);
+    }
 
-   public static NodePath root()
-   {
-      return ROOT_PATH;
-   }
+    public static NodePath root() {
+        return ROOT_PATH;
+    }
 
-   public static NodePath fromString(String path)
-   {
-      return new NodePath(StringSplitter.splitter("/").trim().ignoreEmptyStrings().split(path));
-   }
+    public static NodePath fromString(String path) {
+        return new NodePath(StringSplitter.splitter("/").trim().ignoreEmptyStrings().split(path));
+    }
 
-   private final List<String> pathList;
+    private final List<String> pathList;
 
-   private NodePath()
-   {
-      this(Collections.<String>emptyList());
-   }
+    private NodePath() {
+        this(Collections.<String> emptyList());
+    }
 
-   private NodePath(String...pathList)
-   {
-      this(Arrays.asList(pathList));
-   }
+    private NodePath(String... pathList) {
+        this(Arrays.asList(pathList));
+    }
 
-   private NodePath(List<String> pathList)
-   {
-      this.pathList = new ArrayList<String>(pathList);
-   }
+    private NodePath(List<String> pathList) {
+        this.pathList = new ArrayList<String>(pathList);
+    }
 
-   public NodePath append(String...elements)
-   {
-      if (elements == null) throw new IllegalArgumentException("elements cannot be null");
+    public NodePath append(String... elements) {
+        if (elements == null)
+            throw new IllegalArgumentException("elements cannot be null");
 
-      return append(new NodePath(elements));
-   }
+        return append(new NodePath(elements));
+    }
 
-   public NodePath append(NodePath path)
-   {
-      List<String> list = new ArrayList<String>(pathList.size() + path.pathList.size());
-      list.addAll(pathList);
-      list.addAll(path.pathList);
+    public NodePath append(NodePath path) {
+        List<String> list = new ArrayList<String>(pathList.size() + path.pathList.size());
+        list.addAll(pathList);
+        list.addAll(path.pathList);
 
-      return new NodePath(list);
-   }
+        return new NodePath(list);
+    }
 
-   public NodePath subPath(int fromIndex)
-   {
-      return subPath(fromIndex, size());
-   }
+    public NodePath subPath(int fromIndex) {
+        return subPath(fromIndex, size());
+    }
 
-   public NodePath subPath(int fromIndex, int toIndex)
-   {
-      return new NodePath(new ArrayList<String>(pathList.subList(fromIndex, toIndex)));
-   }
+    public NodePath subPath(int fromIndex, int toIndex) {
+        return new NodePath(new ArrayList<String>(pathList.subList(fromIndex, toIndex)));
+    }
 
-   public String getSegment(int index)
-   {
-      return pathList.get(index);
-   }
+    public String getSegment(int index) {
+        return pathList.get(index);
+    }
 
-   public String getLastSegment()
-   {
-      int size = size();
-      return (size == 0) ? null : getSegment(size-1);
-   }
+    public String getLastSegment() {
+        int size = size();
+        return (size == 0) ? null : getSegment(size - 1);
+    }
 
-   public NodePath parent()
-   {
-      if (pathList.isEmpty()) return null;
+    public NodePath parent() {
+        if (pathList.isEmpty())
+            return null;
 
-      return subPath(0, size()-1);
-   }
+        return subPath(0, size() - 1);
+    }
 
-   public boolean isParent(NodePath path)
-   {
-      if (size() >= path.size()) return false;
-
-      for (int i=0; i<size(); i++)
-      {
-         String name = getSegment(i);
-         if (!name.equals(path.getSegment(i)))
-         {
+    public boolean isParent(NodePath path) {
+        if (size() >= path.size())
             return false;
-         }
-      }
 
-      return true;
-   }
+        for (int i = 0; i < size(); i++) {
+            String name = getSegment(i);
+            if (!name.equals(path.getSegment(i))) {
+                return false;
+            }
+        }
 
-   public int size()
-   {
-      return pathList.size();
-   }
+        return true;
+    }
 
-   /**
-    * Returns the path as an unmodifiable list of strings.
-    *
-    * @return the path as an unmodifiable list of strings
-    */
-   public List<String> asList()
-   {
-      return Collections.unmodifiableList(pathList);
-   }
+    public int size() {
+        return pathList.size();
+    }
 
-   /**
-    * Returns the path as an array of strings
-    *
-    * @return the path as an array of strings
-    */
-   public String[] asArray()
-   {
-      return pathList.toArray(new String[pathList.size()]);
-   }
+    /**
+     * Returns the path as an unmodifiable list of strings.
+     *
+     * @return the path as an unmodifiable list of strings
+     */
+    public List<String> asList() {
+        return Collections.unmodifiableList(pathList);
+    }
 
-   @Override
-   public int compareTo(NodePath other)
-   {
-      int size = size();
-      int otherSize = other.size();
+    /**
+     * Returns the path as an array of strings
+     *
+     * @return the path as an array of strings
+     */
+    public String[] asArray() {
+        return pathList.toArray(new String[pathList.size()]);
+    }
 
-      for (int i=0; i<otherSize; i++)
-      {
-         if (i >= size) break;
+    @Override
+    public int compareTo(NodePath other) {
+        int size = size();
+        int otherSize = other.size();
 
-         int result = getSegment(i).compareTo(other.getSegment(i));
-         if (result != 0) return result;
-      }
+        for (int i = 0; i < otherSize; i++) {
+            if (i >= size)
+                break;
 
-      return (size < otherSize ? -1 : (size==otherSize ? 0 : 1));
-   }
+            int result = getSegment(i).compareTo(other.getSegment(i));
+            if (result != 0)
+                return result;
+        }
 
-   @Override
-   public Iterator<String> iterator()
-   {
-      final Iterator<String> iterator = pathList.iterator();
-      return new Iterator<String>()
-      {
-         @Override
-         public boolean hasNext()
-         {
-            return iterator.hasNext();
-         }
+        return (size < otherSize ? -1 : (size == otherSize ? 0 : 1));
+    }
 
-         @Override
-         public String next()
-         {
-            return iterator.next();
-         }
+    @Override
+    public Iterator<String> iterator() {
+        final Iterator<String> iterator = pathList.iterator();
+        return new Iterator<String>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
 
-         @Override
-         public void remove()
-         {
-            throw new UnsupportedOperationException("Remove operation not supported");
-         }
-      };
-   }
+            @Override
+            public String next() {
+                return iterator.next();
+            }
 
-   @Override
-   public boolean equals(Object o)
-   {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("Remove operation not supported");
+            }
+        };
+    }
 
-      NodePath that = (NodePath) o;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
-      return pathList.equals(that.pathList);
-   }
+        NodePath that = (NodePath) o;
 
-   @Override
-   public int hashCode()
-   {
-      return pathList.hashCode();
-   }
+        return pathList.equals(that.pathList);
+    }
 
-   @Override
-   public String toString()
-   {
-      return StringJoiner.joiner("/").leading().join(pathList);
-   }
+    @Override
+    public int hashCode() {
+        return pathList.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return StringJoiner.joiner("/").leading().join(pathList);
+    }
 }

@@ -31,104 +31,92 @@ import java.io.Serializable;
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class Pagination implements Serializable
-{
-   private final int offset;
-   private final int limit;
+public class Pagination implements Serializable {
+    private final int offset;
+    private final int limit;
 
-   public Pagination(int offset, int limit)
-   {
-      if (limit == 0) throw new IllegalArgumentException("limit cannot be 0 for pagination.");
+    public Pagination(int offset, int limit) {
+        if (limit == 0)
+            throw new IllegalArgumentException("limit cannot be 0 for pagination.");
 
-      this.offset = offset;
-      this.limit = limit;
-   }
+        this.offset = offset;
+        this.limit = limit;
+    }
 
-   /**
-    * The current page number this pagination object represents
-    *
-    * @return the page number
-    */
-   public int getPageNumber()
-   {
-      if (offset < limit || limit == 0) return 1;
+    /**
+     * The current page number this pagination object represents
+     *
+     * @return the page number
+     */
+    public int getPageNumber() {
+        if (offset < limit || limit == 0)
+            return 1;
 
-      return (offset / limit) + 1;
-   }
+        return (offset / limit) + 1;
+    }
 
-   /**
-    * The offset for this pagination object. The offset determines what index (0 index) to start retrieving results from.
-    *
-    * @return the offset
-    */
-   public int getOffset()
-   {
-      return offset;
-   }
+    /**
+     * The offset for this pagination object. The offset determines what index (0 index) to start retrieving results from.
+     *
+     * @return the offset
+     */
+    public int getOffset() {
+        return offset;
+    }
 
-   /**
-    * The limit for this pagination object. The limit determines the maximum amount of results to return.
-    *
-    * @return the limit
-    */
-   public int getLimit()
-   {
-      return limit;
-   }
+    /**
+     * The limit for this pagination object. The limit determines the maximum amount of results to return.
+     *
+     * @return the limit
+     */
+    public int getLimit() {
+        return limit;
+    }
 
-   /**
-    * Creates a new pagination object representing the next page
-    *
-    * @return new pagination object with offset shifted by offset+limit
-    */
-   public Pagination getNext()
-   {
-      return new Pagination(offset+limit, limit);
-   }
+    /**
+     * Creates a new pagination object representing the next page
+     *
+     * @return new pagination object with offset shifted by offset+limit
+     */
+    public Pagination getNext() {
+        return new Pagination(offset + limit, limit);
+    }
 
-   /**
-    * Creates a new pagination object representing the previous page
-    *
-    * @return new pagination object with offset shifted by offset-limit
-    */
-   public Pagination getPrevious()
-   {
-      if (limit >= offset)
-      {
-         return new Pagination(0, limit);
-      }
-      else
-      {
-         return new Pagination(offset-limit, limit);
-      }
-   }
+    /**
+     * Creates a new pagination object representing the previous page
+     *
+     * @return new pagination object with offset shifted by offset-limit
+     */
+    public Pagination getPrevious() {
+        if (limit >= offset) {
+            return new Pagination(0, limit);
+        } else {
+            return new Pagination(offset - limit, limit);
+        }
+    }
 
-   @Override
-   public String toString()
-   {
-      return ObjectToStringBuilder.toStringBuilder()
-         .add("offset", getOffset())
-         .add("limit", getLimit())
-         .add("pageNumber", getPageNumber())
-         .toString();
-   }
+    @Override
+    public String toString() {
+        return ObjectToStringBuilder.toStringBuilder().add("offset", getOffset()).add("limit", getLimit())
+                .add("pageNumber", getPageNumber()).toString();
+    }
 
-   @Override
-   public boolean equals(Object o)
-   {
-      if (this == o) return true;
-      if (!(o instanceof Pagination)) return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof Pagination))
+            return false;
 
-      Pagination pagination = (Pagination) o;
+        Pagination pagination = (Pagination) o;
 
-      return (limit == pagination.limit) && (offset == pagination.offset);
-   }
+        return (limit == pagination.limit) && (offset == pagination.offset);
+    }
 
-   @Override
-   public int hashCode()
-   {
-      int result = offset;
-      result = 31 * result + limit;
-      return result;
-   }
+    @Override
+    public int hashCode() {
+        int result = offset;
+        result = 31 * result + limit;
+        return result;
+    }
 }

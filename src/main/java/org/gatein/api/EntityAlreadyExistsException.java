@@ -27,15 +27,12 @@ package org.gatein.api;
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class EntityAlreadyExistsException extends ApiException
-{
-   public EntityAlreadyExistsException(final String message)
-   {
-      super(message);
-   }
+public class EntityAlreadyExistsException extends ApiException {
+    public EntityAlreadyExistsException(final String message) {
+        super(message);
+    }
 
-   public EntityAlreadyExistsException(final String message, final Throwable t)
-   {
-      super(message, t);
-   }
+    public EntityAlreadyExistsException(final String message, final Throwable t) {
+        super(message, t);
+    }
 }

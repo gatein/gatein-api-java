@@ -29,96 +29,84 @@ import java.io.Serializable;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class Visibility implements Serializable
-{
-   private final Status status;
-   private final PublicationDate publicationDate;
+public class Visibility implements Serializable {
+    private final Status status;
+    private final PublicationDate publicationDate;
 
-   public Visibility()
-   {
-      this(Status.VISIBLE, null);
-   }
+    public Visibility() {
+        this(Status.VISIBLE, null);
+    }
 
-   public Visibility(Status flag)
-   {
-      this(flag, null);
-   }
+    public Visibility(Status flag) {
+        this(flag, null);
+    }
 
-   public Visibility(PublicationDate publicationDate)
-   {
-      this(Status.PUBLICATION, publicationDate);
-   }
+    public Visibility(PublicationDate publicationDate) {
+        this(Status.PUBLICATION, publicationDate);
+    }
 
-   public Visibility(Status status, PublicationDate publicationDate)
-   {
-      if (status == null) throw new IllegalArgumentException("flag cannot be null");
-      if (status == Status.PUBLICATION && publicationDate == null) throw new IllegalArgumentException("publicationDate cannot be null when the flag is set to " + Status.PUBLICATION);
+    public Visibility(Status status, PublicationDate publicationDate) {
+        if (status == null)
+            throw new IllegalArgumentException("flag cannot be null");
+        if (status == Status.PUBLICATION && publicationDate == null)
+            throw new IllegalArgumentException("publicationDate cannot be null when the flag is set to " + Status.PUBLICATION);
 
-      this.status = status;
-      this.publicationDate = publicationDate;
-   }
+        this.status = status;
+        this.publicationDate = publicationDate;
+    }
 
-   public boolean isVisible()
-   {
-      switch (status)
-      {
-         case VISIBLE:
+    public boolean isVisible() {
+        switch (status) {
+            case VISIBLE:
+                return true;
+            case PUBLICATION:
+                return (publicationDate != null) && publicationDate.within(System.currentTimeMillis());
+            case SYSTEM:
+                return true;
+            case HIDDEN:
+                return false;
+            default:
+                return false;
+        }
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public PublicationDate getPublicationDate() {
+        return publicationDate;
+    }
+
+    @Override
+    public String toString() {
+        return ObjectToStringBuilder.toStringBuilder().add("flag", status).add("publicationDate", publicationDate).toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
             return true;
-         case PUBLICATION:
-            return (publicationDate != null) && publicationDate.within(System.currentTimeMillis());
-         case SYSTEM:
-            return true;
-         case HIDDEN:
+        if (!(o instanceof Visibility))
             return false;
-         default:
+
+        Visibility that = (Visibility) o;
+        if (status != that.status)
             return false;
-      }
-   }
 
-   public Status getStatus()
-   {
-      return status;
-   }
+        if (publicationDate == null)
+            return that.publicationDate == null;
+        return that.publicationDate != null && publicationDate.equals(that.publicationDate);
+    }
 
-   public PublicationDate getPublicationDate()
-   {
-      return publicationDate;
-   }
+    @Override
+    public int hashCode() {
+        int result = status.hashCode();
+        result = 31 * result + (publicationDate != null ? publicationDate.hashCode() : 0);
+        return result;
+    }
 
-   @Override
-   public String toString()
-   {
-      return ObjectToStringBuilder.toStringBuilder()
-         .add("flag", status)
-         .add("publicationDate", publicationDate).toString();
-   }
-
-   @Override
-   public boolean equals(Object o)
-   {
-      if (this == o) return true;
-      if (!(o instanceof Visibility)) return false;
-
-      Visibility that = (Visibility) o;
-      if (status != that.status) return false;
-
-      if (publicationDate == null) return that.publicationDate == null;
-      return that.publicationDate != null && publicationDate.equals(that.publicationDate);
-   }
-
-   @Override
-   public int hashCode()
-   {
-      int result = status.hashCode();
-      result = 31 * result + (publicationDate != null ? publicationDate.hashCode() : 0);
-      return result;
-   }
-
-   public static enum Status
-   {
-      VISIBLE,
-      SYSTEM,
-      PUBLICATION,
-      HIDDEN
-   }
+    public static enum Status {
+        VISIBLE, SYSTEM, PUBLICATION, HIDDEN
+    }
 }

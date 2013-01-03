@@ -24,67 +24,58 @@ package org.gatein.api.internal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StringSplitter
-{
-   private final String regex;
-   private final boolean trim;
-   private final boolean ignoreEmptyStrings;
-   private final int limit;
+public class StringSplitter {
+    private final String regex;
+    private final boolean trim;
+    private final boolean ignoreEmptyStrings;
+    private final int limit;
 
-   private StringSplitter(String regex)
-   {
-      this(regex, false, false, 0);
-   }
+    private StringSplitter(String regex) {
+        this(regex, false, false, 0);
+    }
 
-   private StringSplitter(String regex, boolean trim, boolean ignoreEmptyStrings, int limit)
-   {
-      this.regex = regex;
-      this.trim = trim;
-      this.ignoreEmptyStrings = ignoreEmptyStrings;
-      this.limit = limit;
-   }
+    private StringSplitter(String regex, boolean trim, boolean ignoreEmptyStrings, int limit) {
+        this.regex = regex;
+        this.trim = trim;
+        this.ignoreEmptyStrings = ignoreEmptyStrings;
+        this.limit = limit;
+    }
 
-   public StringSplitter trim()
-   {
-      return new StringSplitter(regex, true, ignoreEmptyStrings, limit);
-   }
+    public StringSplitter trim() {
+        return new StringSplitter(regex, true, ignoreEmptyStrings, limit);
+    }
 
-   public StringSplitter ignoreEmptyStrings()
-   {
-      return new StringSplitter(regex, trim, true, limit);
-   }
+    public StringSplitter ignoreEmptyStrings() {
+        return new StringSplitter(regex, trim, true, limit);
+    }
 
-   public StringSplitter limit(int limit)
-   {
-      return new StringSplitter(regex, trim, ignoreEmptyStrings, limit);
-   }
+    public StringSplitter limit(int limit) {
+        return new StringSplitter(regex, trim, ignoreEmptyStrings, limit);
+    }
 
-   public String[] split(String string)
-   {
-      if (string == null) return null;
+    public String[] split(String string) {
+        if (string == null)
+            return null;
 
-      String[] split = string.split(regex, limit);
-      List<String> list = new ArrayList<String>(split.length);
-      for (String s : split)
-      {
-         if (trim) s = trim(s);
-         boolean add = !ignoreEmptyStrings || !(s == null || s.length() == 0);
-         if (add)
-         {
-            list.add(s);
-         }
-      }
+        String[] split = string.split(regex, limit);
+        List<String> list = new ArrayList<String>(split.length);
+        for (String s : split) {
+            if (trim)
+                s = trim(s);
+            boolean add = !ignoreEmptyStrings || !(s == null || s.length() == 0);
+            if (add) {
+                list.add(s);
+            }
+        }
 
-      return list.toArray(new String[list.size()]);
-   }
+        return list.toArray(new String[list.size()]);
+    }
 
-   private String trim(String string)
-   {
-      return (string == null) ? null : string.trim();
-   }
+    private String trim(String string) {
+        return (string == null) ? null : string.trim();
+    }
 
-   public static StringSplitter splitter(String regex)
-   {
-      return new StringSplitter(regex);
-   }
+    public static StringSplitter splitter(String regex) {
+        return new StringSplitter(regex);
+    }
 }

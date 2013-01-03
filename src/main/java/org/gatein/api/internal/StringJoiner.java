@@ -25,106 +25,94 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-public class StringJoiner
-{
-   private final String separator;
-   private final int trimFlag;
-   private final boolean ignoreNulls;
-   private final boolean leading;
-   private final boolean trailing;
+public class StringJoiner {
+    private final String separator;
+    private final int trimFlag;
+    private final boolean ignoreNulls;
+    private final boolean leading;
+    private final boolean trailing;
 
-   private StringJoiner(String separator)
-   {
-      this(separator, -1, false, false, false);
-   }
+    private StringJoiner(String separator) {
+        this(separator, -1, false, false, false);
+    }
 
-   private StringJoiner(String separator, int trimFlag, boolean ignoreNulls, boolean leading, boolean trailing)
-   {
-      this.separator = separator;
-      this.trimFlag = trimFlag;
-      this.ignoreNulls = ignoreNulls;
-      this.leading = leading;
-      this.trailing = trailing;
-   }
+    private StringJoiner(String separator, int trimFlag, boolean ignoreNulls, boolean leading, boolean trailing) {
+        this.separator = separator;
+        this.trimFlag = trimFlag;
+        this.ignoreNulls = ignoreNulls;
+        this.leading = leading;
+        this.trailing = trailing;
+    }
 
-   public StringJoiner ignoreNulls()
-   {
-      return new StringJoiner(separator, trimFlag, true, leading, trailing);
-   }
+    public StringJoiner ignoreNulls() {
+        return new StringJoiner(separator, trimFlag, true, leading, trailing);
+    }
 
-   public StringJoiner leading()
-   {
-      return new StringJoiner(separator, trimFlag, ignoreNulls, true, trailing);
-   }
+    public StringJoiner leading() {
+        return new StringJoiner(separator, trimFlag, ignoreNulls, true, trailing);
+    }
 
-   public StringJoiner trailing()
-   {
-      return new StringJoiner(separator, trimFlag, ignoreNulls, leading, true);
-   }
+    public StringJoiner trailing() {
+        return new StringJoiner(separator, trimFlag, ignoreNulls, leading, true);
+    }
 
-   public StringJoiner trim()
-   {
-      return new StringJoiner(separator, 0, ignoreNulls, leading, trailing);
-   }
+    public StringJoiner trim() {
+        return new StringJoiner(separator, 0, ignoreNulls, leading, trailing);
+    }
 
-   public StringJoiner trimToNull()
-   {
-      return new StringJoiner(separator, 1, ignoreNulls, leading, trailing);
-   }
+    public StringJoiner trimToNull() {
+        return new StringJoiner(separator, 1, ignoreNulls, leading, trailing);
+    }
 
-   public String join(List<String> parts)
-   {
-      if (parts == null) return null;
+    public String join(List<String> parts) {
+        if (parts == null)
+            return null;
 
-      StringBuilder sb = new StringBuilder(parts.size());
+        StringBuilder sb = new StringBuilder(parts.size());
 
-      for (Iterator<String> iter = parts.iterator(); iter.hasNext();)
-      {
-         String part = iter.next();
-         if (trimFlag > 0)
-         {
-            part = (trimFlag == 0) ? trim(part) : trimToNull(part);
-         }
+        for (Iterator<String> iter = parts.iterator(); iter.hasNext();) {
+            String part = iter.next();
+            if (trimFlag > 0) {
+                part = (trimFlag == 0) ? trim(part) : trimToNull(part);
+            }
 
-         if (ignoreNulls && part == null) continue;
+            if (ignoreNulls && part == null)
+                continue;
 
-         sb.append(part);
-         if (!iter.hasNext())
-         {
-            if (trailing) sb.append(separator);
-         }
-         else
-         {
-            sb.append(separator);
-         }
-      }
+            sb.append(part);
+            if (!iter.hasNext()) {
+                if (trailing)
+                    sb.append(separator);
+            } else {
+                sb.append(separator);
+            }
+        }
 
-      if (sb.length() == 0 && trimFlag == 1) return null;
+        if (sb.length() == 0 && trimFlag == 1)
+            return null;
 
-      if (leading) sb.insert(0, separator);
+        if (leading)
+            sb.insert(0, separator);
 
-      return sb.toString();
-   }
+        return sb.toString();
+    }
 
-   public String join(String...parts)
-   {
-      return join(Arrays.asList(parts));
-   }
+    public String join(String... parts) {
+        return join(Arrays.asList(parts));
+    }
 
-   private String trim(String string)
-   {
-      return (string == null) ? null : string.trim();
-   }
+    private String trim(String string) {
+        return (string == null) ? null : string.trim();
+    }
 
-   private String trimToNull(String string)
-   {
-      if (string == null) return null;
-      string = string.trim();
-      return (string.length() == 0) ? null : string;
-   }
+    private String trimToNull(String string) {
+        if (string == null)
+            return null;
+        string = string.trim();
+        return (string.length() == 0) ? null : string;
+    }
 
-   public static StringJoiner joiner(String separator)
-   {
-      return new StringJoiner(separator);
-   }
+    public static StringJoiner joiner(String separator) {
+        return new StringJoiner(separator);
+    }
 }

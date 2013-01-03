@@ -22,7 +22,6 @@
 
 package org.gatein.api.common;
 
-
 import org.gatein.api.internal.ObjectToStringBuilder;
 
 import java.util.Collection;
@@ -34,139 +33,123 @@ import java.util.Set;
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 @SuppressWarnings("unchecked")
-public class Attributes
-{
-   private Map<Attributes.Key<?>, Object> values;
+public class Attributes {
+    private Map<Attributes.Key<?>, Object> values;
 
-   public Attributes()
-   {
-      this(new HashMap<Attributes.Key<?>, Object>());
-   }
+    public Attributes() {
+        this(new HashMap<Attributes.Key<?>, Object>());
+    }
 
-   public Attributes(Map<Attributes.Key<?>, Object> values)
-   {
-      this.values = values;
-   }
+    public Attributes(Map<Attributes.Key<?>, Object> values) {
+        this.values = values;
+    }
 
-   public <T> T get(Key<T> key)
-   {
-      if (key == null) throw new IllegalArgumentException("key cannot be null");
-      return (T) values.get(key);
-   }
+    public <T> T get(Key<T> key) {
+        if (key == null)
+            throw new IllegalArgumentException("key cannot be null");
+        return (T) values.get(key);
+    }
 
-   public <T> T put(Key<T> key, T value)
-   {
-      if (key == null) throw new IllegalArgumentException("key cannot be null");
-      return (T) values.put(key, value);
-   }
+    public <T> T put(Key<T> key, T value) {
+        if (key == null)
+            throw new IllegalArgumentException("key cannot be null");
+        return (T) values.put(key, value);
+    }
 
-   public <T> T remove(Key<T> key)
-   {
-      if (key == null) throw new IllegalArgumentException("key cannot be null");
-      return (T) values.remove(key);
-   }
+    public <T> T remove(Key<T> key) {
+        if (key == null)
+            throw new IllegalArgumentException("key cannot be null");
+        return (T) values.remove(key);
+    }
 
-   public Collection<Object> values()
-   {
-      return values.values();
-   }
+    public Collection<Object> values() {
+        return values.values();
+    }
 
-   public Set<Key<?>> keySet()
-   {
-      return values.keySet();
-   }
+    public Set<Key<?>> keySet() {
+        return values.keySet();
+    }
 
-   public Set<Map.Entry<Key<?>, Object>> entrySet()
-   {
-      return values.entrySet();
-   }
+    public Set<Map.Entry<Key<?>, Object>> entrySet() {
+        return values.entrySet();
+    }
 
-   public int size()
-   {
-      return values.size();
-   }
+    public int size() {
+        return values.size();
+    }
 
-   public boolean isEmpty()
-   {
-      return values.isEmpty();
-   }
+    public boolean isEmpty() {
+        return values.isEmpty();
+    }
 
-   public boolean containsKey(Key<?> key)
-   {
-      return values.containsKey(key);
-   }
+    public boolean containsKey(Key<?> key) {
+        return values.containsKey(key);
+    }
 
-   public boolean containsValue(Object value)
-   {
-      return values.containsValue(value);
-   }
+    public boolean containsValue(Object value) {
+        return values.containsValue(value);
+    }
 
-   public void putAll(Map<? extends Key<?>, ?> m)
-   {
-      values.putAll(m);
-   }
+    public void putAll(Map<? extends Key<?>, ?> m) {
+        values.putAll(m);
+    }
 
-   public void clear()
-   {
-      values.clear();
-   }
+    public void clear() {
+        values.clear();
+    }
 
-   @Override
-   public String toString()
-   {
-      return ObjectToStringBuilder.toStringBuilder().add(values).toString();
-   }
+    @Override
+    public String toString() {
+        return ObjectToStringBuilder.toStringBuilder().add(values).toString();
+    }
 
-   public static <T> Key<T> key(String name, Class<T> type)
-   {
-      return new Key<T>(name, type){};
-   }
+    public static <T> Key<T> key(String name, Class<T> type) {
+        return new Key<T>(name, type) {
+        };
+    }
 
-   public static abstract class Key<T>
-   {
-      private final String name;
-      private Class<T> type;
+    public static abstract class Key<T> {
+        private final String name;
+        private Class<T> type;
 
-      public Key(String name, Class<T> type)
-      {
-         if (name == null) throw new IllegalArgumentException("name cannot be null");
-         if (type == null) throw new IllegalArgumentException("type cannot be null");
+        public Key(String name, Class<T> type) {
+            if (name == null)
+                throw new IllegalArgumentException("name cannot be null");
+            if (type == null)
+                throw new IllegalArgumentException("type cannot be null");
 
-         this.name = name;
-         this.type = type;
-      }
+            this.name = name;
+            this.type = type;
+        }
 
-      public String getName()
-      {
-         return name;
-      }
+        public String getName() {
+            return name;
+        }
 
-      public Class<T> getType()
-      {
-         return type;
-      }
+        public Class<T> getType() {
+            return type;
+        }
 
-      @Override
-      public boolean equals(Object o)
-      {
-         if (this == o) return true;
-         if (!(o instanceof Key)) return false;
+        @Override
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            if (!(o instanceof Key))
+                return false;
 
-         Key<?> key = (Key<?>) o;
+            Key<?> key = (Key<?>) o;
 
-         return name.equals(key.name) && type.equals(type);
-      }
+            return name.equals(key.name) && type.equals(type);
+        }
 
-      @Override
-      public int hashCode()
-      {
-         return name.hashCode();
-      }
+        @Override
+        public int hashCode() {
+            return name.hashCode();
+        }
 
-      @Override
-      public String toString()
-      {
-         return getName();
-      }
-   }
+        @Override
+        public String toString() {
+            return getName();
+        }
+    }
 }

@@ -27,72 +27,59 @@ import org.gatein.api.internal.StringSplitter;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class Membership
-{
-   public static final String ANY = "*";
+public class Membership {
+    public static final String ANY = "*";
 
-   public static Membership any(String... group)
-   {
-      return new Membership(ANY, new Group(group));
-   }
+    public static Membership any(String... group) {
+        return new Membership(ANY, new Group(group));
+    }
 
-   private final String membershipType;
-   private final Group group;
+    private final String membershipType;
+    private final Group group;
 
-   public Membership(String membershipType, Group group)
-   {
-      if (membershipType == null) throw new IllegalArgumentException("membershipType cannot be null");
-      if (group == null) throw new IllegalArgumentException("group cannot be null");
+    public Membership(String membershipType, Group group) {
+        if (membershipType == null)
+            throw new IllegalArgumentException("membershipType cannot be null");
+        if (group == null)
+            throw new IllegalArgumentException("group cannot be null");
 
-      this.membershipType = membershipType;
-      this.group = group;
-   }
+        this.membershipType = membershipType;
+        this.group = group;
+    }
 
-   public Membership(User user)
-   {
-      this.membershipType = user.getId();
-      this.group = null;
-   }
+    public Membership(User user) {
+        this.membershipType = user.getId();
+        this.group = null;
+    }
 
-   public String getMembershipType()
-   {
-      return membershipType;
-   }
+    public String getMembershipType() {
+        return membershipType;
+    }
 
-   public Group getGroup()
-   {
-      return group;
-   }
+    public Group getGroup() {
+        return group;
+    }
 
-   @Override
-   public String toString()
-   {
-      if (group == null)
-      {
-         return membershipType;
-      }
-      else
-      {
-         return membershipType + ":" + group.getId();
-      }
-   }
+    @Override
+    public String toString() {
+        if (group == null) {
+            return membershipType;
+        } else {
+            return membershipType + ":" + group.getId();
+        }
+    }
 
-   public static Membership fromString(String membership)
-   {
-      if (membership == null) throw new IllegalArgumentException("membership cannot be null");
+    public static Membership fromString(String membership) {
+        if (membership == null)
+            throw new IllegalArgumentException("membership cannot be null");
 
-      String[] parts = StringSplitter.splitter(":").split(membership);
-      if (parts.length == 1)
-      {
-         return new Membership(new User(parts[0]));
-      }
-      else if (parts.length == 2)
-      {
-         return new Membership(parts[0], new Group(parts[1]));
-      }
-      else
-      {
-         throw new IllegalArgumentException("Invalid membership string " + membership);
-      }
-   }
+        String[] parts = StringSplitter.splitter(":").split(membership);
+        if (parts.length == 1) {
+            return new Membership(new User(parts[0]));
+        } else if (parts.length == 2) {
+            return new Membership(parts[0], new Group(parts[1]));
+        } else {
+            throw new IllegalArgumentException("Invalid membership string " + membership);
+        }
+    }
 }

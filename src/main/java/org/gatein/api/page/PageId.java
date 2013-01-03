@@ -32,124 +32,108 @@ import java.util.FormattableFlags;
 import java.util.Formatter;
 
 /**
-* @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
-*/
-public class PageId implements Formattable, Serializable
-{
-   private final SiteId siteId;
-   private final String pageName;
+ * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
+ */
+public class PageId implements Formattable, Serializable {
+    private final SiteId siteId;
+    private final String pageName;
 
-   public PageId(String siteName, String pageName)
-   {
-      this(new SiteId(siteName), pageName);
-   }
+    public PageId(String siteName, String pageName) {
+        this(new SiteId(siteName), pageName);
+    }
 
-   public PageId(Group group, String pageName)
-   {
-      this(new SiteId(group), pageName);
-   }
+    public PageId(Group group, String pageName) {
+        this(new SiteId(group), pageName);
+    }
 
-   public PageId(User user, String pageName)
-   {
-      this(new SiteId(user), pageName);
-   }
+    public PageId(User user, String pageName) {
+        this(new SiteId(user), pageName);
+    }
 
-   public PageId(SiteId siteId, String pageName)
-   {
-      if (siteId == null) throw new IllegalArgumentException("siteId cannot be null");
-      if (pageName == null) throw new IllegalArgumentException("pageName cannot be null");
+    public PageId(SiteId siteId, String pageName) {
+        if (siteId == null)
+            throw new IllegalArgumentException("siteId cannot be null");
+        if (pageName == null)
+            throw new IllegalArgumentException("pageName cannot be null");
 
-      this.siteId = siteId;
-      this.pageName = pageName;
-   }
+        this.siteId = siteId;
+        this.pageName = pageName;
+    }
 
-   /**
-    * @return Id of the site
-    */
-   public SiteId getSiteId()
-   {
-      return siteId;
-   }
+    /**
+     * @return Id of the site
+     */
+    public SiteId getSiteId() {
+        return siteId;
+    }
 
-   /**
-    * @return Name of the page
-    */
-   public String getPageName()
-   {
-      return pageName;
-   }
+    /**
+     * @return Name of the page
+     */
+    public String getPageName() {
+        return pageName;
+    }
 
-   @Override
-   public boolean equals(Object o)
-   {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
-      PageId id = (PageId) o;
+        PageId id = (PageId) o;
 
-      return pageName.equals(id.pageName) && siteId.equals(id.siteId);
-   }
+        return pageName.equals(id.pageName) && siteId.equals(id.siteId);
+    }
 
-   @Override
-   public int hashCode()
-   {
-      int result = siteId.hashCode();
-      result = 31 * result + pageName.hashCode();
-      return result;
-   }
+    @Override
+    public int hashCode() {
+        int result = siteId.hashCode();
+        result = 31 * result + pageName.hashCode();
+        return result;
+    }
 
-   @Override
-   public String toString()
-   {
-      return String.format("Page.Id[%s]", this);
-   }
+    @Override
+    public String toString() {
+        return String.format("Page.Id[%s]", this);
+    }
 
-   @Override
-   public void formatTo(Formatter formatter, int flags, int width, int precision)
-   {
-      if ((flags & FormattableFlags.ALTERNATE) == FormattableFlags.ALTERNATE)
-      {
-         formatter.format("%#s.%s", siteId, pageName);
-      }
-      else
-      {
-         formatter.format("siteId=[%s], pageName=%s", siteId, pageName);
-      }
-   }
+    @Override
+    public void formatTo(Formatter formatter, int flags, int width, int precision) {
+        if ((flags & FormattableFlags.ALTERNATE) == FormattableFlags.ALTERNATE) {
+            formatter.format("%#s.%s", siteId, pageName);
+        } else {
+            formatter.format("siteId=[%s], pageName=%s", siteId, pageName);
+        }
+    }
 
-   public static PageId fromString(String idAsString)
-   {
-      if (idAsString == null) throw new IllegalArgumentException("idAsString cannot be null.");
+    public static PageId fromString(String idAsString) {
+        if (idAsString == null)
+            throw new IllegalArgumentException("idAsString cannot be null.");
 
-      int len;
-      if (idAsString.startsWith("Page.Id["))
-      {
-         idAsString = idAsString.substring(8, idAsString.length());
-         len = idAsString.length() - 1; // cut off trailing ]
-      }
-      else
-      {
-         len = idAsString.length();
-      }
+        int len;
+        if (idAsString.startsWith("Page.Id[")) {
+            idAsString = idAsString.substring(8, idAsString.length());
+            len = idAsString.length() - 1; // cut off trailing ]
+        } else {
+            len = idAsString.length();
+        }
 
-      int end;
-      int start;
-      String pageName;
-      if (idAsString.startsWith("siteId=["))
-      {
-         start = 8;
-         end = idAsString.lastIndexOf("], pageName=");
-         pageName = idAsString.substring(end+12, len);
-      }
-      else
-      {
-         start = 0;
-         end = idAsString.lastIndexOf('.');
-         pageName = idAsString.substring(end+1, len);
-      }
+        int end;
+        int start;
+        String pageName;
+        if (idAsString.startsWith("siteId=[")) {
+            start = 8;
+            end = idAsString.lastIndexOf("], pageName=");
+            pageName = idAsString.substring(end + 12, len);
+        } else {
+            start = 0;
+            end = idAsString.lastIndexOf('.');
+            pageName = idAsString.substring(end + 1, len);
+        }
 
-      SiteId siteId = SiteId.fromString(idAsString.substring(start, end));
+        SiteId siteId = SiteId.fromString(idAsString.substring(start, end));
 
-      return new PageId(siteId, pageName);
-   }
+        return new PageId(siteId, pageName);
+    }
 }

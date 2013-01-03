@@ -31,76 +31,62 @@ import java.util.Set;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class Permission
-{
-   private static final Permission EVERYONE = new Permission();
+public class Permission {
+    private static final Permission EVERYONE = new Permission();
 
-   public static Permission everyone()
-   {
-      return EVERYONE;
-   }
+    public static Permission everyone() {
+        return EVERYONE;
+    }
 
-   public static Permission any(String... group)
-   {
-      return new Permission(Membership.any(group));
-   }
+    public static Permission any(String... group) {
+        return new Permission(Membership.any(group));
+    }
 
-   private final Set<Membership> memberships;
+    private final Set<Membership> memberships;
 
-   public Permission()
-   {
-      memberships = Collections.emptySet();
-   }
+    public Permission() {
+        memberships = Collections.emptySet();
+    }
 
-   public Permission(String membershipType, Group group)
-   {
-      this(new Membership(membershipType, group));
-   }
+    public Permission(String membershipType, Group group) {
+        this(new Membership(membershipType, group));
+    }
 
-   public Permission(User user)
-   {
-      this(new Membership(user));
-   }
+    public Permission(User user) {
+        this(new Membership(user));
+    }
 
-   public Permission(Membership membership)
-   {
-      this(Collections.singleton(membership));
-   }
+    public Permission(Membership membership) {
+        this(Collections.singleton(membership));
+    }
 
-   public Permission(Set<Membership> memberships)
-   {
-      this(new LinkedHashSet<Membership>(memberships));
-   }
+    public Permission(Set<Membership> memberships) {
+        this(new LinkedHashSet<Membership>(memberships));
+    }
 
-   private Permission(LinkedHashSet<Membership> memberships)
-   {
-      this.memberships = memberships;
-   }
+    private Permission(LinkedHashSet<Membership> memberships) {
+        this.memberships = memberships;
+    }
 
-   public Set<Membership> getMemberships()
-   {
-      return Collections.unmodifiableSet(memberships);
-   }
+    public Set<Membership> getMemberships() {
+        return Collections.unmodifiableSet(memberships);
+    }
 
-   public Permission addMembership(Membership membership)
-   {
-      LinkedHashSet<Membership> newMemberships = new LinkedHashSet<Membership>(memberships.size() + 1);
-      newMemberships.addAll(memberships);
-      newMemberships.add(membership);
+    public Permission addMembership(Membership membership) {
+        LinkedHashSet<Membership> newMemberships = new LinkedHashSet<Membership>(memberships.size() + 1);
+        newMemberships.addAll(memberships);
+        newMemberships.add(membership);
 
-      return new Permission(newMemberships);
-   }
+        return new Permission(newMemberships);
+    }
 
-   public boolean isAccessibleToEveryone()
-   {
-      return memberships.isEmpty();
-   }
+    public boolean isAccessibleToEveryone() {
+        return memberships.isEmpty();
+    }
 
-   @Override
-   public String toString()
-   {
-      return ObjectToStringBuilder.toStringBuilder()
-         .add("memberships", memberships.isEmpty() ? "Everyone" : memberships)
-         .toString();
-   }
+    @Override
+    public String toString() {
+        return ObjectToStringBuilder.toStringBuilder().add("memberships", memberships.isEmpty() ? "Everyone" : memberships)
+                .toString();
+    }
 }

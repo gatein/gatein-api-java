@@ -35,139 +35,128 @@ import java.util.Set;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class NodeFilter implements Filter<Node>
-{
-   private final boolean accessPermission;
-   private final boolean editPermission;
-   private final boolean showAll;
-   private final Set<Visibility> visibilities;
-   private final Set<Visibility> excludeVisibilities;
+public class NodeFilter implements Filter<Node> {
+    private final boolean accessPermission;
+    private final boolean editPermission;
+    private final boolean showAll;
+    private final Set<Visibility> visibilities;
+    private final Set<Visibility> excludeVisibilities;
 
-   private final Portal portal;
-   private final User user;
+    private final Portal portal;
+    private final User user;
 
-   private NodeFilter(boolean showAll, Set<Visibility> visibilities, Set<Visibility> excludeVisibilities, boolean accessPermission, boolean editPermission, Portal portal, User user)
-   {
-      this.showAll = showAll;
-      this.visibilities = (visibilities == null) ? Collections.<Visibility>emptySet() : new HashSet<Visibility>(visibilities);
-      this.excludeVisibilities = (excludeVisibilities == null) ? Collections.<Visibility>emptySet() : new HashSet<Visibility>(excludeVisibilities);
+    private NodeFilter(boolean showAll, Set<Visibility> visibilities, Set<Visibility> excludeVisibilities,
+            boolean accessPermission, boolean editPermission, Portal portal, User user) {
+        this.showAll = showAll;
+        this.visibilities = (visibilities == null) ? Collections.<Visibility> emptySet()
+                : new HashSet<Visibility>(visibilities);
+        this.excludeVisibilities = (excludeVisibilities == null) ? Collections.<Visibility> emptySet()
+                : new HashSet<Visibility>(excludeVisibilities);
 
-      this.accessPermission = accessPermission;
-      this.editPermission = editPermission;
+        this.accessPermission = accessPermission;
+        this.editPermission = editPermission;
 
-      // If security check, make sure portal and user are not null
-      if (editPermission || accessPermission && (portal == null || user == null))
-      {
-         throw new IllegalArgumentException("Neither user nor portal can be null when access or edit permissions are enabled for this filter.");
-      }
-      this.portal = portal;
-      this.user = user;
-   }
+        // If security check, make sure portal and user are not null
+        if (editPermission || accessPermission && (portal == null || user == null)) {
+            throw new IllegalArgumentException(
+                    "Neither user nor portal can be null when access or edit permissions are enabled for this filter.");
+        }
+        this.portal = portal;
+        this.user = user;
+    }
 
-   @Override
-   public boolean accept(Node node)
-   {
-      if (!showAll && !node.isVisible()) return false;
+    @Override
+    public boolean accept(Node node) {
+        if (!showAll && !node.isVisible())
+            return false;
 
-      for (Visibility visibility : excludeVisibilities)
-      {
-         if (visibility.equals(node.getVisibility())) return false;
-      }
+        for (Visibility visibility : excludeVisibilities) {
+            if (visibility.equals(node.getVisibility()))
+                return false;
+        }
 
-      for (Visibility visibility : visibilities)
-      {
-         if (!visibility.equals(node.getVisibility())) return false;
-      }
+        for (Visibility visibility : visibilities) {
+            if (!visibility.equals(node.getVisibility()))
+                return false;
+        }
 
-      PageId pageId = node.getPageId();
-      if (editPermission || accessPermission)
-      {
-         if (pageId == null) return false;
+        PageId pageId = node.getPageId();
+        if (editPermission || accessPermission) {
+            if (pageId == null)
+                return false;
 
-         Page page = portal.getPage(pageId);
-         if (editPermission) // check edit permission
-         {
-            return portal.hasPermission(user, page.getEditPermission());
-         }
-         else // check access permission
-         {
-            return portal.hasPermission(user, page.getAccessPermission());
-         }
-      }
+            Page page = portal.getPage(pageId);
+            if (editPermission) // check edit permission
+            {
+                return portal.hasPermission(user, page.getEditPermission());
+            } else // check access permission
+            {
+                return portal.hasPermission(user, page.getAccessPermission());
+            }
+        }
 
-      return true;
-   }
+        return true;
+    }
 
-   public static final class Builder
-   {
-      private boolean showAll;
-      private Set<Visibility> visibilities = new HashSet<Visibility>();
-      private Set<Visibility> excludeVisibilities = new HashSet<Visibility>();
+    public static final class Builder {
+        private boolean showAll;
+        private Set<Visibility> visibilities = new HashSet<Visibility>();
+        private Set<Visibility> excludeVisibilities = new HashSet<Visibility>();
 
-      private boolean accessPermission;
-      private boolean editPermission;
+        private boolean accessPermission;
+        private boolean editPermission;
 
-      private Portal portal;
-      private User user;
+        private Portal portal;
+        private User user;
 
-      public Builder showAll(boolean showAll)
-      {
-         this.showAll = showAll;
-         return this;
-      }
+        public Builder showAll(boolean showAll) {
+            this.showAll = showAll;
+            return this;
+        }
 
-      public Builder withVisibilityFlag(Visibility.Status flag)
-      {
-         return withVisibility(new Visibility(flag));
-      }
+        public Builder withVisibilityFlag(Visibility.Status flag) {
+            return withVisibility(new Visibility(flag));
+        }
 
-      public Builder withVisibility(Visibility visibility)
-      {
-         visibilities.add(visibility);
-         return this;
-      }
+        public Builder withVisibility(Visibility visibility) {
+            visibilities.add(visibility);
+            return this;
+        }
 
-      public Builder withoutVisibility(Visibility visibility)
-      {
-         excludeVisibilities.add(visibility);
-         return this;
-      }
+        public Builder withoutVisibility(Visibility visibility) {
+            excludeVisibilities.add(visibility);
+            return this;
+        }
 
-      public Builder withNoAccess()
-      {
-         this.accessPermission = false;
-         return this;
-      }
+        public Builder withNoAccess() {
+            this.accessPermission = false;
+            return this;
+        }
 
-      public Builder withAccess(User user, Portal portal)
-      {
-         this.accessPermission = true;
-         return set(user, portal);
-      }
+        public Builder withAccess(User user, Portal portal) {
+            this.accessPermission = true;
+            return set(user, portal);
+        }
 
-      public Builder withEdit(User user, Portal portal)
-      {
-         this.editPermission = true;
-         return set(user, portal);
-      }
+        public Builder withEdit(User user, Portal portal) {
+            this.editPermission = true;
+            return set(user, portal);
+        }
 
-      public Builder withNoEdit()
-      {
-         this.editPermission = false;
-         return this;
-      }
+        public Builder withNoEdit() {
+            this.editPermission = false;
+            return this;
+        }
 
-      private Builder set(User user, Portal portal)
-      {
-         this.user = user;
-         this.portal = portal;
+        private Builder set(User user, Portal portal) {
+            this.user = user;
+            this.portal = portal;
 
-         return this;
-      }
+            return this;
+        }
 
-      public Filter<Node> build() throws IllegalStateException
-      {
-         return new NodeFilter(showAll, visibilities, excludeVisibilities, accessPermission, editPermission, portal, user);
-      }
-   }
+        public Filter<Node> build() throws IllegalStateException {
+            return new NodeFilter(showAll, visibilities, excludeVisibilities, accessPermission, editPermission, portal, user);
+        }
+    }
 }

@@ -27,13 +27,12 @@ import org.gatein.api.common.i18n.LocalizedString;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public interface Displayable
-{
-   String getDisplayName();
+public interface Displayable {
+    String getDisplayName();
 
-   LocalizedString getDisplayNames();
+    LocalizedString getDisplayNames();
 
-   void setDisplayName(String displayName);
+    void setDisplayName(String displayName);
 
-   void setDisplayNames(LocalizedString displayName);
+    void setDisplayNames(LocalizedString displayName);
 }

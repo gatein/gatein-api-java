@@ -25,52 +25,50 @@ package org.gatein.api.navigation;
 import org.gatein.api.page.PageId;
 
 /**
- * A node visitor is used to walk the node tree. Some node visitor's are available in the <code>Nodes</code> utility
- * class, i.e. {@link Nodes#visitNodes(int)}
+ * A node visitor is used to walk the node tree. Some node visitor's are available in the <code>Nodes</code> utility class, i.e.
+ * {@link Nodes#visitNodes(int)}
  *
  * @see Nodes
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public interface NodeVisitor
-{
-   /**
-    * Determines if more nodes should be visited.
-    *
-    * @param depth the current depth in the node hierarchy. This can be relative depending on where the visitor begins.
-    * @param name the name of the node. This will be null if visiting the root node.
-    * @param details the node details that are available while visiting. This will be null if visiting the root node.
-    * @return true to continue visiting children nodes
-    */
-   boolean visit(int depth, String name, NodeDetails details);
+public interface NodeVisitor {
+    /**
+     * Determines if more nodes should be visited.
+     *
+     * @param depth the current depth in the node hierarchy. This can be relative depending on where the visitor begins.
+     * @param name the name of the node. This will be null if visiting the root node.
+     * @param details the node details that are available while visiting. This will be null if visiting the root node.
+     * @return true to continue visiting children nodes
+     */
+    boolean visit(int depth, String name, NodeDetails details);
 
-   public static interface NodeDetails
-   {
-      /**
-       * The <code>Visibility</code> of the node being visited.
-       *
-       * @return the visibility
-       */
-      Visibility getVisibility();
+    public static interface NodeDetails {
+        /**
+         * The <code>Visibility</code> of the node being visited.
+         *
+         * @return the visibility
+         */
+        Visibility getVisibility();
 
-      /**
-       * The icon name of the node being visited.
-       *
-       * @return the icon name
-       */
-      String getIconName();
+        /**
+         * The icon name of the node being visited.
+         *
+         * @return the icon name
+         */
+        String getIconName();
 
-      /**
-       * The <code>PageId</code> of the node being visited.
-       *
-       * @return the page id
-       */
-      PageId getPageId();
+        /**
+         * The <code>PageId</code> of the node being visited.
+         *
+         * @return the page id
+         */
+        PageId getPageId();
 
-      /**
-       * The <code>NodePath</code> of the node being visited.
-       *
-       * @return the node path
-       */
-      NodePath getNodePath();
-   }
+        /**
+         * The <code>NodePath</code> of the node being visited.
+         *
+         * @return the node path
+         */
+        NodePath getNodePath();
+    }
 }

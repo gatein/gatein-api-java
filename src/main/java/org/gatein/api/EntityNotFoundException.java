@@ -27,15 +27,12 @@ package org.gatein.api;
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class EntityNotFoundException extends ApiException
-{
-   public EntityNotFoundException(final String message)
-   {
-      super(message);
-   }
+public class EntityNotFoundException extends ApiException {
+    public EntityNotFoundException(final String message) {
+        super(message);
+    }
 
-   public EntityNotFoundException(final String message, final Throwable t)
-   {
-      super(message, t);
-   }
+    public EntityNotFoundException(final String message, final Throwable t) {
+        super(message, t);
+    }
 }

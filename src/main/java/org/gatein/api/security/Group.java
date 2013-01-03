@@ -29,38 +29,29 @@ import org.gatein.api.internal.StringSplitter;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class Group
-{
-   private final String id;
+public class Group {
+    private final String id;
 
-   public Group(String... group)
-   {
-      if (group == null) throw new IllegalArgumentException("group cannot be null");
-      if (group.length == 1)
-      {
-         this.id = group[0];
-      }
-      else
-      {
-         this.id = StringJoiner.joiner("/").leading().trimToNull().ignoreNulls().join(group);
-      }
-   }
+    public Group(String... group) {
+        if (group == null)
+            throw new IllegalArgumentException("group cannot be null");
+        if (group.length == 1) {
+            this.id = group[0];
+        } else {
+            this.id = StringJoiner.joiner("/").leading().trimToNull().ignoreNulls().join(group);
+        }
+    }
 
-   public Group(String id)
-   {
-      this(StringSplitter.splitter("/").trim().ignoreEmptyStrings().split(id));
-   }
+    public Group(String id) {
+        this(StringSplitter.splitter("/").trim().ignoreEmptyStrings().split(id));
+    }
 
-   public String getId()
-   {
-      return id;
-   }
+    public String getId() {
+        return id;
+    }
 
-   @Override
-   public String toString()
-   {
-      return ObjectToStringBuilder.toStringBuilder(getClass())
-         .add("groupId", id)
-         .toString();
-   }
+    @Override
+    public String toString() {
+        return ObjectToStringBuilder.toStringBuilder(getClass()).add("groupId", id).toString();
+    }
 }

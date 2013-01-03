@@ -24,67 +24,55 @@ package org.gatein.api.internal;
 import java.util.Arrays;
 import java.util.Map;
 
-public class ObjectToStringBuilder
-{
-   private final StringBuilder sb;
-   private String sep;
+public class ObjectToStringBuilder {
+    private final StringBuilder sb;
+    private String sep;
 
-   private ObjectToStringBuilder(Class<?> type)
-   {
-      sb = new StringBuilder().append(type.getSimpleName()).append("[");
-      sep = "";
-   }
+    private ObjectToStringBuilder(Class<?> type) {
+        sb = new StringBuilder().append(type.getSimpleName()).append("[");
+        sep = "";
+    }
 
-   private ObjectToStringBuilder()
-   {
-      sb = new StringBuilder("[");
-      sep = "";
-   }
+    private ObjectToStringBuilder() {
+        sb = new StringBuilder("[");
+        sep = "";
+    }
 
-   public static ObjectToStringBuilder toStringBuilder(Class<?> type)
-   {
-      return new ObjectToStringBuilder(type);
-   }
+    public static ObjectToStringBuilder toStringBuilder(Class<?> type) {
+        return new ObjectToStringBuilder(type);
+    }
 
-   public static ObjectToStringBuilder toStringBuilder()
-   {
-      return new ObjectToStringBuilder();
-   }
+    public static ObjectToStringBuilder toStringBuilder() {
+        return new ObjectToStringBuilder();
+    }
 
-   public ObjectToStringBuilder add(String name, Object object)
-   {
-      sb.append(sep).append(name).append("=").append(toString(object));
-      sep = ", ";
-      return this;
-   }
+    public ObjectToStringBuilder add(String name, Object object) {
+        sb.append(sep).append(name).append("=").append(toString(object));
+        sep = ", ";
+        return this;
+    }
 
-   public ObjectToStringBuilder add(Map<?, ?> map)
-   {
-      for (Map.Entry<?, ?> entry : map.entrySet())
-      {
-         add(toString(entry.getKey()), entry.getValue());
-      }
+    public ObjectToStringBuilder add(Map<?, ?> map) {
+        for (Map.Entry<?, ?> entry : map.entrySet()) {
+            add(toString(entry.getKey()), entry.getValue());
+        }
 
-      sep = ", ";
-      return this;
-   }
+        sep = ", ";
+        return this;
+    }
 
-   private static String toString(Object object)
-   {
-      if (object == null) return null;
-      if (object.getClass().isArray())
-      {
-         return Arrays.toString((Object[]) object);
-      }
-      else
-      {
-         return object.toString();
-      }
-   }
+    private static String toString(Object object) {
+        if (object == null)
+            return null;
+        if (object.getClass().isArray()) {
+            return Arrays.toString((Object[]) object);
+        } else {
+            return object.toString();
+        }
+    }
 
-   @Override
-   public String toString()
-   {
-      return sb.append("]").toString();
-   }
+    @Override
+    public String toString() {
+        return sb.append("]").toString();
+    }
 }

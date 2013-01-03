@@ -26,39 +26,34 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
-* @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
-*/
-public enum SiteType
-{
-   SITE("site"), SPACE("space"), DASHBOARD("dashboard");
+ * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
+ */
+public enum SiteType {
+    SITE("site"), SPACE("space"), DASHBOARD("dashboard");
 
-   private final String name;
+    private final String name;
 
-   SiteType(String name)
-   {
-      this.name = name;
-   }
+    SiteType(String name) {
+        this.name = name;
+    }
 
-   public String getName()
-   {
-      return name;
-   }
+    public String getName() {
+        return name;
+    }
 
-   public static SiteType forName(String name)
-   {
-      return MAP.get(name);
-   }
+    public static SiteType forName(String name) {
+        return MAP.get(name);
+    }
 
-   private static final Map<String, SiteType> MAP;
+    private static final Map<String, SiteType> MAP;
 
-   static
-   {
-      final Map<String, SiteType> map = new HashMap<String, SiteType>();
-      for (SiteType type : values())
-      {
-         final String name = type.getName();
-         if (name != null) map.put(name, type);
-      }
-      MAP = map;
-   }
+    static {
+        final Map<String, SiteType> map = new HashMap<String, SiteType>();
+        for (SiteType type : values()) {
+            final String name = type.getName();
+            if (name != null)
+                map.put(name, type);
+        }
+        MAP = map;
+    }
 }

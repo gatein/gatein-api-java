@@ -32,19 +32,18 @@ import java.io.Serializable;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public interface Page extends Displayable, Describable, Comparable<Page>, Serializable
-{
-   PageId getId();
+public interface Page extends Displayable, Describable, Comparable<Page>, Serializable {
+    PageId getId();
 
-   SiteId getSiteId();
+    SiteId getSiteId();
 
-   String getName();
+    String getName();
 
-   Permission getAccessPermission();
+    Permission getAccessPermission();
 
-   void setAccessPermission(Permission permission);
+    void setAccessPermission(Permission permission);
 
-   Permission getEditPermission();
+    Permission getEditPermission();
 
-   void setEditPermission(Permission permission);
+    void setEditPermission(Permission permission);
 }

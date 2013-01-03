@@ -36,59 +36,55 @@ import org.junit.Test;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class PageIdTest
-{
-   @Test
-   public void testEquals()
-   {
-      PageId pageId1 = new PageId("foo", "bar");
-      PageId pageId2 = new PageId("foo", "bar");
+public class PageIdTest {
+    @Test
+    public void testEquals() {
+        PageId pageId1 = new PageId("foo", "bar");
+        PageId pageId2 = new PageId("foo", "bar");
 
-      assertTrue(pageId1.equals(pageId2));
-      assertTrue(pageId2.equals(pageId1));
-      assertNotSame(pageId1, pageId2);
+        assertTrue(pageId1.equals(pageId2));
+        assertTrue(pageId2.equals(pageId1));
+        assertNotSame(pageId1, pageId2);
 
-      pageId1 = new PageId(new Group("foo", "bar"), "baz");
-      assertFalse(pageId1.equals(pageId2));
-      pageId2 = new PageId(new Group("foo"), "baz");
-      assertFalse(pageId1.equals(pageId2));
-      pageId2 = new PageId(new Group("foo", "bar"), "baz");
-      assertTrue(pageId1.equals(pageId2));
+        pageId1 = new PageId(new Group("foo", "bar"), "baz");
+        assertFalse(pageId1.equals(pageId2));
+        pageId2 = new PageId(new Group("foo"), "baz");
+        assertFalse(pageId1.equals(pageId2));
+        pageId2 = new PageId(new Group("foo", "bar"), "baz");
+        assertTrue(pageId1.equals(pageId2));
 
-      pageId1 = new PageId(new User("foo"), "baz");
-      assertFalse(pageId1.equals(pageId2));
-      pageId2 = new PageId(new User("bar"), "baz");
-      assertFalse(pageId1.equals(pageId2));
-      pageId2 = new PageId(new User("foo"), "baz");
-      assertTrue(pageId1.equals(pageId2));
-   }
+        pageId1 = new PageId(new User("foo"), "baz");
+        assertFalse(pageId1.equals(pageId2));
+        pageId2 = new PageId(new User("bar"), "baz");
+        assertFalse(pageId1.equals(pageId2));
+        pageId2 = new PageId(new User("foo"), "baz");
+        assertTrue(pageId1.equals(pageId2));
+    }
 
-   @Test
-   public void testFormat_Alternative()
-   {
-      // unreserved  = ALPHA / DIGIT / "-" / "." / "_" / "~"
-      Pattern urlUnreserved = Pattern.compile("[0-9A-Za-z-\\._~]*");
-      PageId pageId = new PageId(new Group("platform", "administrators"), "pageManagement");
+    @Test
+    public void testFormat_Alternative() {
+        // unreserved = ALPHA / DIGIT / "-" / "." / "_" / "~"
+        Pattern urlUnreserved = Pattern.compile("[0-9A-Za-z-\\._~]*");
+        PageId pageId = new PageId(new Group("platform", "administrators"), "pageManagement");
 
-      assertTrue(urlUnreserved.matcher(String.format("%#s", pageId).toString()).matches());
-   }
+        assertTrue(urlUnreserved.matcher(String.format("%#s", pageId).toString()).matches());
+    }
 
-   @Test
-   public void testFromString()
-   {
-      PageId id = new PageId("foo-_site0", "bar");
-      assertEquals(id, PageId.fromString(id.toString()));
-      assertEquals(id, PageId.fromString(String.format("%s", id).toString()));
-      assertEquals(id, PageId.fromString(String.format("%#s", id).toString()));
+    @Test
+    public void testFromString() {
+        PageId id = new PageId("foo-_site0", "bar");
+        assertEquals(id, PageId.fromString(id.toString()));
+        assertEquals(id, PageId.fromString(String.format("%s", id).toString()));
+        assertEquals(id, PageId.fromString(String.format("%#s", id).toString()));
 
-      id = new PageId(new Group("foo", "bar"), "bar_baz");
-      assertEquals(id, PageId.fromString(id.toString()));
-      assertEquals(id, PageId.fromString(String.format("%s", id).toString()));
-      assertEquals(id, PageId.fromString(String.format("%#s", id).toString()));
+        id = new PageId(new Group("foo", "bar"), "bar_baz");
+        assertEquals(id, PageId.fromString(id.toString()));
+        assertEquals(id, PageId.fromString(String.format("%s", id).toString()));
+        assertEquals(id, PageId.fromString(String.format("%#s", id).toString()));
 
-      id = new PageId(new User("foo"), "bar_baz");
-      assertEquals(id, PageId.fromString(id.toString()));
-      assertEquals(id, PageId.fromString(String.format("%s", id).toString()));
-      assertEquals(id, PageId.fromString(String.format("%#s", id).toString()));
-   }
+        id = new PageId(new User("foo"), "bar_baz");
+        assertEquals(id, PageId.fromString(id.toString()));
+        assertEquals(id, PageId.fromString(String.format("%s", id).toString()));
+        assertEquals(id, PageId.fromString(String.format("%#s", id).toString()));
+    }
 }

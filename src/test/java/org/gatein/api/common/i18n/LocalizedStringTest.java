@@ -22,7 +22,6 @@
 
 package org.gatein.api.common.i18n;
 
-
 import org.gatein.api.common.i18n.Localized;
 import org.gatein.api.common.i18n.LocalizedString;
 import org.junit.Test;
@@ -38,91 +37,76 @@ import static org.junit.Assert.*;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class LocalizedStringTest
-{
-   @Test
-   public void testSimple()
-   {
-      LocalizedString simple = new LocalizedString("simple");
-      assertFalse(simple.isLocalized());
-      assertEquals("simple", simple.getValue());
-      assertEquals(1, simple.getLocalizedValues().size());
-      for (String value : simple)
-      {
-         assertEquals("simple", value);
-      }
+public class LocalizedStringTest {
+    @Test
+    public void testSimple() {
+        LocalizedString simple = new LocalizedString("simple");
+        assertFalse(simple.isLocalized());
+        assertEquals("simple", simple.getValue());
+        assertEquals(1, simple.getLocalizedValues().size());
+        for (String value : simple) {
+            assertEquals("simple", value);
+        }
 
-      simple.setValue("another value");
-      assertEquals("another value", simple.getValue());
-   }
+        simple.setValue("another value");
+        assertEquals("another value", simple.getValue());
+    }
 
-   @Test
-   public void testLocalized()
-   {
-      List<String> values = Arrays.asList("Hello", "Ciao", "Bonjour");
+    @Test
+    public void testLocalized() {
+        List<String> values = Arrays.asList("Hello", "Ciao", "Bonjour");
 
-      LocalizedString hello = new LocalizedString(Locale.ENGLISH, values.get(0));
-      hello.setLocalizedValue(Locale.ITALIAN, values.get(1)).setLocalizedValue(Locale.FRENCH, values.get(2));
+        LocalizedString hello = new LocalizedString(Locale.ENGLISH, values.get(0));
+        hello.setLocalizedValue(Locale.ITALIAN, values.get(1)).setLocalizedValue(Locale.FRENCH, values.get(2));
 
-      assertTrue(hello.isLocalized());
-      assertNull(hello.getValue());
-      assertEquals(3, hello.getLocalizedValues().size());
+        assertTrue(hello.isLocalized());
+        assertNull(hello.getValue());
+        assertEquals(3, hello.getLocalizedValues().size());
 
-      for (String value : hello)
-      {
-         assertTrue(values.contains(value));
-      }
+        for (String value : hello) {
+            assertTrue(values.contains(value));
+        }
 
-      for (Localized.Value<String> value : hello.getLocalizedValues())
-      {
-         if (value.getLocale().equals(Locale.ENGLISH))
-         {
-            assertEquals(values.get(0), value.getValue());
-         }
-         else if (value.getLocale().equals(Locale.ITALIAN))
-         {
-            assertEquals(values.get(1), value.getValue());
-         }
-         else if (value.getLocale().equals(Locale.FRENCH))
-         {
-            assertEquals(values.get(2), value.getValue());
-         }
-         else
-         {
-            fail("Unknown locale found " + value.getLocale());
-         }
-      }
-   }
+        for (Localized.Value<String> value : hello.getLocalizedValues()) {
+            if (value.getLocale().equals(Locale.ENGLISH)) {
+                assertEquals(values.get(0), value.getValue());
+            } else if (value.getLocale().equals(Locale.ITALIAN)) {
+                assertEquals(values.get(1), value.getValue());
+            } else if (value.getLocale().equals(Locale.FRENCH)) {
+                assertEquals(values.get(2), value.getValue());
+            } else {
+                fail("Unknown locale found " + value.getLocale());
+            }
+        }
+    }
 
-   @Test
-   public void testEquals()
-   {
-      List<String> values = Arrays.asList("Hello", "Ciao", "Bonjour");
+    @Test
+    public void testEquals() {
+        List<String> values = Arrays.asList("Hello", "Ciao", "Bonjour");
 
-      LocalizedString one = new LocalizedString(Locale.ENGLISH, values.get(0));
-      one.setLocalizedValue(Locale.ITALIAN, values.get(1)).setLocalizedValue(Locale.FRENCH, values.get(2));
+        LocalizedString one = new LocalizedString(Locale.ENGLISH, values.get(0));
+        one.setLocalizedValue(Locale.ITALIAN, values.get(1)).setLocalizedValue(Locale.FRENCH, values.get(2));
 
-      Map<Locale, String> valueMap = new HashMap<Locale, String>(3);
-      valueMap.put(Locale.ENGLISH, values.get(0));
-      valueMap.put(Locale.ITALIAN, values.get(1));
-      valueMap.put(Locale.FRENCH, values.get(2));
-      LocalizedString two = new LocalizedString(valueMap);
+        Map<Locale, String> valueMap = new HashMap<Locale, String>(3);
+        valueMap.put(Locale.ENGLISH, values.get(0));
+        valueMap.put(Locale.ITALIAN, values.get(1));
+        valueMap.put(Locale.FRENCH, values.get(2));
+        LocalizedString two = new LocalizedString(valueMap);
 
-      assertEquals(one, two);
-   }
+        assertEquals(one, two);
+    }
 
-   @Test
-   public void testLocalized_Unlocalized()
-   {
-      LocalizedString localizedString = new LocalizedString("simple");
-      assertFalse(localizedString.isLocalized());
-      localizedString.setLocalizedValue(Locale.ENGLISH, "Hello");
-      assertTrue(localizedString.isLocalized());
-      assertNull(localizedString.getValue());
-      assertEquals("Hello", localizedString.getLocalizedValue(Locale.ENGLISH).getValue());
+    @Test
+    public void testLocalized_Unlocalized() {
+        LocalizedString localizedString = new LocalizedString("simple");
+        assertFalse(localizedString.isLocalized());
+        localizedString.setLocalizedValue(Locale.ENGLISH, "Hello");
+        assertTrue(localizedString.isLocalized());
+        assertNull(localizedString.getValue());
+        assertEquals("Hello", localizedString.getLocalizedValue(Locale.ENGLISH).getValue());
 
-      localizedString.setValue("non localized");
-      assertFalse(localizedString.isLocalized());
-      assertEquals("non localized", localizedString.getValue());
-   }
+        localizedString.setValue("non localized");
+        assertFalse(localizedString.isLocalized());
+        assertEquals("non localized", localizedString.getValue());
+    }
 }

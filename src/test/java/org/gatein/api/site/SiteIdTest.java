@@ -36,87 +36,82 @@ import org.junit.Test;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class SiteIdTest
-{
-   @Test
-   public void testEquals()
-   {
-      //site
-      SiteId id1 = new SiteId("foo");
-      SiteId id2 = new SiteId("foo");
-      assertTrue(id1.equals(id2));
-      assertTrue(id2.equals(id1));
-      assertNotSame(id1, id2);
-      id2 = new SiteId("bar");
-      assertFalse(id1.equals(id2));
+public class SiteIdTest {
+    @Test
+    public void testEquals() {
+        // site
+        SiteId id1 = new SiteId("foo");
+        SiteId id2 = new SiteId("foo");
+        assertTrue(id1.equals(id2));
+        assertTrue(id2.equals(id1));
+        assertNotSame(id1, id2);
+        id2 = new SiteId("bar");
+        assertFalse(id1.equals(id2));
 
-      //space
-      id1 = new SiteId(new Group("foo", "bar"));
-      id2 = new SiteId(new Group("foo", "bar"));
-      assertTrue(id1.equals(id2));
-      assertTrue(id2.equals(id1));
-      assertNotSame(id1, id2);
-      id2 = new SiteId(new Group("foo", "baz"));
-      assertFalse(id1.equals(id2));
+        // space
+        id1 = new SiteId(new Group("foo", "bar"));
+        id2 = new SiteId(new Group("foo", "bar"));
+        assertTrue(id1.equals(id2));
+        assertTrue(id2.equals(id1));
+        assertNotSame(id1, id2);
+        id2 = new SiteId(new Group("foo", "baz"));
+        assertFalse(id1.equals(id2));
 
-      // dashboard
-      id1 = new SiteId(new User("foo"));
-      id2 = new SiteId(new User("foo"));
-      assertTrue(id1.equals(id2));
-      assertTrue(id2.equals(id1));
-      assertNotSame(id1, id2);
-      id2 = new SiteId(new User("bar"));
-      assertFalse(id1.equals(id2));
+        // dashboard
+        id1 = new SiteId(new User("foo"));
+        id2 = new SiteId(new User("foo"));
+        assertTrue(id1.equals(id2));
+        assertTrue(id2.equals(id1));
+        assertNotSame(id1, id2);
+        id2 = new SiteId(new User("bar"));
+        assertFalse(id1.equals(id2));
 
-      // mix site types
-      id1 = new SiteId("foo");
-      id2 = new SiteId(new Group("foo"));
-      assertFalse(id1.equals(id2));
-      id2 = new SiteId(new User("foo"));
-      assertFalse(id1.equals(id2));
-      id1 = new SiteId("foo");
-      assertFalse(id1.equals(id2));
-   }
+        // mix site types
+        id1 = new SiteId("foo");
+        id2 = new SiteId(new Group("foo"));
+        assertFalse(id1.equals(id2));
+        id2 = new SiteId(new User("foo"));
+        assertFalse(id1.equals(id2));
+        id1 = new SiteId("foo");
+        assertFalse(id1.equals(id2));
+    }
 
-   @Test
-   public void testFormat()
-   {
-      SiteId id = new SiteId("foo");
-      assertEquals("type=site, name=foo", String.format("%s", id).toString());
+    @Test
+    public void testFormat() {
+        SiteId id = new SiteId("foo");
+        assertEquals("type=site, name=foo", String.format("%s", id).toString());
 
-      id = new SiteId(new Group("foo", "bar"));
-      assertEquals("type=space, name=/foo/bar", String.format("%s", id).toString());
+        id = new SiteId(new Group("foo", "bar"));
+        assertEquals("type=space, name=/foo/bar", String.format("%s", id).toString());
 
-      id = new SiteId(new User("foo"));
-      assertEquals("type=dashboard, name=foo", String.format("%s", id).toString());
-   }
+        id = new SiteId(new User("foo"));
+        assertEquals("type=dashboard, name=foo", String.format("%s", id).toString());
+    }
 
-   @Test
-   public void testFormat_UrlSafe()
-   {
-      // unreserved  = ALPHA / DIGIT / "-" / "." / "_" / "~"
-      Pattern urlUnreserved = Pattern.compile("[0-9A-Za-z-\\._~]*");
-      SiteId siteId = new SiteId(new Group("foo", "bar"));
+    @Test
+    public void testFormat_UrlSafe() {
+        // unreserved = ALPHA / DIGIT / "-" / "." / "_" / "~"
+        Pattern urlUnreserved = Pattern.compile("[0-9A-Za-z-\\._~]*");
+        SiteId siteId = new SiteId(new Group("foo", "bar"));
 
-      assertTrue(urlUnreserved.matcher(String.format("%#s", siteId).toString()).matches());
-   }
+        assertTrue(urlUnreserved.matcher(String.format("%#s", siteId).toString()).matches());
+    }
 
-   @Test
-   public void testFromString()
-   {
-      SiteId id = new SiteId("foo-_site0");
-      assertEquals(id, SiteId.fromString(id.toString()));
-      assertEquals(id, SiteId.fromString(String.format("%s", id).toString()));
-      assertEquals(id, SiteId.fromString(String.format("%#s", id).toString()));
+    @Test
+    public void testFromString() {
+        SiteId id = new SiteId("foo-_site0");
+        assertEquals(id, SiteId.fromString(id.toString()));
+        assertEquals(id, SiteId.fromString(String.format("%s", id).toString()));
+        assertEquals(id, SiteId.fromString(String.format("%#s", id).toString()));
 
-      id = new SiteId(new Group("foo", "bar"));
-      assertEquals(id, SiteId.fromString(id.toString()));
-      assertEquals(id, SiteId.fromString(String.format("%s", id).toString()));
-      assertEquals(id, SiteId.fromString(String.format("%#s", id).toString()));
+        id = new SiteId(new Group("foo", "bar"));
+        assertEquals(id, SiteId.fromString(id.toString()));
+        assertEquals(id, SiteId.fromString(String.format("%s", id).toString()));
+        assertEquals(id, SiteId.fromString(String.format("%#s", id).toString()));
 
-      id = new SiteId(new User("foo"));
-      assertEquals(id, SiteId.fromString(id.toString()));
-      assertEquals(id, SiteId.fromString(String.format("%s", id).toString()));
-      assertEquals(id, SiteId.fromString(String.format("%#s", id).toString()));
-   }
+        id = new SiteId(new User("foo"));
+        assertEquals(id, SiteId.fromString(id.toString()));
+        assertEquals(id, SiteId.fromString(String.format("%s", id).toString()));
+        assertEquals(id, SiteId.fromString(String.format("%#s", id).toString()));
+    }
 }

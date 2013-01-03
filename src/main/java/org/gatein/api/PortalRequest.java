@@ -36,120 +36,107 @@ import org.gatein.api.common.Filter;
 import java.util.Locale;
 
 /**
- * The PortalRequest object represents the current request of the portal. This object is available in the portal simply
- * by invoking the static {@link org.gatein.api.PortalRequest#getInstance()} method.
+ * The PortalRequest object represents the current request of the portal. This object is available in the portal simply by
+ * invoking the static {@link org.gatein.api.PortalRequest#getInstance()} method.
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public abstract class PortalRequest
-{
-   /**
-    * The user of the request. If this request is for an unauthenticated user then {@link User#anonymous()}
-    * is returned.
-    *
-    * @return the user of the current portal request. This should never be null.
-    */
-   public abstract User getUser();
+public abstract class PortalRequest {
+    /**
+     * The user of the request. If this request is for an unauthenticated user then {@link User#anonymous()} is returned.
+     *
+     * @return the user of the current portal request. This should never be null.
+     */
+    public abstract User getUser();
 
-   /**
-    * The <code>SiteId</code> of the request.
-    *
-    * @return the site id of the current portal request. This should never be null.
-    */
-   public abstract SiteId getSiteId();
+    /**
+     * The <code>SiteId</code> of the request.
+     *
+     * @return the site id of the current portal request. This should never be null.
+     */
+    public abstract SiteId getSiteId();
 
-   /**
-    * The <code>NodePath</code> of the request.
-    *
-    * @return the node path of the current portal request. This should never be null.
-    */
-   public abstract NodePath getNodePath();
+    /**
+     * The <code>NodePath</code> of the request.
+     *
+     * @return the node path of the current portal request. This should never be null.
+     */
+    public abstract NodePath getNodePath();
 
-   /**
-    * The <code>Locale</code> of the request.
-    *
-    * @return the locale of the current portal request.
-    */
-   public abstract Locale getLocale();
+    /**
+     * The <code>Locale</code> of the request.
+     *
+     * @return the locale of the current portal request.
+     */
+    public abstract Locale getLocale();
 
-   /**
-    * The site represented by the <code>SiteId</code> of the request.
-    *
-    * @return the site of the current portal request
-    */
-   public Site getSite()
-   {
-      return getPortal().getSite(getSiteId());
-   }
+    /**
+     * The site represented by the <code>SiteId</code> of the request.
+     *
+     * @return the site of the current portal request
+     */
+    public Site getSite() {
+        return getPortal().getSite(getSiteId());
+    }
 
-   /**
-    * The page currently being accessed by the current portal request.
-    *
-    * @return the page of the current portal request.
-    */
-   public Page getPage()
-   {
-      Node node = getNavigation().getNode(getNodePath());
-      PageId pageId = node != null ? node.getPageId() : null;
-      return (pageId == null) ? null : getPortal().getPage(pageId);
-   }
+    /**
+     * The page currently being accessed by the current portal request.
+     *
+     * @return the page of the current portal request.
+     */
+    public Page getPage() {
+        Node node = getNavigation().getNode(getNodePath());
+        PageId pageId = node != null ? node.getPageId() : null;
+        return (pageId == null) ? null : getPortal().getPage(pageId);
+    }
 
-   /**
-    * The navigation of the current portal request.
-    *
-    * @return the navigation represented by the current portal request.
-    */
-   public Navigation getNavigation()
-   {
-      return getPortal().getNavigation(getSiteId());
-   }
+    /**
+     * The navigation of the current portal request.
+     *
+     * @return the navigation represented by the current portal request.
+     */
+    public Navigation getNavigation() {
+        return getPortal().getNavigation(getSiteId());
+    }
 
-   /**
-    * Returns the filter that can be used to filter based on the current user's access rights.
-    * 
-    * @return the user filter
-    * @see Nodes#userFilter(org.gatein.api.security.User, Portal)
-    */
-   public Filter<Node> getNodeFilter()
-   {
-      return Nodes.userFilter(getUser(), getPortal());
-   }
+    /**
+     * Returns the filter that can be used to filter based on the current user's access rights.
+     *
+     * @return the user filter
+     * @see Nodes#userFilter(org.gatein.api.security.User, Portal)
+     */
+    public Filter<Node> getNodeFilter() {
+        return Nodes.userFilter(getUser(), getPortal());
+    }
 
-   /**
-    * Access to the portal interface
-    *
-    * @return the portal interface
-    */
-   public abstract Portal getPortal();
+    /**
+     * Access to the portal interface
+     *
+     * @return the portal interface
+     */
+    public abstract Portal getPortal();
 
-   /**
-    * Obtain the current instance of a <code>PortalRequest</code>
-    *
-    * @return the portal request
-    */
-   public static PortalRequest getInstance()
-   {
-      return instance.get();
-   }
+    /**
+     * Obtain the current instance of a <code>PortalRequest</code>
+     *
+     * @return the portal request
+     */
+    public static PortalRequest getInstance() {
+        return instance.get();
+    }
 
-   protected static void setInstance(PortalRequest request)
-   {
-      if (request == null)
-      {
-         instance.remove();
-      }
-      else
-      {
-         instance.set(request);
-      }
-   }
+    protected static void setInstance(PortalRequest request) {
+        if (request == null) {
+            instance.remove();
+        } else {
+            instance.set(request);
+        }
+    }
 
-   private static ThreadLocal<PortalRequest> instance = new ThreadLocal<PortalRequest>()
-   {
-      @Override
-      protected PortalRequest initialValue()
-      {
-         return null;
-      }
-   };
+    private static ThreadLocal<PortalRequest> instance = new ThreadLocal<PortalRequest>() {
+        @Override
+        protected PortalRequest initialValue() {
+            return null;
+        }
+    };
 }

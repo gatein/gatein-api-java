@@ -27,15 +27,12 @@ package org.gatein.api;
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class ApiException extends RuntimeException
-{
-   public ApiException(final String message)
-   {
-      super(message);
-   }
+public class ApiException extends RuntimeException {
+    public ApiException(final String message) {
+        super(message);
+    }
 
-   public ApiException(final String message, final Throwable t)
-   {
-      super(message, t);
-   }
+    public ApiException(final String message, final Throwable t) {
+        super(message, t);
+    }
 }

@@ -32,69 +32,58 @@ import java.util.Comparator;
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class Sorting<T> implements Serializable
-{
-   private final Order order;
-   private final Comparator<T> comparator;
+public class Sorting<T> implements Serializable {
+    private final Order order;
+    private final Comparator<T> comparator;
 
-   /**
-    * A sorting object with an order, i.e. ascending or descending. T must be comparable.
-    *
-    * @param order the order to sort.
-    */
-   public Sorting(Order order)
-   {
-      this(order, null);
-   }
+    /**
+     * A sorting object with an order, i.e. ascending or descending. T must be comparable.
+     *
+     * @param order the order to sort.
+     */
+    public Sorting(Order order) {
+        this(order, null);
+    }
 
-   /**
-    * A sorting object which will use a {@link Comparator} to sort.
-    *
-    * @param comparator the comparator
-    * @see Comparator
-    */
-   public Sorting(Comparator<T> comparator)
-   {
-      this(null, comparator);
-   }
+    /**
+     * A sorting object which will use a {@link Comparator} to sort.
+     *
+     * @param comparator the comparator
+     * @see Comparator
+     */
+    public Sorting(Comparator<T> comparator) {
+        this(null, comparator);
+    }
 
-   private Sorting(Order order, Comparator<T> comparator)
-   {
-      this.order = order;
-      this.comparator = comparator;
-   }
+    private Sorting(Order order, Comparator<T> comparator) {
+        this.order = order;
+        this.comparator = comparator;
+    }
 
-   /**
-    * The order to sort, i.e. ascending or descending.
-    *
-    * @return the order, which can be null.
-    */
-   public Order getOrder()
-   {
-      return order;
-   }
+    /**
+     * The order to sort, i.e. ascending or descending.
+     *
+     * @return the order, which can be null.
+     */
+    public Order getOrder() {
+        return order;
+    }
 
-   /**
-    * The comparator used to sort.
-    *
-    * @return the comparator, which can be null.
-    */
-   public Comparator<T> getComparator()
-   {
-      return comparator;
-   }
+    /**
+     * The comparator used to sort.
+     *
+     * @return the comparator, which can be null.
+     */
+    public Comparator<T> getComparator() {
+        return comparator;
+    }
 
-   @Override
-   public String toString()
-   {
-      return ObjectToStringBuilder.toStringBuilder()
-         .add("order", order)
-         .add("comparator", comparator)
-         .toString();
-   }
+    @Override
+    public String toString() {
+        return ObjectToStringBuilder.toStringBuilder().add("order", order).add("comparator", comparator).toString();
+    }
 
-   public static enum Order
-   {
-      ascending, descending
-   }
+    public static enum Order {
+        ascending, descending
+    }
 }

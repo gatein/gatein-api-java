@@ -33,39 +33,38 @@ import java.util.Locale;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public interface Site extends Displayable, Describable, Comparable<Site>, Serializable
-{
-   SiteId getId();
+public interface Site extends Displayable, Describable, Comparable<Site>, Serializable {
+    SiteId getId();
 
-   SiteType getType();
+    SiteType getType();
 
-   String getName();
+    String getName();
 
-   Locale getLocale();
+    Locale getLocale();
 
-   public void setLocale(Locale locale);
+    public void setLocale(Locale locale);
 
-   public String getSkin();
+    public String getSkin();
 
-   public void setSkin(String skin);
+    public void setSkin(String skin);
 
-   public Attributes getAttributes();
+    public Attributes getAttributes();
 
-   public Permission getAccessPermission();
+    public Permission getAccessPermission();
 
-   public void setAccessPermission(Permission permission);
+    public void setAccessPermission(Permission permission);
 
-   public Permission getEditPermission();
+    public Permission getEditPermission();
 
-   public void setEditPermission(Permission permission);
+    public void setEditPermission(Permission permission);
 
-   public static final class AttributeKeys
-   {
-      public static final Attributes.Key<String> SESSION_BEHAVIOR = Attributes.key("org.gatein.api.portal.session_behavior", String.class);
-      public static final Attributes.Key<Boolean> SHOW_PORTLET_INFO_BAR = Attributes.key("org.gatein.api.portal.show_info_bar", Boolean.class);
+    public static final class AttributeKeys {
+        public static final Attributes.Key<String> SESSION_BEHAVIOR = Attributes.key("org.gatein.api.portal.session_behavior",
+                String.class);
+        public static final Attributes.Key<Boolean> SHOW_PORTLET_INFO_BAR = Attributes.key(
+                "org.gatein.api.portal.show_info_bar", Boolean.class);
 
-      private AttributeKeys()
-      {
-      }
-   }
+        private AttributeKeys() {
+        }
+    }
 }
