@@ -38,70 +38,88 @@ import java.util.Locale;
 /**
  * The PortalRequest object represents the current request of the portal. This object is available in the portal simply by
  * invoking the static {@link org.gatein.api.PortalRequest#getInstance()} method.
- *
+ * 
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 public abstract class PortalRequest {
+    private Site site;
+    private Navigation navigation;
+    private Page page;
+    private boolean pageLoaded;
+
     /**
      * The user of the request. If this request is for an unauthenticated user then {@link User#anonymous()} is returned.
-     *
+     * 
      * @return the user of the current portal request. This should never be null.
      */
     public abstract User getUser();
 
     /**
      * The <code>SiteId</code> of the request.
-     *
+     * 
      * @return the site id of the current portal request. This should never be null.
      */
     public abstract SiteId getSiteId();
 
     /**
      * The <code>NodePath</code> of the request.
-     *
+     * 
      * @return the node path of the current portal request. This should never be null.
      */
     public abstract NodePath getNodePath();
 
     /**
      * The <code>Locale</code> of the request.
-     *
+     * 
      * @return the locale of the current portal request.
      */
     public abstract Locale getLocale();
 
     /**
      * The site represented by the <code>SiteId</code> of the request.
-     *
+     * 
      * @return the site of the current portal request
      */
     public Site getSite() {
-        return getPortal().getSite(getSiteId());
+        if (site == null) {
+            site = getPortal().getSite(getSiteId());
+        }
+
+        return site;
     }
 
     /**
      * The page currently being accessed by the current portal request.
-     *
+     * 
      * @return the page of the current portal request.
      */
     public Page getPage() {
-        Node node = getNavigation().getNode(getNodePath());
-        PageId pageId = node != null ? node.getPageId() : null;
-        return (pageId == null) ? null : getPortal().getPage(pageId);
+        if (!pageLoaded) {
+            Node node = getNavigation().getNode(getNodePath());
+            PageId pageId = node != null ? node.getPageId() : null;
+            page = (pageId == null) ? null : getPortal().getPage(pageId);
+            pageLoaded = true;
+        }
+
+        return page;
     }
 
     /**
      * The navigation of the current portal request.
-     *
+     * 
      * @return the navigation represented by the current portal request.
      */
     public Navigation getNavigation() {
-        return getPortal().getNavigation(getSiteId());
+        if (navigation == null) {
+            navigation = getPortal().getNavigation(getSiteId());
+        }
+
+        return navigation;
     }
 
     /**
      * Returns the filter that can be used to filter based on the current user's access rights.
-     *
+     * 
      * @return the user filter
      * @see Nodes#userFilter(org.gatein.api.security.User, Portal)
      */
@@ -111,14 +129,14 @@ public abstract class PortalRequest {
 
     /**
      * Access to the portal interface
-     *
+     * 
      * @return the portal interface
      */
     public abstract Portal getPortal();
 
     /**
      * Obtain the current instance of a <code>PortalRequest</code>
-     *
+     * 
      * @return the portal request
      */
     public static PortalRequest getInstance() {
