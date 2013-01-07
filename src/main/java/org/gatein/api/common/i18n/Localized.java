@@ -22,6 +22,7 @@
 
 package org.gatein.api.common.i18n;
 
+import org.gatein.api.Parameters;
 import org.gatein.api.internal.ObjectToStringBuilder;
 
 import java.io.Serializable;
@@ -51,8 +52,8 @@ public abstract class Localized<T extends Serializable> implements Iterable<T>, 
     }
 
     protected Localized(Map<Locale, T> valueMap) {
-        if (valueMap == null)
-            throw new IllegalArgumentException("valueMap cannot be null.");
+        Parameters.requireNonNull(valueMap, "valueMap");
+
         Map<Locale, Value<T>> map = new HashMap<Locale, Value<T>>(valueMap.size());
 
         for (Map.Entry<Locale, T> entry : valueMap.entrySet()) {

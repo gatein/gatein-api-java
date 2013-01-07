@@ -22,6 +22,7 @@
 
 package org.gatein.api.site;
 
+import org.gatein.api.Parameters;
 import org.gatein.api.common.Filter;
 import org.gatein.api.common.Pagination;
 import org.gatein.api.common.Sorting;
@@ -150,8 +151,7 @@ public class SiteQuery {
          * @return this builder
          */
         public Builder withSiteTypes(SiteType first, SiteType... rest) {
-            if (first == null)
-                throw new IllegalArgumentException("first cannot be null");
+            Parameters.requireNonNull(first, "first");
 
             return withSiteTypes(EnumSet.of(first, rest));
         }
@@ -163,10 +163,7 @@ public class SiteQuery {
          * @return this builder
          */
         public Builder withSiteTypes(EnumSet<SiteType> siteTypes) {
-            if (siteTypes == null)
-                throw new IllegalArgumentException("siteTypes cannot be null");
-
-            this.siteTypes = EnumSet.copyOf(siteTypes);
+            this.siteTypes = EnumSet.copyOf(Parameters.requireNonNull(siteTypes, "siteTypes"));
             return this;
         }
 

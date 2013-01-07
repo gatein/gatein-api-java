@@ -22,6 +22,7 @@
 
 package org.gatein.api.navigation;
 
+import org.gatein.api.Parameters;
 import org.gatein.api.internal.ObjectToStringBuilder;
 
 import java.io.Serializable;
@@ -46,10 +47,9 @@ public class Visibility implements Serializable {
     }
 
     public Visibility(Status status, PublicationDate publicationDate) {
-        if (status == null)
-            throw new IllegalArgumentException("flag cannot be null");
+        Parameters.requireNonNull(status, "status");
         if (status == Status.PUBLICATION && publicationDate == null)
-            throw new IllegalArgumentException("publicationDate cannot be null when the flag is set to " + Status.PUBLICATION);
+            throw new IllegalArgumentException("publicationDate cannot be null when the status is " + Status.PUBLICATION);
 
         this.status = status;
         this.publicationDate = publicationDate;

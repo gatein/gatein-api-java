@@ -22,6 +22,8 @@
 
 package org.gatein.api.security;
 
+import org.gatein.api.Parameters;
+
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
@@ -29,8 +31,7 @@ public class User {
     private final String id;
 
     public User(String id) {
-        if (id == null)
-            throw new IllegalArgumentException("user id cannot be null. If the user is unknown, use User.anonymous() instead.");
+        Parameters.requireNonNull(id, "id", "If the user is unknown, use User.anonymous() instead");
 
         this.id = id;
     }

@@ -22,6 +22,7 @@
 
 package org.gatein.api.navigation;
 
+import org.gatein.api.Parameters;
 import org.gatein.api.internal.ObjectToStringBuilder;
 
 import java.io.Serializable;
@@ -32,24 +33,20 @@ import java.util.Date;
  */
 public class PublicationDate implements Serializable {
     public static PublicationDate startingOn(Date start) {
-        if (start == null)
-            throw new IllegalArgumentException("start cannot be null");
+        Parameters.requireNonNull(start, "start");
 
-        return new PublicationDate(start.getTime(), -1);
+        return new PublicationDate(Parameters.requireNonNull(start, "start").getTime(), -1);
     }
 
     public static PublicationDate endingOn(Date end) {
-        if (end == null)
-            throw new IllegalArgumentException("End cannot be null");
+        Parameters.requireNonNull(end, "end");
 
         return new PublicationDate(-1, end.getTime());
     }
 
     public static PublicationDate between(Date start, Date end) {
-        if (start == null)
-            throw new IllegalArgumentException("start cannot be null");
-        if (end == null)
-            throw new IllegalArgumentException("End cannot be null");
+        Parameters.requireNonNull(start, "start");
+        Parameters.requireNonNull(end, "end");
 
         return new PublicationDate(start.getTime(), end.getTime());
     }
@@ -63,8 +60,7 @@ public class PublicationDate implements Serializable {
     }
 
     public boolean within(Date date) {
-        if (date == null)
-            throw new IllegalArgumentException("date cannot be null");
+        Parameters.requireNonNull(date, "date");
 
         return within(date.getTime());
     }

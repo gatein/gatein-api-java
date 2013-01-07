@@ -22,6 +22,7 @@
 
 package org.gatein.api.common;
 
+import org.gatein.api.Parameters;
 import org.gatein.api.internal.ObjectToStringBuilder;
 
 import java.util.Collection;
@@ -45,21 +46,15 @@ public class Attributes {
     }
 
     public <T> T get(Key<T> key) {
-        if (key == null)
-            throw new IllegalArgumentException("key cannot be null");
-        return (T) values.get(key);
+        return (T) values.get(Parameters.requireNonNull(key, "key"));
     }
 
     public <T> T put(Key<T> key, T value) {
-        if (key == null)
-            throw new IllegalArgumentException("key cannot be null");
-        return (T) values.put(key, value);
+        return (T) values.put(Parameters.requireNonNull(key, "key"), value);
     }
 
     public <T> T remove(Key<T> key) {
-        if (key == null)
-            throw new IllegalArgumentException("key cannot be null");
-        return (T) values.remove(key);
+        return (T) values.remove(Parameters.requireNonNull(key, "key"));
     }
 
     public Collection<Object> values() {
@@ -113,13 +108,8 @@ public class Attributes {
         private Class<T> type;
 
         public Key(String name, Class<T> type) {
-            if (name == null)
-                throw new IllegalArgumentException("name cannot be null");
-            if (type == null)
-                throw new IllegalArgumentException("type cannot be null");
-
-            this.name = name;
-            this.type = type;
+            this.name = Parameters.requireNonNull(name, "name");
+            this.type = Parameters.requireNonNull(type, "type");
         }
 
         public String getName() {

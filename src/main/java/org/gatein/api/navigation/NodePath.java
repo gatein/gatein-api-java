@@ -22,6 +22,7 @@
 
 package org.gatein.api.navigation;
 
+import org.gatein.api.Parameters;
 import org.gatein.api.internal.StringJoiner;
 import org.gatein.api.internal.StringSplitter;
 
@@ -39,12 +40,7 @@ public class NodePath implements Iterable<String>, Comparable<NodePath>, Seriali
     private static final NodePath ROOT_PATH = new NodePath();
 
     public static NodePath path(String... elements) {
-        if (elements == null)
-            throw new IllegalArgumentException("elements cannot be null");
-        if (elements.length == 0)
-            throw new IllegalArgumentException("elements cannot be empty");
-
-        return new NodePath(elements);
+        return new NodePath(Parameters.requireNonEmpty(elements, "elements"));
     }
 
     public static NodePath root() {
@@ -70,10 +66,7 @@ public class NodePath implements Iterable<String>, Comparable<NodePath>, Seriali
     }
 
     public NodePath append(String... elements) {
-        if (elements == null)
-            throw new IllegalArgumentException("elements cannot be null");
-
-        return append(new NodePath(elements));
+        return append(new NodePath(Parameters.requireNonNull(elements, "elements")));
     }
 
     public NodePath append(NodePath path) {

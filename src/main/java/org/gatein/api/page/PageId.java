@@ -22,6 +22,7 @@
 
 package org.gatein.api.page;
 
+import org.gatein.api.Parameters;
 import org.gatein.api.security.Group;
 import org.gatein.api.security.User;
 import org.gatein.api.site.SiteId;
@@ -51,13 +52,8 @@ public class PageId implements Formattable, Serializable {
     }
 
     public PageId(SiteId siteId, String pageName) {
-        if (siteId == null)
-            throw new IllegalArgumentException("siteId cannot be null");
-        if (pageName == null)
-            throw new IllegalArgumentException("pageName cannot be null");
-
-        this.siteId = siteId;
-        this.pageName = pageName;
+        this.siteId = Parameters.requireNonNull(siteId, "siteId");
+        this.pageName = Parameters.requireValidName(pageName, "pageName");
     }
 
     /**
@@ -108,8 +104,7 @@ public class PageId implements Formattable, Serializable {
     }
 
     public static PageId fromString(String idAsString) {
-        if (idAsString == null)
-            throw new IllegalArgumentException("idAsString cannot be null.");
+        Parameters.requireNonNull(idAsString, "idAsString");
 
         int len;
         if (idAsString.startsWith("Page.Id[")) {

@@ -22,6 +22,7 @@
 
 package org.gatein.api.security;
 
+import org.gatein.api.Parameters;
 import org.gatein.api.internal.StringSplitter;
 
 /**
@@ -38,13 +39,8 @@ public class Membership {
     private final Group group;
 
     public Membership(String membershipType, Group group) {
-        if (membershipType == null)
-            throw new IllegalArgumentException("membershipType cannot be null");
-        if (group == null)
-            throw new IllegalArgumentException("group cannot be null");
-
-        this.membershipType = membershipType;
-        this.group = group;
+        this.membershipType = Parameters.requireNonNull(membershipType, "membershipType");
+        this.group = Parameters.requireNonNull(group, "group");
     }
 
     public Membership(User user) {
@@ -70,8 +66,7 @@ public class Membership {
     }
 
     public static Membership fromString(String membership) {
-        if (membership == null)
-            throw new IllegalArgumentException("membership cannot be null");
+        Parameters.requireNonNull(membership, "membership");
 
         String[] parts = StringSplitter.splitter(":").split(membership);
         if (parts.length == 1) {

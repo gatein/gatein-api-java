@@ -22,6 +22,7 @@
 
 package org.gatein.api.site;
 
+import org.gatein.api.Parameters;
 import org.gatein.api.security.Group;
 import org.gatein.api.security.User;
 import org.gatein.api.page.PageId;
@@ -53,13 +54,8 @@ public class SiteId implements Formattable, Serializable {
     }
 
     public SiteId(SiteType type, String name) {
-        if (type == null)
-            throw new IllegalArgumentException("type cannot be null");
-        if (name == null)
-            throw new IllegalArgumentException("name cannot be null");
-
-        this.type = type;
-        this.name = name;
+        this.type = Parameters.requireNonNull(type, "type");
+        this.name = Parameters.requireValidName(name, "name");
     }
 
     /**
@@ -129,8 +125,7 @@ public class SiteId implements Formattable, Serializable {
     private static final Pattern PATTERN2 = Pattern.compile("(" + TYPE_REGEX + ")\\.(" + NAME_REGEX + "*)");
 
     public static SiteId fromString(String idAsString) {
-        if (idAsString == null)
-            throw new IllegalArgumentException("idAsString cannot be null.");
+        Parameters.requireNonNull(idAsString, "idAsString");
 
         int len = idAsString.length();
         if (idAsString.startsWith("Site.Id[type=")) // Handle the toString()

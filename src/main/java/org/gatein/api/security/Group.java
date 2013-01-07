@@ -22,6 +22,7 @@
 
 package org.gatein.api.security;
 
+import org.gatein.api.Parameters;
 import org.gatein.api.internal.StringJoiner;
 import org.gatein.api.internal.ObjectToStringBuilder;
 import org.gatein.api.internal.StringSplitter;
@@ -33,8 +34,8 @@ public class Group {
     private final String id;
 
     public Group(String... group) {
-        if (group == null)
-            throw new IllegalArgumentException("group cannot be null");
+        Parameters.requireNonNull(group, "group");
+
         if (group.length == 1) {
             this.id = group[0];
         } else {
