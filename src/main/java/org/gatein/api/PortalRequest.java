@@ -22,18 +22,16 @@
 
 package org.gatein.api;
 
-import org.gatein.api.security.User;
+import java.util.Locale;
+
 import org.gatein.api.navigation.Navigation;
 import org.gatein.api.navigation.Node;
 import org.gatein.api.navigation.NodePath;
-import org.gatein.api.navigation.Nodes;
 import org.gatein.api.page.Page;
 import org.gatein.api.page.PageId;
+import org.gatein.api.security.User;
 import org.gatein.api.site.Site;
 import org.gatein.api.site.SiteId;
-import org.gatein.api.common.Filter;
-
-import java.util.Locale;
 
 /**
  * The PortalRequest object represents the current request of the portal. This object is available in the portal simply by
@@ -115,16 +113,6 @@ public abstract class PortalRequest {
         }
 
         return navigation;
-    }
-
-    /**
-     * Returns the filter that can be used to filter based on the current user's access rights.
-     * 
-     * @return the user filter
-     * @see Nodes#userFilter(org.gatein.api.security.User, Portal)
-     */
-    public Filter<Node> getNodeFilter() {
-        return Nodes.userFilter(getUser(), getPortal());
     }
 
     /**

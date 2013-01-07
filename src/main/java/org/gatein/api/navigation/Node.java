@@ -22,14 +22,13 @@
 
 package org.gatein.api.navigation;
 
-import org.gatein.api.EntityAlreadyExistsException;
-import org.gatein.api.common.Displayable;
-import org.gatein.api.page.PageId;
-import org.gatein.api.common.Filter;
-
 import java.io.Serializable;
 import java.net.URI;
 import java.util.Comparator;
+
+import org.gatein.api.EntityAlreadyExistsException;
+import org.gatein.api.common.Displayable;
+import org.gatein.api.page.PageId;
 
 /**
  * A node object which represents the current state of a node retrieved from the portal. All changes to the node are not saved
@@ -273,11 +272,10 @@ public interface Node extends Displayable, Iterable<Node>, Serializable {
      * getChildrenCount would only return 2, iterating over the filtered node would not include the hidden node, etc.
      * </p>
      *
-     * @param filter the filter to apply to this node
      * @return a filtered node
      * @throws IllegalArgumentException if filter is null
      */
-    Node filter(Filter<Node> filter) throws IllegalArgumentException;
+    FilteredNode filter() throws IllegalArgumentException;
 
     /**
      * Will sort the children of this node per the comparator.

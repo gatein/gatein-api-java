@@ -26,10 +26,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.gatein.api.Portal;
-import org.gatein.api.security.User;
-import org.gatein.api.common.Filter;
-
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
@@ -121,17 +117,6 @@ public class Nodes {
      */
     public static NodeVisitor visitNodes(NodePath path, NodeVisitor visitor) {
         return new DelegatingPathVisitor(path, visitor);
-    }
-
-    // ----------------- Node Children Utility Methods
-
-    public static Filter<Node> userFilter(User user, Portal portal) {
-        return new NodeFilter.Builder().withoutVisibility(new Visibility(Visibility.Status.SYSTEM)).withAccess(user, portal)
-                .build();
-    }
-
-    public static NodeFilter.Builder filter() {
-        return new NodeFilter.Builder();
     }
 
     // ----------------- Private visitor stuff
