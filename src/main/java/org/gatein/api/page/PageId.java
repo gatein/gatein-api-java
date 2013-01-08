@@ -53,7 +53,7 @@ public class PageId implements Formattable, Serializable {
 
     public PageId(SiteId siteId, String pageName) {
         this.siteId = Parameters.requireNonNull(siteId, "siteId");
-        this.pageName = Parameters.requireValidName(pageName, "pageName");
+        this.pageName = Parameters.requireNonNull(pageName, "pageName");
     }
 
     /**

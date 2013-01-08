@@ -24,7 +24,6 @@ package org.gatein.api;
 import java.util.Collection;
 
 public class Parameters {
-    private static final String NAME_VALID_CHARS = "[\\w-]*";
 
     public static <S, T extends Collection<S>> T requireNonEmpty(T value, String paramName) {
         value = requireNonNull(value, paramName);
@@ -57,21 +56,6 @@ public class Parameters {
     public static <T> T requireNonNull(T value, String paramName, String message) {
         if (value == null) {
             throw new IllegalArgumentException(paramName + " cannot be null. " + message);
-        }
-
-        return value;
-    }
-
-    public static String requireValidName(String value, String paramName) {
-        value = requireNonNull(value, paramName);
-
-        int l = value.length();
-        if (l < 3 || l > 30) {
-            throw new IllegalArgumentException(paramName + " must be between 3 and 30 characters");
-        }
-
-        if (!value.matches(NAME_VALID_CHARS)) {
-            throw new IllegalArgumentException(paramName + " can only contain alpha, digit, dash and underscore characters");
         }
 
         return value;

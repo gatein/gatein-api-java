@@ -55,7 +55,7 @@ public class SiteId implements Formattable, Serializable {
 
     public SiteId(SiteType type, String name) {
         this.type = Parameters.requireNonNull(type, "type");
-        this.name = Parameters.requireValidName(name, "name");
+        this.name = Parameters.requireNonNull(name, "name");
     }
 
     /**
