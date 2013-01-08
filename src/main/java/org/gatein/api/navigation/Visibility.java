@@ -60,11 +60,7 @@ public class Visibility implements Serializable {
             case VISIBLE:
                 return true;
             case PUBLICATION:
-                return (publicationDate != null) && publicationDate.within(System.currentTimeMillis());
-            case SYSTEM:
-                return true;
-            case HIDDEN:
-                return false;
+                return publicationDate.within(System.currentTimeMillis());
             default:
                 return false;
         }
