@@ -49,6 +49,17 @@ public interface Portal {
      * @throws IllegalArgumentException if id is null
      */
     Site getSite(SiteId siteId) throws IllegalArgumentException;
+    
+    /**
+     * Creates a a site given the <code>SiteId</code>. This site is not saved until
+     * {@link Portal#saveSite(org.gatein.api.site.Site)} is called.
+     *
+     * @param siteId the site id
+     * @return the new site which has not been saved yet.
+     * @throws IllegalArgumentException if siteId is null
+     * @throws EntityAlreadyExistsException if the site already exists
+     */
+    Site createSite(SiteId siteId) throws IllegalArgumentException, EntityAlreadyExistsException;
 
     /**
      * Finds sites given the <code>SiteQuery</code>
