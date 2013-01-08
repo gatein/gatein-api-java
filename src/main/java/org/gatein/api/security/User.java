@@ -31,14 +31,11 @@ public class User {
     private final String id;
 
     public User(String id) {
-        Parameters.requireNonNull(id, "id", "If the user is unknown, use User.anonymous() instead");
-
-        this.id = id;
+        this.id = Parameters.requireNonNull(id, "id", "If the user is unknown, use User.anonymous() instead");
     }
 
     private User() {
-        this.id = null; // TODO: Do we want the id to be null, or set it to some strange internal string ? This may produce NPE
-                        // if someone is expecting a value here.
+        this.id = null;
     }
 
     public String getId() {
