@@ -27,7 +27,7 @@ import java.net.URI;
 import java.util.Comparator;
 
 import org.gatein.api.EntityAlreadyExistsException;
-import org.gatein.api.common.Displayable;
+import org.gatein.api.common.LocalizedDisplayable;
 import org.gatein.api.page.PageId;
 
 /**
@@ -36,7 +36,7 @@ import org.gatein.api.page.PageId;
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public interface Node extends Displayable, Iterable<Node>, Serializable {
+public interface Node extends LocalizedDisplayable, Iterable<Node>, Serializable {
     /**
      * The name of the node.
      *
