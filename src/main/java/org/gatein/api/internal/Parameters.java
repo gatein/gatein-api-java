@@ -24,6 +24,8 @@ package org.gatein.api.internal;
 import java.util.Collection;
 
 public class Parameters {
+    private Parameters() {
+    }
 
     public static <S, T extends Collection<S>> T requireNonEmpty(T value, String paramName) {
         value = requireNonNull(value, paramName);
