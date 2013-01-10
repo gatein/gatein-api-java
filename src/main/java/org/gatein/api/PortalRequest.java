@@ -24,6 +24,7 @@ package org.gatein.api;
 
 import java.util.Locale;
 
+import org.gatein.api.common.URIResolver;
 import org.gatein.api.navigation.Navigation;
 import org.gatein.api.navigation.Node;
 import org.gatein.api.navigation.NodePath;
@@ -121,6 +122,14 @@ public abstract class PortalRequest {
      * @return the portal interface
      */
     public abstract Portal getPortal();
+
+    /**
+     * The resolver used to resolve the URI for Nodes. This is used by {@link Node#getURI()} which is the recommended way to
+     * obtain the URI for a Node.
+     * 
+     * @return the URI resolver
+     */
+    public abstract URIResolver getURIResolver();
 
     /**
      * Obtain the current instance of a <code>PortalRequest</code>
