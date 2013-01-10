@@ -39,6 +39,7 @@ import org.gatein.api.site.SiteId;
  * invoking the static {@link org.gatein.api.PortalRequest#getInstance()} method.
  * 
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
+ * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
 public abstract class PortalRequest {
     private Site site;

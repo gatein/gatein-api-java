@@ -37,8 +37,9 @@ import java.util.List;
 /**
  * The main interface of the portal public API. This is available from the <code>PortalRequest</code> object which can be
  * obtained from {@link PortalRequest#getInstance()}.
- *
+ * 
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
+ * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
 public interface Portal {
     /**

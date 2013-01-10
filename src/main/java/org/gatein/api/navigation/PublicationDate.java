@@ -24,26 +24,49 @@ package org.gatein.api.navigation;
 
 import org.gatein.api.internal.ObjectToStringBuilder;
 import org.gatein.api.internal.Parameters;
+import org.gatein.api.navigation.Visibility.Status;
 
 import java.io.Serializable;
 import java.util.Date;
 
 /**
+ * Represents the dates a {@link Node} with the {@link Visibility#getStatus()} set to {@link Status#PUBLICATION} is visible.
+ * 
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
+ * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
 public class PublicationDate implements Serializable {
+    /**
+     * Creates a new publication date that starts on the specified date
+     * 
+     * @param start the start date
+     * @return the publication date
+     */
     public static PublicationDate startingOn(Date start) {
         Parameters.requireNonNull(start, "start");
 
         return new PublicationDate(Parameters.requireNonNull(start, "start").getTime(), -1);
     }
 
+    /**
+     * Creates a new publication date that ends on the specified date
+     * 
+     * @param end the end date
+     * @return the publication date
+     */
     public static PublicationDate endingOn(Date end) {
         Parameters.requireNonNull(end, "end");
 
         return new PublicationDate(-1, end.getTime());
     }
 
+    /**
+     * Creates a new publication date that starts on the specified start date and ends on the specified end date
+     * 
+     * @param start the start date
+     * @param end the end date
+     * @return the publication date
+     */
     public static PublicationDate between(Date start, Date end) {
         Parameters.requireNonNull(start, "start");
         Parameters.requireNonNull(end, "end");
@@ -59,20 +82,42 @@ public class PublicationDate implements Serializable {
         this.end = end;
     }
 
+    /**
+     * Returns true if the publication date is within the specified date
+     * 
+     * @param date the date
+     * @return true if the publication date is within the specified date; false otherwise
+     */
     public boolean within(Date date) {
         Parameters.requireNonNull(date, "date");
 
         return within(date.getTime());
     }
 
+    /**
+     * Returns true if the publication date is within the specified date
+     * 
+     * @param time the date
+     * @return true if the publication date is within the specified date; false otherwise
+     */
     public boolean within(long time) {
         return (time >= start && time <= end);
     }
 
+    /**
+     * Returns the start date or null if no start date is set
+     * 
+     * @return the start date or null if no start date is set
+     */
     public Date getStart() {
         return (start < 0) ? null : new Date(start);
     }
 
+    /**
+     * Returns the end date or null if no end date is set
+     * 
+     * @return the end date or null if no end date is set
+     */
     public Date getEnd() {
         return (end < 0) ? null : new Date(end);
     }

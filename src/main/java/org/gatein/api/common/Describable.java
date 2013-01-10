@@ -23,10 +23,22 @@
 package org.gatein.api.common;
 
 /**
+ * Provides a description
+ * 
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 public interface Describable {
-   String getDescription();
+    /**
+     * Returns the description
+     * 
+     * @return the description
+     */
+    String getDescription();
 
+    /**
+     * Set the description to the specified value
+     * 
+     * @param description the description
+     */
     void setDescription(String description);
 }

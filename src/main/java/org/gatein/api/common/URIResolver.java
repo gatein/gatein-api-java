@@ -26,6 +26,11 @@ import java.net.URI;
 import org.gatein.api.navigation.NodePath;
 import org.gatein.api.site.SiteId;
 
+/**
+ * A resolver that can resolve the URI for resources
+ * 
+ * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
+ */
 public interface URIResolver {
     /**
      * Resolves the URI for the specified nodePath

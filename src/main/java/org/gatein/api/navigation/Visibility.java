@@ -28,33 +28,50 @@ import org.gatein.api.internal.Parameters;
 import java.io.Serializable;
 
 /**
+ * Represents the visiblity of a {@link Node}
+ * 
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
+ * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
 public class Visibility implements Serializable {
     private final Status status;
     private final PublicationDate publicationDate;
 
+    /**
+     * Creates a new instance with the status set to {@link Status#VISIBLE}
+     */
     public Visibility() {
-        this(Status.VISIBLE, null);
+        this(Status.VISIBLE);
     }
 
-    public Visibility(Status flag) {
-        this(flag, null);
+    /**
+     * Creates a new instance with the specified status
+     * 
+     * @param status the status
+     * @throws IllegalArgumentException if the status is null, or the status is {@link Status#PUBLICATION}
+     */
+    public Visibility(Status status) {
+        this.status = Parameters.requireNonNull(status, "status");
+        this.publicationDate = null;
     }
 
+    /**
+     * Creates a new instance with the status set to {@link Status#PUBLICATION} which is visible at the time specified by the
+     * publication date
+     * 
+     * @param publicationDate the publication date
+     */
     public Visibility(PublicationDate publicationDate) {
-        this(Status.PUBLICATION, publicationDate);
+        this.status = Status.PUBLICATION;
+        this.publicationDate = Parameters.requireNonNull(publicationDate, "publicationDate");
     }
 
-    public Visibility(Status status, PublicationDate publicationDate) {
-        Parameters.requireNonNull(status, "status");
-        if (status == Status.PUBLICATION && publicationDate == null)
-            throw new IllegalArgumentException("publicationDate cannot be null when the status is " + Status.PUBLICATION);
-
-        this.status = status;
-        this.publicationDate = publicationDate;
-    }
-
+    /**
+     * Returns true if the status is {@link Status#VISIBLE} or if the status is {@link Status#PUBLICATION} and the
+     * publicationDate is within the current time.
+     * 
+     * @return true if visible
+     */
     public boolean isVisible() {
         switch (status) {
             case VISIBLE:
@@ -66,10 +83,20 @@ public class Visibility implements Serializable {
         }
     }
 
+    /**
+     * Returns the status
+     * 
+     * @return the status
+     */
     public Status getStatus() {
         return status;
     }
 
+    /**
+     * Returns the publication date or null if the status is not {@link Status#PUBLICATION}
+     * 
+     * @return the publication date or null
+     */
     public PublicationDate getPublicationDate() {
         return publicationDate;
     }

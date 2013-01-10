@@ -22,12 +22,24 @@
 
 package org.gatein.api.common;
 
-
 /**
+ * Provides a UI friendly name
+ * 
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
+ * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
 public interface Displayable {
+    /**
+     * Returns the display name
+     * 
+     * @return the display name
+     */
     String getDisplayName();
 
+    /**
+     * Sets the display name
+     * 
+     * @param displayName the display name
+     */
     void setDisplayName(String displayName);
 }

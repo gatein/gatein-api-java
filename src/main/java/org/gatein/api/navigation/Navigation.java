@@ -28,8 +28,9 @@ import org.gatein.api.site.SiteId;
 
 /**
  * Navigation for a site responsible for the retrieval, saving, and removal of navigation nodes.
- *
+ * 
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
+ * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
 public interface Navigation {
     /**

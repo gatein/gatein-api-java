@@ -22,13 +22,29 @@
 
 package org.gatein.api.common;
 
+import java.util.Locale;
+
 import org.gatein.api.common.i18n.LocalizedString;
 
 /**
+ * Provides a UI friendly that supports localization
+ * 
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
+ * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
 public interface LocalizedDisplayable extends Displayable {
+    /**
+     * Returns a localized string that can represent a single non localized name or many values each mapping to a specific
+     * {@link Locale}
+     * 
+     * @return the localized string
+     */
     LocalizedString getDisplayNames();
 
+    /**
+     * Sets the display name
+     * 
+     * @param displayName the display name
+     */
     void setDisplayNames(LocalizedString displayName);
 }

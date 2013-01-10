@@ -27,9 +27,10 @@ import org.gatein.api.page.PageId;
 /**
  * A node visitor is used to walk the node tree. Some node visitor's are available in the <code>Nodes</code> utility class, i.e.
  * {@link Nodes#visitNodes(int)}
- *
+ * 
  * @see Nodes
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
+ * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
 public interface NodeVisitor {
     /**

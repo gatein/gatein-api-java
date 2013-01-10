@@ -31,7 +31,12 @@ import org.gatein.api.ApiException;
 import org.gatein.api.internal.Parameters;
 
 /**
+ * Implements Map<String, String> and adds convinience methods to retrieve a <code>String</code> property converted into a
+ * specific type. The {@link #get(Key)}, {@link #put(Key, Object)} and {@link #remove(Key)} methods converts <code>String</code>
+ * values to/from the instances of the class specified by {@link Key#type}.
+ * 
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
+ * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
 @SuppressWarnings("unchecked")
 public class Attributes extends HashMap<String, String> {
@@ -42,6 +47,17 @@ public class Attributes extends HashMap<String, String> {
         super(values);
     }
 
+    /**
+     * Returns the value to the which the specified key name is mapped. The value is returned as the type specified by the key
+     * uses the static
+     * <code>valueOf(String)<code> method in the key type. The <code>valueOf(String)<code> should convert the <code>String</code>
+     * into an instance of the key type and return it.
+     * 
+     * @param key the key that holds the name and type of the attribute
+     * @return the converted value
+     * @throws IllegalArgumentException if the specified key type class is not {@link String} or implements static
+     *         <code>valueOf(String)<code>
+     */
     public <T> T get(Key<T> key) {
         Parameters.requireNonNull(key, "key");
 
@@ -50,6 +66,16 @@ public class Attributes extends HashMap<String, String> {
         return value != null ? fromString(key.getType(), value) : null;
     }
 
+    /**
+     * Converts the value into a String using the <code>toString</code> method. The value has to be an instance of the class
+     * specified by the key type, and it has to either be a {@link String} or implement the <code>valueOf</code> method as
+     * specified in {@link Attributes#get(Key)}.
+     * 
+     * @param key the key that holds the name and type of the attribute
+     * @param value the value
+     * @return the previous value, or null if it didn't exist
+     * @throws IllegalArgumentException if the current value is non-null and can't be converted into the key type
+     */
     public <T> T put(Key<T> key, T value) {
         Parameters.requireNonNull(key, "key");
 
@@ -58,6 +84,13 @@ public class Attributes extends HashMap<String, String> {
         return oldValue;
     }
 
+    /**
+     * Removes the attribute that is mapped to the specified key name
+     * 
+     * @param key the key that holds the name and type of the attribute
+     * @return the previous value, or null if it didn't exist
+     * @throws IllegalArgumentException if the current value is non-null and can't be converted into the key type
+     */
     public <T> T remove(Key<T> key) {
         Parameters.requireNonNull(key, "key");
 
@@ -66,6 +99,13 @@ public class Attributes extends HashMap<String, String> {
         return oldValue;
     }
 
+    /**
+     * Creates a key with the specified name and type
+     * 
+     * @param name the name
+     * @param type the type
+     * @return the key
+     */
     public static <T> Key<T> key(String name, Class<T> type) {
         return new Key<T>(name, type) {
         };
@@ -88,11 +128,9 @@ public class Attributes extends HashMap<String, String> {
             return (T) m.invoke(null, value);
         } catch (Exception e) {
             if (e instanceof InvocationTargetException) {
-                if (((InvocationTargetException) e).getTargetException() instanceof NumberFormatException) {
-                    throw new IllegalArgumentException("Unsupported key type", e);
-                }
+                throw new IllegalArgumentException("Unsupported key type", e);
             }
-            throw new ApiException("Failed to convert value", e);
+            throw new ApiException("Failed to convert attribute value", e);
         }
     }
 
@@ -114,7 +152,7 @@ public class Attributes extends HashMap<String, String> {
         private final String name;
         private Class<T> type;
 
-        public Key(String name, Class<T> type) {
+        private Key(String name, Class<T> type) {
             this.name = Parameters.requireNonNull(name, "name");
             this.type = Parameters.requireNonNull(type, "type");
         }

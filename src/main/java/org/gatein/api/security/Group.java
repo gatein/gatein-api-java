@@ -28,11 +28,19 @@ import org.gatein.api.internal.ObjectToStringBuilder;
 import org.gatein.api.internal.StringSplitter;
 
 /**
+ * Represents a group. A {@link User} can belong to one or more groups.
+ * 
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 public class Group {
     private final String id;
 
+    /**
+     * Creates an new group instance with the specified hierarchy. For example
+     * <code>new Group("platform", "administrators")</code>
+     * 
+     * @param group the group
+     */
     public Group(String... group) {
         Parameters.requireNonNull(group, "group");
 
@@ -43,10 +51,20 @@ public class Group {
         }
     }
 
+    /**
+     * Creates an new group instance with the specified id. For example <code>new Group("/platform/administrators")</code>
+     * 
+     * @param id the id of the group
+     */
     public Group(String id) {
         this(StringSplitter.splitter("/").trim().ignoreEmptyStrings().split(id));
     }
 
+    /**
+     * Returns the specified group. For example "/platform/administrators"
+     * 
+     * @return
+     */
     public String getId() {
         return id;
     }

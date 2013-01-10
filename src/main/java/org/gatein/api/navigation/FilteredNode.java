@@ -24,6 +24,16 @@ package org.gatein.api.navigation;
 import org.gatein.api.common.Filter;
 import org.gatein.api.security.User;
 
+/**
+ * A filtered node is obtained from {@link Node#filter()} and provides a mechanism for only showing specified nodes. Each method
+ * will add an aditional filter that reduces the number of nodes returned. For example by invoking
+ * <code>node.filter().showHasAccess(user).showVisible()</code> only nodes that the specified user has access to that are also
+ * visible are returned. The filtering applies to all methods that operate on the children of the node. For example
+ * {@link #indexOf(String)} can return a different index for a specified name than the {@link Node} the filtered node is
+ * operating on.
+ * 
+ * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
+ */
 public interface FilteredNode extends Node {
     /**
      * Shows all nodes
