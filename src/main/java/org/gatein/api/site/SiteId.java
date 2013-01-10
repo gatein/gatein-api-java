@@ -22,9 +22,9 @@
 
 package org.gatein.api.site;
 
-import org.gatein.api.Parameters;
 import org.gatein.api.security.Group;
 import org.gatein.api.security.User;
+import org.gatein.api.internal.Parameters;
 import org.gatein.api.page.PageId;
 
 import java.io.Serializable;

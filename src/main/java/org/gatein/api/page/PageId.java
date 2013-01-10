@@ -22,7 +22,7 @@
 
 package org.gatein.api.page;
 
-import org.gatein.api.Parameters;
+import org.gatein.api.internal.Parameters;
 import org.gatein.api.security.Group;
 import org.gatein.api.security.User;
 import org.gatein.api.site.SiteId;

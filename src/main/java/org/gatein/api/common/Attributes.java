@@ -22,8 +22,8 @@
 
 package org.gatein.api.common;
 
-import org.gatein.api.Parameters;
 import org.gatein.api.internal.ObjectToStringBuilder;
+import org.gatein.api.internal.Parameters;
 
 import java.util.Collection;
 import java.util.HashMap;

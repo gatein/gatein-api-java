@@ -22,7 +22,7 @@
 
 package org.gatein.api.security;
 
-import org.gatein.api.Parameters;
+import org.gatein.api.internal.Parameters;
 import org.gatein.api.internal.StringJoiner;
 import org.gatein.api.internal.ObjectToStringBuilder;
 import org.gatein.api.internal.StringSplitter;

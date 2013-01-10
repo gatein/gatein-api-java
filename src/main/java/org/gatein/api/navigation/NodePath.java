@@ -22,7 +22,7 @@
 
 package org.gatein.api.navigation;
 
-import org.gatein.api.Parameters;
+import org.gatein.api.internal.Parameters;
 import org.gatein.api.internal.StringJoiner;
 import org.gatein.api.internal.StringSplitter;
 

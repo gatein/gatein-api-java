@@ -22,10 +22,10 @@
 
 package org.gatein.api.site;
 
-import org.gatein.api.Parameters;
 import org.gatein.api.common.Filter;
 import org.gatein.api.common.Pagination;
 import org.gatein.api.common.Sorting;
+import org.gatein.api.internal.Parameters;
 
 import java.util.EnumSet;
 

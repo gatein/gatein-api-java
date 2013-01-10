@@ -22,7 +22,7 @@
 
 package org.gatein.api.security;
 
-import org.gatein.api.Parameters;
+import org.gatein.api.internal.Parameters;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>

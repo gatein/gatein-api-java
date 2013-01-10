@@ -22,8 +22,8 @@
 
 package org.gatein.api.navigation;
 
-import org.gatein.api.Parameters;
 import org.gatein.api.internal.ObjectToStringBuilder;
+import org.gatein.api.internal.Parameters;
 
 import java.io.Serializable;
 import java.util.Date;
