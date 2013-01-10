@@ -44,9 +44,9 @@ public interface Portal {
     /**
      * Returns a site given the <code>SiteId</code>. Can return null if the site does not exist.
      *
-     * @param siteId the siteId is null
+     * @param siteId the siteId
      * @return the site or null if the site does not exist
-     * @throws IllegalArgumentException if id is null
+     * @throws IllegalArgumentException if siteId is null
      */
     Site getSite(SiteId siteId) throws IllegalArgumentException;
     
@@ -76,6 +76,7 @@ public interface Portal {
      * @param site the site to save
      * @throws IllegalArgumentException if site is null
      * @throws ApiException if an exception occurred trying to save the site
+     * @throws EntityAlreadyExistsException if saving a new site that already exists
      */
     void saveSite(Site site) throws IllegalArgumentException, ApiException;
 
@@ -85,7 +86,6 @@ public interface Portal {
      * @param siteId the id of the site to remove
      * @return true if the site was removed, false otherwise
      * @throws IllegalArgumentException if siteId is null
-     * @throws EntityNotFoundException if the site does not exist
      */
     boolean removeSite(SiteId siteId) throws IllegalArgumentException, EntityNotFoundException;
 

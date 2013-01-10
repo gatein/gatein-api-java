@@ -22,85 +22,92 @@
 
 package org.gatein.api.common;
 
-import org.gatein.api.internal.ObjectToStringBuilder;
-import org.gatein.api.internal.Parameters;
-
-import java.util.Collection;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
+
+import org.gatein.api.ApiException;
+import org.gatein.api.internal.Parameters;
 
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 @SuppressWarnings("unchecked")
-public class Attributes {
-    private Map<Attributes.Key<?>, Object> values;
-
+public class Attributes extends HashMap<String, String> {
     public Attributes() {
-        this(new HashMap<Attributes.Key<?>, Object>());
     }
 
-    public Attributes(Map<Attributes.Key<?>, Object> values) {
-        this.values = values;
+    public Attributes(Map<String, String> values) {
+        super(values);
     }
 
     public <T> T get(Key<T> key) {
-        return (T) values.get(Parameters.requireNonNull(key, "key"));
+        Parameters.requireNonNull(key, "key");
+
+        String name = key.getName();
+        String value = get(name);
+        return value != null ? fromString(key.getType(), value) : null;
     }
 
     public <T> T put(Key<T> key, T value) {
-        return (T) values.put(Parameters.requireNonNull(key, "key"), value);
+        Parameters.requireNonNull(key, "key");
+
+        T oldValue = get(key);
+        put(key.getName(), value != null ? toString(key.getType(), value) : null);
+        return oldValue;
     }
 
     public <T> T remove(Key<T> key) {
-        return (T) values.remove(Parameters.requireNonNull(key, "key"));
-    }
+        Parameters.requireNonNull(key, "key");
 
-    public Collection<Object> values() {
-        return values.values();
-    }
-
-    public Set<Key<?>> keySet() {
-        return values.keySet();
-    }
-
-    public Set<Map.Entry<Key<?>, Object>> entrySet() {
-        return values.entrySet();
-    }
-
-    public int size() {
-        return values.size();
-    }
-
-    public boolean isEmpty() {
-        return values.isEmpty();
-    }
-
-    public boolean containsKey(Key<?> key) {
-        return values.containsKey(key);
-    }
-
-    public boolean containsValue(Object value) {
-        return values.containsValue(value);
-    }
-
-    public void putAll(Map<? extends Key<?>, ?> m) {
-        values.putAll(m);
-    }
-
-    public void clear() {
-        values.clear();
-    }
-
-    @Override
-    public String toString() {
-        return ObjectToStringBuilder.toStringBuilder().add(values).toString();
+        T oldValue = get(key);
+        remove(key.getName());
+        return oldValue;
     }
 
     public static <T> Key<T> key(String name, Class<T> type) {
         return new Key<T>(name, type) {
         };
+    }
+
+    private <T> T fromString(Class<T> type, String value) {
+        if (type.equals(String.class)) {
+            return (T) value;
+        }
+
+        Method m;
+        try {
+            m = type.getDeclaredMethod("valueOf", new Class[] { String.class });
+        } catch (NoSuchMethodException e) {
+            throw new IllegalArgumentException(
+                    "Unsupported key type. Key type has to either be String or implement 'valueOf(String.class)'", e);
+        }
+
+        try {
+            return (T) m.invoke(null, value);
+        } catch (Exception e) {
+            if (e instanceof InvocationTargetException) {
+                if (((InvocationTargetException) e).getTargetException() instanceof NumberFormatException) {
+                    throw new IllegalArgumentException("Unsupported key type", e);
+                }
+            }
+            throw new ApiException("Failed to convert value", e);
+        }
+    }
+
+    private <T> String toString(Class<T> type, T value) {
+        if (value instanceof String) {
+            return (String) value;
+        }
+
+        try {
+            type.getDeclaredMethod("valueOf", new Class[] { String.class });
+            return value.toString();
+        } catch (NoSuchMethodException e) {
+            throw new IllegalArgumentException(
+                    "Unsupported key type. Key type has to either be String or implement 'valueOf(String.class)'");
+        }
     }
 
     public static abstract class Key<T> {
