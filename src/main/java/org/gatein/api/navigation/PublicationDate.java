@@ -41,6 +41,7 @@ public class PublicationDate implements Serializable {
      * 
      * @param start the start date
      * @return the publication date
+     * @throws IllegalArgumentException if start is null
      */
     public static PublicationDate startingOn(Date start) {
         Parameters.requireNonNull(start, "start");
@@ -53,6 +54,7 @@ public class PublicationDate implements Serializable {
      * 
      * @param end the end date
      * @return the publication date
+     * @throws IllegalArgumentException if end is null
      */
     public static PublicationDate endingOn(Date end) {
         Parameters.requireNonNull(end, "end");
@@ -66,10 +68,15 @@ public class PublicationDate implements Serializable {
      * @param start the start date
      * @param end the end date
      * @return the publication date
+     * @throws IllegalArgumentException if start or end is null, or end date is before start date
      */
     public static PublicationDate between(Date start, Date end) {
         Parameters.requireNonNull(start, "start");
         Parameters.requireNonNull(end, "end");
+        
+        if (end.before(start)) {
+            throw new IllegalArgumentException("End date must be after start date");
+        }
 
         return new PublicationDate(start.getTime(), end.getTime());
     }
@@ -87,6 +94,7 @@ public class PublicationDate implements Serializable {
      * 
      * @param date the date
      * @return true if the publication date is within the specified date; false otherwise
+     * @throws IllegalArgumentException if date is null
      */
     public boolean within(Date date) {
         Parameters.requireNonNull(date, "date");
@@ -101,7 +109,14 @@ public class PublicationDate implements Serializable {
      * @return true if the publication date is within the specified date; false otherwise
      */
     public boolean within(long time) {
-        return (time >= start && time <= end);
+        if (start != -1 && start > time) {
+            return false;
+        }
+        if (end != -1 && end < time) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
