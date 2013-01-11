@@ -39,14 +39,31 @@ import java.util.List;
 public class NodePath implements Iterable<String>, Comparable<NodePath>, Serializable {
     private static final NodePath ROOT_PATH = new NodePath();
 
+    /**
+     * Creates a node path with the value of the specified elements
+     * 
+     * @param elements the path elements
+     * @return a node path
+     */
     public static NodePath path(String... elements) {
         return new NodePath(Parameters.requireNonEmpty(elements, "elements"));
     }
 
+    /**
+     * Returns the path to the root node
+     * 
+     * @return a node path
+     */
     public static NodePath root() {
         return ROOT_PATH;
     }
 
+    /**
+     * Creates a node path with a value represented by the specified path (for example '/home/node1')
+     * 
+     * @param path the string representation of a path
+     * @return a node path
+     */
     public static NodePath fromString(String path) {
         return new NodePath(StringSplitter.splitter("/").trim().ignoreEmptyStrings().split(path));
     }
@@ -65,10 +82,22 @@ public class NodePath implements Iterable<String>, Comparable<NodePath>, Seriali
         this.pathList = new ArrayList<String>(pathList);
     }
 
+    /**
+     * Adds the specified elements to the end of this path
+     * 
+     * @param elements the elements to append
+     * @return the combined path
+     */
     public NodePath append(String... elements) {
         return append(new NodePath(Parameters.requireNonNull(elements, "elements")));
     }
 
+    /**
+     * Adds the specified path to the end of this path
+     * 
+     * @param path the path to append
+     * @return the combined path
+     */
     public NodePath append(NodePath path) {
         List<String> list = new ArrayList<String>(pathList.size() + path.pathList.size());
         list.addAll(pathList);
@@ -77,23 +106,52 @@ public class NodePath implements Iterable<String>, Comparable<NodePath>, Seriali
         return new NodePath(list);
     }
 
+    /**
+     * Returns the sub-path starting at fromIndex
+     * 
+     * @param fromIndex the start of the sub-path
+     * @return the sub-path
+     */
     public NodePath subPath(int fromIndex) {
         return subPath(fromIndex, size());
     }
 
+    /**
+     * Returns the sub-path starting at fromIndex and ending at toIndex
+     * 
+     * @param fromIndex the start of the sub-path
+     * @param toIndex the end of the sub-path
+     * @return the sub-path
+     */
     public NodePath subPath(int fromIndex, int toIndex) {
         return new NodePath(new ArrayList<String>(pathList.subList(fromIndex, toIndex)));
     }
 
+    /**
+     * Returns the part of the path at the specified index
+     * 
+     * @param index the index
+     * @return the specific part of the path
+     */
     public String getSegment(int index) {
         return pathList.get(index);
     }
 
+    /**
+     * Returns the last part of the path
+     * 
+     * @return the last part of the path
+     */
     public String getLastSegment() {
         int size = size();
         return (size == 0) ? null : getSegment(size - 1);
     }
 
+    /**
+     * Returns the path to the parent
+     * 
+     * @return the path
+     */
     public NodePath parent() {
         if (pathList.isEmpty())
             return null;
@@ -101,6 +159,12 @@ public class NodePath implements Iterable<String>, Comparable<NodePath>, Seriali
         return subPath(0, size() - 1);
     }
 
+    /**
+     * Returns true if this path is an ancestor of the specified path
+     * 
+     * @param path the path
+     * @return true if the specified path is a descendant of this path
+     */
     public boolean isParent(NodePath path) {
         if (size() >= path.size())
             return false;
@@ -115,6 +179,11 @@ public class NodePath implements Iterable<String>, Comparable<NodePath>, Seriali
         return true;
     }
 
+    /**
+     * Returns the size of the path
+     * 
+     * @return
+     */
     public int size() {
         return pathList.size();
     }
