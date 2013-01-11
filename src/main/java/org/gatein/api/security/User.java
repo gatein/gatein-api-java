@@ -25,11 +25,19 @@ package org.gatein.api.security;
 import org.gatein.api.internal.Parameters;
 
 /**
+ * Represents a user
+ * 
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 public class User {
     private final String id;
 
+    /**
+     * Creates a new user with the specified id. To create a anonymous user use the static method {@link User#isAnonymous()}
+     * 
+     * @param id the user
+     * @throws IllegalArgumentException if id is null
+     */
     public User(String id) {
         this.id = Parameters.requireNonNull(id, "id", "If the user is unknown, use User.anonymous() instead");
     }
@@ -38,14 +46,29 @@ public class User {
         this.id = null;
     }
 
+    /**
+     * Returns the user id
+     * 
+     * @return the user id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Returns true if the user is anonymous
+     * 
+     * @return true if anonymous user
+     */
     public boolean isAnonymous() {
         return this == ANONYMOUS;
     }
 
+    /**
+     * Creates a anonymous user
+     * 
+     * @return the anonymous user
+     */
     public static User anonymous() {
         return ANONYMOUS;
     }

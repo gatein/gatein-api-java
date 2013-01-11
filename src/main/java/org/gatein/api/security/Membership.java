@@ -26,11 +26,19 @@ import org.gatein.api.internal.Parameters;
 import org.gatein.api.internal.StringSplitter;
 
 /**
+ * Represents a membership in a group
+ * 
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 public class Membership {
     public static final String ANY = "*";
 
+    /**
+     * Creates a new membership for any membership type in the specified group
+     * 
+     * @param group the group
+     * @return the membership
+     */
     public static Membership any(String... group) {
         return new Membership(ANY, new Group(group));
     }
@@ -38,20 +46,41 @@ public class Membership {
     private final String membershipType;
     private final Group group;
 
+    /**
+     * Creates a new membership for users with the specified membership type in the specified group
+     * 
+     * @param membershipType the membership type
+     * @param group the group
+     */
     public Membership(String membershipType, Group group) {
         this.membershipType = Parameters.requireNonNull(membershipType, "membershipType");
         this.group = Parameters.requireNonNull(group, "group");
     }
 
+    /**
+     * Creates a new membership for the specified user
+     * 
+     * @param user the user
+     */
     public Membership(User user) {
         this.membershipType = user.getId();
         this.group = null;
     }
 
+    /**
+     * Returns the membership type
+     * 
+     * @return the membership type
+     */
     public String getMembershipType() {
         return membershipType;
     }
 
+    /**
+     * Returns the group
+     * 
+     * @return the group
+     */
     public Group getGroup() {
         return group;
     }

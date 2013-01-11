@@ -40,9 +40,10 @@ public class Group {
      * <code>new Group("platform", "administrators")</code>
      * 
      * @param group the group
+     * @throws IllegalArgumentException if group is null or empty
      */
     public Group(String... group) {
-        Parameters.requireNonNull(group, "group");
+        Parameters.requireNonEmpty(group, "group");
 
         if (group.length == 1) {
             this.id = group[0];
@@ -55,15 +56,16 @@ public class Group {
      * Creates an new group instance with the specified id. For example <code>new Group("/platform/administrators")</code>
      * 
      * @param id the id of the group
+     * @throws IllegalArgumentException if id is null
      */
     public Group(String id) {
-        this(StringSplitter.splitter("/").trim().ignoreEmptyStrings().split(id));
+        this(StringSplitter.splitter("/").trim().ignoreEmptyStrings().split(Parameters.requireNonNull(id, "id")));
     }
 
     /**
-     * Returns the specified group. For example "/platform/administrators"
+     * Returns the id of the group. For example "/platform/administrators"
      * 
-     * @return
+     * @return the group id
      */
     public String getId() {
         return id;
