@@ -24,6 +24,7 @@ package org.gatein.api.security;
 
 import org.gatein.api.internal.ObjectToStringBuilder;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -33,7 +34,7 @@ import java.util.Set;
  * 
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class Permission {
+public class Permission implements Serializable {
     private static final Permission EVERYONE = new Permission();
 
     /**

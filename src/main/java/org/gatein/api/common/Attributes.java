@@ -22,6 +22,7 @@
 
 package org.gatein.api.common;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +38,7 @@ import org.gatein.api.internal.Parameters;
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
 @SuppressWarnings("unchecked")
-public class Attributes extends HashMap<String, String> {
+public class Attributes extends HashMap<String, String> implements Serializable {
     /**
      * Creates a new attributes instance with no attributes
      */

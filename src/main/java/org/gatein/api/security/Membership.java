@@ -22,6 +22,8 @@
 
 package org.gatein.api.security;
 
+import java.io.Serializable;
+
 import org.gatein.api.internal.Parameters;
 import org.gatein.api.internal.StringSplitter;
 
@@ -30,7 +32,7 @@ import org.gatein.api.internal.StringSplitter;
  * 
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class Membership {
+public class Membership implements Serializable {
     public static final String ANY = "*";
 
     /**

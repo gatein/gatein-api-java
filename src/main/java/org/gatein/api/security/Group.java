@@ -22,6 +22,8 @@
 
 package org.gatein.api.security;
 
+import java.io.Serializable;
+
 import org.gatein.api.internal.Parameters;
 import org.gatein.api.internal.StringJoiner;
 import org.gatein.api.internal.ObjectToStringBuilder;
@@ -32,7 +34,7 @@ import org.gatein.api.internal.StringSplitter;
  * 
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class Group {
+public class Group implements Serializable {
     private final String id;
 
     /**
