@@ -33,30 +33,58 @@ import java.util.FormattableFlags;
 import java.util.Formatter;
 
 /**
+ * The id of a page
+ * 
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 public class PageId implements Formattable, Serializable {
     private final SiteId siteId;
     private final String pageName;
 
+    /**
+     * Creates a new page id with the specified site name and page name
+     * 
+     * @param siteName the site name
+     * @param pageName the page name
+     */
     public PageId(String siteName, String pageName) {
         this(new SiteId(siteName), pageName);
     }
 
+    /**
+     * Creates new page id for a page with the specified group (space) and page name
+     * 
+     * @param group the group
+     * @param pageName the page name
+     */
     public PageId(Group group, String pageName) {
         this(new SiteId(group), pageName);
     }
 
+    /**
+     * Creates a new page id for a page with the specified user (dashboard) and page name
+     * 
+     * @param user the user
+     * @param pageName the page name
+     */
     public PageId(User user, String pageName) {
         this(new SiteId(user), pageName);
     }
 
+    /**
+     * Creates a new page id for a page with the specified site id and page name
+     * 
+     * @param siteId the site id
+     * @param pageName the page name
+     */
     public PageId(SiteId siteId, String pageName) {
         this.siteId = Parameters.requireNonNull(siteId, "siteId");
         this.pageName = Parameters.requireNonNull(pageName, "pageName");
     }
 
     /**
+     * Returns the id of the site
+     * 
      * @return Id of the site
      */
     public SiteId getSiteId() {
@@ -64,6 +92,8 @@ public class PageId implements Formattable, Serializable {
     }
 
     /**
+     * Returns the name of the page
+     * 
      * @return Name of the page
      */
     public String getPageName() {

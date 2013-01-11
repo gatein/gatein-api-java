@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * The type of a site. A site can a standard site, a group space or a user dashboard
+ * 
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 public enum SiteType {

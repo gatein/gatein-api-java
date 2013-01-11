@@ -35,24 +35,47 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * The id of site
+ * 
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 public class SiteId implements Formattable, Serializable {
     private final SiteType type;
     private final String name;
 
+    /**
+     * Creates a new site id for a site with the specific name
+     * 
+     * @param name
+     */
     public SiteId(String name) {
         this(SiteType.SITE, name);
     }
 
+    /**
+     * Creates a new site id for a group space (site associated with a group)
+     * 
+     * @param group the group
+     */
     public SiteId(Group group) {
         this(SiteType.SPACE, group.getId());
     }
 
+    /**
+     * Creates a new site id for a users dashboard (site associated with a user)
+     * 
+     * @param user the user
+     */
     public SiteId(User user) {
         this(SiteType.DASHBOARD, user.getId());
     }
 
+    /**
+     * Creates a new site id for a site with the specified type and name
+     * 
+     * @param type the type
+     * @param name the name
+     */
     public SiteId(SiteType type, String name) {
         this.type = Parameters.requireNonNull(type, "type");
         this.name = Parameters.requireNonNull(name, "name");
