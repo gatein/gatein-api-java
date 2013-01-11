@@ -43,14 +43,14 @@ public class AttributesTest {
     }
 
     @Test
-    public void get_BooleanWrongType() {
-        attributes.put("my.prop", "string");
-        assertEquals(false, attributes.get(Attributes.key("my.prop", Boolean.class)));
+    public void get_BooleanNull() {
+        assertNull(attributes.get(Attributes.key("my.prop", Boolean.class)));
     }
 
     @Test
-    public void get_BooleanNull() {
-        assertNull(attributes.get(Attributes.key("my.prop", Boolean.class)));
+    public void get_BooleanWrongType() {
+        attributes.put("my.prop", "string");
+        assertEquals(false, attributes.get(Attributes.key("my.prop", Boolean.class)));
     }
 
     @Test
@@ -71,6 +71,17 @@ public class AttributesTest {
     }
 
     @Test
+    public void get_String() {
+        attributes.put("my.prop", "true");
+        assertEquals("true", attributes.get(Attributes.key("my.prop", String.class)));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void key_InvalidType() {
+        Attributes.key("my.prop", Object.class);
+    }
+
+    @Test
     public void put_Boolean() {
         assertNull(attributes.put(Attributes.key("my.prop", Boolean.class), new Boolean(true)));
         assertEquals("true", attributes.get("my.prop"));
@@ -80,11 +91,6 @@ public class AttributesTest {
     public void put_Integer() {
         assertNull(attributes.put(Attributes.key("my.prop", Integer.class), new Integer(10)));
         assertEquals("10", attributes.get("my.prop"));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void put_InvalidType() {
-        assertNull(attributes.put(Attributes.key("my.prop", Object.class), new Object()));
     }
 
     @Test

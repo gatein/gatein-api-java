@@ -22,12 +22,10 @@
 
 package org.gatein.api.common;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.gatein.api.ApiException;
 import org.gatein.api.internal.Parameters;
 
 /**
@@ -40,23 +38,28 @@ import org.gatein.api.internal.Parameters;
  */
 @SuppressWarnings("unchecked")
 public class Attributes extends HashMap<String, String> {
+    /**
+     * Creates a new attributes instance with no attributes
+     */
     public Attributes() {
     }
 
+    /**
+     * Creates a new attributes instance and adds all attributes from the specified map
+     * 
+     * @param values the map of attributes to add
+     */
     public Attributes(Map<String, String> values) {
-        super(values);
+        super(Parameters.requireNonNull(values, "values"));
     }
 
     /**
      * Returns the value to the which the specified key name is mapped. The value is returned as the type specified by the key
-     * uses the static
-     * <code>valueOf(String)<code> method in the key type. The <code>valueOf(String)<code> should convert the <code>String</code>
-     * into an instance of the key type and return it.
+     * type
      * 
-     * @param key the key that holds the name and type of the attribute
+     * @param key the key for the attribute
      * @return the converted value
-     * @throws IllegalArgumentException if the specified key type class is not {@link String} or implements static
-     *         <code>valueOf(String)<code>
+     * @throws IllegalArgumentException if the specified key is null, or the value failed to convert into to key type
      */
     public <T> T get(Key<T> key) {
         Parameters.requireNonNull(key, "key");
@@ -67,17 +70,19 @@ public class Attributes extends HashMap<String, String> {
     }
 
     /**
-     * Converts the value into a String using the <code>toString</code> method. The value has to be an instance of the class
-     * specified by the key type, and it has to either be a {@link String} or implement the <code>valueOf</code> method as
-     * specified in {@link Attributes#get(Key)}.
+     * Converts the value into a String using the <code>toString</code> method
      * 
-     * @param key the key that holds the name and type of the attribute
+     * @param key the key for the attribute
      * @param value the value
      * @return the previous value, or null if it didn't exist
-     * @throws IllegalArgumentException if the current value is non-null and can't be converted into the key type
+     * @throws IllegalArgumentException if the specified key is null, the current value is non-null and failed to convert
+     *         into the key type, or the value class is not the same as the key type
      */
     public <T> T put(Key<T> key, T value) {
         Parameters.requireNonNull(key, "key");
+        if (!key.getType().equals(value.getClass())) {
+            throw new IllegalArgumentException("Value class is not the same as key type");
+        }
 
         T oldValue = get(key);
         put(key.getName(), value != null ? toString(key.getType(), value) : null);
@@ -87,9 +92,10 @@ public class Attributes extends HashMap<String, String> {
     /**
      * Removes the attribute that is mapped to the specified key name
      * 
-     * @param key the key that holds the name and type of the attribute
+     * @param key the key for the the attribute
      * @return the previous value, or null if it didn't exist
-     * @throws IllegalArgumentException if the current value is non-null and can't be converted into the key type
+     * @throws IllegalArgumentException if the specified key is null, or the current value is non-null and failed to to convert
+     *         into the key type
      */
     public <T> T remove(Key<T> key) {
         Parameters.requireNonNull(key, "key");
@@ -100,15 +106,25 @@ public class Attributes extends HashMap<String, String> {
     }
 
     /**
-     * Creates a key with the specified name and type
+     * Creates a key with the specified name and type. The type class has to either be {@link String} or implement a static
+     * method <code>valueOf(String)</code> method as specified in {@link Attributes#get(Key)}. The <code>valueOf</code> method
+     * should convert the string parameter into an instance of type and return it.
      * 
-     * @param name the name
-     * @param type the type
+     * @param name the key name
+     * @param type the key type
      * @return the key
+     * @throws IllegalArgumentException if name or type is null, or if type is not {@link String} or does not implement the
+     *         static <code>valueOf</code> method
      */
     public static <T> Key<T> key(String name, Class<T> type) {
-        return new Key<T>(name, type) {
-        };
+        Parameters.requireNonNull(name, "name");
+        Parameters.requireNonNull(type, "type");
+
+        if (!type.equals(String.class)) {
+            getValueOfMethod(type);
+        }
+
+        return new Key<T>(name, type);
     }
 
     private <T> T fromString(Class<T> type, String value) {
@@ -116,21 +132,12 @@ public class Attributes extends HashMap<String, String> {
             return (T) value;
         }
 
-        Method m;
-        try {
-            m = type.getDeclaredMethod("valueOf", new Class[] { String.class });
-        } catch (NoSuchMethodException e) {
-            throw new IllegalArgumentException(
-                    "Unsupported key type. Key type has to either be String or implement 'valueOf(String.class)'", e);
-        }
+        Method m = getValueOfMethod(type);
 
         try {
             return (T) m.invoke(null, value);
         } catch (Exception e) {
-            if (e instanceof InvocationTargetException) {
-                throw new IllegalArgumentException("Unsupported key type", e);
-            }
-            throw new ApiException("Failed to convert attribute value", e);
+            throw new IllegalArgumentException("Invalid type" + type, e);
         }
     }
 
@@ -139,22 +146,25 @@ public class Attributes extends HashMap<String, String> {
             return (String) value;
         }
 
+        return value.toString();
+    }
+
+    private static Method getValueOfMethod(Class<?> c) {
         try {
-            type.getDeclaredMethod("valueOf", new Class[] { String.class });
-            return value.toString();
-        } catch (NoSuchMethodException e) {
+            return c.getDeclaredMethod("valueOf", new Class[] { String.class });
+        } catch (Exception e) {
             throw new IllegalArgumentException(
                     "Unsupported key type. Key type has to either be String or implement 'valueOf(String.class)'");
         }
     }
 
-    public static abstract class Key<T> {
+    public static class Key<T> {
         private final String name;
         private Class<T> type;
 
         private Key(String name, Class<T> type) {
-            this.name = Parameters.requireNonNull(name, "name");
-            this.type = Parameters.requireNonNull(type, "type");
+            this.name = name;
+            this.type = type;
         }
 
         public String getName() {
