@@ -21,9 +21,6 @@
  */
 package org.gatein.api.common;
 
-import java.net.URI;
-
-import org.gatein.api.navigation.NodePath;
 import org.gatein.api.site.SiteId;
 
 /**
@@ -33,10 +30,10 @@ import org.gatein.api.site.SiteId;
  */
 public interface URIResolver {
     /**
-     * Resolves the URI for the specified nodePath
+     * Resolves the URI for the specified site
      * 
-     * @param nodePath the node path
+     * @param siteId the site id
      * @return the URI
      */
-    URI resolveURI(SiteId siteId, NodePath path);
+    String resolveURI(SiteId siteId);
 }

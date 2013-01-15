@@ -23,7 +23,6 @@
 package org.gatein.api.navigation;
 
 import java.io.Serializable;
-import java.net.URI;
 import java.util.Comparator;
 
 import org.gatein.api.EntityAlreadyExistsException;
@@ -72,7 +71,7 @@ public interface Node extends LocalizedDisplayable, Iterable<Node>, Serializable
      *
      * @return the resolved URI for this navigation node.
      */
-    URI getURI();
+    String getURI();
 
     /**
      * If the node is visible. Convenience method for doing <code>Node.getVisibility().isVisible()</code>
