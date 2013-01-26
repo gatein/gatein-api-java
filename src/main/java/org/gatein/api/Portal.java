@@ -48,8 +48,9 @@ public interface Portal {
      * @param siteId the siteId
      * @return the site or null if the site does not exist
      * @throws IllegalArgumentException if siteId is null
+     * @throws ApiException if something prevented this operation to succeed
      */
-    Site getSite(SiteId siteId) throws IllegalArgumentException;
+    Site getSite(SiteId siteId);
     
     /**
      * Creates a a site given the <code>SiteId</code>. This site is not saved until
@@ -59,8 +60,9 @@ public interface Portal {
      * @return the new site which has not been saved yet.
      * @throws IllegalArgumentException if siteId is null
      * @throws EntityAlreadyExistsException if the site already exists
+     * @throws ApiException if something prevented this operation to succeed
      */
-    Site createSite(SiteId siteId) throws IllegalArgumentException, EntityAlreadyExistsException;
+    Site createSite(SiteId siteId);
 
     /**
      * Finds sites given the <code>SiteQuery</code>
@@ -68,8 +70,9 @@ public interface Portal {
      * @param query the site query
      * @return list of sites found. The list will be empty if no sites were found.
      * @throws IllegalArgumentException if query is null
+     * @throws ApiException if something prevented this operation to succeed
      */
-    List<Site> findSites(SiteQuery query) throws IllegalArgumentException;
+    List<Site> findSites(SiteQuery query);
 
     /**
      * Saves a site
@@ -77,9 +80,8 @@ public interface Portal {
      * @param site the site to save
      * @throws IllegalArgumentException if site is null
      * @throws ApiException if an exception occurred trying to save the site
-     * @throws EntityAlreadyExistsException if saving a new site that already exists
      */
-    void saveSite(Site site) throws IllegalArgumentException, ApiException;
+    void saveSite(Site site);
 
     /**
      * Removes a site
@@ -87,8 +89,9 @@ public interface Portal {
      * @param siteId the id of the site to remove
      * @return true if the site was removed, false otherwise
      * @throws IllegalArgumentException if siteId is null
+     * @throws ApiException if something prevented this operation to succeed
      */
-    boolean removeSite(SiteId siteId) throws IllegalArgumentException, EntityNotFoundException;
+    boolean removeSite(SiteId siteId);
 
     /**
      * Returns the navigation of a site given the <code>SiteId</code>. Can return null if the navigation does not exist.
@@ -96,9 +99,9 @@ public interface Portal {
      * @param siteId the site id
      * @return navigation for a site, or null if the navigation does not exist
      * @throws IllegalArgumentException if siteId is null
-     * @throws EntityNotFoundException if the site does not exist for the given site id.
+     * @throws ApiException if something prevented this operation to succeed
      */
-    Navigation getNavigation(SiteId siteId) throws IllegalArgumentException, EntityNotFoundException;
+    Navigation getNavigation(SiteId siteId);
 
     /**
      * Returns the page of a site given the <code>PageId</code>. Can return null if the page does not exist.
@@ -106,9 +109,9 @@ public interface Portal {
      * @param pageId the page id
      * @return the page or null if the page does not exist
      * @throws IllegalArgumentException if pageId is null
-     * @throws EntityNotFoundException if the site does not exist for the given page id
+     * @throws ApiException if something prevented this operation to succeed
      */
-    Page getPage(PageId pageId) throws IllegalArgumentException, EntityNotFoundException;
+    Page getPage(PageId pageId);
 
     /**
      * Creates a page for a site given the <code>PageId</code>. This page is not saved until
@@ -118,9 +121,10 @@ public interface Portal {
      * @return the new page which has not been saved yet.
      * @throws IllegalArgumentException if pageId is null
      * @throws EntityAlreadyExistsException if the page already exists
-     * @throws EntityNotFoundException if the site does not exist for the given page id
+     * @throws EntityNotFoundException if the site does not exist
+     * @throws ApiException if something prevented this operation to succeed
      */
-    Page createPage(PageId pageId) throws IllegalArgumentException, EntityAlreadyExistsException, EntityNotFoundException;
+    Page createPage(PageId pageId);
 
     /**
      * Finds pages given the <code>PageQuery</code>
@@ -128,26 +132,28 @@ public interface Portal {
      * @param query the page query
      * @return list of pages found. List is empty if no pages were found.
      * @throws IllegalArgumentException if query is null
+     * @throws ApiException if something prevented this operation to succeed
      */
-    List<Page> findPages(PageQuery query) throws IllegalArgumentException;
+    List<Page> findPages(PageQuery query);
 
     /**
      * Saves a page
      *
      * @param page the page to save
      * @throws IllegalArgumentException if page is null
-     * @throws ApiException if an exception occurred trying to save the page
+     * @throws ApiException if something prevented this operation to succeed
      */
-    void savePage(Page page) throws IllegalArgumentException, ApiException;
+    void savePage(Page page);
 
     /**
      * Removes a page
      *
      * @param pageId the id of the page to remove
      * @return true if the page was removed, false otherwise
-     * @throws EntityNotFoundException if the site or page was not found
+     * @throws IllegalArgumentException if pageId is null
+     * @throws ApiException if something prevented this operation to succeed
      */
-    boolean removePage(PageId pageId) throws EntityNotFoundException;
+    boolean removePage(PageId pageId);
 
     /**
      * Returns true if the given user has the rights represented by the permission
@@ -155,6 +161,7 @@ public interface Portal {
      * @param user the user
      * @param permission the permission
      * @return true if the user has rights represented by the permission
+     * @throws ApiException if something prevented this operation to succeed
      */
     boolean hasPermission(User user, Permission permission);
 }

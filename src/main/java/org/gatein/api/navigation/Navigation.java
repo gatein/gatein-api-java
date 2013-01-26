@@ -52,6 +52,7 @@ public interface Navigation {
      * Saves the priority for this navigation.
      *
      * @param integer the priority to save
+     * @throws ApiException if something prevented this operation to succeed
      */
     void setPriority(int integer);
 
@@ -61,6 +62,7 @@ public interface Navigation {
      * @param nodePath the path to the node
      * @return the node or null if the node was not found
      * @throws IllegalArgumentException if nodePath is null or empty
+     * @throws ApiException if something prevented this operation to succeed
      */
     Node getNode(String... nodePath);
 
@@ -70,6 +72,7 @@ public interface Navigation {
      * @param nodePath the path to the node
      * @return the node or null if the node was not found
      * @throws IllegalArgumentException if nodePath is null
+     * @throws ApiException if something prevented this operation to succeed
      */
     Node getNode(NodePath nodePath);
 
@@ -84,8 +87,9 @@ public interface Navigation {
      * @param nodePath the path to the node
      * @param visitor the visitor used to determine further loading of nodes. The visitor is relative to the node represented by
      *        the node path.
-     * @throws IllegalArgumentException if nodePath or visitor is null
      * @return the node or null if the node was not found
+     * @throws IllegalArgumentException if nodePath or visitor is null
+     * @throws ApiException if something prevented this operation to succeed
      */
     Node getNode(NodePath nodePath, NodeVisitor visitor);
 
@@ -95,6 +99,7 @@ public interface Navigation {
      * @param visitor the visitor to determine how many nodes to load.
      * @return the root node of the navigation
      * @throws IllegalArgumentException if visitor is null
+     * @throws ApiException if something prevented this operation to succeed
      */
     Node getRootNode(NodeVisitor visitor);
 
@@ -105,6 +110,7 @@ public interface Navigation {
      *
      * @param node the node to refresh
      * @throws IllegalArgumentException if node is null
+     * @throws ApiException if something prevented this operation to succeed
      */
     void refreshNode(Node node);
 
@@ -116,6 +122,7 @@ public interface Navigation {
      * @param node the node to refresh
      * @param visitor the visitor which can load more nodes.
      * @throws IllegalArgumentException if node or visitor is null
+     * @throws ApiException if something prevented this operation to succeed
      */
     void refreshNode(Node node, NodeVisitor visitor);
 
@@ -126,15 +133,16 @@ public interface Navigation {
      * @return true if the node was removed, false otherwise
      * @throws IllegalArgumentException if nodePath is null
      * @throws EntityNotFoundException if the node could not be found.
+     * @throws ApiException if something prevented this operation to succeed
      */
-    boolean removeNode(NodePath nodePath) throws IllegalArgumentException, EntityNotFoundException;
+    boolean removeNode(NodePath nodePath);
 
     /**
      * Saves a node. All changes to the entire tree will be saved even if the node is not the root of the tree.
      *
      * @param node the node to save
      * @throws IllegalArgumentException if node is null
-     * @throws ApiException if an exception occurred trying save the node
+     * @throws ApiException if something prevented this operation to succeed
      */
-    void saveNode(Node node) throws IllegalArgumentException, ApiException;
+    void saveNode(Node node);
 }

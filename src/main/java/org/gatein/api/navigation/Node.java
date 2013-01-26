@@ -50,7 +50,7 @@ public interface Node extends LocalizedDisplayable, Iterable<Node>, Serializable
      * @param name the name of the node.
      * @throws IllegalArgumentException if the name is null.
      */
-    void setName(String name) throws IllegalArgumentException;
+    void setName(String name);
 
     /**
      * Returns the parent of the node, or null if the node is the root node.
@@ -93,7 +93,7 @@ public interface Node extends LocalizedDisplayable, Iterable<Node>, Serializable
      * @param visibility the visibility to set
      * @throws IllegalArgumentException if the publication date is null
      */
-    void setVisibility(Visibility visibility) throws IllegalArgumentException;
+    void setVisibility(Visibility visibility);
 
     /**
      * Sets the visibility of this navigation node either {@link Visibility.Status#VISIBLE} or {@link Visibility.Status#HIDDEN}.
@@ -110,7 +110,7 @@ public interface Node extends LocalizedDisplayable, Iterable<Node>, Serializable
      * @param publicationDate the publication date
      * @throws IllegalArgumentException if the publication date is null
      */
-    void setVisibility(PublicationDate publicationDate) throws IllegalArgumentException;
+    void setVisibility(PublicationDate publicationDate);
 
     /**
      * Name of the icon for this navigation node. Can be null.
@@ -156,7 +156,7 @@ public interface Node extends LocalizedDisplayable, Iterable<Node>, Serializable
      * @throws IllegalStateException if this node's children have not been loaded.
      * @throws EntityAlreadyExistsException if a child of the same name already exists.
      */
-    Node addChild(String childName) throws IllegalArgumentException, IllegalStateException, EntityAlreadyExistsException;
+    Node addChild(String childName);
 
     /**
      * Inserts a child to this navigation node at the specified index.
@@ -169,8 +169,7 @@ public interface Node extends LocalizedDisplayable, Iterable<Node>, Serializable
      * @throws IndexOutOfBoundsException if the index is out of range
      * @throws EntityAlreadyExistsException if a child of the same name already exists.
      */
-    Node addChild(int index, String childName) throws IllegalArgumentException, IllegalStateException,
-            IndexOutOfBoundsException, EntityAlreadyExistsException;
+    Node addChild(int index, String childName);
 
     /**
      * Returns the child node.
@@ -180,7 +179,7 @@ public interface Node extends LocalizedDisplayable, Iterable<Node>, Serializable
      * @throws IllegalArgumentException the childName is null
      * @throws IllegalStateException if this node's children have not been loaded
      */
-    Node getChild(String childName) throws IllegalArgumentException, IllegalStateException;
+    Node getChild(String childName);
 
     /**
      * Returns the child node of the given index.
@@ -190,7 +189,7 @@ public interface Node extends LocalizedDisplayable, Iterable<Node>, Serializable
      * @throws IndexOutOfBoundsException if the index is out of range
      * @throws IllegalStateException if this node's children have not been loaded
      */
-    Node getChild(int index) throws IndexOutOfBoundsException, IllegalStateException;
+    Node getChild(int index);
 
     /**
      * Returns the number of child nodes.
@@ -208,7 +207,7 @@ public interface Node extends LocalizedDisplayable, Iterable<Node>, Serializable
      * @throws IllegalArgumentException if childName is null
      * @throws IllegalStateException if this node's children have not been loaded
      */
-    boolean hasChild(String childName) throws IllegalArgumentException, IllegalStateException;
+    boolean hasChild(String childName);
 
     /**
      * If this node's children has been loaded. This should be called prior to calling any child methods on this node.
@@ -229,7 +228,7 @@ public interface Node extends LocalizedDisplayable, Iterable<Node>, Serializable
      * @throws IllegalArgumentException if nodePath is null
      * @throws IllegalStateException if any of the nodes represented by the path do not have their children loaded
      */
-    Node getNode(String... nodePath) throws IllegalArgumentException, IllegalStateException;
+    Node getNode(String... nodePath);
 
     /**
      * Returns the node specified by the node path, relative to this node.
@@ -243,7 +242,7 @@ public interface Node extends LocalizedDisplayable, Iterable<Node>, Serializable
      * @throws IllegalArgumentException if nodePath is null
      * @throws IllegalStateException if any of the nodes represented by the path do not have their children loaded
      */
-    Node getNode(NodePath nodePath) throws IllegalArgumentException, IllegalStateException;
+    Node getNode(NodePath nodePath);
 
     /**
      * The index of the child with the specified name.
@@ -253,7 +252,7 @@ public interface Node extends LocalizedDisplayable, Iterable<Node>, Serializable
      * @throws IllegalArgumentException if childName is null
      * @throws IllegalStateException if this node's children have not been loaded
      */
-    int indexOf(String childName) throws IllegalArgumentException;
+    int indexOf(String childName);
 
     /**
      * Removes the child from this navigation node.
@@ -263,7 +262,7 @@ public interface Node extends LocalizedDisplayable, Iterable<Node>, Serializable
      * @throws IllegalArgumentException if childName was null
      * @throws IllegalStateException if this node's children have not been loaded
      */
-    boolean removeChild(String childName) throws IllegalArgumentException;
+    boolean removeChild(String childName);
 
     /**
      * Will return a filtered view of this navigation node. All child operations consider the filter.
@@ -275,7 +274,7 @@ public interface Node extends LocalizedDisplayable, Iterable<Node>, Serializable
      * @return a filtered node
      * @throws IllegalArgumentException if filter is null
      */
-    FilteredNode filter() throws IllegalArgumentException;
+    FilteredNode filter();
 
     /**
      * Will sort the children of this node per the comparator.
@@ -283,7 +282,7 @@ public interface Node extends LocalizedDisplayable, Iterable<Node>, Serializable
      * @param comparator the comparator responsible for comparing nodes for sorting.
      * @throws IllegalArgumentException if comparator is null
      */
-    void sort(Comparator<Node> comparator) throws IllegalArgumentException;
+    void sort(Comparator<Node> comparator);
 
     /**
      * Moves the node to the specified index.
@@ -292,7 +291,7 @@ public interface Node extends LocalizedDisplayable, Iterable<Node>, Serializable
      *
      * @throws IndexOutOfBoundsException if the index is out of range
      */
-    void moveTo(int index) throws IndexOutOfBoundsException;
+    void moveTo(int index);
 
     /**
      * Moves this node to another parent.
@@ -302,7 +301,7 @@ public interface Node extends LocalizedDisplayable, Iterable<Node>, Serializable
      * @throws EntityAlreadyExistsException if a node with the same name already exists at the parent location
      * @throws IllegalStateException if the children of the parent to move to have not been loaded
      */
-    void moveTo(Node parent) throws IllegalArgumentException, EntityAlreadyExistsException;
+    void moveTo(Node parent);
 
     /**
      * Moves this node to another parent inserting it at the specified index.
@@ -314,6 +313,5 @@ public interface Node extends LocalizedDisplayable, Iterable<Node>, Serializable
      * @throws EntityAlreadyExistsException if a node with the same name already exists at the parent location
      * @throws IllegalStateException if the children of the parent to move to have not been loaded
      */
-    void moveTo(int index, Node parent) throws IndexOutOfBoundsException, IllegalArgumentException,
-            EntityAlreadyExistsException;
+    void moveTo(int index, Node parent);
 }
