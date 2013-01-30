@@ -129,15 +129,14 @@ public interface Site extends Displayable, Describable, Comparable<Site>, Serial
      */
     public static final class AttributeKeys {
         /**
-         * The site attribute that sets if a session is kept alive or not
+         * The site attribute that sets if a session is kept alive or not. Valid values are 'onDemand', 'always',
+         * and 'never' with the default being 'onDemand'.
          */
-        public static final Attributes.Key<String> SESSION_BEHAVIOR = Attributes.key("org.gatein.api.portal.session_behavior",
-                String.class);
+        public static final Attributes.Key<String> SESSION_BEHAVIOR = Attributes.key("sessionAlive", String.class);
         /**
-         * The site attribute that sets if the info bar is shown by default
+         * The site attribute that sets if the info bar is shown by default when adding applications to pages, default 'false'
          */
-        public static final Attributes.Key<Boolean> SHOW_PORTLET_INFO_BAR = Attributes.key(
-                "org.gatein.api.portal.show_info_bar", Boolean.class);
+        public static final Attributes.Key<Boolean> SHOW_PORTLET_INFO_BAR = Attributes.key("showPortletInfo", Boolean.class);
 
         private AttributeKeys() {
         }

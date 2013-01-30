@@ -51,10 +51,11 @@ public interface Portal {
      * @throws ApiException if something prevented this operation to succeed
      */
     Site getSite(SiteId siteId);
-    
+
     /**
      * Creates a a site given the <code>SiteId</code>. This site is not saved until
-     * {@link Portal#saveSite(org.gatein.api.site.Site)} is called.
+     * {@link Portal#saveSite(org.gatein.api.site.Site)} is called. Will use the default site template configured by
+     * the portal.
      *
      * @param siteId the site id
      * @return the new site which has not been saved yet.
@@ -63,6 +64,19 @@ public interface Portal {
      * @throws ApiException if something prevented this operation to succeed
      */
     Site createSite(SiteId siteId);
+
+    /**
+     * Creates a a site given the <code>SiteId</code>. This site is not saved until
+     * {@link Portal#saveSite(org.gatein.api.site.Site)} is called.
+     *
+     * @param siteId the site id
+     * @param templateName the name of the template to use to create the site
+     * @return the new site which has not been saved yet.
+     * @throws IllegalArgumentException if siteId is null
+     * @throws EntityAlreadyExistsException if the site already exists
+     * @throws ApiException if something prevented this operation to succeed
+     */
+    Site createSite(SiteId siteId, String templateName);
 
     /**
      * Finds sites given the <code>SiteQuery</code>
