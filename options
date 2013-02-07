@@ -1,0 +1,28 @@
+-classpath
+'/home/nscavell/devel/jboss/gatein/github/gatein/gatein-api-java/target/classes'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/home/nscavell/devel/jboss/gatein/github/gatein/gatein-api-java/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2013 <a href="http://www.jboss.org">JBoss, a division of Red Hat, Inc.</a>. All Rights Reserved.'
+-charset
+'UTF-8'
+-d
+'/home/nscavell/devel/jboss/gatein/github/gatein/gatein-api-java/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'gatein-api 1.0.0.Alpha01-SNAPSHOT API'
+-footer
+'<b>gatein-api 1.0.0.Alpha01-SNAPSHOT</b>'
+-header
+'<b>gatein-api 1.0.0.Alpha01-SNAPSHOT</b>'
+-link
+'http://java.sun.com/javase/6/docs/api'
+-use
+-version
+-windowtitle
+'gatein-api 1.0.0.Alpha01-SNAPSHOT API'
