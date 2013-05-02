@@ -23,6 +23,7 @@
 package org.gatein.api;
 
 import org.gatein.api.navigation.Navigation;
+import org.gatein.api.oauth.OAuthProvider;
 import org.gatein.api.page.Page;
 import org.gatein.api.page.PageId;
 import org.gatein.api.page.PageQuery;
@@ -178,4 +179,13 @@ public interface Portal {
      * @throws ApiException if something prevented this operation to succeed
      */
     boolean hasPermission(User user, Permission permission);
+
+    /**
+     * Return {@link org.gatein.api.oauth.OAuthProvider} for given key. Key could be {@link OAuthProvider#FACEBOOK},
+     * {@link OAuthProvider#GOOGLE}, {@link OAuthProvider#TWITTER} or other OAuth provider registered in Portal via OAuth SPI
+     *
+     * @param oauthProviderKey Key of OAuth provider
+     * @return OAuth provider or null if OAuth provider with given key was not found
+     */
+    OAuthProvider getOAuthProvider(String oauthProviderKey);
 }
