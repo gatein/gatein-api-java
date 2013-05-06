@@ -109,6 +109,7 @@
           <plugin>
             <groupId>com.github.github</groupId>
             <artifactId>site-maven-plugin</artifactId>
+            <version>0.8</version>
             <configuration>
               <message>Deploy javadoc for ${project.version}</message>
               <repositoryOwner>gatein</repositoryOwner>
