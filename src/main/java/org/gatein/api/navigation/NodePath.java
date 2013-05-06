@@ -182,7 +182,7 @@ public class NodePath implements Iterable<String>, Comparable<NodePath>, Seriali
     /**
      * Returns the size of the path
      * 
-     * @return
+     * @return the size of the node path
      */
     public int size() {
         return pathList.size();

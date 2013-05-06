@@ -90,7 +90,7 @@ public interface Site extends Displayable, Describable, Comparable<Site>, Serial
     /**
      * Returns the attributes (properties) associated with the site
      * 
-     * @return
+     * @return the attributes for this site
      */
     public Attributes getAttributes();
 

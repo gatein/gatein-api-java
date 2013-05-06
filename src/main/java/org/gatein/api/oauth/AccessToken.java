@@ -38,7 +38,7 @@ public interface AccessToken extends Serializable {
      * <p>In OAuth specification, each scope represents some kind of permission. So note that this access token could be used only to
      * call operations, for which scope is available.</p>
      *
-     * <p>For example: scope "email" could be used in Facebook to retrive information about user's email address. So if you have this
+     * <p>For example: scope "email" could be used in Facebook to retrieve information about user's email address. So if you have this
      * scope, you can use this access token object to retrieve email address of this user from Facebook.</p>
      *
      * @return list of all available scopes in single String
@@ -50,7 +50,7 @@ public interface AccessToken extends Serializable {
      *
      * @param scope to test
      * @return true if given scope is available
-     * @see @getAvailableScopes
+     * @see #getAvailableScopes
      */
     boolean isScopeAvailable(String scope);
 

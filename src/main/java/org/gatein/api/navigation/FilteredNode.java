@@ -26,7 +26,7 @@ import org.gatein.api.security.User;
 
 /**
  * A filtered node is obtained from {@link Node#filter()} and provides a mechanism for only showing specified nodes. Each method
- * will add an aditional filter that reduces the number of nodes returned. For example by invoking
+ * will add an additional filter that reduces the number of nodes returned. For example by invoking
  * <code>node.filter().showHasAccess(user).showVisible()</code> only nodes that the specified user has access to that are also
  * visible are returned. The filtering applies to all methods that operate on the children of the node. For example
  * {@link #indexOf(String)} can return a different index for a specified name than the {@link Node} the filtered node is
@@ -43,7 +43,7 @@ public interface FilteredNode extends Node {
     public FilteredNode showAll();
 
     /**
-     * Adds a predicate to this filter that accepts default nodes (equivalent to
+     * Adds a filter to this node that accepts default nodes (equivalent to
      * <code>showVisible().showHasAccess(PortalRequest.getInstance().getUser())</code>). Default nodes are nodes that are
      * visible and that the current user has permissions to access.
      * 
@@ -52,14 +52,14 @@ public interface FilteredNode extends Node {
     public FilteredNode showDefault();
 
     /**
-     * Adds a predicate to this filter that accepts visible nodes
+     * Adds a filter to this node that accepts visible nodes
      * 
      * @return this filtered node instance
      */
     public FilteredNode showVisible();
 
     /**
-     * Adds a predicate to this filter that accepts nodes the specified user has permissions to access
+     * Adds a filter to this node that accepts nodes the specified user has permissions to access
      * 
      * @param user the user
      * @return this filtered node instance
@@ -67,7 +67,7 @@ public interface FilteredNode extends Node {
     public FilteredNode showHasAccess(User user);
 
     /**
-     * Adds a predicate to this filter that accepts nodes the specified user has permissions to edit
+     * Adds a filter to this node that accepts nodes the specified user has permissions to edit
      * 
      * @param user the user
      * @return this filtered node instance
@@ -75,9 +75,9 @@ public interface FilteredNode extends Node {
     public FilteredNode showHasEdit(User user);
 
     /**
-     * Adds the specified predicate to this filter
+     * Adds a the specified filter to this node
      * 
-     * @param predicate
+     * @param filter the filter
      * @return this filtered node instance
      */
     public FilteredNode show(Filter<Node> filter);
