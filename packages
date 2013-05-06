@@ -1,7 +1,10 @@
 org.gatein.api.site
 org.gatein.api.security
 org.gatein.api
+org.gatein.api.oauth
+org.gatein.api.oauth.exception
 org.gatein.api.page
 org.gatein.api.common
 org.gatein.api.common.i18n
 org.gatein.api.navigation
+org.gatein.api.cdi.context
