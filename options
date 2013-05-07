@@ -15,14 +15,14 @@
 -docencoding
 'UTF-8'
 -doctitle
-'gatein-api 1.0.0.CR2-SNAPSHOT API'
+'gatein-api 1.0.0.CR2 API'
 -footer
-'<b>gatein-api 1.0.0.CR2-SNAPSHOT</b>'
+'<b>gatein-api 1.0.0.CR2</b>'
 -header
-'<b>gatein-api 1.0.0.CR2-SNAPSHOT</b>'
+'<b>gatein-api 1.0.0.CR2</b>'
 -link
 'http://java.sun.com/javase/6/docs/api'
 -use
 -version
 -windowtitle
-'gatein-api 1.0.0.CR2-SNAPSHOT API'
+'gatein-api 1.0.0.CR2 API'
