@@ -25,7 +25,7 @@
   <groupId>org.gatein.api</groupId>
   <artifactId>gatein-api</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0.CR3</version>
+  <version>1.0.0.CR04-SNAPSHOT</version>
   <parent>
     <groupId>org.gatein</groupId>
     <artifactId>gatein-parent</artifactId>
