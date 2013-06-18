@@ -7,7 +7,7 @@
 '/home/nscavell/devel/jboss/gatein/github/gatein/gatein-api-java/src/main/java'
 -author
 -bottom
-'Copyright &#169; 2013 <a href="http://www.jboss.org">JBoss, a division of Red Hat, Inc.</a>. All Rights Reserved.'
+'Copyright &#169; 2013 <a href="http://www.jboss.org">JBoss by Red Hat</a>. All Rights Reserved.'
 -charset
 'UTF-8'
 -d
@@ -15,14 +15,14 @@
 -docencoding
 'UTF-8'
 -doctitle
-'gatein-api 1.0.0.CR2 API'
+'gatein-api 1.0.0.Final API'
 -footer
-'<b>gatein-api 1.0.0.CR2</b>'
+'<b>gatein-api 1.0.0.Final</b>'
 -header
-'<b>gatein-api 1.0.0.CR2</b>'
+'<b>gatein-api 1.0.0.Final</b>'
 -link
 'http://java.sun.com/javase/6/docs/api'
 -use
 -version
 -windowtitle
-'gatein-api 1.0.0.CR2 API'
+'gatein-api 1.0.0.Final API'
