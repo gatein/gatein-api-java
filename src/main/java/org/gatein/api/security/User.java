@@ -22,6 +22,8 @@
 
 package org.gatein.api.security;
 
+import java.io.Serializable;
+
 import org.gatein.api.internal.Parameters;
 
 /**
@@ -29,7 +31,7 @@ import org.gatein.api.internal.Parameters;
  * 
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class User {
+public class User implements Serializable {
     private final String id;
 
     /**

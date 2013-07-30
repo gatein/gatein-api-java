@@ -22,12 +22,14 @@
 
 package org.gatein.api.common;
 
+import java.io.Serializable;
+
 /**
  * A filter to be used to "filter" a collection of elements
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public interface Filter<T> {
+public interface Filter<T> extends Serializable {
     /**
      * The accept method used to filter an element
      *
