@@ -175,7 +175,7 @@ public class Attributes extends HashMap<String, String> implements Serializable 
         return new Key<T>(name, type);
     }
 
-    private <T> T fromString(Class<T> type, String value) {
+    protected static <T> T fromString(Class<T> type, String value) {
         if (type.equals(String.class)) {
             return (T) value;
         }
@@ -189,7 +189,7 @@ public class Attributes extends HashMap<String, String> implements Serializable 
         }
     }
 
-    private <T> String toString(Class<T> type, T value) {
+    protected static <T> String toString(Class<T> type, T value) {
         if (value instanceof String) {
             return (String) value;
         }
