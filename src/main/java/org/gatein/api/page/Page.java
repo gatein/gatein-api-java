@@ -24,64 +24,78 @@ package org.gatein.api.page;
 
 import java.io.Serializable;
 
-import org.gatein.api.Portal;
 import org.gatein.api.common.Describable;
 import org.gatein.api.common.Displayable;
+import org.gatein.api.composition.BareContainer;
 import org.gatein.api.security.Permission;
 import org.gatein.api.site.SiteId;
 
 /**
- * Represents a portal page. Any chances to a page is not perisisted until {@link Portal#savePage(Page)} is invoked.
- * 
+ * Represents a portal page, that can later be associated with a Node. Note that an existing instance of a Page is not
+ * indicative that the page exists on the permanent storage.
+ * <p>
+ * Implementations must use {@link #DEFAULT_EDIT_PERMISSION} as a default
+ * that is returned by {@link #getEditPermission()} unless editPermission is set explicitly.
+ *
+ * @see org.gatein.api.Portal#savePage(Page)
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public interface Page extends Displayable, Describable, Comparable<Page>, Serializable {
+public interface Page extends BareContainer, Displayable, Describable, Comparable<Page>, Serializable {
+
+    /**
+     * Implementations must use this constant as a default value
+     * returned by {@link #getEditPermission()} unless editPermission is set explicitly.
+     */
+    public static Permission DEFAULT_EDIT_PERMISSION = Permission.any("platform", "administrators");
+
     /**
      * The id of the page
-     * 
+     *
      * @return the id
      */
     PageId getId();
 
     /**
      * The id of the site the page belongs to
-     * 
+     *
      * @return the site id
      */
     SiteId getSiteId();
 
     /**
      * The name of the page
-     * 
+     *
      * @return the name
      */
     String getName();
 
     /**
-     * The permissions that represents what users are allowed to access the page
-     * 
-     * @return the access permission
-     */
-    Permission getAccessPermission();
-
-    /**
-     * Sets the access permission
-     * 
-     * @param permission the access permission
-     */
-    void setAccessPermission(Permission permission);
-
-    /**
-     * The permissions that represents what users are allowed to modify the page
-     * 
+     * The permissions that represents what users are allowed to modify the page.
+     * <p>
+     * If not set explicitly, returns {@link #DEFAULT_EDIT_PERMISSION}.
+     *
      * @return the edit permission
      */
     Permission getEditPermission();
 
     /**
-     * Sets the edit permission
-     * 
+     * Sets the edit permission.
+     * <p>
+     * Unless set explicitly, the default value {@link #DEFAULT_EDIT_PERMISSION} is effective.
+     *
      * @param permission the edit permission
      */
     void setEditPermission(Permission permission);
+
+    /**
+     * The page's title
+     * @return the page's title
+     */
+    String getTitle();
+
+    /**
+     * Sets the title of the page
+     * @param title the title to set
+     */
+    void setTitle(String title);
 }
