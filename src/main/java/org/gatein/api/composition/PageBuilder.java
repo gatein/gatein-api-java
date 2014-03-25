@@ -1,6 +1,7 @@
 package org.gatein.api.composition;
 
 import org.gatein.api.Portal;
+import org.gatein.api.application.Application;
 import org.gatein.api.page.Page;
 import org.gatein.api.security.Permission;
 
@@ -90,10 +91,10 @@ public interface PageBuilder extends LayoutBuilder<PageBuilder> {
     PageBuilder showMaxWindow(boolean showMaxWindow);
 
     /**
-     * Sets the access permissions for this page. This information should be always provided. Failure to provide this
-     * information might cause inconsistent behavior between the API versions: at a version, implementations might
-     * decide that it's better to have Permission#everyone by default, at a later version, might be an admin. Or even
-     * an IllegalStateException. It is good practice to *always* provide this when composing a page.
+     * Optionally sets the permission object that represents which users will be allowed to access the {@link Page} being built.
+     * <p>
+     * Unless set explicitly, the default value {@link Container#DEFAULT_ACCESS_PERMISSION} will be used for
+     * the resulting {@link Page}.
      *
      * @param accessPermission the access permission for this page
      * @return this builder
@@ -101,10 +102,10 @@ public interface PageBuilder extends LayoutBuilder<PageBuilder> {
     PageBuilder accessPermission(Permission accessPermission);
 
     /**
-     * Sets the edit permission for this page. This information should be always provided. Failure to provide this
-     * information might cause inconsistent behavior between the API versions: at a version, implementations might
-     * decide that it's better to have Permission#everyone by default, at a later version, might be an admin. Or even
-     * an IllegalStateException. It is good practice to *always* provide this when composing a page.
+     * Optionally sets the permission object that represents which users will be allowed to edit the {@link Page} being built.
+     * <p>
+     * Unless set explicitly, the default value {@link Page#DEFAULT_EDIT_PERMISSION} will be used for
+     * the resulting {@link Page}.
      *
      * @param editPermission the edit permission
      * @return this builder
@@ -112,10 +113,11 @@ public interface PageBuilder extends LayoutBuilder<PageBuilder> {
     PageBuilder editPermission(Permission editPermission);
 
     /**
-     * Sets the move apps permissions for this page. This information should be always provided. Failure to provide this
-     * information might cause inconsistent behavior between the API versions: at a version, implementations might
-     * decide that it's better to have Permission#everyone by default, at a later version, might be an admin. Or even
-     * an IllegalStateException. It is good practice to *always* provide this when composing a page.
+     * Optionally sets the permission object that represents which users will be allowed to perform move, add
+     * and remove operations with child {@link Application}s of the {@link Page} being built.
+     * <p>
+     * Unless set explicitly, the default value {@link Container#DEFAULT_MOVE_APPS_PERMISSION} will be used for
+     * the resulting {@link Page}.
      *
      * @param moveAppsPermission the list of move apps permissions for this page
      * @return this builder
@@ -123,10 +125,11 @@ public interface PageBuilder extends LayoutBuilder<PageBuilder> {
     PageBuilder moveAppsPermission(Permission moveAppsPermission);
 
     /**
-     * Sets the move containers permissions for this page. This information should be always provided. Failure to provide this
-     * information might cause inconsistent behavior between the API versions: at a version, implementations might
-     * decide that it's better to have Permission#everyone by default, at a later version, might be an admin. Or even
-     * an IllegalStateException. It is good practice to *always* provide this when composing a page.
+     * Optionally sets the permission object that represents which users will be allowed to perform move, add
+     * and remove operations with child {@link Container}s of the {@link Page} being built.
+     * <p>
+     * Unless set explicitly, the default value {@link Container#DEFAULT_MOVE_CONTAINERS_PERMISSION} will be used for
+     * the resulting {@link Page}.
      *
      * @param moveContainersPermission the list of move containers permissions for this page
      * @return this builder
@@ -134,9 +137,7 @@ public interface PageBuilder extends LayoutBuilder<PageBuilder> {
     PageBuilder moveContainersPermission(Permission moveContainersPermission);
 
     /**
-     * <b>Required</b>
-     * <p>
-     * The site type of which this page belongs to. Possible values are:
+     * Required: The site type of which this page belongs to. Possible values are:
      * <ul>
      *     <li>portal</li>
      *     <li>site</li>
@@ -157,9 +158,7 @@ public interface PageBuilder extends LayoutBuilder<PageBuilder> {
     public Page build();
 
     /**
-     * <b>Required</b>
-     * <p>
-     * The page name
+     * Required: The page name
      *
      * @param name    the page name
      * @return this builder

@@ -57,7 +57,7 @@ public interface Application extends ContainerItem {
     String getIconURL();
 
     /**
-     * Gets a permission object that represents which users are allowed to access this container.
+     * Gets a permission object that represents which users are allowed to access this application.
      * Example: "[*:/platform/users]"
      * @return the access permissions for this application
      */

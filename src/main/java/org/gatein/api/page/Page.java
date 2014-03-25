@@ -33,11 +33,21 @@ import org.gatein.api.site.SiteId;
 /**
  * Represents a portal page, that can later be associated with a Node. Note that an existing instance of a Page is not
  * indicative that the page exists on the permanent storage.
+ * <p>
+ * Implementations must use {@link #DEFAULT_EDIT_PERMISSION} as a default
+ * that is returned by {@link #getEditPermission()} unless editPermission is set explicitly.
  *
  * @see org.gatein.api.Portal#savePage(Page)
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 public interface Page extends Container, Displayable, Describable, Comparable<Page>, Serializable {
+
+    /**
+     * Implementations must use this constant as a default value
+     * returned by {@link #getEditPermission()} unless editPermission is set explicitly.
+     */
+    public static Permission DEFAULT_EDIT_PERMISSION = Permission.any("platform", "administrators");
+
     /**
      * The id of the page
      *
@@ -60,14 +70,18 @@ public interface Page extends Container, Displayable, Describable, Comparable<Pa
     String getName();
 
     /**
-     * The permissions that represents what users are allowed to modify the page
+     * The permissions that represents what users are allowed to modify the page.
+     * <p>
+     * If not set explicitly, returns {@link #DEFAULT_EDIT_PERMISSION}.
      *
      * @return the edit permission
      */
     Permission getEditPermission();
 
     /**
-     * Sets the edit permission
+     * Sets the edit permission.
+     * <p>
+     * Unless set explicitly, the default value {@link #DEFAULT_EDIT_PERMISSION} is effective.
      *
      * @param permission the edit permission
      */

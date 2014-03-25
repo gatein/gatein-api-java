@@ -2,6 +2,7 @@ package org.gatein.api.composition;
 
 import java.util.List;
 
+import org.gatein.api.application.Application;
 import org.gatein.api.security.Permission;
 
 /**
@@ -104,8 +105,10 @@ public interface ContainerBuilder<T> {
     public ContainerBuilder<T> newCustomContainerBuilder(String template);
 
     /**
-     * Sets the access permissions for this container. This is optional, and it uses the main {@link LayoutBuilder}'s
-     * access permissions as default.
+     * Optionally sets the permission object that represents which users will be allowed to access the {@link Container} being built.
+     * <p>
+     * Unless set explicitly, the default value {@link Container#DEFAULT_ACCESS_PERMISSION} will be used for
+     * the resulting {@link Container}.
      *
      * @param accessPermission the access permission for this container
      * @return this builder
@@ -113,8 +116,11 @@ public interface ContainerBuilder<T> {
     public ContainerBuilder<T> accessPermission(Permission accessPermission);
 
     /**
-     * Sets the move apps permissions for this container. This is optional, and it uses the main {@link LayoutBuilder}'s
-     * move apps permissions as default.
+     * Optionally sets the permission object that represents which users will be allowed to perform move, add
+     * and remove operations with child {@link Application}s of the {@link Container} being built.
+     * <p>
+     * Unless set explicitly, the default value {@link Container#DEFAULT_MOVE_APPS_PERMISSION} will be used for
+     * the resulting {@link Container}.
      *
      * @param moveAppsPermission the list of move apps permissions for this container
      * @return this builder
@@ -122,8 +128,11 @@ public interface ContainerBuilder<T> {
     public ContainerBuilder<T> moveAppsPermission(Permission moveAppsPermission);
 
     /**
-     * Sets the move containers permissions for this container. This is optional, and it uses the main {@link LayoutBuilder}'s
-     * move containers permissions as default.
+     * Optionally sets the permission object that represents which users will be allowed to perform move, add
+     * and remove operations with child {@link Container}s of the {@link Container} being built.
+     * <p>
+     * Unless set explicitly, the default value {@link Container#DEFAULT_MOVE_CONTAINERS_PERMISSION} will be used for
+     * the resulting {@link Container}.
      *
      * @param moveContainersPermission the list of move containers permissions for this container
      * @return this builder
