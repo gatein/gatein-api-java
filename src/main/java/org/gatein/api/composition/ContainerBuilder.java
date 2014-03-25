@@ -22,10 +22,10 @@ import org.gatein.api.security.Permission;
  *         and returns the builder related to this new container
  *     </li>
  *     <li>
- *         {@link ContainerBuilder#buildChildren()} when the caller has finished adding child items
+ *         {@link ContainerBuilder#buildToParentBuilder()} when the caller has finished adding child items
  *     </li>
  *     <li>
- *         {@link ContainerBuilder#build()} to finish the work on this builder and return to the top level builder.
+ *         {@link ContainerBuilder#buildToTopBuilder()} to finish the work on this builder and return to the top level builder.
  *     </li>
  * </ul>
  *
@@ -61,7 +61,7 @@ public interface ContainerBuilder<T> {
      *
      * @return the parent container builder or itself if this container is placed at the top level
      */
-    public ContainerBuilder<T> buildChildren();
+    public ContainerBuilder<T> buildToParentBuilder();
 
     /**
      * Marks the end of the work on building {@link Container}s. Gathers all work done in the {@link ContainerBuilder}
@@ -70,7 +70,7 @@ public interface ContainerBuilder<T> {
      *
      * @return the {@link org.gatein.api.composition.PageBuilder} that started this {@link ContainerBuilder}.
      */
-    public T build();
+    public T buildToTopBuilder();
 
     /**
      * Starts a new builder, using the column template. Children added to this new builder will be rendered as
