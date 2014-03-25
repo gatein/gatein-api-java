@@ -72,6 +72,8 @@ public interface ContainerBuilder<T> {
      */
     public T buildToTopBuilder();
 
+    public Container build();
+
     /**
      * Starts a new builder, using the column template. Children added to this new builder will be rendered as
      * columns on the screen.
