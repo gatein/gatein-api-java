@@ -1,14 +1,14 @@
 package org.gatein.api.application;
 
 /**
- * Set of possible ApplicationTypes.
+ * The set of possible ApplicationTypes.
  *
  * @author <a href="mailto:jpkroehling+javadoc@redhat.com">Juraci Paixão Kröhling</a>
  */
 public enum ApplicationType {
     /**
      * Represents a Gadget, a mini web application embedded in a web page and running on an application server platform.
-     * Consult the "Reference Guide" for more information on "Gadgets"
+     * Consult the Reference Guide for more information on "Gadgets"
      */
     GADGET("gadget"),
 
@@ -18,8 +18,8 @@ public enum ApplicationType {
     PORTLET("portlet"),
 
     /**
-     * Represents a remote portlet, also known as "Web Services for Remote Portlets".
-     * Consult the "Reference Guide" for more information on "WSRP"
+     * Represents a remote portlet available through WSRP (Web Services for Remote Portlets).
+     * Consult the Reference Guide for more information on WSRP.
      */
     WSRP("wsrp");
 

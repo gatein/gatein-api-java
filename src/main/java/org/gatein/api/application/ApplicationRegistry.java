@@ -5,14 +5,14 @@ import org.gatein.api.ApiException;
 import java.util.List;
 
 /**
- * Basic contract that can be used to retrieve {@link org.gatein.api.application.Application}'s from the permanent storage.
+ * Basic contract that can be used to retrieve {@link org.gatein.api.application.Application}s from the permanent storage.
  *
  * @author <a href="mailto:jpkroehling+javadoc@redhat.com">Juraci Paixão Kröhling</a>
  */
 public interface ApplicationRegistry {
 
     /**
-     * Retrieves all known {@link org.gatein.api.application.Application}s to this server.
+     * Retrieves all {@link org.gatein.api.application.Application}s registered on the present Portal Container.
      *
      * @return a list of all known {@link org.gatein.api.application.Application}s
      * @throws ApiException in case of problems with the permanent storage.
@@ -28,8 +28,10 @@ public interface ApplicationRegistry {
     Application getApplication(String id) throws ApiException;
 
     /**
-     * Imports the applications there were deployed but not available yet. For instance, upon deployment of a
-     * portlet, it might become available only after the execution of this method.
+     * Imports applications to the registry that were deployed but were not registered yet. For instance, upon deployment of a
+     * WAR that contains a portlet, the portlet is not available in the registry until this method is executed.
+     * <p>
+     * This method has the same effects as "Import Applications" action available in the UI.
      *
      * @throws ApiException in case of problems with the permanent storage.
      */

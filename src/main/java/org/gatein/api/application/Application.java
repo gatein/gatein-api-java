@@ -4,7 +4,7 @@ import org.gatein.api.composition.ContainerItem;
 import org.gatein.api.security.Permission;
 
 /**
- * A record in the Application Registry. Currently, there are types of applications as defined
+ * A record in the Application Registry. Currently, there are three types of applications as defined
  * in {@link ApplicationType}: Portlet, WSRP Portlet and Gadget.
  * <p>
  * The same concept is available in the User Interface under "Group > Administration > Application Registry"

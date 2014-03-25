@@ -43,13 +43,14 @@ import org.gatein.api.security.Permission;
  *              .name("myComplexPage")
  *              .build(); // creates a new Page
  *      </pre>
- *      See also {@link ContainerBuilder#newColumnsBuilder()}, {@link ContainerBuilder#newRowsBuilder()} and newRowsBuilder
+ *      See also {@link ContainerBuilder#newColumnsBuilder()}, {@link ContainerBuilder#newRowsBuilder()} and {@link ContainerBuilder#newCustomContainerBuilder(Container).
  * </li>
  * </ol>
  *
  * Note that the resulting {@link Page} object needs to be persisted using the
- * {@link org.gatein.api.Portal#savePage(Page)} method. See more examples on the usage
- * of this API on the documentation and quickstart.
+ * {@link org.gatein.api.Portal#savePage(Page)} method.
+ * <p>
+ * There are more examples available in the Portal API Chapter of Portal Developer Guide and in Page Composition API Quickstart.
  *
  * @see org.gatein.api.Portal#newPageBuilder()
  * @see org.gatein.api.Portal#savePage(Page)
