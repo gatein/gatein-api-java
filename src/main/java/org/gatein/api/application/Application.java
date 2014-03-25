@@ -3,8 +3,6 @@ package org.gatein.api.application;
 import org.gatein.api.composition.ContainerItem;
 import org.gatein.api.security.Permission;
 
-import java.util.Date;
-
 /**
  * A record in the Application Registry. Currently, there are types of applications as defined
  * in {@link ApplicationType}: Portlet, WSRP Portlet and Gadget.
