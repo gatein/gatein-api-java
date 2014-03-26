@@ -54,24 +54,99 @@ public interface ContainerBuilder<T> {
     public ContainerBuilder<T> children(List<ContainerItem> children);
 
     /**
-     * Builds a {@link Container} based on the provided information and adds it to the parent {@link Container}.
-     *
-     * If there's no parent (ie, is at the top level), then add itself as a child of the root {@link Container}
-     * (usually at the {@link org.gatein.api.page.Page} level) and returns itself.
+     * Creates a new instance of {@link Container} based on the provided information, adds it as a child
+     * to the parent {@link ContainerBuilder} and returns the parent {@link ContainerBuilder}.
+     * <p>
+     * Throws an {@link IllegalStateException} if the parent {@link ContainerBuilder} is {@code null}.
+     * <p>
+     * Throws an {@link IllegalStateException} if {@link #buildToTopBuilder()} or {@link #buildToParentBuilder()}
+     * was already called on this {@link ContainerBuilder} instance.
      *
      * @return the parent container builder or itself if this container is placed at the top level
+     * @throws IllegalStateException if the parent {@link ContainerBuilder} is {@code null}
+     * @throws IllegalStateException if {@link #buildToTopBuilder()} or {@link #buildToParentBuilder()}
+     *                              was already called on this {@link ContainerBuilder} instance
      */
     public ContainerBuilder<T> buildToParentBuilder();
 
     /**
-     * Marks the end of the work on building {@link Container}s. Gathers all work done in the {@link ContainerBuilder}
-     * and adds the generated children to the top level builder (usually a {@link org.gatein.api.composition.PageBuilder}),
-     * returning the top level builder.
+     * Creates a new instance of {@link Container} based on the provided information and then either
+     * <p>
+     * (a) adds it as a child to the top level builder which is typically a {@link PageBuilder} if the
+     * parent container builder is {@code null} or else
+     * <p>
+     * (b) adds it as a child to the parent container builder and calls {@link #buildToTopBuilder()}
+     * on the parent container builder. This is is equivalent to
+     * {@code buildToParentBuilder().buildToTopBuilder()}. Due to (b) the following two snippets give
+     * exactly the same result:
+     * <pre>
+     *      //snippet 1
+     *      PageBuilder myPageBuilder = ...
+     *      Page myPage = myPageBuilder.newColumnsBuilder()
+     *          .child(storyOfTheDayPortlet) // first column
+     *          .child(productListPortlet) // second column
+     *          .newRowsBuilder() // some rows in the third column
+     *              .child(ch1) // first row
+     *              .child(ch2) // second row
+     *          .buildToParentBuilder() // add the row container to column container
+     *    .buildToTopBuilder() // add columns container to page
+     *    .name("myPage")
+     *    ...
+     *    .build();
+     *
+     *    //snippet 2
+     *    PageBuilder myPageBuilder = ...
+     *    Page myPage = myPageBuilder.newColumnsBuilder()
+     *        .child(storyOfTheDayPortlet) // first column
+     *        .child(productListPortlet) // second column
+     *        .newRowsBuilder() // some rows in the third column
+     *            .child(ch1) // first row
+     *            .child(ch2) // second row
+     *
+     *    .buildToTopBuilder() // adds both rows container to columns container
+     *                         // and columns container to page
+     *    .name("myPage")
+     *    ...
+     *    .build();
+     * </pre>
+     * <p>
+     * Finally, this method returns the top level builder (typically a {@link PageBuilder}).
+     * <p>
+     * Throws an {@link IllegalStateException} if there is no reference to the top level builder.
+     * <p>
+     * Throws an {@link IllegalStateException} if {@link #buildToTopBuilder()} or {@link #buildToParentBuilder()}
+     * was already called on this {@link ContainerBuilder} instance.
+     * <p>
+     * {@link #buildToTopBuilder()} called on a container that is not an immediate child of the top level builder
+     *  (typically a {@link PageBuilder}) calls
      *
      * @return the {@link org.gatein.api.composition.PageBuilder} that started this {@link ContainerBuilder}.
+     * @throws IllegalStateException if there is no reference to the top level builder
+     * @throws IllegalStateException if {@link #buildToTopBuilder()} or {@link #buildToParentBuilder()}
+     *                              was already called on this {@link ContainerBuilder} instance
      */
     public T buildToTopBuilder();
 
+    /**
+     * Returns a new instance of {@link Container} based on the provided information.
+     * <b>
+     * This method can be safely called multiple times on the same {@link ContainerBuilder} instance,
+     * e.g. to produce {@link Container}s that differ in some small detail:
+     * <pre>
+     * ContainerBuilder myContainerBuilder = ...
+     * Container c1 = myContainerBuilder
+     *      .child(ch1)
+     *      .child(ch2)
+     *      .build();
+     *
+     * Container c2 = myContainerBuilder
+     *      .child(ch3)
+     *      .build();
+     * // c2 contains 3 children: ch1, ch2 and ch3
+     * </pre>
+     *
+     * @return new instance of {@link Container}
+     */
     public Container build();
 
     /**

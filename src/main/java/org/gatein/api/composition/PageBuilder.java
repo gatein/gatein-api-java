@@ -152,6 +152,26 @@ public interface PageBuilder extends LayoutBuilder<PageBuilder> {
 
     /**
      * Builds a new {@link Page} based on the provided information.
+     * <p>
+     * This method can be safely called multiple times on the same {@link ContainerBuilder} instance,
+     * e.g. to produce {@link Page}s that differ in some small detail:
+     * <pre>
+     * PageBuilder myPageBuilder = ...
+     * Page p1 = myPageBuilder
+     *      .child(ch1)
+     *      .child(ch2)
+     *      .siteName(siteName)
+     *      .siteType(siteType)
+     *      .name("page1")
+     *      .build();
+     *
+     * Page p2 = myPageBuilder
+     *      // children and site information already set
+     *      .name("page2") // change the name
+     *      .build();
+     *
+     * // p1 and p2 differ only in name.
+     *<p>
      * @return a new {@link Page} object
      * @throws java.lang.IllegalStateException if any mandatory information is not provided
      */
