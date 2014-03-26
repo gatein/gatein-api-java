@@ -14,7 +14,7 @@ import java.util.List;
 public interface LayoutBuilder<T extends LayoutBuilder<T>> {
 
     /**
-     * Starts a new builder, using the column template. Children added to this new builder will be rendered as
+     * Starts a new child builder, using the column template. Children added to this new builder will be rendered as
      * columns on the screen. Similar to the method of the same name from {@link ContainerBuilder}, except that this
      * builder will be placed at the top-level of the layout.
      *
@@ -24,7 +24,7 @@ public interface LayoutBuilder<T extends LayoutBuilder<T>> {
     public ContainerBuilder<T> newColumnsBuilder();
 
     /**
-     * Starts a new builder, using the row template. Children added to this new builder will be rendered as
+     * Starts a new child builder, using the row template. Children added to this new builder will be rendered as
      * rows on the screen. Similar to the method of the same name from {@link ContainerBuilder}, except that this
      * builder will be placed at the top-level of the layout.
      *
@@ -34,15 +34,41 @@ public interface LayoutBuilder<T extends LayoutBuilder<T>> {
     public ContainerBuilder<T> newRowsBuilder();
 
     /**
-     * Starts a new builder, that builds on top of the provided Container. Useful when the caller wants to specify
-     * a template. Similar to the method of the same name from {@link ContainerBuilder}, except that this builder
+     * Starts a new child builder, that builds on top of the provided Container. Useful when a custom container type is
+     * required. Similar to {@link ContainerBuilder#newCustomContainerBuilder(Container)}, except that this builder
      * will be placed at the top-level of the layout.
+     * <p>
+     * Please check the {@link ContainerBuilder}s provided by the API before falling back to this method. They can be
+     * accessed through {@code new*Builder()} methods of {@link PageBuilder}
+     * and {@link ContainerBuilder}.
      *
      * @see org.gatein.api.composition.ContainerBuilder#newCustomContainerBuilder(Container)
      * @param container    the container to build on top of
      * @return a newly created ContainerBuilder
      */
     public ContainerBuilder<T> newCustomContainerBuilder(Container container);
+
+
+    /**
+     * Starts a new child builder, that builds on top of the provided internal template URL,
+     * using a generic container implementation. Similar to
+     * {@link ContainerBuilder#newCustomContainerBuilder(String)}, except that this builder
+     * will be placed at the top-level of the layout.
+     * <p>
+     * Please check the {@link ContainerBuilder}s provided by the API before falling back to this method. They can be
+     * accessed through {@code new*Builder()} methods of {@link PageBuilder}
+     * and {@link ContainerBuilder}.
+     * <p>
+     * For more details on template URLs, refer to {@link Container#getTemplate()}
+     * and {@link Container#setTemplate(String)}
+     *
+     * @param template internal template URL
+     * @return a newly created {@link ContainerBuilder}
+     *
+     * @see Container#getTemplate()
+     * @see Container#setTemplate(String)
+     */
+    public ContainerBuilder<T> newCustomContainerBuilder(String template);
 
     /**
      * Adds a new child to this container. Similar to the method of the same name from {@link ContainerBuilder}, except

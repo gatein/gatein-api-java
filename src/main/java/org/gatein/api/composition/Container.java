@@ -13,7 +13,7 @@ import org.gatein.api.security.Permission;
  * <p>
  * The children are supposed to implement the {@link ContainerItem} interface. There are two
  * subinterfaces available at present: {@link Application} and {@link Container}.
- *
+ * <p>
  * Implementations must use {@link #DEFAULT_ACCESS_PERMISSION},
  * {@link #DEFAULT_MOVE_APPS_PERMISSION} and {@link #DEFAULT_MOVE_CONTAINERS_PERMISSION} as defaults
  * that are returned by {@link #getAccessPermission()}, {@link #getMoveAppsPermission()} and
@@ -43,7 +43,7 @@ public interface Container extends ContainerItem {
 
     /**
      * Returns all child {@link org.gatein.api.composition.ContainerItem}s included in this container.
-     * Returns a reference to the internal modifiable instance. Therefore, it is legal to change
+     * Returns a reference to the internal modifiable {@link List} instance. Therefore, it is legal to change
      * the returned list but note that any changes are not persisted until you
      * call e.g. {@link org.gatein.api.Portal#savePage(org.gatein.api.page.Page)}.
      *
@@ -57,19 +57,34 @@ public interface Container extends ContainerItem {
     public void setChildren(List<ContainerItem> children);
 
     /**
-     * Returns the internal path to the Groovy template that should be used when rendering this container. Similar
-     * to the value at portal-config/portal-layout/portlet-application/portlet/preferences/preference/name=template/value
-     * on the portal.xml file.
-     * @return the internal path to the container's template file
+     * Returns an internal URL to a template file that should be used to render this container.
+     * Note that the present default implementation supports only Groovy templates.
+     * <p>
+     * Examples used in the default implementation:
+     * <ul>
+     * <li>{@code "system:/groovy/portal/webui/container/UIContainer.gtmpl"}</li>
+     * <li>{@code "system:/groovy/portal/webui/container/UITableColumnContainer.gtmpl"}</li>
+     * </ul>
+     * Beware that the template URLs used by implementations may change without notice.
+     *<p>
+     * @return the internal URL to the container's template file
      */
     public String getTemplate();
 
     /**
-     * Sets which template is to be used by this container. Note that a consumer would almost never set
-     * this, as the default templates are set already by the implementations.
+     * Sets an internal URL to a template file that should be used to render this container.
+     * Note that the present default implementation supports only Groovy templates.
+     * <p>
+     * This method is provided as a last resort to allow customisation in cases when there is
+     * no suitable Container provided by the API itself. The Containers provided by the API can be
+     * accessed through {@code new*Builder()} methods of {@link PageBuilder}
+     * and {@link ContainerBuilder}. Please check them before falling back to this method.
+     * <p>
+     * Beware that the template URLs used by implementations may change without notice.
+     * <p>
+     * @param template the internal URL to the container's template file.
      */
     public void setTemplate(String template);
-
 
     /**
      * Gets a permission object that represents which users are allowed to access this container.

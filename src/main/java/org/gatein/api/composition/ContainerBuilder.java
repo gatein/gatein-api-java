@@ -29,7 +29,7 @@ import org.gatein.api.security.Permission;
  *     </li>
  * </ul>
  *
- * The new*Builder are very similar in behavior, differing only on the final container that it delivers. For instance,
+ * The {@code new*Builder()} methods are very similar in behavior, differing only on the final container that it delivers. For instance,
  * a representation of a column would be a {@link Container} object with a specific template.
  *
  * @param <T> The final type that is implementing this interface.
@@ -150,7 +150,7 @@ public interface ContainerBuilder<T> {
     public Container build();
 
     /**
-     * Starts a new builder, using the column template. Children added to this new builder will be rendered as
+     * Starts a new child builder, using the column template. Children added to this new builder will be rendered as
      * columns on the screen.
      *
      * @return a newly created {@link ContainerBuilder}, specialized in rendering columns
@@ -158,7 +158,7 @@ public interface ContainerBuilder<T> {
     public ContainerBuilder<T> newColumnsBuilder();
 
     /**
-     * Starts a new builder, using the row template. Children added to this new builder will be rendered as
+     * Starts a new child builder, using the row template. Children added to this new builder will be rendered as
      * rows on the screen.
      *
      * @return a newly created {@link ContainerBuilder}, specialized in rendering rows
@@ -166,18 +166,33 @@ public interface ContainerBuilder<T> {
     public ContainerBuilder<T> newRowsBuilder();
 
     /**
-     * Starts a new builder, that builds on top of the provided Container. Useful when a custom container type is
+     * Starts a new child builder, that builds on top of the provided Container. Useful when a custom container type is
      * required.
+     * <p>
+     * Please check the {@link ContainerBuilder}s provided by the API before falling back to this method. They can be
+     * accessed through {@code new*Builder()} methods of {@link PageBuilder}
+     * and {@link ContainerBuilder}.
      *
      * @return a newly created {@link ContainerBuilder}
      */
     public ContainerBuilder<T> newCustomContainerBuilder(Container container);
 
     /**
-     * Starts a new builder, that builds on top of the provided Container, using a generic container but with a
-     * specific template. Useful to prevent creating a specific container type just to change the template.
+     * Starts a new child builder, that builds on top of the provided internal template URL,
+     * using a generic container implementation.
+     * <p>
+     * Please check the {@link ContainerBuilder}s provided by the API before falling back to this method. They can be
+     * accessed through {@code new*Builder()} methods of {@link PageBuilder}
+     * and {@link ContainerBuilder}.
+     * <p>
+     * For more details on template URLs, refer to {@link Container#getTemplate()}
+     * and {@link Container#setTemplate(String)}
      *
+     * @param template internal template URL
      * @return a newly created {@link ContainerBuilder}
+     *
+     * @see Container#getTemplate()
+     * @see Container#setTemplate(String)
      */
     public ContainerBuilder<T> newCustomContainerBuilder(String template);
 
