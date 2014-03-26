@@ -14,7 +14,7 @@ import org.gatein.api.security.Permission;
  * </pre>
  *
  * <p>
- * There are two main kinds scenarios possible:
+ * There are two main kinds of possible scenarios:
  * <ol>
  * <li>
  *      <strong>Flat</strong>
@@ -31,18 +31,24 @@ import org.gatein.api.security.Permission;
  * <li>
  *      <strong>With nested containers</strong>
  *      <pre>
- *      Page myPage = myPageBuilder
- *              .child(gadgetCalculator) // first row of the page
- *              .newColumnsBuilder() // a couple of columns in the second row of the page
- *                   .child(storyOfTheDayPortlet) // first column
- *                   .child(productListPortlet) // second column
- *              .build() // finishes the columns
- *              .buildChildren() // returns the top level PageBuilder
- *              .child(helloWorldPortlet) // third row of the page
- *              .siteName(siteName)
- *              .siteType(siteType)
- *              .name("myComplexPage")
- *              .build(); // creates a new Page
+ *       Page page = pageBuilder
+ *        .newRowsBuilder() // we three rows
+ *            .newColumnsBuilder() // third column set, on the third row
+ *                .child(portletUsefulLinks) // about 1/3 of the width of the third row on the screen
+ *                .child(portletUsefulLinks) // same as above
+ *                .newColumnsBuilder() // a column set inside this column set: the whole set is 1/3 of the total width
+ *                    .child(gadgetCalculator) // and this is 50% of the 1/3
+ *                    .child(gadgetRss) // same as above
+ *                .buildToParentBuilder() // finishes work on the nested column set
+ *            .buildToParentBuilder() // finishes work on the third column set
+ *        .buildToTopBuilder()
+ *        .siteName("classic") // to which site should this page belong to?
+ *        .siteType("portal")
+ *        .name("awesome_" + UUID.randomUUID().toString()) // what would be the short name of the page?
+ *        .displayName("Awesome page") // and how should be the display name?
+ *        .build(); // finishes building the Page object
+ *
+ *        portal.savePage(page); // and finally, persist the page!
  *      </pre>
  *      See also {@link ContainerBuilder#newColumnsBuilder()}, {@link ContainerBuilder#newRowsBuilder()} and {@link ContainerBuilder#newCustomContainerBuilder(Container)}.
  * </li>
