@@ -26,7 +26,7 @@ import java.io.Serializable;
 
 import org.gatein.api.common.Describable;
 import org.gatein.api.common.Displayable;
-import org.gatein.api.composition.Container;
+import org.gatein.api.composition.BareContainer;
 import org.gatein.api.security.Permission;
 import org.gatein.api.site.SiteId;
 
@@ -40,7 +40,7 @@ import org.gatein.api.site.SiteId;
  * @see org.gatein.api.Portal#savePage(Page)
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public interface Page extends Container, Displayable, Describable, Comparable<Page>, Serializable {
+public interface Page extends BareContainer, Displayable, Describable, Comparable<Page>, Serializable {
 
     /**
      * Implementations must use this constant as a default value
