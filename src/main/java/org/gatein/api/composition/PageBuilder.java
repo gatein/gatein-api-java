@@ -44,7 +44,7 @@ import org.gatein.api.security.Permission;
  *              .name("myComplexPage")
  *              .build(); // creates a new Page
  *      </pre>
- *      See also {@link ContainerBuilder#newColumnsBuilder()}, {@link ContainerBuilder#newRowsBuilder()} and {@link ContainerBuilder#newCustomContainerBuilder(Container).
+ *      See also {@link ContainerBuilder#newColumnsBuilder()}, {@link ContainerBuilder#newRowsBuilder()} and {@link ContainerBuilder#newCustomContainerBuilder(Container)}.
  * </li>
  * </ol>
  *
