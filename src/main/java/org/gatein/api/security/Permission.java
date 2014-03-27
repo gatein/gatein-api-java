@@ -31,7 +31,7 @@ import java.util.Set;
 
 /**
  * Represents the permissions for a resource
- * 
+ *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 public class Permission implements Serializable {
@@ -39,7 +39,7 @@ public class Permission implements Serializable {
 
     /**
      * Returns a permission where everyone can access the resource (public)
-     * 
+     *
      * @return the permission
      */
     public static Permission everyone() {
@@ -48,7 +48,7 @@ public class Permission implements Serializable {
 
     /**
      * Returns a permission where users with any membership type in the specified group can access the resource
-     * 
+     *
      * @param group the group
      * @return the permission
      */
@@ -67,7 +67,7 @@ public class Permission implements Serializable {
 
     /**
      * Creates a permission where users with the specified member type in the specified group can access the resource
-     * 
+     *
      * @param membershipType the membership type
      * @param group the group
      */
@@ -77,7 +77,7 @@ public class Permission implements Serializable {
 
     /**
      * Creates a permission where the the specified user can access the resource
-     * 
+     *
      * @param user the user
      */
     public Permission(User user) {
@@ -86,7 +86,7 @@ public class Permission implements Serializable {
 
     /**
      * Creates a permission where users with the specified membership can access the resource
-     * 
+     *
      * @param membership the membership
      */
     public Permission(Membership membership) {
@@ -95,7 +95,7 @@ public class Permission implements Serializable {
 
     /**
      * Creates a permission where users with one or more of the specified memberships can access the resource
-     * 
+     *
      * @param memberships the memberships
      */
     public Permission(Set<Membership> memberships) {
@@ -108,7 +108,7 @@ public class Permission implements Serializable {
 
     /**
      * Returns all memberships with permissions to access the resource
-     * 
+     *
      * @return the memberships
      */
     public Set<Membership> getMemberships() {
@@ -117,7 +117,7 @@ public class Permission implements Serializable {
 
     /**
      * Creates a new permission that includes all memberships of this permission and the specified membership
-     * 
+     *
      * @param membership the membership to add
      * @return the new permission
      */
@@ -131,7 +131,7 @@ public class Permission implements Serializable {
 
     /**
      * Returns true if everyone has permissions to access the item
-     * 
+     *
      * @return true if resource is public
      */
     public boolean isAccessibleToEveryone() {
@@ -143,4 +143,30 @@ public class Permission implements Serializable {
         return ObjectToStringBuilder.toStringBuilder().add("memberships", memberships.isEmpty() ? "Everyone" : memberships)
                 .toString();
     }
+
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return memberships != null ? memberships.hashCode() : 0;
+    }
+
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        } else if (o instanceof Permission) {
+            Permission other = (Permission) o;
+            return this.memberships == other.memberships
+                    || (this.memberships != null && this.memberships.equals(other.memberships));
+        } else {
+            return false;
+        }
+    }
+
+
 }

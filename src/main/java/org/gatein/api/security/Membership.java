@@ -29,7 +29,7 @@ import org.gatein.api.internal.StringSplitter;
 
 /**
  * Represents a membership in a group
- * 
+ *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 public class Membership implements Serializable {
@@ -37,7 +37,7 @@ public class Membership implements Serializable {
 
     /**
      * Creates a new membership for any membership type in the specified group
-     * 
+     *
      * @param group the group
      * @return the membership
      */
@@ -50,7 +50,7 @@ public class Membership implements Serializable {
 
     /**
      * Creates a new membership for users with the specified membership type in the specified group
-     * 
+     *
      * @param membershipType the membership type
      * @param group the group
      */
@@ -61,7 +61,7 @@ public class Membership implements Serializable {
 
     /**
      * Creates a new membership for the specified user
-     * 
+     *
      * @param user the user
      */
     public Membership(User user) {
@@ -71,7 +71,7 @@ public class Membership implements Serializable {
 
     /**
      * Returns the membership type
-     * 
+     *
      * @return the membership type
      */
     public String getMembershipType() {
@@ -80,7 +80,7 @@ public class Membership implements Serializable {
 
     /**
      * Returns the group
-     * 
+     *
      * @return the group
      */
     public Group getGroup() {
@@ -94,6 +94,50 @@ public class Membership implements Serializable {
         } else {
             return membershipType + ":" + group.getId();
         }
+    }
+
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((group == null) ? 0 : group.hashCode());
+        result = prime * result + ((membershipType == null) ? 0 : membershipType.hashCode());
+        return result;
+    }
+
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof Membership)) {
+            return false;
+        }
+        Membership other = (Membership) obj;
+        if (group == null) {
+            if (other.group != null) {
+                return false;
+            }
+        } else if (!group.equals(other.group)) {
+            return false;
+        }
+        if (membershipType == null) {
+            if (other.membershipType != null) {
+                return false;
+            }
+        } else if (!membershipType.equals(other.membershipType)) {
+            return false;
+        }
+        return true;
     }
 
     public static Membership fromString(String membership) {

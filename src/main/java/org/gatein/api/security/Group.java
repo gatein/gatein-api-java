@@ -31,7 +31,7 @@ import org.gatein.api.internal.StringSplitter;
 
 /**
  * Represents a group. A {@link User} can belong to one or more groups.
- * 
+ *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 public class Group implements Serializable {
@@ -40,7 +40,7 @@ public class Group implements Serializable {
     /**
      * Creates an new group instance with the specified hierarchy. For example
      * <code>new Group("platform", "administrators")</code>
-     * 
+     *
      * @param group the group
      * @throws IllegalArgumentException if group is null or empty
      */
@@ -56,7 +56,7 @@ public class Group implements Serializable {
 
     /**
      * Creates an new group instance with the specified id. For example <code>new Group("/platform/administrators")</code>
-     * 
+     *
      * @param id the id of the group
      * @throws IllegalArgumentException if id is null
      */
@@ -66,7 +66,7 @@ public class Group implements Serializable {
 
     /**
      * Returns the id of the group. For example "/platform/administrators"
-     * 
+     *
      * @return the group id
      */
     public String getId() {
@@ -77,4 +77,29 @@ public class Group implements Serializable {
     public String toString() {
         return ObjectToStringBuilder.toStringBuilder(getClass()).add("groupId", id).toString();
     }
+
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return (id == null) ? 0 : id.hashCode();
+    }
+
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (obj instanceof Group) {
+            Group other = (Group) obj;
+            return this.id == other.id
+                    || (this.id != null && this.id.equals(other.id));
+        } else {
+            return false;
+        }
+    }
+
 }

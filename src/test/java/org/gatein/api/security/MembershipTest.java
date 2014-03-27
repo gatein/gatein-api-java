@@ -43,6 +43,28 @@ public class MembershipTest {
         assertEquals("*:/platform/administrators", Membership.any("platform", "administrators").toString());
     }
 
+    @Test
+    public void equalsUserMembership() {
+        /* do some string ops to make sure there two distinct string instances in game */
+        String id = "_id".substring(1);
+        User u = new User(id);
+        Membership m = new Membership(u);
+
+        assertEquals(new Membership(new User(id)), m);
+        assertEquals("id", m.getMembershipType());
+
+    }
+
+    @Test
+    public void equalsGroupMembership() {
+        Group g = new Group("platform", "administrators");
+        Membership m = new Membership("member", g);
+
+        assertEquals(Membership.fromString("member:/platform/administrators"), m);
+        assertEquals("member", m.getMembershipType());
+
+    }
+
     public static void assertMembership(String expectedType, String expectedGroup, Membership actual) {
         if (expectedGroup == null) {
             assertNull(actual.getGroup());

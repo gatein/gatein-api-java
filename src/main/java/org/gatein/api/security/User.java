@@ -28,7 +28,7 @@ import org.gatein.api.internal.Parameters;
 
 /**
  * Represents a user
- * 
+ *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 public class User implements Serializable {
@@ -36,7 +36,7 @@ public class User implements Serializable {
 
     /**
      * Creates a new user with the specified id. To create a anonymous user use the static method {@link User#isAnonymous()}
-     * 
+     *
      * @param id the user
      * @throws IllegalArgumentException if id is null
      */
@@ -50,7 +50,7 @@ public class User implements Serializable {
 
     /**
      * Returns the user id
-     * 
+     *
      * @return the user id
      */
     public String getId() {
@@ -59,16 +59,51 @@ public class User implements Serializable {
 
     /**
      * Returns true if the user is anonymous
-     * 
+     *
      * @return true if anonymous user
      */
     public boolean isAnonymous() {
         return this == ANONYMOUS;
     }
 
+
+
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return id == null ? 0 : id.hashCode();
+    }
+
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof User)) {
+            return false;
+        }
+        User other = (User) obj;
+        if (id == null) {
+            if (other.id != null) {
+                return false;
+            }
+        } else if (!id.equals(other.id)) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Creates a anonymous user
-     * 
+     *
      * @return the anonymous user
      */
     public static User anonymous() {
