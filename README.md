@@ -35,7 +35,7 @@ Navigation navigation = request.getNavigation();
 Node node = navigaiton.getNode(request.getNodePath());
 ```
 
-The `Portal` interface allows you to do more advanced things create sites, create pages, or check permisisons. For example to check to see if the current user has access to a certain page:
+The `Portal` interface allows you to do more advanced things create sites, create pages, or check permissions. For example to check to see if the current user has access to a certain page:
 
 ```java
 Portal portal = request.getPortal();
